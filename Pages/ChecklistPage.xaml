@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="BabyPrepRegistry.Pages.ChecklistPage"
+             Title="ChecklistPage">
+    <VerticalStackLayout>
+        <Label
+            Style="{StaticResource SubHeadline}"
+            Text="Classes | Appointments | Task"
+            VerticalOptions="Center" 
+            HorizontalOptions="Center" 
+            Margin="0,20"/>
+
+        <CollectionView ItemsSource="{Binding TaskList}" SelectionMode="Single" MaximumWidthRequest="750">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <StackLayout Padding="10" Spacing="5" BackgroundColor="Gray" Margin="5">
+                        <Grid ColumnDefinitions="*, Auto" VerticalOptions="Center">
+                            <Label Text="{Binding TaskName}" FontSize="16" FontAttributes="Bold" Grid.Column="0"/>
+                            <CheckBox IsChecked="{Binding IsPending}" HorizontalOptions="End" Grid.Column="1"/>
+                        </Grid>
+                        <Label Text="{Binding TaskDescription}" FontSize="12" TextColor="LightGray" />
+                    </StackLayout>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+        <FlexLayout
+            x:Name="BtnsLayout"
+            JustifyContent="SpaceBetween"
+            Padding="40"
+            MaximumWidthRequest="450">
+            <Button
+             x:Name="AddTaskBtn"
+             Text="New Task" 
+             SemanticProperties.Hint="Adds a Task to the list"
+             Clicked="onAddTaskClicked"
+             HorizontalOptions="Center" />
+
+            <Button
+             x:Name="EditTaskBtn"
+             Text="Edit Task" 
+             SemanticProperties.Hint="Edits Selected Task"
+             Clicked="onEditTaskClicked"
+             HorizontalOptions="Center" />
+        </FlexLayout>
+    </VerticalStackLayout>
+</ContentPage>

@@ -4,11 +4,22 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:BabyPrepRegistry"
+    xmlns:pages="clr-namespace:BabyPrepRegistry.Pages"
     Title="BabyPrepRegistry">
-
-    <ShellContent
-        Title="Home"
-        ContentTemplate="{DataTemplate local:MainPage}"
-        Route="MainPage" />
+    
+    <TabBar >
+        <ShellContent
+            Title="Home"
+            ContentTemplate="{DataTemplate local:MainPage}"
+            Route="MainPage" />
+        <ShellContent
+            Title="Checklist"
+            ContentTemplate="{DataTemplate pages:ChecklistPage}"
+            Route="ChecklistPage" />
+        <ShellContent
+            Title="Registry"
+            ContentTemplate="{DataTemplate pages:RegistryPage}"
+            Route="RegistryPage" />
+    </TabBar>
 
 </Shell>

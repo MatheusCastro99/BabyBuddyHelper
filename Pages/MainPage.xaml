@@ -22,25 +22,7 @@
                 Text="Baby registry and prep checklist"
                 Style="{StaticResource SubHeadline}"
                 SemanticProperties.HeadingLevel="Level2" />
-            <FlexLayout
-                x:Name="BtnsLayout"
-                JustifyContent="SpaceBetween"
-                Padding="40"
-                MaximumWidthRequest="450">
-                
-                <Button
-                    x:Name="CheckListBtn"
-                    Text="View CheckList" 
-                    SemanticProperties.Hint="Displays baby prepr checklist"
-                    Clicked="onCheckListClicked"
-                    HorizontalOptions="Center" />
-                <Button
-                    x:Name="RegistryBtn"
-                    Text="View Registry" 
-                    SemanticProperties.Hint="Displays baby registry checklist"
-                    Clicked="onRegistryClicked"
-                    HorizontalOptions="Center" />
-            </FlexLayout>
+            
 
 
         </VerticalStackLayout>

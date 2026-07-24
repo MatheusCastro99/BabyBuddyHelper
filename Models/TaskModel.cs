@@ -1,0 +1,23 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace BabyPrepRegistry.Models
+{
+    public class TaskModel
+    {
+        public int Id { get; set; }
+        public int TaskPriority { get; set; }
+        public string TaskName { get; set; }
+        public string TaskDescription { get; set; }
+        public bool IsPending { get; set; }
+
+        public TaskModel(int priority, string taskName, string taskDescription, bool isPending) 
+        {
+            TaskPriority = priority;
+            TaskName = taskName;
+            TaskDescription = taskDescription;
+            IsPending = isPending;
+        }
+    }
+}
