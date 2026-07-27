@@ -15,9 +15,9 @@ public partial class ChecklistPage : ContentPage
 
         TaskList = new();
 		List<TaskModel> tasks = new();
-		tasks.Add(new TaskModel(03, "BabyShower", "Get gifts", true));
-        tasks.Add(new TaskModel(15, "Organize Room", "Make Space for the baby!", true));
-        tasks.Add(new TaskModel(09, "Prepare for baby", "Baby about to go Hello World!",false));
+		tasks.Add(new TaskModel(03, "BabyShower", "Get gifts"));
+        tasks.Add(new TaskModel(15, "Organize Room", "Make Space for the baby!"));
+        tasks.Add(new TaskModel(09, "Prepare for baby", "Baby about to go Hello World!"));
 
         OrganizeByPriority(tasks);
 
@@ -34,8 +34,9 @@ public partial class ChecklistPage : ContentPage
         }
     }
 
-    private void onAddTaskClicked(object? sender, EventArgs e)
+    private async void onAddTaskClicked(object? sender, EventArgs e)
     {
+        await Navigation.PushModalAsync(new AddTaskPage());
         //Debug.WriteLine("Checklist Clicked");
     }
 

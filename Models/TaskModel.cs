@@ -12,12 +12,12 @@ namespace BabyPrepRegistry.Models
         public string TaskDescription { get; set; }
         public bool IsPending { get; set; }
 
-        public TaskModel(int priority, string taskName, string taskDescription, bool isPending) 
+        public TaskModel(int priority, string taskName, string taskDescription) 
         {
             TaskPriority = priority;
             TaskName = taskName;
             TaskDescription = taskDescription;
-            IsPending = isPending;
+            IsPending = true;
         }
     }
 }

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="BabyPrepRegistry.Pages.AddTaskPage"
+             Title="Add Task">
+    
+    <VerticalStackLayout Padding="20" Spacing="15">
+        <Label
+            Style="{StaticResource SubHeadline}"
+            Text="Add a new Task"
+            VerticalOptions="Center" 
+            HorizontalOptions="Center" 
+            Margin="0,20"/>
+        
+        <Entry x:Name="TaskNameEntry" Placeholder="Task Name" />
+        <Entry x:Name="DescriptionEntry" Placeholder="Description" />
+        
+        <HorizontalStackLayout>
+            <Label 
+                Text="Priority:"
+                Margin="0, 0, 15, 0"
+                VerticalOptions="Center"/>
+            <Label 
+                Text="{Binding Source={x:Reference PriorityStepper}, Path=Value, StringFormat='{0:F0}'}" 
+                VerticalOptions="Center"
+                WidthRequest="30"/>
+            <Stepper x:Name="PriorityStepper" Minimum="1" Maximum="10" Value="5"/>
+        </HorizontalStackLayout>
+        
+        <HorizontalStackLayout>
+            <Label 
+                Text="Appointment:"
+                Margin="0, 0, 15, 0"
+                VerticalOptions="Center"/>
+            <CheckBox
+                x:Name="IsAppointmentCheckBox"/>
+        </HorizontalStackLayout>
+
+        <!-- Hidden Section - Shows when checkbox is checked -->
+        <StackLayout 
+            IsVisible="{Binding Source={x:Reference IsAppointmentCheckBox}, Path=IsChecked}"
+            Spacing="10">   
+            <Entry x:Name="DateEntry" 
+                Placeholder="Date (MM/DD/YYYY)" />
+            <Entry x:Name="LocationEntry" 
+                Placeholder="Location" />
+        </StackLayout>
+
+        <HorizontalStackLayout Spacing="50" HorizontalOptions="Center">
+            <Button Text="Cancel" Clicked="OnCancelClicked" />
+            <Button Text="Save" Clicked="OnSaveClicked" BackgroundColor="Green" />
+        </HorizontalStackLayout>
+    </VerticalStackLayout>
+
+</ContentPage>

@@ -14,13 +14,15 @@
         <CollectionView ItemsSource="{Binding TaskList}" SelectionMode="Single" MaximumWidthRequest="750">
             <CollectionView.ItemTemplate>
                 <DataTemplate>
-                    <StackLayout Padding="10" Spacing="5" BackgroundColor="Gray" Margin="5">
-                        <Grid ColumnDefinitions="*, Auto" VerticalOptions="Center">
-                            <Label Text="{Binding TaskName}" FontSize="16" FontAttributes="Bold" Grid.Column="0"/>
-                            <CheckBox IsChecked="{Binding IsPending}" HorizontalOptions="End" Grid.Column="1"/>
-                        </Grid>
-                        <Label Text="{Binding TaskDescription}" FontSize="12" TextColor="LightGray" />
-                    </StackLayout>
+                    <Border Padding="15" Margin="10" BackgroundColor="Gray" StrokeShape="RoundRectangle 15,15,15,15" >
+                        <StackLayout Spacing="3">
+                            <Grid ColumnDefinitions="*, Auto" VerticalOptions="Center">
+                                <Label Text="{Binding TaskName}" FontSize="16" FontAttributes="Bold" Grid.Column="0"/>
+                                <CheckBox IsChecked="{Binding IsPending}" HorizontalOptions="End" Grid.Column="1"/>
+                            </Grid>
+                            <Label Text="{Binding TaskDescription}" FontSize="12" TextColor="LightGray" />
+                        </StackLayout>
+                    </Border>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>
