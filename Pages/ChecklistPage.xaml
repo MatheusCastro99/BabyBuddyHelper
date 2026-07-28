@@ -11,15 +11,24 @@
                 VerticalOptions="Center" 
                 HorizontalOptions="Center" 
                 Margin="0,20"/>
-            <FlexLayout
+            <HorizontalStackLayout
                 x:Name="FiltersLayout"
-                JustifyContent="SpaceBetween"
                 Padding="10"
-                MaximumWidthRequest="450">
+                 MaximumWidthRequest="750">
+                
+                <Label
+                    Text="Pending First"
+                    VerticalOptions="Center"
+                    Margin="0, 0, 10, 0"/>
+                <Switch 
+                    IsToggled="{Binding isPendingFirst}"
+                    Toggled="IsPendingFirstHandler"
+                    OnColor="Green"
+                    ThumbColor="White" />
             
-                <!--Button, checkbox, or switch for changing order or List (Priority or still pending)-->
+                <!--Button, checkbox, or switch for changing order of List (Priority or still pending)-->
             
-            </FlexLayout>
+            </HorizontalStackLayout>
 
             <CollectionView ItemsSource="{Binding TaskList}" SelectionMode="Single" MaximumWidthRequest="750">
                 <CollectionView.ItemTemplate>
@@ -28,9 +37,10 @@
                             <StackLayout Spacing="3">
                                 <Grid ColumnDefinitions="*, Auto" VerticalOptions="Center">
                                     <Label Text="{Binding TaskName}" FontSize="16" FontAttributes="Bold" Grid.Column="0"/>
-                                    <CheckBox IsChecked="{Binding IsPending}" HorizontalOptions="End" Grid.Column="1"/>
+                                    <CheckBox IsChecked="{Binding IsCompleted}" HorizontalOptions="End" Grid.Column="1"/>
                                 </Grid>
                                 <Label Text="{Binding TaskDescription}" FontSize="12" TextColor="LightGray" />
+                                <Label Text="{Binding TaskPriority, StringFormat='Priority: {0}'}"  FontSize="12" TextColor="LightGray"/>
                             </StackLayout>
                         </Border>
                     </DataTemplate>
