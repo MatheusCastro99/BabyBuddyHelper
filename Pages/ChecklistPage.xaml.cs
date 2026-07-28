@@ -1,9 +1,9 @@
-using BabyPrepRegistry.Models;
+using BabyBuddyHelper.Models;
 using System.Collections.Immutable;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 
-namespace BabyPrepRegistry.Pages;
+namespace BabyBuddyHelper.Pages;
 
 public partial class ChecklistPage : ContentPage
 {

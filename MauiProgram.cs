@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 
-namespace BabyPrepRegistry
+namespace BabyBuddyHelper
 {
     public static class MauiProgram
     {

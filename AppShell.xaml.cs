@@ -1,4 +1,4 @@
-﻿namespace BabyPrepRegistry
+﻿namespace BabyBuddyHelper
 {
     public partial class AppShell : Shell
     {

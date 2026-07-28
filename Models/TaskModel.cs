@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace BabyPrepRegistry.Models
+namespace BabyBuddyHelper.Models
 {
     public class TaskModel
     {

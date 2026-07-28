@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 
-namespace BabyPrepRegistry
+namespace BabyBuddyHelper
 {
     public partial class App : Application
     {

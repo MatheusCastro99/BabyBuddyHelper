@@ -1,7 +1,7 @@
 ﻿using ObjCRuntime;
 using UIKit;
 
-namespace BabyPrepRegistry
+namespace BabyBuddyHelper.Platforms.iOS
 {
     public class Program
     {

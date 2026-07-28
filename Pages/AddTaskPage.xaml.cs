@@ -1,6 +1,6 @@
-using BabyPrepRegistry.Models;
+using BabyBuddyHelper.Models;
 
-namespace BabyPrepRegistry.Pages;
+namespace BabyBuddyHelper.Pages;
 
 public partial class AddTaskPage : ContentPage
 {

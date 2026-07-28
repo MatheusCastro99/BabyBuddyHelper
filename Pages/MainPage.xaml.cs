@@ -1,9 +1,9 @@
 ﻿using System.Diagnostics;
 
-namespace BabyPrepRegistry
+namespace BabyBuddyHelper
 {
     public partial class MainPage : ContentPage
-    {
+{
         
 
         public MainPage()

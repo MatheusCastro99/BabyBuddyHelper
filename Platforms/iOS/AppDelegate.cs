@@ -1,6 +1,6 @@
 ﻿using Foundation;
 
-namespace BabyPrepRegistry
+namespace BabyBuddyHelper.Platforms.iOS
 {
     [Register("AppDelegate")]
     public class AppDelegate : MauiUIApplicationDelegate

@@ -1,4 +1,4 @@
-namespace BabyPrepRegistry.Pages;
+namespace BabyBuddyHelper.Pages;
 
 public partial class RegistryPage : ContentPage
 {
