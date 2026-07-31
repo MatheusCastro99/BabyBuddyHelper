@@ -2,6 +2,7 @@ using BabyBuddyHelper.Models;
 using System.Collections.Immutable;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Windows.Input;
 
 namespace BabyBuddyHelper.Pages;
 
@@ -10,14 +11,17 @@ public partial class ChecklistPage : ContentPage
     
     public ObservableCollection<TaskModel> TaskList { get; set; }
     List<TaskModel> tasks = new();
+    public ICommand DeleteTaskCommand { get; } //Binds DeleteTaskCommand on .xaml to DeleteTask method in this file.
+
     public bool isPendingFirst {  get; set; } = false;
     public ChecklistPage()
 	{
 		InitializeComponent();
 
         TaskList = new();
-		
-		tasks.Add(new TaskModel(7, "BabyShower 07", "Get gifts"));
+        DeleteTaskCommand = new Command<TaskModel>(DeleteTask);
+
+        tasks.Add(new TaskModel(7, "BabyShower 07", "Get gifts"));
         tasks.Add(new TaskModel(5, "Organize Room 05", "Make Space for the baby!"));
         tasks.Add(new TaskModel(10, "Prepare for baby 10", "Baby about to go Hello World!"));
 
@@ -68,9 +72,15 @@ public partial class ChecklistPage : ContentPage
         //Debug.WriteLine("Checklist Clicked");
     }
 
-    private void onEditTaskClicked(object? sender, EventArgs e)
+    private void DeleteTask(TaskModel taskToDelete)
     {
-        //Debug.WriteLine("Registry Clicked");
+        if (taskToDelete != null)
+        {
+            tasks.Remove(taskToDelete);
+            TaskList.Remove(taskToDelete);
+        }
+
+        RefreshTaskList();
     }
 
     private void RefreshTaskList()
