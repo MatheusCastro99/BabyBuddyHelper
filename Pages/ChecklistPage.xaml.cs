@@ -12,6 +12,7 @@ public partial class ChecklistPage : ContentPage
     public ObservableCollection<TaskModel> TaskList { get; set; }
     List<TaskModel> tasks = new();
     public ICommand DeleteTaskCommand { get; } //Binds DeleteTaskCommand on .xaml to DeleteTask method in this file.
+    public ICommand EditTaskCommand { get; }
 
     public bool isPendingFirst {  get; set; } = false;
     public ChecklistPage()
@@ -20,10 +21,11 @@ public partial class ChecklistPage : ContentPage
 
         TaskList = new();
         DeleteTaskCommand = new Command<TaskModel>(DeleteTask);
+        EditTaskCommand = new Command<TaskModel>(EditTask);
 
-        tasks.Add(new TaskModel(7, "BabyShower 07", "Get gifts"));
-        tasks.Add(new TaskModel(5, "Organize Room 05", "Make Space for the baby!"));
-        tasks.Add(new TaskModel(10, "Prepare for baby 10", "Baby about to go Hello World!"));
+        tasks.Add(new TaskModel(7, "BabyShower", "Get gifts"));
+        tasks.Add(new TaskModel(5, "Organize Room", "Make Space for the baby!"));
+        tasks.Add(new TaskModel(10, "Prepare for baby", "Baby about to go Hello World!"));
 
         OrganizeByPriority(tasks);
 
@@ -81,6 +83,14 @@ public partial class ChecklistPage : ContentPage
         }
 
         RefreshTaskList();
+    }
+
+    private async void EditTask(TaskModel taskToEdit)
+    {
+        if(taskToEdit != null)
+        {
+            await Navigation.PushModalAsync(new AddTaskPage(tasks, taskToEdit, RefreshTaskList));
+        }
     }
 
     private void RefreshTaskList()

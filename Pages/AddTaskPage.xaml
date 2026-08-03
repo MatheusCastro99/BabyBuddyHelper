@@ -7,7 +7,7 @@
     <VerticalStackLayout Padding="20" Spacing="15">
         <Label
             Style="{StaticResource SubHeadline}"
-            Text="Add a new Task"
+            Text="Add / Edit a Task"
             VerticalOptions="Center" 
             HorizontalOptions="Center" 
             Margin="0,20"/>
