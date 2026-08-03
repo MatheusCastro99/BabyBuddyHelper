@@ -14,7 +14,7 @@
                 SemanticProperties.Description="dot net bot in a submarine number ten" />
 
             <Label
-                Text="6 Months for baby Hello, World!"
+                Text="{Binding CountdownText}"
                 Style="{StaticResource Headline}"
                 SemanticProperties.HeadingLevel="Level1" />
 
