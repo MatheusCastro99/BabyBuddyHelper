@@ -32,14 +32,14 @@ public partial class AddTaskPage : ContentPage
         DescriptionEntry.Text = taskOnEdit.TaskDescription;
         PriorityStepper.Value = taskOnEdit.TaskPriority;
 
-        if (taskOnEdit is AppointmentModel appointmentOnEdit) //Pattern matching to distinguish if task clicked is an appointment
-        {
-            this.appointmentOnEdit = appointmentOnEdit;
+        //if (taskOnEdit is AppointmentModel appointmentOnEdit) //Pattern matching to distinguish if task clicked is an appointment
+        //{
+        //    this.appointmentOnEdit = appointmentOnEdit;
 
-            IsAppointmentCheckBox.IsChecked = true;
-            DateEntry.Text = appointmentOnEdit.AppointmentTime.ToString("d");
-            LocationEntry.Text = appointmentOnEdit.AppointmentLocation;
-        }
+        //    IsAppointmentCheckBox.IsChecked = true;
+        //    DateEntry.Text = appointmentOnEdit.AppointmentTime.ToString("d");
+        //    LocationEntry.Text = appointmentOnEdit.AppointmentLocation;
+        //}
     }
 
     private async void OnCancelClicked(object sender, EventArgs e) //Exits page without saving anything
@@ -51,16 +51,36 @@ public partial class AddTaskPage : ContentPage
     {
         if(!isEditing) //new task
         {
-            int priority = Convert.ToInt32(PriorityStepper.Value);
-            string taskName = TaskNameEntry.Text;
-            string taskDescription = DescriptionEntry.Text;
+            SaveNewTask();
+        }
 
-            if (IsAppointmentCheckBox.IsChecked) //Checks to see if new task being entered is an appointment or not
-            {
-                string appointmentLocation = LocationEntry.Text;
-                //DateTime appointmentTime = new() //Come up with a way to parse string into datetime
-            }
+        else //edited task
+        {
+            SaveEditedTask();
+        }
+    }
 
+    private async void SaveNewTask()
+    {
+        int priority = Convert.ToInt32(PriorityStepper.Value);
+        string taskName = TaskNameEntry.Text;
+        string taskDescription = DescriptionEntry.Text;
+
+        if (IsAppointmentCheckBox.IsChecked) //Checks to see if new task being entered is an appointment or not
+        {
+            string appointmentLocation = LocationEntry.Text;
+            DateTime appointmentTime;
+            DateTime.TryParse(DateEntry.Text, out appointmentTime); //Come up with a way to parse string into datetime
+
+            AppointmentModel newAppointment = new(appointmentLocation, appointmentTime, priority, taskName, taskDescription);
+            currentTasks.Add(newAppointment);
+
+            onTaskSaved.Invoke();
+            await Navigation.PopModalAsync();
+        }
+
+        else
+        {
             TaskModel newTask = new(priority, taskName, taskDescription);
             currentTasks.Add(newTask);
 
@@ -68,15 +88,15 @@ public partial class AddTaskPage : ContentPage
             await Navigation.PopModalAsync();
         }
 
-        else //edited task
-        {
-            taskOnEdit?.TaskName = TaskNameEntry.Text;
-            taskOnEdit?.TaskDescription = DescriptionEntry.Text;
-            taskOnEdit?.TaskPriority = Convert.ToInt32(PriorityStepper.Value);
+    }
 
-            onTaskSaved.Invoke();
-            await Navigation.PopModalAsync();
-        }
-        
+    private async void SaveEditedTask()
+    {
+        taskOnEdit?.TaskName = TaskNameEntry.Text;
+        taskOnEdit?.TaskDescription = DescriptionEntry.Text;
+        taskOnEdit?.TaskPriority = Convert.ToInt32(PriorityStepper.Value);
+
+        onTaskSaved.Invoke();
+        await Navigation.PopModalAsync();
     }
 }
