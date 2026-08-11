@@ -1,4 +1,5 @@
 using BabyBuddyHelper.Models;
+using System.Diagnostics;
 
 namespace BabyBuddyHelper.Pages;
 
@@ -6,6 +7,7 @@ public partial class AddTaskPage : ContentPage
 {
     List<TaskModel> currentTasks = new();
     TaskModel? taskOnEdit;
+    AppointmentModel? appointmentOnEdit;
     Action? onTaskSaved;
     bool isEditing = false; //false by default, meaning most of tasks are expected to be new tasks
 
@@ -21,7 +23,7 @@ public partial class AddTaskPage : ContentPage
     {
         InitializeComponent();
 
-        this.currentTasks = currentTasks;
+        this.currentTasks = currentTasks; //Loads relevant data for editing operations
         this.onTaskSaved = onTaskSaved;
         this.taskOnEdit = taskOnEdit;
         isEditing = true; //Sets isEditing to change OnSaveClicked behavior
@@ -29,9 +31,18 @@ public partial class AddTaskPage : ContentPage
         TaskNameEntry.Text = taskOnEdit.TaskName; //Populate fields with taskOnEdit info
         DescriptionEntry.Text = taskOnEdit.TaskDescription;
         PriorityStepper.Value = taskOnEdit.TaskPriority;
+
+        if (taskOnEdit is AppointmentModel appointmentOnEdit) //Pattern matching to distinguish if task clicked is an appointment
+        {
+            this.appointmentOnEdit = appointmentOnEdit;
+
+            IsAppointmentCheckBox.IsChecked = true;
+            DateEntry.Text = appointmentOnEdit.AppointmentTime.ToString("d");
+            LocationEntry.Text = appointmentOnEdit.AppointmentLocation;
+        }
     }
 
-    private async void OnCancelClicked(object sender, EventArgs e)
+    private async void OnCancelClicked(object sender, EventArgs e) //Exits page without saving anything
     {
         await Navigation.PopModalAsync();
     }
@@ -43,6 +54,12 @@ public partial class AddTaskPage : ContentPage
             int priority = Convert.ToInt32(PriorityStepper.Value);
             string taskName = TaskNameEntry.Text;
             string taskDescription = DescriptionEntry.Text;
+
+            if (IsAppointmentCheckBox.IsChecked) //Checks to see if new task being entered is an appointment or not
+            {
+                string appointmentLocation = LocationEntry.Text;
+                //DateTime appointmentTime = new() //Come up with a way to parse string into datetime
+            }
 
             TaskModel newTask = new(priority, taskName, taskDescription);
             currentTasks.Add(newTask);
