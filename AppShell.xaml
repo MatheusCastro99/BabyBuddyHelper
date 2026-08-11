@@ -17,9 +17,9 @@
             ContentTemplate="{DataTemplate pages:ChecklistPage}"
             Route="ChecklistPage" />
         <ShellContent
-            Title="Registry"
-            ContentTemplate="{DataTemplate pages:RegistryPage}"
-            Route="RegistryPage" />
+            Title="Calendar"
+            ContentTemplate="{DataTemplate pages:CalendarPage}"
+            Route="CalendarPage" />
     </TabBar>
 
 </Shell>

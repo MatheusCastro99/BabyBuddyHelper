@@ -19,7 +19,7 @@
                 SemanticProperties.HeadingLevel="Level1" />
 
             <Label
-                Text="Baby registry and prep checklist"
+                Text="Baby prep checklist and calendar"
                 Style="{StaticResource SubHeadline}"
                 SemanticProperties.HeadingLevel="Level2" />
             

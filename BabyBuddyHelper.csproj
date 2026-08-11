@@ -74,6 +74,9 @@
 	  <Compile Update="Pages\AddTaskPage.xaml.cs">
 	    <DependentUpon>AddTaskPage.xaml</DependentUpon>
 	  </Compile>
+	  <Compile Update="Pages\CalendarPage.xaml.cs">
+	    <DependentUpon>CalendarPage.xaml</DependentUpon>
+	  </Compile>
 	</ItemGroup>
 
 	<ItemGroup>
@@ -83,7 +86,7 @@
 	  <MauiXaml Update="Pages\AddTaskPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Pages\RegistryPage.xaml">
+	  <MauiXaml Update="Pages\CalendarPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	</ItemGroup>
