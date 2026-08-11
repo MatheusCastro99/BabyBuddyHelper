@@ -17,6 +17,11 @@ TaskModel
 ├── TaskDescription (string) - Detailed description
 ├── TaskPriority (int) - Priority level for sorting
 └── IsCompleted (bool) - Completion status
+
+AppointmentModel
+├── Extends (inherits from) TaskModel
+├── AppointmentDate (DateTime) - Time of appointment
+└── AppointmentLocation (string) - Location of appointment
 ```
 
 ## Solution Structure
@@ -26,10 +31,10 @@ BabyBuddyHelper/
 │   ├── MainPage.xaml(.cs) - Due date countdown and home dashboard
 │   ├── ChecklistPage.xaml(.cs) - Task list with filters and sorting
 │   ├── AddTaskPage.xaml(.cs) - Task creation interface
-│   └── SchedulePage.xaml(.cs) - Schedule Visual of Appointments
+│   └── CalendarPage.xaml(.cs) - Calendar Visual of Appointments
 ├── Models/
 │   ├── TaskModel.cs - Data model for tasks
-│   └── TaskAppointmentModel.cs - Data model for appointment (extend tasks)
+│   └── AppointmentModel.cs - Data model for appointment (extends tasks)
 ├── Resources/
 │   └── Styles/ - Application-wide styling
 ├── Platforms/ - Platform-specific implementations
