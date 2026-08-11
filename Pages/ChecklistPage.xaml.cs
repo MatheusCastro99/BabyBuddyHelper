@@ -22,10 +22,11 @@ public partial class ChecklistPage : ContentPage
         TaskList = new();
         DeleteTaskCommand = new Command<TaskModel>(DeleteTask);
         EditTaskCommand = new Command<TaskModel>(EditTask);
-
-        tasks.Add(new TaskModel(7, "BabyShower", "Get gifts"));
+        
         tasks.Add(new TaskModel(5, "Organize Room", "Make Space for the baby!"));
         tasks.Add(new TaskModel(10, "Prepare for baby", "Baby about to go Hello World!"));
+        tasks.Add(new AppointmentModel("NJ", new(2026, 09, 15), 7, "BabyShower", "Get gifts"));
+        tasks.Add(new AppointmentModel("Hospotal", new(2026, 09, 15), 8, "Imaging", "See the baby!"));
 
         OrganizeByPriority(tasks);
 
