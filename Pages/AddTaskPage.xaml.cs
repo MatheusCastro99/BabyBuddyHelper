@@ -19,8 +19,8 @@ public partial class AddTaskPage : ContentPage
         this.onTaskSaved = onTaskSaved;
 	}
 
-    public AddTaskPage(List<TaskModel> currentTasks, TaskModel taskOnEdit, Action? onTaskSaved = null) //Overload that will be triggered on EditNoteIcon click
-    {
+    public AddTaskPage(List<TaskModel> currentTasks, TaskModel taskOnEdit, Action? onTaskSaved = null) //Constructor that will be triggered on
+    {                                                                                                  //EditNoteIcon click for regular task
         InitializeComponent();
 
         this.currentTasks = currentTasks; //Loads relevant data for editing operations
@@ -31,15 +31,25 @@ public partial class AddTaskPage : ContentPage
         TaskNameEntry.Text = taskOnEdit.TaskName; //Populate fields with taskOnEdit info
         DescriptionEntry.Text = taskOnEdit.TaskDescription;
         PriorityStepper.Value = taskOnEdit.TaskPriority;
+    }
 
-        //if (taskOnEdit is AppointmentModel appointmentOnEdit) //Pattern matching to distinguish if task clicked is an appointment
-        //{
-        //    this.appointmentOnEdit = appointmentOnEdit;
+    public AddTaskPage(List<TaskModel> currentTasks, AppointmentModel appointmentOnEdit, Action? onTaskSaved = null) //Constructor for editing Appointments
+    {
+        InitializeComponent();
 
-        //    IsAppointmentCheckBox.IsChecked = true;
-        //    DateEntry.Text = appointmentOnEdit.AppointmentTime.ToString("d");
-        //    LocationEntry.Text = appointmentOnEdit.AppointmentLocation;
-        //}
+        this.currentTasks = currentTasks; //Loads relevant data for editing operations
+        this.onTaskSaved = onTaskSaved;
+        this.appointmentOnEdit = appointmentOnEdit;
+        isEditing = true; //Sets isEditing to change OnSaveClicked behavior
+
+        TaskNameEntry.Text = appointmentOnEdit.TaskName; //Populate fields with appointmentOnEdit info
+        DescriptionEntry.Text = appointmentOnEdit.TaskDescription;
+        PriorityStepper.Value = appointmentOnEdit.TaskPriority;
+        IsAppointmentCheckBox.IsChecked = true;
+        DateEntry.Text = appointmentOnEdit.AppointmentTime.ToString("d");
+        LocationEntry.Text = appointmentOnEdit.AppointmentLocation;
+
+        Debug.WriteLine("Constructor Reached");
     }
 
     private async void OnCancelClicked(object sender, EventArgs e) //Exits page without saving anything
@@ -92,11 +102,30 @@ public partial class AddTaskPage : ContentPage
 
     private async void SaveEditedTask()
     {
-        taskOnEdit?.TaskName = TaskNameEntry.Text;
-        taskOnEdit?.TaskDescription = DescriptionEntry.Text;
-        taskOnEdit?.TaskPriority = Convert.ToInt32(PriorityStepper.Value);
+        if (appointmentOnEdit != null)
+        {
+            DateTime appointmentTime;
+            DateTime.TryParse(DateEntry.Text, out appointmentTime);
 
-        onTaskSaved.Invoke();
-        await Navigation.PopModalAsync();
+            appointmentOnEdit?.TaskName = TaskNameEntry.Text;
+            appointmentOnEdit?.TaskDescription = DescriptionEntry.Text;
+            appointmentOnEdit?.TaskPriority = Convert.ToInt32(PriorityStepper.Value);
+            appointmentOnEdit?.AppointmentLocation = LocationEntry.Text;
+            appointmentOnEdit?.AppointmentTime = appointmentTime;
+
+            onTaskSaved.Invoke();
+            await Navigation.PopModalAsync();
+        }
+
+        else
+        {
+            taskOnEdit?.TaskName = TaskNameEntry.Text;
+            taskOnEdit?.TaskDescription = DescriptionEntry.Text;
+            taskOnEdit?.TaskPriority = Convert.ToInt32(PriorityStepper.Value);
+
+            onTaskSaved.Invoke();
+            await Navigation.PopModalAsync();
+        }
+
     }
 }

@@ -90,6 +90,12 @@ public partial class ChecklistPage : ContentPage
     {
         if(taskToEdit != null)
         {
+            if(taskToEdit is AppointmentModel appointmentToEdit)
+            {
+                await Navigation.PushModalAsync(new AddTaskPage(tasks, appointmentToEdit, RefreshTaskList));
+                return;
+            }
+
             await Navigation.PushModalAsync(new AddTaskPage(tasks, taskToEdit, RefreshTaskList));
         }
     }

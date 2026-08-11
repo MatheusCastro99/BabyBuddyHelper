@@ -4,7 +4,7 @@ using System.Text;
 
 namespace BabyBuddyHelper.Models
 {
-    internal class AppointmentModel : TaskModel
+    public class AppointmentModel : TaskModel
     {
         public string AppointmentLocation { get; set; }
         public DateTime AppointmentTime { get; set; }
