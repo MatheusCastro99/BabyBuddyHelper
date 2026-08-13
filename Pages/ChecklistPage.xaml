@@ -2,8 +2,16 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:BabyBuddyHelper.Pages"
+             xmlns:styles="clr-namespace:BabyBuddyHelper.Resources.Styles"
              x:Class="BabyBuddyHelper.Pages.ChecklistPage"
              Title="ChecklistPage">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <styles:IsAppointmentModelConverter x:Key="IsAppointmentModelConverter"/>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    
     <ScrollView>
         <VerticalStackLayout>
             <Label
@@ -67,8 +75,28 @@
                                         </Path>
                                     </Grid>
                                 </Grid>
-                                <Label Text="{Binding TaskDescription}" FontSize="12" TextColor="LightGray" />
-                                <Label Text="{Binding TaskPriority, StringFormat='Priority: {0}'}"  FontSize="12" TextColor="LightGray"/>
+                                <HorizontalStackLayout Spacing="15">
+                                    <Label Text="{Binding TaskDescription}" FontSize="12" TextColor="LightGray" />
+                                    <BoxView 
+                                        WidthRequest="1"
+                                        BackgroundColor="LightGray"
+                                        VerticalOptions="Fill"
+                                        HeightRequest="15"
+                                        IsVisible="{Binding ., Converter={StaticResource IsAppointmentModelConverter}}"/>
+                                    <Label Text="{Binding AppointmentTime}" FontSize="12" TextColor="LightGray"/>
+                                </HorizontalStackLayout>
+                                <HorizontalStackLayout Spacing="15">
+                                    <Label Text="{Binding TaskPriority, StringFormat='Priority: {0}'}"  FontSize="12" TextColor="LightGray"/>
+                                    <BoxView
+                                        WidthRequest="1"
+                                        BackgroundColor="LightGray"
+                                        VerticalOptions="Fill"
+                                        HeightRequest="15"
+                                        IsVisible="{Binding ., Converter={StaticResource IsAppointmentModelConverter}}"/>
+                                    <Label Text="{Binding AppointmentLocation}" FontSize="12" TextColor="LightGray"/>
+                                </HorizontalStackLayout>
+                                
+                                
                             </StackLayout>
                         </Border>
                     </DataTemplate>
