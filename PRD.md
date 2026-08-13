@@ -1,7 +1,7 @@
 # Product Requirements Document: BabyBuddyHelper
 
 ## Purpose
-BabyBuddyHelper is a cross-platform application designed to help parents manage and track essential baby care activities and preparation tasks. The app provides a centralized dashboard for organizing tasks by priority and completion status, with a countdown timer to the expected due date.
+BabyBuddyHelper is an application designed to help parents manage and track essential baby care activities and preparation tasks. The app provides a centralized dashboard for organizing tasks by priority and completion status, with a countdown timer to the expected due date.
 
 ## Technical Specifications
 - **Language**: C#
@@ -30,7 +30,7 @@ BabyBuddyHelper/
 ├── Pages/
 │   ├── MainPage.xaml(.cs) - Due date countdown and home dashboard
 │   ├── ChecklistPage.xaml(.cs) - Task list with filters and sorting
-│   ├── AddTaskPage.xaml(.cs) - Task creation interface
+│   ├── AddTaskPage.xaml(.cs) - Task creation / edit interface
 │   └── CalendarPage.xaml(.cs) - Calendar Visual of Appointments
 ├── Models/
 │   ├── TaskModel.cs - Data model for tasks
@@ -42,7 +42,7 @@ BabyBuddyHelper/
 ```
 
 ## External Resources
-- **Database**: None (in-memory storage currently; scalable to SQLite, MSSQL, or Azure)
+- **Database**: in-memory storage currently; scalable to SQLite, MSSQL, Azure, etc
 - **Cloud Services**: None currently; candidate for Azure migration
 - **APIs**: None currently
 

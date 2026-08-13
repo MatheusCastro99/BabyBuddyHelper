@@ -8,7 +8,7 @@ public partial class AddTaskPage : ContentPage
     List<TaskModel> currentTasks = new();
     TaskModel? taskOnEdit;
     AppointmentModel? appointmentOnEdit;
-    Action? onTaskSaved;
+    Action? onTaskSaved; //Delegate Command that lets checklistPage know when to reorganize taskList
     bool isEditing = false; //false by default, meaning most of tasks are expected to be new tasks
 
 	public AddTaskPage(List<TaskModel> currentTasks, Action? onTaskSaved = null) //Regular constructor called by New Task button
@@ -17,30 +17,34 @@ public partial class AddTaskPage : ContentPage
 
         this.currentTasks = currentTasks;
         this.onTaskSaved = onTaskSaved;
-	}
+
+        Debug.WriteLine("Creating New Task");
+    }
 
     public AddTaskPage(List<TaskModel> currentTasks, TaskModel taskOnEdit, Action? onTaskSaved = null) //Constructor that will be triggered on
-    {                                                                                                  //EditNoteIcon click for regular task
+    {                                                                                                  //EditNoteIcon click for regular tasks
         InitializeComponent();
 
         this.currentTasks = currentTasks; //Loads relevant data for editing operations
         this.onTaskSaved = onTaskSaved;
         this.taskOnEdit = taskOnEdit;
-        isEditing = true; //Sets isEditing to change OnSaveClicked behavior
+        isEditing = true; //Sets isEditing to change OnSaveClicked() behavior
 
         TaskNameEntry.Text = taskOnEdit.TaskName; //Populate fields with taskOnEdit info
         DescriptionEntry.Text = taskOnEdit.TaskDescription;
         PriorityStepper.Value = taskOnEdit.TaskPriority;
+
+        Debug.WriteLine("Editing a regular task");
     }
 
-    public AddTaskPage(List<TaskModel> currentTasks, AppointmentModel appointmentOnEdit, Action? onTaskSaved = null) //Constructor for editing Appointments
-    {
+    public AddTaskPage(List<TaskModel> currentTasks, AppointmentModel appointmentOnEdit, Action? onTaskSaved = null) //Constructor that is triggered on
+    {                                                                                                                //EditNoteIcon click for appointments
         InitializeComponent();
 
         this.currentTasks = currentTasks; //Loads relevant data for editing operations
         this.onTaskSaved = onTaskSaved;
         this.appointmentOnEdit = appointmentOnEdit;
-        isEditing = true; //Sets isEditing to change OnSaveClicked behavior
+        isEditing = true; //Sets isEditing to change OnSaveClicked() behavior
 
         TaskNameEntry.Text = appointmentOnEdit.TaskName; //Populate fields with appointmentOnEdit info
         DescriptionEntry.Text = appointmentOnEdit.TaskDescription;
@@ -49,7 +53,7 @@ public partial class AddTaskPage : ContentPage
         DateEntry.Text = appointmentOnEdit.AppointmentTime.ToString("d");
         LocationEntry.Text = appointmentOnEdit.AppointmentLocation;
 
-        Debug.WriteLine("Constructor Reached");
+        Debug.WriteLine("Editing an appointment");
     }
 
     private async void OnCancelClicked(object sender, EventArgs e) //Exits page without saving anything
@@ -58,8 +62,8 @@ public partial class AddTaskPage : ContentPage
     }
 
     private async void OnSaveClicked(object sender, EventArgs e)
-    {
-        if(!isEditing) //new task
+    { //isEditing is false by default, and modified by the constructors when clicking on EditNoteIcon
+        if (!isEditing) //New Task
         {
             SaveNewTask();
         }
@@ -72,24 +76,24 @@ public partial class AddTaskPage : ContentPage
 
     private async void SaveNewTask()
     {
-        int priority = Convert.ToInt32(PriorityStepper.Value);
+        int priority = Convert.ToInt32(PriorityStepper.Value); //Consolidate entries into variables
         string taskName = TaskNameEntry.Text;
         string taskDescription = DescriptionEntry.Text;
 
-        if (IsAppointmentCheckBox.IsChecked) //Checks to see if new task being entered is an appointment or not
+        if (IsAppointmentCheckBox.IsChecked) //Checks to see if new task being entered is an appointment
         {
             string appointmentLocation = LocationEntry.Text;
             DateTime appointmentTime;
-            DateTime.TryParse(DateEntry.Text, out appointmentTime); //Come up with a way to parse string into datetime
+            DateTime.TryParse(DateEntry.Text, out appointmentTime); //Implement DatePicker Calendar instead of regular text field
 
             AppointmentModel newAppointment = new(appointmentLocation, appointmentTime, priority, taskName, taskDescription);
             currentTasks.Add(newAppointment);
 
-            onTaskSaved.Invoke();
-            await Navigation.PopModalAsync();
+            onTaskSaved.Invoke(); //Delegate Command on CheckListPage that refreshes and reorganizes Task List
+            await Navigation.PopModalAsync(); //Closes AddTaskPage
         }
 
-        else
+        else //thread of execution for non-appointment task
         {
             TaskModel newTask = new(priority, taskName, taskDescription);
             currentTasks.Add(newTask);
@@ -102,9 +106,16 @@ public partial class AddTaskPage : ContentPage
 
     private async void SaveEditedTask()
     {
-        if (appointmentOnEdit != null)
+        if (appointmentOnEdit != null) //appointment instance editing case
         {
-            DateTime appointmentTime;
+
+            if (!IsAppointmentCheckBox.IsChecked) //Checks if user it trying to convert existing appointment to regular task
+            {
+                currentTasks.Remove(appointmentOnEdit); //Removes Appointment Instance of task list (prevents duplicates)
+                SaveNewTask(); //Resaves task from 0 as a regular non-appointment task
+            }
+
+            DateTime appointmentTime; //If there is no task type conversion, consolidate variables (passed through argument reference)
             DateTime.TryParse(DateEntry.Text, out appointmentTime);
 
             appointmentOnEdit?.TaskName = TaskNameEntry.Text;
@@ -117,8 +128,14 @@ public partial class AddTaskPage : ContentPage
             await Navigation.PopModalAsync();
         }
 
-        else
+        else // Regular Task editing Case
         {
+            if(IsAppointmentCheckBox.IsChecked) //Checks if user is trying to convert existing regular task into an appointment
+            {
+                currentTasks.Remove(taskOnEdit); //Removes task from list entirely and resaves it as an appointment
+                SaveNewTask();
+            }
+
             taskOnEdit?.TaskName = TaskNameEntry.Text;
             taskOnEdit?.TaskDescription = DescriptionEntry.Text;
             taskOnEdit?.TaskPriority = Convert.ToInt32(PriorityStepper.Value);
@@ -126,6 +143,5 @@ public partial class AddTaskPage : ContentPage
             onTaskSaved.Invoke();
             await Navigation.PopModalAsync();
         }
-
     }
 }
