@@ -39,11 +39,30 @@
         <!-- Hidden Section - Shows when checkbox is checked -->
         <StackLayout 
             IsVisible="{Binding Source={x:Reference IsAppointmentCheckBox}, Path=IsChecked}"
-            Spacing="10">   
-            <Entry x:Name="DateEntry" 
-                Placeholder="Date (MM/DD/YYYY)" />
-            <Entry x:Name="LocationEntry" 
-                Placeholder="Location" />
+            Spacing="10"
+             Margin="55,0, 0, 0">
+
+            <HorizontalStackLayout Spacing="40">
+                <Label
+                    Text="Date:"
+                    VerticalOptions="Center"/>
+
+                <DatePicker
+                    x:Name="DateEntry"
+                    MinimumDate="01/01/2025"/>
+            </HorizontalStackLayout>
+
+            <Grid ColumnDefinitions="Auto, *">
+                <Label
+                    Grid.Column="0"
+                    Text="Location:"
+                    VerticalOptions="Center"
+                    Margin="0, 0, 15, 0"/>
+                <Entry 
+                    Grid.Column="1"
+                    x:Name="LocationEntry" 
+                    Placeholder="Location" />
+            </Grid>
         </StackLayout>
 
         <HorizontalStackLayout Spacing="50" HorizontalOptions="Center">
