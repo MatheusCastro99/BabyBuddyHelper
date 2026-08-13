@@ -75,26 +75,26 @@
                                         </Path>
                                     </Grid>
                                 </Grid>
-                                <HorizontalStackLayout Spacing="15">
-                                    <Label Text="{Binding TaskDescription}" FontSize="12" TextColor="LightGray" />
-                                    <BoxView 
+                                <Grid ColumnDefinitions="*, *">
+                                    <Label Grid.Column="0" Text="{Binding TaskDescription}" FontSize="12" TextColor="LightGray" />
+                                    <!--<BoxView Optional Gray vertical Separator
                                         WidthRequest="1"
                                         BackgroundColor="LightGray"
                                         VerticalOptions="Fill"
                                         HeightRequest="15"
-                                        IsVisible="{Binding ., Converter={StaticResource IsAppointmentModelConverter}}"/>
-                                    <Label Text="{Binding AppointmentTime}" FontSize="12" TextColor="LightGray"/>
-                                </HorizontalStackLayout>
-                                <HorizontalStackLayout Spacing="15">
-                                    <Label Text="{Binding TaskPriority, StringFormat='Priority: {0}'}"  FontSize="12" TextColor="LightGray"/>
-                                    <BoxView
+                                        IsVisible="{Binding ., Converter={StaticResource IsAppointmentModelConverter}}"/>-->
+                                    <Label Grid.Column="1" Text="{Binding AppointmentTime, StringFormat={}{0:d}}" FontSize="12" TextColor="LightGray"/>
+                                </Grid>
+                                <Grid ColumnDefinitions="*, *">
+                                    <Label Grid.Column="0" Text="{Binding TaskPriority, StringFormat='Priority: {0}'}"  FontSize="12" TextColor="LightGray"/>
+                                    <!--<BoxView
                                         WidthRequest="1"
                                         BackgroundColor="LightGray"
                                         VerticalOptions="Fill"
                                         HeightRequest="15"
-                                        IsVisible="{Binding ., Converter={StaticResource IsAppointmentModelConverter}}"/>
-                                    <Label Text="{Binding AppointmentLocation}" FontSize="12" TextColor="LightGray"/>
-                                </HorizontalStackLayout>
+                                        IsVisible="{Binding ., Converter={StaticResource IsAppointmentModelConverter}}"/>-->
+                                    <Label Grid.Column="1" Text="{Binding AppointmentLocation}" FontSize="12" TextColor="LightGray"/>
+                                </Grid>
                                 
                                 
                             </StackLayout>
