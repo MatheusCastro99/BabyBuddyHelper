@@ -50,7 +50,7 @@ public partial class AddTaskPage : ContentPage
         DescriptionEntry.Text = appointmentOnEdit.TaskDescription;
         PriorityStepper.Value = appointmentOnEdit.TaskPriority;
         IsAppointmentCheckBox.IsChecked = true;
-        DateEntry.Text = appointmentOnEdit.AppointmentTime.ToString("d");
+        DateEntry.Date = appointmentOnEdit.AppointmentTime;
         LocationEntry.Text = appointmentOnEdit.AppointmentLocation;
 
         Debug.WriteLine("Editing an appointment");
@@ -83,8 +83,7 @@ public partial class AddTaskPage : ContentPage
         if (IsAppointmentCheckBox.IsChecked) //Checks to see if new task being entered is an appointment
         {
             string appointmentLocation = LocationEntry.Text;
-            DateTime appointmentTime;
-            DateTime.TryParse(DateEntry.Text, out appointmentTime); //Implement DatePicker Calendar instead of regular text field
+            DateTime? appointmentTime = DateEntry.Date; //Implement DatePicker Calendar instead of regular text field
 
             AppointmentModel newAppointment = new(appointmentLocation, appointmentTime, priority, taskName, taskDescription);
             currentTasks.Add(newAppointment);
@@ -115,9 +114,7 @@ public partial class AddTaskPage : ContentPage
                 SaveNewTask(); //Resaves task from 0 as a regular non-appointment task
             }
 
-            DateTime appointmentTime; //If there is no task type conversion, consolidate variables (passed through argument reference)
-            DateTime.TryParse(DateEntry.Text, out appointmentTime);
-
+            DateTime? appointmentTime = DateEntry.Date; //If there is no task type conversion, consolidate variables (passed through argument reference)
             appointmentOnEdit?.TaskName = TaskNameEntry.Text;
             appointmentOnEdit?.TaskDescription = DescriptionEntry.Text;
             appointmentOnEdit?.TaskPriority = Convert.ToInt32(PriorityStepper.Value);
