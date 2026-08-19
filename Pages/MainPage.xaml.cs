@@ -16,7 +16,7 @@ namespace BabyBuddyHelper
         {
             InitializeComponent();
 
-            HandleCounter();
+            HandleCounter(); //Starts counter
             
             BindingContext = this;
         }

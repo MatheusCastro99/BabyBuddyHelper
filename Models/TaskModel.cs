@@ -6,12 +6,14 @@ namespace BabyBuddyHelper.Models
 {
     public class TaskModel
     {
+        //Properties Definition
         public int Id { get; set; }
         public int TaskPriority { get; set; }
         public string TaskName { get; set; }
         public string TaskDescription { get; set; }
         public bool IsCompleted { get; set; }
 
+        //Constructor
         public TaskModel(int priority, string taskName, string taskDescription) 
         {
             TaskPriority = priority;

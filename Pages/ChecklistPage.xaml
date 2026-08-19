@@ -20,6 +20,8 @@
                 VerticalOptions="Center" 
                 HorizontalOptions="Center" 
                 Margin="0,20"/>
+
+            <!--#region Filters-->
             <HorizontalStackLayout
                 x:Name="FiltersLayout"
                 Padding="10"
@@ -34,9 +36,10 @@
                     Toggled="IsPendingFirstHandler"
                     OnColor="Green"
                     ThumbColor="White" />
-
             </HorizontalStackLayout>
-
+            <!--#endregion-->
+            
+            <!--#region Tasks and Appointements List-->
             <CollectionView ItemsSource="{Binding TaskList}" SelectionMode="Single" MaximumWidthRequest="750">
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
@@ -83,7 +86,7 @@
                                         VerticalOptions="Fill"
                                         HeightRequest="15"
                                         IsVisible="{Binding ., Converter={StaticResource IsAppointmentModelConverter}}"/>-->
-                                    <Label Grid.Column="1" Text="{Binding AppointmentTime, StringFormat={}{0:d}}" FontSize="12" TextColor="LightGray"/>
+                                    <Label Grid.Column="1" Text="{Binding AppointmentTime, StringFormat='{0:d}'}" FontSize="12" TextColor="LightGray"/>
                                 </Grid>
                                 <Grid ColumnDefinitions="*, *">
                                     <Label Grid.Column="0" Text="{Binding TaskPriority, StringFormat='Priority: {0}'}"  FontSize="12" TextColor="LightGray"/>
@@ -95,14 +98,14 @@
                                         IsVisible="{Binding ., Converter={StaticResource IsAppointmentModelConverter}}"/>-->
                                     <Label Grid.Column="1" Text="{Binding AppointmentLocation}" FontSize="12" TextColor="LightGray"/>
                                 </Grid>
-                                
-                                
                             </StackLayout>
                         </Border>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>
+            <!--#endregion-->
 
+            <!--#region Add Task Button-->
             <FlexLayout
                 x:Name="BtnsLayout"
                 JustifyContent="Center"
@@ -115,6 +118,8 @@
                  Clicked="onAddTaskClicked"
                  HorizontalOptions="Center" />
             </FlexLayout>
+            <!--#endregion-->
+            
         </VerticalStackLayout>
     </ScrollView>
 </ContentPage>

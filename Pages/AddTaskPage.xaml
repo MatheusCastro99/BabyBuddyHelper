@@ -12,6 +12,7 @@
             HorizontalOptions="Center" 
             Margin="0,20"/>
         
+        <!--#region Entries and Task/Appointment info-->
         <Entry x:Name="TaskNameEntry" Placeholder="Task Name" />
         <Entry x:Name="DescriptionEntry" Placeholder="Description" />
         
@@ -36,7 +37,7 @@
                 x:Name="IsAppointmentCheckBox"/>
         </HorizontalStackLayout>
 
-        <!-- Hidden Section - Shows when checkbox is checked -->
+        <!-- Hidden Section. Shows when checkbox is checked -->
         <StackLayout 
             IsVisible="{Binding Source={x:Reference IsAppointmentCheckBox}, Path=IsChecked}"
             Spacing="10"
@@ -64,6 +65,7 @@
                     Placeholder="Location" />
             </Grid>
         </StackLayout>
+        <!--#endregion-->
 
         <HorizontalStackLayout Spacing="50" HorizontalOptions="Center">
             <Button Text="Cancel" Clicked="OnCancelClicked" />

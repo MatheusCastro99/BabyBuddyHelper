@@ -9,20 +9,22 @@ namespace BabyBuddyHelper.Pages;
 public partial class ChecklistPage : ContentPage
 {
     
-    public ObservableCollection<TaskModel> TaskList { get; set; }
+    public ObservableCollection<TaskModel> TaskList { get; set; } //Will hold instances of TaskModel and AppointmentModel
     List<TaskModel> tasks = new();
     public ICommand DeleteTaskCommand { get; } //Binds DeleteTaskCommand on .xaml to DeleteTask method in this file.
-    public ICommand EditTaskCommand { get; }
+    public ICommand EditTaskCommand { get; } //Binds EditTaskCommand on .xaml to DeleteTask method in this file.
 
-    public bool isPendingFirst {  get; set; } = false;
+    public bool isPendingFirst {  get; set; } = false; //Property bound to the PendingFirst switch on .xaml
     public ChecklistPage()
 	{
 		InitializeComponent();
 
+        //Initializes TaskList and Commands
         TaskList = new();
         DeleteTaskCommand = new Command<TaskModel>(DeleteTask);
         EditTaskCommand = new Command<TaskModel>(EditTask);
         
+        //Some initial Mock Data
         tasks.Add(new TaskModel(5, "Organize Room", "Make Space for the baby!"));
         tasks.Add(new TaskModel(10, "Prepare for baby", "Baby about to go Hello World!"));
         tasks.Add(new AppointmentModel("NJ", new(2026, 09, 15), 7, "BabyShower", "Get gifts"));
@@ -33,6 +35,7 @@ public partial class ChecklistPage : ContentPage
         BindingContext = this;
     }
 
+    //Organizes List by priority Property of each task
     public void OrganizeByPriority(List<TaskModel> currentList)
     {
         var sorted = currentList.OrderByDescending(t => t.TaskPriority).ToList();
@@ -43,6 +46,7 @@ public partial class ChecklistPage : ContentPage
         }
     }
 
+    //Filters complete tasks to the end of the list
     public void OrganizeByPending(List<TaskModel> currentList)
     {
         var sorted = currentList
@@ -57,6 +61,7 @@ public partial class ChecklistPage : ContentPage
         }
     }
 
+    //Method bound to the IsPendingFirstSwitch
     public void IsPendingFirstHandler(object sender, ToggledEventArgs e)
     {
         if (isPendingFirst)
@@ -69,10 +74,10 @@ public partial class ChecklistPage : ContentPage
         }
     }
 
+    //Method Bound to NewTask button on .xaml
     private async void onAddTaskClicked(object? sender, EventArgs e)
     {
         await Navigation.PushModalAsync(new AddTaskPage(tasks, RefreshTaskList));
-        //Debug.WriteLine("Checklist Clicked");
     }
 
     private void DeleteTask(TaskModel taskToDelete)
@@ -100,6 +105,7 @@ public partial class ChecklistPage : ContentPage
         }
     }
 
+    //method called on edit, delete, and add new task to refresh list and display current tasks
     private void RefreshTaskList()
     {
         OrganizeByPriority(tasks);
