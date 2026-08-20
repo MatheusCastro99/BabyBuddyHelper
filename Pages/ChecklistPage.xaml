@@ -4,6 +4,7 @@
              xmlns:local="clr-namespace:BabyBuddyHelper.Pages"
              xmlns:styles="clr-namespace:BabyBuddyHelper.Resources.Styles"
              x:Class="BabyBuddyHelper.Pages.ChecklistPage"
+             x:Name="ChecklistRoot"
              Title="ChecklistPage">
 
     <ContentPage.Resources>
@@ -12,9 +13,9 @@
         </ResourceDictionary>
     </ContentPage.Resources>
     
-    <ScrollView>
-        <VerticalStackLayout>
+        <Grid RowDefinitions="Auto, Auto, *, Auto">
             <Label
+                Grid.Row="0"
                 Style="{StaticResource SubHeadline}"
                 Text="Classes | Appointments | Task"
                 VerticalOptions="Center" 
@@ -23,10 +24,11 @@
 
             <!--#region Filters-->
             <HorizontalStackLayout
+                Grid.Row="1"
                 x:Name="FiltersLayout"
                 Padding="10"
-                 MaximumWidthRequest="750">
-                
+                MaximumWidthRequest="750">
+
                 <Label
                     Text="Pending First"
                     VerticalOptions="Center"
@@ -38,9 +40,9 @@
                     ThumbColor="White" />
             </HorizontalStackLayout>
             <!--#endregion-->
-            
+
             <!--#region Tasks and Appointements List-->
-            <CollectionView ItemsSource="{Binding TaskList}" SelectionMode="Single" MaximumWidthRequest="750">
+            <CollectionView Grid.Row="2" ItemsSource="{Binding TaskList}" SelectionMode="Single" MaximumWidthRequest="750">
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
                         <Border Padding="15" Margin="10" BackgroundColor="Gray" StrokeShape="RoundRectangle 15,15,15,15" >
@@ -58,7 +60,7 @@
                                               Grid.Column="1">
                                             <Path.GestureRecognizers>
                                                 <TapGestureRecognizer
-                                                    Command="{Binding Source={RelativeSource AncestorType={x:Type local:ChecklistPage}}, Path=EditTaskCommand}"
+                                                    Command="{Binding Source={x:Reference ChecklistRoot}, Path=EditTaskCommand}"
                                                     CommandParameter="{Binding .}"/>
                                             </Path.GestureRecognizers>
                                         </Path>
@@ -71,7 +73,7 @@
                                             <Path.GestureRecognizers>
                                                 <!--Looks for ChecklistPage file, then looks for DeleteTaskCommand, a command that is bound to the DeleteTask method-->
                                                 <TapGestureRecognizer 
-                                                    Command="{Binding Source={RelativeSource AncestorType={x:Type local:ChecklistPage}}, Path=DeleteTaskCommand}"
+                                                    Command="{Binding Source={x:Reference ChecklistRoot}, Path=DeleteTaskCommand}"
                                                     CommandParameter="{Binding .}"/>
                                                 <!--"Binding ." acts similar as the "this" keyword, passing the TaskModel context that the path is inserted in-->
                                             </Path.GestureRecognizers>
@@ -80,22 +82,14 @@
                                 </Grid>
                                 <Grid ColumnDefinitions="*, *">
                                     <Label Grid.Column="0" Text="{Binding TaskDescription}" FontSize="12" TextColor="LightGray" />
-                                    <!--<BoxView Optional Gray vertical Separator
-                                        WidthRequest="1"
-                                        BackgroundColor="LightGray"
-                                        VerticalOptions="Fill"
-                                        HeightRequest="15"
-                                        IsVisible="{Binding ., Converter={StaticResource IsAppointmentModelConverter}}"/>-->
-                                    <Label Grid.Column="1" Text="{Binding AppointmentTime, StringFormat='{0:d}'}" FontSize="12" TextColor="LightGray"/>
+                                    <HorizontalStackLayout Grid.Column="1">
+                                        <Label Text="{Binding AppointmentDate, StringFormat='{0:d}'}" FontSize="12" TextColor="LightGray"/>
+                                        <Label Text="{Binding AppointmentStartTime, StringFormat='  {0:%h}:{0:mm} - '}" FontSize="12" TextColor="LightGray"/>
+                                        <Label Text="{Binding AppointmentEndTime, StringFormat=' {0:%h}:{0:mm}'}" FontSize="12" TextColor="LightGray"/>
+                                    </HorizontalStackLayout>
                                 </Grid>
                                 <Grid ColumnDefinitions="*, *">
                                     <Label Grid.Column="0" Text="{Binding TaskPriority, StringFormat='Priority: {0}'}"  FontSize="12" TextColor="LightGray"/>
-                                    <!--<BoxView
-                                        WidthRequest="1"
-                                        BackgroundColor="LightGray"
-                                        VerticalOptions="Fill"
-                                        HeightRequest="15"
-                                        IsVisible="{Binding ., Converter={StaticResource IsAppointmentModelConverter}}"/>-->
                                     <Label Grid.Column="1" Text="{Binding AppointmentLocation}" FontSize="12" TextColor="LightGray"/>
                                 </Grid>
                             </StackLayout>
@@ -107,6 +101,7 @@
 
             <!--#region Add Task Button-->
             <FlexLayout
+                Grid.Row="3"
                 x:Name="BtnsLayout"
                 JustifyContent="Center"
                 Padding="0, 40"
@@ -119,7 +114,6 @@
                  HorizontalOptions="Center" />
             </FlexLayout>
             <!--#endregion-->
-            
-        </VerticalStackLayout>
-    </ScrollView>
+
+        </Grid>
 </ContentPage>

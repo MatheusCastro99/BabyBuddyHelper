@@ -27,12 +27,11 @@ public partial class ChecklistPage : ContentPage
         //Some initial Mock Data
         tasks.Add(new TaskModel(5, "Organize Room", "Make Space for the baby!"));
         tasks.Add(new TaskModel(10, "Prepare for baby", "Baby about to go Hello World!"));
-        tasks.Add(new AppointmentModel("NJ", new(2026, 09, 15), 7, "BabyShower", "Get gifts"));
-        tasks.Add(new AppointmentModel("Hospotal", new(2026, 09, 15), 8, "Imaging", "See the baby!"));
-
-        OrganizeByPriority(tasks);
+        tasks.Add(new AppointmentModel("NJ", new(2026, 09, 15), new(23, 0, 0), new(23, 30, 0), 7, "BabyShower", "Get gifts"));
+        tasks.Add(new AppointmentModel("Hospotal", new(2026, 09, 25), new(09, 15, 0), new(10, 0, 0), 8, "Imaging", "See the baby!"));
 
         BindingContext = this;
+        RefreshTaskList();
     }
 
     //Organizes List by priority Property of each task

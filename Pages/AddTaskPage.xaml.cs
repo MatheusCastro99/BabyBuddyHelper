@@ -50,7 +50,8 @@ public partial class AddTaskPage : ContentPage
         DescriptionEntry.Text = appointmentOnEdit.TaskDescription;
         PriorityStepper.Value = appointmentOnEdit.TaskPriority;
         IsAppointmentCheckBox.IsChecked = true;
-        DateEntry.Date = appointmentOnEdit.AppointmentTime;
+        StartingTimeEntry.Time = appointmentOnEdit.AppointmentStartTime;
+        EndingTimeEntry.Time = appointmentOnEdit.AppointmentEndTime;
         LocationEntry.Text = appointmentOnEdit.AppointmentLocation;
 
         Debug.WriteLine("Editing an appointment");
@@ -83,9 +84,11 @@ public partial class AddTaskPage : ContentPage
         if (IsAppointmentCheckBox.IsChecked) //Checks to see if new task being entered is an appointment
         {
             string appointmentLocation = LocationEntry.Text;
-            DateTime? appointmentTime = DateEntry.Date; //Implement DatePicker Calendar instead of regular text field
+            DateTime? appointmentDate = DateEntry.Date; //Implemented DatePicker instead of regular text field
+            TimeSpan? appointmentStartTime = StartingTimeEntry.Time; //Implemented TimePicker instead of regular text field
+            TimeSpan? appointmentEndTime = EndingTimeEntry.Time;
 
-            AppointmentModel newAppointment = new(appointmentLocation, appointmentTime, priority, taskName, taskDescription);
+            AppointmentModel newAppointment = new(appointmentLocation, appointmentDate, appointmentStartTime, appointmentEndTime, priority, taskName, taskDescription);
             currentTasks.Add(newAppointment);
 
             onTaskSaved.Invoke(); //Delegate Command on CheckListPage that refreshes and reorganizes Task List
@@ -114,12 +117,14 @@ public partial class AddTaskPage : ContentPage
                 SaveNewTask(); //Resaves task from 0 as a regular non-appointment task
             }
 
-            DateTime? appointmentTime = DateEntry.Date; //If there is no task type conversion, consolidate variables (passed through argument reference)
+            TimeSpan? appointmentStartTime = StartingTimeEntry.Time; //If there is no task type conversion, consolidate variables (passed through argument reference)
+            TimeSpan? appointmentEndTime = EndingTimeEntry.Time;
             appointmentOnEdit?.TaskName = TaskNameEntry.Text;
             appointmentOnEdit?.TaskDescription = DescriptionEntry.Text;
             appointmentOnEdit?.TaskPriority = Convert.ToInt32(PriorityStepper.Value);
             appointmentOnEdit?.AppointmentLocation = LocationEntry.Text;
-            appointmentOnEdit?.AppointmentTime = appointmentTime;
+            appointmentOnEdit?.AppointmentStartTime = appointmentStartTime;
+            appointmentOnEdit?.AppointmentEndTime = appointmentEndTime;
 
             onTaskSaved.Invoke();
             await Navigation.PopModalAsync();

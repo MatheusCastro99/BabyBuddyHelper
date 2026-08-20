@@ -51,6 +51,13 @@
                 <DatePicker
                     x:Name="DateEntry"
                     MinimumDate="01/01/2025"/>
+
+                <TimePicker
+                    x:Name="StartingTimeEntry"/>
+
+                <TimePicker
+                    x:Name="EndingTimeEntry"/>
+                
             </HorizontalStackLayout>
 
             <Grid ColumnDefinitions="Auto, *">
