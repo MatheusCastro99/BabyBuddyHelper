@@ -12,7 +12,7 @@
             VerticalOptions="Center" 
             HorizontalOptions="Center" />
 
-        <!--FIXING THIS SHIT-->
+        <!--Further Implementation Needed-->
         <scheduler:SfScheduler
             x:Name="Calendar"
             View="Month"
