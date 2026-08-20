@@ -66,9 +66,15 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Microsoft.Maui.Controls" Version="10.0.90" />
+	  <None Include=".github\agents\Coordinator.agent.md" />
+	  <None Include=".github\agents\Q&amp;A.agent.md" />
+	  <None Include=".github\agents\TechLead.agent.md" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.Maui.Controls" Version="10.0.100" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="10.0.11" />
-		<PackageReference Include="Syncfusion.Maui.Calendar" Version="34.2.4" />
+		<PackageReference Include="Syncfusion.Maui.Scheduler" Version="34.2.4" />
 	</ItemGroup>
 
 	<ItemGroup>
