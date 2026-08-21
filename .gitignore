@@ -364,3 +364,6 @@ FodyWeavers.xsd
 
 #Custom Agents
 .github/agents
+
+#Environment variables
+.env
