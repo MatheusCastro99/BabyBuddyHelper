@@ -4,8 +4,9 @@
              xmlns:scheduler="clr-namespace:Syncfusion.Maui.Scheduler;assembly=Syncfusion.Maui.Scheduler"
              x:Class="BabyBuddyHelper.Pages.CalendarPage"
              Title="CalendarPage">
-    <VerticalStackLayout>
+    <Grid RowDefinitions="Auto, *">
         <Label 
+            Grid.Row="0"
             Text="What your month looks like!"
             Style="{StaticResource SubHeadline}"
             Margin="20"
@@ -14,11 +15,12 @@
 
         <!--Further Implementation Needed-->
         <scheduler:SfScheduler
+            Grid.Row="1"
             x:Name="Calendar"
-            View="Month"
+            View="Week"
             SelectedDate="{Binding SelectedDate, Mode=TwoWay}"
-            BackgroundColor="NavajoWhite"
-            Margin="150, 0"
-            />
-    </VerticalStackLayout>
+            BackgroundColor="BlueViolet"
+            Margin="75, 0, 75, 20">
+        </scheduler:SfScheduler>
+    </Grid>
 </ContentPage>

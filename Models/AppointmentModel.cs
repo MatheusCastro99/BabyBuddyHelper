@@ -12,6 +12,10 @@ namespace BabyBuddyHelper.Models
         public TimeSpan? AppointmentStartTime { get; set; }
         public TimeSpan? AppointmentEndTime { get; set; }
 
+        //Computed properties to get the full DateTime for SfScheduler
+        public DateTime SchedulerStartTime => AppointmentDate!.Value.Date + AppointmentStartTime!.Value;
+        public DateTime SchedulerEndTime => AppointmentDate!.Value.Date + AppointmentEndTime!.Value;
+
 
 
         //Constructor

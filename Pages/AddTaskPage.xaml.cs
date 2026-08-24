@@ -80,7 +80,7 @@ public partial class AddTaskPage : ContentPage
         }
     }
 
-    private async void SaveNewTask()
+    private async Task SaveNewTask() //Task instead of void to allow for more consistent async/await usage in the method
     {
         int priority = Convert.ToInt32(PriorityStepper.Value); //Consolidate entries into variables
         string taskName = TaskNameEntry.Text;
@@ -108,7 +108,7 @@ public partial class AddTaskPage : ContentPage
         }
     }
 
-    private async void SaveEditedTask()
+    private async Task SaveEditedTask()
     {
         if (appointmentOnEdit != null) //appointment instance editing case
         {
@@ -116,7 +116,8 @@ public partial class AddTaskPage : ContentPage
             if (!IsAppointmentCheckBox.IsChecked) //Checks if user it trying to convert existing appointment to regular task
             {
                 _taskListService.Remove(appointmentOnEdit); //Removes Appointment Instance of task list (prevents duplicates)
-                SaveNewTask(); //Resaves task from 0 as a regular non-appointment task
+                await SaveNewTask(); //Resaves task from 0 as a regular non-appointment task
+                return;
             }
 
             TimeSpan? appointmentStartTime = StartingTimeEntry.Time; //If there is no task type conversion, consolidate variables (passed through argument reference)
@@ -136,7 +137,8 @@ public partial class AddTaskPage : ContentPage
             if(IsAppointmentCheckBox.IsChecked) //Checks if user is trying to convert existing regular task into an appointment
             {
                 _taskListService.Remove(taskOnEdit); //Removes task from list entirely and resaves it as an appointment
-                SaveNewTask();
+                await SaveNewTask();
+                return;
             }
 
             taskOnEdit?.TaskName = TaskNameEntry.Text;
