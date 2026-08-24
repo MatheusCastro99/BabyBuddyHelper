@@ -50,6 +50,7 @@ A cross-platform mobile and desktop application designed to help parents manage 
 1. Launch the application on your target platform
 2. Create a new task by clicking "Add Task"
 3. Fill in task details including name, description, and priority level
+	3a. For appointments, set date, time, and location
 4. View your tasks on the main dashboard
 5. Mark tasks as completed when finished
 
@@ -57,9 +58,18 @@ A cross-platform mobile and desktop application designed to help parents manage 
 
 ```
 BabyBuddyHelper/
-├── Models/              # Data models (TaskModel, etc.)
-├── Pages/               # XAML pages and code-behind
-├── Services/            # Business logic and data services
+├── Pages/                      # UI pages for different functionalities
+│   ├── MainPage.xaml(.cs)         - Due date countdown and home dashboard
+│   ├── ChecklistPage.xaml(.cs)    - Task list with filters and sorting
+│   ├── AddTaskPage.xaml(.cs)      - Task creation / edit interface
+│   └── CalendarPage.xaml(.cs)     - Calendar Visual of Appointments
+├── Models/                     # Custom data types
+│   ├── TaskModel.cs               - Data model for tasks
+│   └── AppointmentModel.cs        - Data model for appointment (extends tasks)
+├── Services/                   # Business logic and data services
+│	└── TaskListService.cs         - Service for managing task grouping, sorting, manipulating, and filtering
+├──	Interfaces/                 #  Interfaces for services
+│	└── ITaskListService.cs        - Interface for TaskListService
 ├── Platforms/           # Platform-specific implementations
 ├── Resources/           # Images, fonts, and other assets
 ├── MauiProgram.cs       # Application configuration
@@ -68,7 +78,7 @@ BabyBuddyHelper/
 
 ## Contributing
 
-For now, this project is solo and contributions are not being accepted.
+For now, due to the academic nature of this project, contributions are not being accepted.
 That might change in the near future.
 
 ## Organization

@@ -35,6 +35,10 @@ BabyBuddyHelper/
 ├── Models/
 │   ├── TaskModel.cs - Data model for tasks
 │   └── AppointmentModel.cs - Data model for appointment (extends tasks)
+├── Services/
+│	└── TaskListService.cs - Service for managing task grouping, sorting, manipulating, and filtering
+├──	Interfaces/
+│	└── ITaskListService.cs - Interface for TaskListService
 ├── Resources/
 │   └── Styles/ - Application-wide styling
 ├── Platforms/ - Platform-specific implementations
