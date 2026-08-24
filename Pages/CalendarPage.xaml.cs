@@ -36,4 +36,10 @@ public partial class CalendarPage : ContentPage
 
         BindingContext = this;
     }
+
+    //Implement add and edit functionaly for appointments through tapped event, triggering modal AddTaskPage
+    //with prefilled data for editing, or empty data (exept by date) for adding a new appointment.
+
+    //Implement refresh functionality to keep appointments in sync with the TaskListService every time the list is modified.
+    //This can be done by subscribing to the CollectionChanged event of the TaskListService's Tasks collection and updating the Calendar.AppointmentsSource accordingly.
 }

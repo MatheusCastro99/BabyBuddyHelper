@@ -18,6 +18,7 @@
             Grid.Row="1"
             x:Name="Calendar"
             View="Week"
+            IsAppointmentToolTipEnabled="True"
             SelectedDate="{Binding SelectedDate, Mode=TwoWay}"
             BackgroundColor="BlueViolet"
             Margin="75, 0, 75, 20">
