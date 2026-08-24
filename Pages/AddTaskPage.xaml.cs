@@ -61,7 +61,9 @@ public partial class AddTaskPage : ContentPage
     }
 
     private async void OnSaveClicked(object sender, EventArgs e)
-    { //isEditing is false by default, and modified by the constructors when clicking on EditNoteIcon
+    {
+
+        //isEditing is false by default, and modified by the constructors when clicking on EditNoteIcon
         if (!isEditing) //New Task
         {
             SaveNewTask();
@@ -99,7 +101,6 @@ public partial class AddTaskPage : ContentPage
 
             await Navigation.PopModalAsync();
         }
-
     }
 
     private async void SaveEditedTask()
@@ -139,5 +140,29 @@ public partial class AddTaskPage : ContentPage
 
             await Navigation.PopModalAsync();
         }
+    }
+
+    private async Task<bool> ValidateForm()
+    {
+        //Some data validation making sure all required fields are filled out before saving
+        if (string.IsNullOrWhiteSpace(TaskNameEntry.Text))
+        {
+            await DisplayAlertAsync("Required Field Missing", "Please fill in the task name.", "OK");
+            return false;
+        }
+
+        if (IsAppointmentCheckBox.IsChecked && string.IsNullOrWhiteSpace(LocationEntry.Text)) //MOVE VALIDATION TO A SEPARATE METHOD
+        {
+            await DisplayAlertAsync("Required Field Missing", "Please fill in the task location.", "OK");
+            return false;
+        }
+
+        if ((StartingTimeEntry.Time >= EndingTimeEntry.Time) && IsAppointmentCheckBox.IsChecked)
+        {
+            await DisplayAlertAsync("Invalid Time Range", "The starting time must be earlier than the ending time.", "OK");
+            return false;
+        }
+
+        return true;
     }
 }

@@ -8,7 +8,7 @@ using System.Text;
 
 namespace BabyBuddyHelper.Services
 {
-    internal class TaskListService : ITaskListService //Implemente Interface ITaskListService to provide functionality for managing a list of tasks.
+    public class TaskListService : ITaskListService //Implemente Interface ITaskListService to provide functionality for managing a list of tasks.
     {                                                 //This class will be used to add, remove, update, and organize tasks in the application.
         public ObservableCollection<TaskModel> Tasks { get; } = new();
 
