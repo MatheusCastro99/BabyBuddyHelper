@@ -88,7 +88,7 @@ public partial class ChecklistPage : ContentPage
     {
         if (taskToEdit is null) return;
 
-        await Navigation.PushAsync(
+        await Navigation.PushModalAsync(
             new AddTaskPage(_taskListService, taskToEdit));
 
     }

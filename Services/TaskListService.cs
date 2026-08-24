@@ -14,7 +14,7 @@ namespace BabyBuddyHelper.Services
 
         public TaskListService()
         {
-            if(Tasks == null)
+            if(Tasks.Count == 0)
             {
                 GenerateMockData();
             }
