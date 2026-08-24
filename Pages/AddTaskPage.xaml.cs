@@ -1,3 +1,4 @@
+using BabyBuddyHelper.Interfaces;
 using BabyBuddyHelper.Models;
 using System.Diagnostics;
 
@@ -5,28 +6,26 @@ namespace BabyBuddyHelper.Pages;
 
 public partial class AddTaskPage : ContentPage
 {
-    List<TaskModel> currentTasks = new();
+    //List<TaskModel> currentTasks = new();
+    private readonly ITaskListService _taskListService;
     TaskModel? taskOnEdit;
     AppointmentModel? appointmentOnEdit;
-    Action? onTaskSaved; //Delegate Command that lets checklistPage know when to reorganize taskList
     bool isEditing = false; //false by default, meaning most of tasks are expected to be new tasks
 
-	public AddTaskPage(List<TaskModel> currentTasks, Action? onTaskSaved = null) //Regular constructor called by New Task button
+	public AddTaskPage(ITaskListService taskListService) //Regular constructor called by New Task button
 	{
 		InitializeComponent();
 
-        this.currentTasks = currentTasks;
-        this.onTaskSaved = onTaskSaved;
+        this._taskListService = taskListService;
 
         Debug.WriteLine("Creating New Task");
     }
 
-    public AddTaskPage(List<TaskModel> currentTasks, TaskModel taskOnEdit, Action? onTaskSaved = null) //Constructor that will be triggered on
+    public AddTaskPage(ITaskListService taskListService, TaskModel taskOnEdit) //Constructor that will be triggered on
     {                                                                                                  //EditNoteIcon click for regular tasks
         InitializeComponent();
 
-        this.currentTasks = currentTasks; //Loads relevant data for editing operations
-        this.onTaskSaved = onTaskSaved;
+        this._taskListService = taskListService;
         this.taskOnEdit = taskOnEdit;
         isEditing = true; //Sets isEditing to change OnSaveClicked() behavior
 
@@ -37,12 +36,11 @@ public partial class AddTaskPage : ContentPage
         Debug.WriteLine("Editing a regular task");
     }
 
-    public AddTaskPage(List<TaskModel> currentTasks, AppointmentModel appointmentOnEdit, Action? onTaskSaved = null) //Constructor that is triggered on
+    public AddTaskPage(ITaskListService taskListService, AppointmentModel appointmentOnEdit) //Constructor that is triggered on
     {                                                                                                                //EditNoteIcon click for appointments
         InitializeComponent();
 
-        this.currentTasks = currentTasks; //Loads relevant data for editing operations
-        this.onTaskSaved = onTaskSaved;
+        this._taskListService = taskListService;
         this.appointmentOnEdit = appointmentOnEdit;
         isEditing = true; //Sets isEditing to change OnSaveClicked() behavior
 
@@ -89,18 +87,16 @@ public partial class AddTaskPage : ContentPage
             TimeSpan? appointmentEndTime = EndingTimeEntry.Time;
 
             AppointmentModel newAppointment = new(appointmentLocation, appointmentDate, appointmentStartTime, appointmentEndTime, priority, taskName, taskDescription);
-            currentTasks.Add(newAppointment);
+            _taskListService.Add(newAppointment);
 
-            onTaskSaved.Invoke(); //Delegate Command on CheckListPage that refreshes and reorganizes Task List
             await Navigation.PopModalAsync(); //Closes AddTaskPage
         }
 
         else //thread of execution for non-appointment task
         {
             TaskModel newTask = new(priority, taskName, taskDescription);
-            currentTasks.Add(newTask);
+            _taskListService.Add(newTask);
 
-            onTaskSaved.Invoke();
             await Navigation.PopModalAsync();
         }
 
@@ -113,7 +109,7 @@ public partial class AddTaskPage : ContentPage
 
             if (!IsAppointmentCheckBox.IsChecked) //Checks if user it trying to convert existing appointment to regular task
             {
-                currentTasks.Remove(appointmentOnEdit); //Removes Appointment Instance of task list (prevents duplicates)
+                _taskListService.Remove(appointmentOnEdit); //Removes Appointment Instance of task list (prevents duplicates)
                 SaveNewTask(); //Resaves task from 0 as a regular non-appointment task
             }
 
@@ -126,7 +122,6 @@ public partial class AddTaskPage : ContentPage
             appointmentOnEdit?.AppointmentStartTime = appointmentStartTime;
             appointmentOnEdit?.AppointmentEndTime = appointmentEndTime;
 
-            onTaskSaved.Invoke();
             await Navigation.PopModalAsync();
         }
 
@@ -134,7 +129,7 @@ public partial class AddTaskPage : ContentPage
         {
             if(IsAppointmentCheckBox.IsChecked) //Checks if user is trying to convert existing regular task into an appointment
             {
-                currentTasks.Remove(taskOnEdit); //Removes task from list entirely and resaves it as an appointment
+                _taskListService.Remove(taskOnEdit); //Removes task from list entirely and resaves it as an appointment
                 SaveNewTask();
             }
 
@@ -142,7 +137,6 @@ public partial class AddTaskPage : ContentPage
             taskOnEdit?.TaskDescription = DescriptionEntry.Text;
             taskOnEdit?.TaskPriority = Convert.ToInt32(PriorityStepper.Value);
 
-            onTaskSaved.Invoke();
             await Navigation.PopModalAsync();
         }
     }

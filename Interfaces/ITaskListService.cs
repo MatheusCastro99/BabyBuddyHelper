@@ -6,7 +6,7 @@ using System.Text;
 
 namespace BabyBuddyHelper.Interfaces
 {
-    internal interface ITaskListService //Setting interface for TaskListService to implement. This allows for dependency injection, easier testing,
+    public interface ITaskListService //Setting interface for TaskListService to implement. This allows for dependency injection, easier testing,
                                         // and better encapsulation.
     {
         ObservableCollection<TaskModel> Tasks { get; }
