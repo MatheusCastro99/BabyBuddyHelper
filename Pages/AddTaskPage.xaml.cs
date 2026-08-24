@@ -62,6 +62,11 @@ public partial class AddTaskPage : ContentPage
 
     private async void OnSaveClicked(object sender, EventArgs e)
     {
+        bool isFormValid = await ValidateForm(); //Validates form before saving
+        if (!isFormValid) 
+        {
+            return;
+        }
 
         //isEditing is false by default, and modified by the constructors when clicking on EditNoteIcon
         if (!isEditing) //New Task

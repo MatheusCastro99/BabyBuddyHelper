@@ -9,11 +9,9 @@ namespace BabyBuddyHelper.Pages;
 
 public partial class ChecklistPage : ContentPage
 {
-
-    // public ObservableCollection<TaskModel> TaskList { get; set; } //Will hold instances of TaskModel and AppointmentModel
-    //List<TaskModel> tasks = new();
     private readonly ITaskListService _taskListService; //Dependency Injection for TaskListService
     public ObservableCollection<TaskModel> TaskList => _taskListService.Tasks; //Will hold instances of TaskModel and AppointmentModel
+
     //ICommand binding for delete and edit buttons on each task card
     public ICommand DeleteTaskCommand { get; }
     public ICommand EditTaskCommand { get; }
@@ -30,32 +28,6 @@ public partial class ChecklistPage : ContentPage
 
         BindingContext = this;
     }
-
-    //Organizes List by priority Property of each task
-    //public void OrganizeByPriority(List<TaskModel> currentList)
-    //{
-    //    var sorted = currentList.OrderByDescending(t => t.TaskPriority).ToList();
-    //    TaskList.Clear();
-    //    foreach (var item in sorted)
-    //    {
-    //        TaskList.Add(item);
-    //    }
-    //}
-
-    ////Filters complete tasks to the end of the list
-    //public void OrganizeByPending(List<TaskModel> currentList)
-    //{
-    //    var sorted = currentList
-    //        .OrderBy(t => t.IsCompleted)
-    //        .ThenByDescending(t => t.TaskPriority)
-    //        .ToList();
-
-    //    TaskList.Clear();
-    //    foreach (var item in sorted)
-    //    {
-    //        TaskList.Add(item);
-    //    }
-    //}
 
     //Method bound to the IsPendingFirstSwitch
     public void IsPendingFirstHandler(object sender, ToggledEventArgs e)
@@ -93,10 +65,3 @@ public partial class ChecklistPage : ContentPage
 
     }
 }
-
-    //method called on edit, delete, and add new task to refresh list and display current tasks
-//    private void RefreshTaskList()
-//    {
-//        OrganizeByPriority(tasks);
-//    }
-//}
