@@ -28,12 +28,6 @@ public partial class ChecklistPage : ContentPage
         DeleteTaskCommand = new Command<TaskModel>(DeleteTask);
         EditTaskCommand = new Command<TaskModel>(EditTask);
 
-        //Some initial Mock Data
-        _taskListService.Tasks.Add(new TaskModel(5, "Organize Room", "Make Space for the baby!"));
-        _taskListService.Tasks.Add(new TaskModel(10, "Prepare for baby", "Baby about to go Hello World!"));
-        _taskListService.Tasks.Add(new AppointmentModel("NJ", new(2026, 09, 15), new(23, 0, 0), new(23, 30, 0), 7, "BabyShower", "Get gifts"));
-        _taskListService.Tasks.Add(new AppointmentModel("Hospotal", new(2026, 09, 25), new(09, 15, 0), new(10, 0, 0), 8, "Imaging", "See the baby!"));
-
         BindingContext = this;
     }
 
