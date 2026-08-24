@@ -32,7 +32,8 @@ namespace BabyBuddyHelper
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                 })
-                .ConfigureSyncfusionCore();
+                .ConfigureSyncfusionCore()
+                .Services.AddSingleton<ITaskListService, TaskListService>();
 
 #if DEBUG
     		builder.Logging.AddDebug();
