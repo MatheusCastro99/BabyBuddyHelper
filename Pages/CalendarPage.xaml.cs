@@ -38,6 +38,7 @@ public partial class CalendarPage : ContentPage
             _taskListService.GetAppointments()                        //Filter instances of tasks in _taskListService that are AppointmentModels
             .Select(appt => new SchedulerAppointment                    //Then, for each appt filtered, creates a SchedulerAppointment counterpart
             {
+                Id = appt.Id,
                 Subject = appt.TaskName,
                 StartTime = appt.SchedulerStartTime,
                 EndTime = appt.SchedulerEndTime,
@@ -49,16 +50,21 @@ public partial class CalendarPage : ContentPage
 
     private async void OnCalendarDoubleTapped(object? sender, SchedulerDoubleTappedEventArgs e)
     {
-        Debug.WriteLine(
-            $"{e.Date}\n{e.Element}\n{e.Resource}\n{e.Appointments}\nClicked!");
-
         if (e.Element.ToString().Equals("Appointment")) //Editing an existing appointment through Calendar
         {
-            Debug.WriteLine("Appointment Clicked");
+            var schedulerAppointment = e.Appointments.FirstOrDefault() as SchedulerAppointment;
+            if (schedulerAppointment is null) return;
+
+            var appointmentToEdit = _taskListService.GetAppointments()
+                .FirstOrDefault(appt => appt.Id.Equals(schedulerAppointment.Id)); //Retrieve first appointment from TaskListService that
+                                                                                   //matches the Id of the tapped SchedulerAppointment
+            if (appointmentToEdit != null)
+            {
+                await EditAppointment(appointmentToEdit);
+            }
         }
         else                                            //Creating a new appointment through Calendar
         {
-            Debug.WriteLine("Empty Cell clicked!");
             AddNewAppointment(e.Date);
         }
     }
@@ -66,6 +72,12 @@ public partial class CalendarPage : ContentPage
     private async void AddNewAppointment(DateTime? AppointmentDate) //Triggers AddTaskPage Modal with the specified DateTime from event handler
     {
         await Navigation.PushModalAsync(new AddTaskPage(_taskListService, AppointmentDate));
+    }
+
+    private async Task EditAppointment(AppointmentModel appointmentToEdit) //Triggers AddTaskPage Modal with the specified AppointmentModel
+    {                                                                       //from event handler
+        if (appointmentToEdit is null) return;
+        await Navigation.PushModalAsync(new AddTaskPage(_taskListService, appointmentToEdit));
     }
 
     //Implement add and edit functionaly for appointments through tapped event, triggering modal AddTaskPage
