@@ -12,17 +12,25 @@ public partial class AddTaskPage : ContentPage
     AppointmentModel? appointmentOnEdit;
     bool isEditing = false; //false by default, meaning most of tasks are expected to be new tasks
 
-	public AddTaskPage(ITaskListService taskListService) //Regular constructor called by New Task button
-	{
-		InitializeComponent();
+	public AddTaskPage(ITaskListService taskListService, DateTime? dateTime = null) //Regular constructor called by New Task button
+	{                                                                                //on ChecklistPage or clicking an empty time cell on
+		InitializeComponent();                                                        //CalendarPage
 
         this._taskListService = taskListService;
 
+        if(!(dateTime is null)) //Determines which Page modal is being called from.
+        {                        //If it's from CalendarPage, fill information from time cell clicked
+            IsAppointmentCheckBox.IsChecked = true;
+            DateEntry.Date = dateTime;
+            StartingTimeEntry.Time = dateTime!.Value.TimeOfDay;
+            EndingTimeEntry.Time = dateTime!.Value.TimeOfDay.Add(new TimeSpan(01, 0, 0));
+        }
         Debug.WriteLine("Creating New Task");
+        Debug.WriteLine($"{dateTime}");
     }
 
     public AddTaskPage(ITaskListService taskListService, TaskModel taskOnEdit) //Constructor that will be triggered on
-    {                                                                                                  //EditNoteIcon click for regular tasks
+    {                                                                           //EditNoteIcon click for regular tasks
         InitializeComponent();
 
         this._taskListService = taskListService;
@@ -37,7 +45,7 @@ public partial class AddTaskPage : ContentPage
     }
 
     public AddTaskPage(ITaskListService taskListService, AppointmentModel appointmentOnEdit) //Constructor that is triggered on
-    {                                                                                                                //EditNoteIcon click for appointments
+    {                                                                                         //EditNoteIcon click for appointments
         InitializeComponent();
 
         this._taskListService = taskListService;

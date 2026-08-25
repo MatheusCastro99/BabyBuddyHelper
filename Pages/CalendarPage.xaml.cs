@@ -47,6 +47,27 @@ public partial class CalendarPage : ContentPage
         Calendar.AppointmentsSource = schedulerAppointments; //Actual Binding for sfScheduler
     }
 
+    private async void OnCalendarDoubleTapped(object? sender, SchedulerDoubleTappedEventArgs e)
+    {
+        Debug.WriteLine(
+            $"{e.Date}\n{e.Element}\n{e.Resource}\n{e.Appointments}\nClicked!");
+
+        if (e.Element.ToString().Equals("Appointment")) //Editing an existing appointment through Calendar
+        {
+            Debug.WriteLine("Appointment Clicked");
+        }
+        else                                            //Creating a new appointment through Calendar
+        {
+            Debug.WriteLine("Empty Cell clicked!");
+            AddNewAppointment(e.Date);
+        }
+    }
+
+    private async void AddNewAppointment(DateTime? AppointmentDate) //Triggers AddTaskPage Modal with the specified DateTime from event handler
+    {
+        await Navigation.PushModalAsync(new AddTaskPage(_taskListService, AppointmentDate));
+    }
+
     //Implement add and edit functionaly for appointments through tapped event, triggering modal AddTaskPage
     //with prefilled data for editing, or empty data (exept by date) for adding a new appointment.
 }

@@ -19,6 +19,7 @@
             x:Name="Calendar"
             View="Week"
             IsAppointmentToolTipEnabled="True"
+            DoubleTapped="OnCalendarDoubleTapped"
             SelectedDate="{Binding SelectedDate, Mode=TwoWay}"
             BackgroundColor="BlueViolet"
             Margin="75, 0, 75, 20">

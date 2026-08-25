@@ -26,11 +26,16 @@ public partial class ChecklistPage : ContentPage
         DeleteTaskCommand = new Command<TaskModel>(DeleteTask);
         EditTaskCommand = new Command<TaskModel>(EditTask);
 
+        _taskListService.Tasks.CollectionChanged += (s, e) => //Subscribe to the CollectionChanged event of the TaskListService's Tasks collection
+        {
+            _taskListService.OrganizeByPriority();
+        };
+
         BindingContext = this;
     }
 
     //Method bound to the IsPendingFirstSwitch
-    public void IsPendingFirstHandler(object sender, ToggledEventArgs e)
+    public void IsPendingFirstHandler(object sender, ToggledEventArgs e) //Filtering logic is broken, look into and fix it.
     {
         if (e.Value)
         {
