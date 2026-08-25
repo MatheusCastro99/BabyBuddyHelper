@@ -6,7 +6,6 @@ namespace BabyBuddyHelper.Pages;
 
 public partial class AddTaskPage : ContentPage
 {
-    //List<TaskModel> currentTasks = new();
     private readonly ITaskListService _taskListService;
     TaskModel? taskOnEdit;
     AppointmentModel? appointmentOnEdit;
@@ -25,8 +24,9 @@ public partial class AddTaskPage : ContentPage
             StartingTimeEntry.Time = dateTime!.Value.TimeOfDay;
             EndingTimeEntry.Time = dateTime!.Value.TimeOfDay.Add(new TimeSpan(01, 0, 0));
         }
+
         Debug.WriteLine("Creating New Task");
-        Debug.WriteLine($"{dateTime}");
+        //Debug.WriteLine($"{dateTime}");
     }
 
     public AddTaskPage(ITaskListService taskListService, TaskModel taskOnEdit) //Constructor that will be triggered on
@@ -122,11 +122,10 @@ public partial class AddTaskPage : ContentPage
     {
         if (appointmentOnEdit != null) //appointment instance editing case
         {
-
             if (!IsAppointmentCheckBox.IsChecked) //Checks if user it trying to convert existing appointment to regular task
             {
                 _taskListService.Remove(appointmentOnEdit); //Removes Appointment Instance of task list (prevents duplicates)
-                await SaveNewTask(); //Resaves task from 0 as a regular non-appointment task
+                await SaveNewTask();                         //Resaves task from 0 as a regular non-appointment task
                 return;
             }
 
@@ -145,8 +144,6 @@ public partial class AddTaskPage : ContentPage
             };
 
             _taskListService.Update(updatedAppt); //Updates appointment in task list by reference
-
-            Debug.WriteLine("Everything should be saved by reference");
 
             await Navigation.PopModalAsync();
         }
@@ -177,7 +174,7 @@ public partial class AddTaskPage : ContentPage
             return false;
         }
 
-        if (IsAppointmentCheckBox.IsChecked && string.IsNullOrWhiteSpace(LocationEntry.Text)) //MOVE VALIDATION TO A SEPARATE METHOD
+        if (IsAppointmentCheckBox.IsChecked && string.IsNullOrWhiteSpace(LocationEntry.Text))
         {
             await DisplayAlertAsync("Required Field Missing", "Please fill in the task location.", "OK");
             return false;
