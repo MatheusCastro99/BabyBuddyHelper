@@ -1,9 +1,8 @@
 ﻿using DotNetEnv;
 using Microsoft.Extensions.Logging;
 using Syncfusion.Maui.Core.Hosting;
-using Syncfusion.Licensing;
-using System.Reflection;
 using System.Diagnostics;
+using System.Reflection;
 
 namespace BabyBuddyHelper
 {
@@ -36,7 +35,7 @@ namespace BabyBuddyHelper
                 .Services.AddSingleton<Interfaces.ITaskListService, Services.TaskListService>();
 
 #if DEBUG
-    		builder.Logging.AddDebug();
+            builder.Logging.AddDebug();
 #endif
 
             Debug.WriteLine(Environment.GetEnvironmentVariable("SYNCFUSION_LICENSE"));

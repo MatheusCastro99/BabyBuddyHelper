@@ -12,13 +12,13 @@ public partial class AddTaskPage : ContentPage
     AppointmentModel? appointmentOnEdit;
     bool isEditing = false; //false by default, meaning most of tasks are expected to be new tasks
 
-	public AddTaskPage(ITaskListService taskListService, DateTime? dateTime = null) //Regular constructor called by New Task button
-	{                                                                                //on ChecklistPage or clicking an empty time cell on
-		InitializeComponent();                                                        //CalendarPage
+    public AddTaskPage(ITaskListService taskListService, DateTime? dateTime = null) //Regular constructor called by New Task button
+    {                                                                                //on ChecklistPage or clicking an empty time cell on
+        InitializeComponent();                                                        //CalendarPage
 
         this._taskListService = taskListService;
 
-        if(!(dateTime is null)) //Determines which Page modal is being called from.
+        if (!(dateTime is null)) //Determines which Page modal is being called from.
         {                        //If it's from CalendarPage, fill information from time cell clicked
             IsAppointmentCheckBox.IsChecked = true;
             DateEntry.Date = dateTime;
@@ -72,7 +72,7 @@ public partial class AddTaskPage : ContentPage
     private async void OnSaveClicked(object sender, EventArgs e)
     {
         bool isFormValid = await ValidateForm(); //Validates form before saving
-        if (!isFormValid) 
+        if (!isFormValid)
         {
             return;
         }
@@ -139,9 +139,10 @@ public partial class AddTaskPage : ContentPage
                 Convert.ToInt32(PriorityStepper.Value),
                 TaskNameEntry.Text,
                 DescriptionEntry.Text
-            )   {
-                    Id = appointmentOnEdit.Id //Preserves TaskId for database update
-                };
+            )
+            {
+                Id = appointmentOnEdit.Id //Preserves TaskId for database update
+            };
 
             _taskListService.Update(updatedAppt); //Updates appointment in task list by reference
 
@@ -152,7 +153,7 @@ public partial class AddTaskPage : ContentPage
 
         else // Regular Task editing Case
         {
-            if(IsAppointmentCheckBox.IsChecked) //Checks if user is trying to convert existing regular task into an appointment
+            if (IsAppointmentCheckBox.IsChecked) //Checks if user is trying to convert existing regular task into an appointment
             {
                 _taskListService.Remove(taskOnEdit); //Removes task from list entirely and resaves it as an appointment
                 await SaveNewTask();

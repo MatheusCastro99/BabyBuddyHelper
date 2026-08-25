@@ -1,10 +1,6 @@
 ﻿using BabyBuddyHelper.Interfaces;
 using BabyBuddyHelper.Models;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Runtime.CompilerServices;
-using System.Text;
 
 namespace BabyBuddyHelper.Services
 {
@@ -18,7 +14,7 @@ namespace BabyBuddyHelper.Services
 
         public TaskListService()
         {
-            if(Tasks.Count == 0)
+            if (Tasks.Count == 0)
             {
                 GenerateMockData();
             }
@@ -40,7 +36,7 @@ namespace BabyBuddyHelper.Services
             var existingTask = Tasks.FirstOrDefault(x => x.Id == updatedTask.Id);
 
             if (existingTask is null)
-            return;
+                return;
 
             var index = Tasks.IndexOf(existingTask);
             Tasks[index] = updatedTask;

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace BabyBuddyHelper.Models
+﻿namespace BabyBuddyHelper.Models
 {
     public class TaskModel
     {
@@ -14,7 +10,7 @@ namespace BabyBuddyHelper.Models
         public bool IsCompleted { get; set; }
 
         //Constructor
-        public TaskModel(int priority, string taskName, string taskDescription) 
+        public TaskModel(int priority, string taskName, string taskDescription)
         {
             TaskPriority = priority;
             TaskName = taskName;

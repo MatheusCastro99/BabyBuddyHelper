@@ -1,9 +1,7 @@
-﻿using System.Diagnostics;
-
-namespace BabyBuddyHelper
+﻿namespace BabyBuddyHelper
 {
     public partial class MainPage : ContentPage
-{
+    {
         DateTime expectedDueDate = new(2027, 02, 02);
         DateTime currentDate;
         bool isBabyBorn;
@@ -17,7 +15,7 @@ namespace BabyBuddyHelper
             InitializeComponent();
 
             HandleCounter(); //Starts counter
-            
+
             BindingContext = this;
         }
 

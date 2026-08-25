@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace BabyBuddyHelper.Models
+﻿namespace BabyBuddyHelper.Models
 {
     public class AppointmentModel : TaskModel
     {
@@ -19,7 +15,7 @@ namespace BabyBuddyHelper.Models
 
 
         //Constructor
-        public AppointmentModel(string appointmentLocation, DateTime? appointmentDate, TimeSpan? appointmentStartTime, TimeSpan? appointmentEndTime, int priority, string name, string description) 
+        public AppointmentModel(string appointmentLocation, DateTime? appointmentDate, TimeSpan? appointmentStartTime, TimeSpan? appointmentEndTime, int priority, string name, string description)
             : base(priority, name, description)
         {
             AppointmentLocation = appointmentLocation;

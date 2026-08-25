@@ -1,23 +1,21 @@
 using BabyBuddyHelper.Interfaces;
 using BabyBuddyHelper.Models;
-using BabyBuddyHelper.Services;
 using Syncfusion.Maui.DataSource.Extensions;
 using Syncfusion.Maui.Scheduler;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 
 
 namespace BabyBuddyHelper.Pages;
 
 public partial class CalendarPage : ContentPage
 {
-	public DateTime? SelectedDate { get; set; } = DateTime.Today;
+    public DateTime? SelectedDate { get; set; } = DateTime.Today;
     private readonly ITaskListService _taskListService; //Dependency Injection for TaskListService
     public ObservableCollection<AppointmentModel> TaskList { get; private set; }//Will hold instances of AppointmentModel
 
     public CalendarPage(ITaskListService taskListService)
-	{
-		InitializeComponent();
+    {
+        InitializeComponent();
 
         _taskListService = taskListService;
         _taskListService.Tasks.CollectionChanged += (s, e) => //Subscribe to the CollectionChanged event of the TaskListService's Tasks collection
@@ -57,7 +55,7 @@ public partial class CalendarPage : ContentPage
 
             var appointmentToEdit = _taskListService.GetAppointments()
                 .FirstOrDefault(appt => appt.Id.Equals(schedulerAppointment.Id)); //Retrieve first appointment from TaskListService that
-                                                                                   //matches the Id of the tapped SchedulerAppointment
+                                                                                  //matches the Id of the tapped SchedulerAppointment
             if (appointmentToEdit != null)
             {
                 await EditAppointment(appointmentToEdit);
