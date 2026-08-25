@@ -56,6 +56,7 @@ public partial class AddTaskPage : ContentPage
         DescriptionEntry.Text = appointmentOnEdit.TaskDescription;
         PriorityStepper.Value = appointmentOnEdit.TaskPriority;
         IsAppointmentCheckBox.IsChecked = true;
+        DateEntry.Date = appointmentOnEdit.AppointmentDate;
         StartingTimeEntry.Time = appointmentOnEdit.AppointmentStartTime;
         EndingTimeEntry.Time = appointmentOnEdit.AppointmentEndTime;
         LocationEntry.Text = appointmentOnEdit.AppointmentLocation;
@@ -79,12 +80,13 @@ public partial class AddTaskPage : ContentPage
         //isEditing is false by default, and modified by the constructors when clicking on EditNoteIcon
         if (!isEditing) //New Task
         {
-            SaveNewTask();
+            await SaveNewTask();
         }
 
         else //edited task
         {
-            SaveEditedTask();
+            Debug.WriteLine("Saving Edited Task");
+            await SaveEditedTask();
         }
     }
 
@@ -128,14 +130,22 @@ public partial class AddTaskPage : ContentPage
                 return;
             }
 
-            TimeSpan? appointmentStartTime = StartingTimeEntry.Time; //If there is no task type conversion, consolidate variables (passed through argument reference)
-            TimeSpan? appointmentEndTime = EndingTimeEntry.Time;
-            appointmentOnEdit?.TaskName = TaskNameEntry.Text;
-            appointmentOnEdit?.TaskDescription = DescriptionEntry.Text;
-            appointmentOnEdit?.TaskPriority = Convert.ToInt32(PriorityStepper.Value);
-            appointmentOnEdit?.AppointmentLocation = LocationEntry.Text;
-            appointmentOnEdit?.AppointmentStartTime = appointmentStartTime;
-            appointmentOnEdit?.AppointmentEndTime = appointmentEndTime;
+            AppointmentModel updatedAppt = new
+            (
+                LocationEntry.Text,
+                DateEntry.Date,
+                StartingTimeEntry.Time,
+                EndingTimeEntry.Time,
+                Convert.ToInt32(PriorityStepper.Value),
+                TaskNameEntry.Text,
+                DescriptionEntry.Text
+            )   {
+                    Id = appointmentOnEdit.Id //Preserves TaskId for database update
+                };
+
+            _taskListService.Update(updatedAppt); //Updates appointment in task list by reference
+
+            Debug.WriteLine("Everything should be saved by reference");
 
             await Navigation.PopModalAsync();
         }

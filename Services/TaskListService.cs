@@ -27,6 +27,7 @@ namespace BabyBuddyHelper.Services
         public void Add(TaskModel task)
         {
             Tasks.Add(task);
+            OrganizeByPriority();
         }
 
         public void Remove(TaskModel task)
@@ -66,11 +67,15 @@ namespace BabyBuddyHelper.Services
 
         private void RebuildCollection(List<TaskModel> sortedTasks)
         {
-            Tasks.Clear();
-
-            foreach (var task in sortedTasks)
+            for (int targetIndex = 0; targetIndex < sortedTasks.Count; targetIndex++)
             {
-                Tasks.Add(task);
+                var item = sortedTasks[targetIndex];
+                var currentIndex = Tasks.IndexOf(item);
+
+                if (currentIndex != targetIndex)
+                {
+                    Tasks.Move(currentIndex, targetIndex);
+                }
             }
         }
 

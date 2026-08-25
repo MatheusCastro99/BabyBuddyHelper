@@ -79,7 +79,4 @@ public partial class CalendarPage : ContentPage
         if (appointmentToEdit is null) return;
         await Navigation.PushModalAsync(new AddTaskPage(_taskListService, appointmentToEdit));
     }
-
-    //Implement add and edit functionaly for appointments through tapped event, triggering modal AddTaskPage
-    //with prefilled data for editing, or empty data (exept by date) for adding a new appointment.
 }
