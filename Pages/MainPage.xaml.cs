@@ -2,9 +2,8 @@
 {
     public partial class MainPage : ContentPage
     {
-        DateTime expectedDueDate = new(2027, 02, 02);
+        DateTime expectedDueDate = new(2027, 02, 02, 0, 0, 0, DateTimeKind.Local);
         DateTime currentDate;
-        bool isBabyBorn;
 
         public int MonthsUntilDue { get; private set; }
         public int DaysUntilDue { get; private set; }
@@ -25,8 +24,6 @@
 
             if (currentDate >= expectedDueDate) //Handles dates after specified due date
             {
-                isBabyBorn = true;
-
                 // Calculate months and days since birth
                 MonthsUntilDue = (currentDate.Year - expectedDueDate.Year) * 12 + (currentDate.Month - expectedDueDate.Month);
                 DaysUntilDue = currentDate.Day - expectedDueDate.Day;
@@ -43,8 +40,6 @@
 
             else // Handles dates before due date
             {
-                isBabyBorn = false;
-
                 // Calculate months and remaining days
                 MonthsUntilDue = (expectedDueDate.Year - currentDate.Year) * 12 + (expectedDueDate.Month - currentDate.Month);
                 DaysUntilDue = expectedDueDate.Day - currentDate.Day;

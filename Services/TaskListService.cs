@@ -79,11 +79,11 @@ namespace BabyBuddyHelper.Services
         {                              //This will be called in the constructor of the ChecklistPage to populate the list with some initial tasks.
             Tasks.Add(new TaskModel(5, "Organize Room", "Make Space for the baby!"));
             Tasks.Add(new TaskModel(10, "Prepare for baby", "Baby about to go Hello World!"));
-            Tasks.Add(new AppointmentModel("NJ", new(2026, 09, 15), new(23, 0, 0), new(23, 30, 0), 7, "BabyShower", "Get gifts"));
-            Tasks.Add(new AppointmentModel("Hospotal", new(2026, 09, 25), new(09, 15, 0), new(10, 0, 0), 8, "Imaging", "See the baby!"));
-            Tasks.Add(new AppointmentModel("Home", new(2026, 08, 25), new(09, 15, 0), new(10, 0, 0), 8, "Chilling", "Testing some stuff"));
-            Tasks.Add(new AppointmentModel("In my pc", new(2026, 08, 26), new(10, 0, 0), new(11, 0, 0), 8, "Testing", "Will it bind now?"));
-            Tasks.Add(new AppointmentModel("Bed", new(2026, 08, 24), new(20, 0, 0), new(21, 30, 0), 8, "Sleep", "Or try to"));
+            Tasks.Add(new AppointmentModel("NJ", new(2026, 09, 15, 0, 0, 0, DateTimeKind.Local), new(23, 0, 0), new(23, 30, 0), 7, "BabyShower", "Get gifts"));
+            Tasks.Add(new AppointmentModel("Hospotal", new(2026, 09, 25, 0, 0, 0, DateTimeKind.Local), new(09, 15, 0), new(10, 0, 0), 8, "Imaging", "See the baby!"));
+            Tasks.Add(new AppointmentModel("Home", new(2026, 08, 25, 0, 0, 0, DateTimeKind.Local), new(09, 15, 0), new(10, 0, 0), 8, "Chilling", "Testing some stuff"));
+            Tasks.Add(new AppointmentModel("In my pc", new(2026, 08, 26, 0, 0, 0, DateTimeKind.Local), new(10, 0, 0), new(11, 0, 0), 8, "Testing", "Will it bind now?"));
+            Tasks.Add(new AppointmentModel("Bed", new(2026, 08, 24, 0, 0, 0, DateTimeKind.Local), new(20, 0, 0), new(21, 30, 0), 8, "Sleep", "Or try to"));
         }
     }
 }

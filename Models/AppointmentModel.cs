@@ -19,7 +19,7 @@
             : base(priority, name, description)
         {
             AppointmentLocation = appointmentLocation;
-            AppointmentDate = appointmentDate;
+            AppointmentDate = DateTime.SpecifyKind(appointmentDate!.Value, DateTimeKind.Local);
             AppointmentStartTime = appointmentStartTime;
             AppointmentEndTime = appointmentEndTime;
         }
