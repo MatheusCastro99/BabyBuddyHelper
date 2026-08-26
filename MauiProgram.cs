@@ -12,17 +12,7 @@ namespace BabyBuddyHelper
         {
             var builder = MauiApp.CreateBuilder();
 
-            //Get the current assembly to access the embedded .env file
-            var assembly = Assembly.GetExecutingAssembly();
-
-            //Since it is dealing with secrets, using statement is optimal to ensure the stream is properly disposed of after use
-            using var stream = assembly.GetManifestResourceStream("BabyBuddyHelper..env"); //Format: {DefaultNamespace}.{Folder(if not root)}.{FileName}
-
-            if (stream != null) //attempts to load the .env file and register keys
-            {
-                Env.Load(stream);
-                Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense(Environment.GetEnvironmentVariable("SYNCFUSION_LICENSE"));
-            }
+            LoadEnvironmentConfiguration();
 
             builder
                 .UseMauiApp<App>()
@@ -42,6 +32,34 @@ namespace BabyBuddyHelper
 
 
             return builder.Build();
+        }
+
+        private static void LoadEnvironmentConfiguration ()
+        {
+            try //tryCatch prevents app from crashing if .env file is missing or license is not set
+            {
+                var envPath = Path.Combine(AppContext.BaseDirectory, ".env");
+
+                if (File.Exists(envPath)) //try to load .env file if it exists
+                {
+                    Env.Load(envPath);
+                    Debug.WriteLine(".env Loaded");
+                }
+
+                var licenseStream = Environment.GetEnvironmentVariable("SYNCFUSION_LICENSE");
+
+                if (!string.IsNullOrWhiteSpace(licenseStream)) //try to register Syncfusion license if it is set in environment variables
+                {
+                    Syncfusion.Licensing.SyncfusionLicenseProvider
+                    .RegisterLicense(licenseStream);
+
+                    Debug.WriteLine("Environment variables initialized and registered.");
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Error loading .env file or registering Syncfusion license: {ex.Message}");
+            }
         }
     }
 }

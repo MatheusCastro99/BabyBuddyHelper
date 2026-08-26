@@ -63,9 +63,13 @@
 
 		<!-- Raw Assets (also remove the "Resources\Raw" prefix) -->
 		<MauiAsset Include="Resources\Raw\**" LogicalName="%(RecursiveDir)%(Filename)%(Extension)" />
+	</ItemGroup>
 
-		<!-- Embeds environment variables -->
-		<EmbeddedResource Include=".env" />
+	<!-- Embeds environment variables or Loads them dynamically -->
+	<ItemGroup Condition="Exists('.env')">
+		<None Include=".env">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
 	</ItemGroup>
 
 	<ItemGroup>
