@@ -1,103 +1,231 @@
 # BabyBuddyHelper
 
 [![Build Validation](https://github.com/MatheusCastro99/BabyBuddyHelper/actions/workflows/build-validation.yml/badge.svg)](https://github.com/MatheusCastro99/BabyBuddyHelper/actions/workflows/build-validation.yml)
- 
-![.NET](https://img.shieldsssPlatform-blue
-![Platform](https://img.shields.io/badge/Platforms-Windows%20Android%20iOScess
 
-![Status](https://img.shields.io/badge/Status-Activement-green
+![.NET](https://img.shields.io/badge/.NET-10-
+![Status](https://img.shields.io/badgetive%20Development-green
+![Platforms](https://img.shields.io/badge/Platforms-Windows%20%20macOS-success
 
-A cross-platform mobile and desktop application designed to help parents manage and track daily baby care activities. Built with .NET MAUI, BabyBuddyHelper provides a simple yet effective way to organize feeding times, diaper changes, sleep schedules, and other essential tasks.
+BabyBuddyHelper is a cross-platform parenting and baby-care assistant built with .NET MAUI. The application helps parents and caregivers organize tasks, track appointments, and visualize schedules through an intuitive checklist and calendar experience.
 
-## Features
-
-- **Task Management**: Create, update, and track baby care tasks with ease
-- **Priority Levels**: Assign priorities to tasks for better organization
-- **Progress Tracking**: Mark tasks as completed and maintain a history
-- **Cross-Platform**: Available on iOS, Android, macOS, and Windows
-- **Responsive UI**: Optimized interface for mobile phones and desktop devices
-
-## Technology Stack
-
-- **.NET MAUI**: Cross-platform app framework
-- **.NET 10**: Latest .NET runtime
-- **C#**: Primary programming language
-- **XAML**: UI markup language
-
-## Prerequisites
-
-- [.NET 10 SDK](https://dotnet.microsoft.com/download)
-- [Visual Studio 2026 Community](https://visualstudio.microsoft.com/vs/community/) or later (with MAUI workload)
-- Platform-specific requirements:
-  - **iOS**: Xcode and macOS development environment
-  - **Android**: Android SDK and emulator/device
-  - **Windows**: Windows 10 or later
-  - **macOS**: macOS Catalina or later
-
-## Installation
-
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/MatheusCastro99/BabyBuddyHelper.git
-   cd BabyBuddyHelper
-   ```
-
-2. Restore NuGet packages:
-   ```bash
-   dotnet restore
-   ```
-
-3. Build the project:
-   ```bash
-   dotnet build
-   ```
-
-## Usage
-
-1. Launch the application on your target platform
-2. Create a new task by clicking "Add Task"
-3. Fill in task details including name, description, and priority level
-	3a. For appointments, set date, time, and location
-4. View your tasks on the main dashboard
-5. Mark tasks as completed when finished
-
-## Project Structure
-
-```
-BabyBuddyHelper/
-├── Pages/                      # UI pages for different functionalities
-│   ├── MainPage.xaml(.cs)         - Due date countdown and home dashboard
-│   ├── ChecklistPage.xaml(.cs)    - Task list with filters and sorting
-│   ├── AddTaskPage.xaml(.cs)      - Task creation / edit interface
-│   └── CalendarPage.xaml(.cs)     - Calendar Visual of Appointments
-├── Models/                     # Custom data types
-│   ├── TaskModel.cs               - Data model for tasks
-│   └── AppointmentModel.cs        - Data model for appointment (extends tasks)
-├── Services/                   # Business logic and data services
-│	└── TaskListService.cs         - Service for managing task grouping, sorting, manipulating, and filtering
-├──	Interfaces/                 #  Interfaces for services
-│	└── ITaskListService.cs        - Interface for TaskListService
-├── Platforms/           # Platform-specific implementations
-├── Resources/           # Images, fonts, and other assets
-├── MauiProgram.cs       # Application configuration
-└── App.xaml             # Main application definition
-```
-
-## Contributing
-
-For now, due to the academic nature of this project, contributions are not being accepted.
-That might change in the near future.
-
-## Organization
-
-- **Microsoft Software and Systems Academy**, 
-- **Cloud Application Development - PCAD21**
-
-## Support
-
-For issues, questions, or suggestions, please open an issue on the [GitHub Issues](https://github.com/MatheusCastro99/BabyBuddyHelper/issues) page.
+The project is currently under active development with a focus on appointment management, scheduling, reminders, and future baby-care tracking features.
 
 ---
 
-**Author:** Matheus Castro  
-**Repository:** [MatheusCastro99/BabyBuddyHelper](https://github.com/MatheusCastro99/BabyBuddyHelper)
+## Features
+
+### Task Management
+
+- Create and manage tasks
+- Edit existing tasks
+- Delete tasks
+- Mark tasks as completed
+- Priority-based organization
+- Completion-based organization
+
+### Appointment Management
+
+- Create appointments with date, time, and location
+- Edit appointments from both the checklist and calendar views
+- Convert tasks into appointments
+- Convert appointments into tasks
+- Automatic scheduler synchronization
+
+### Calendar & Scheduling
+
+- Integrated Syncfusion Scheduler
+- Week and Month calendar views
+- Visual appointment scheduling
+- Double-click appointment editing
+- Create appointments directly from empty calendar cells
+- Real-time calendar refresh when tasks change
+
+### Cross-Platform
+
+- Windows
+- Android
+- iOS
+- macOS
+
+---
+
+## Technology Stack
+
+### Frontend
+
+- .NET MAUI
+- XAML
+- C#
+
+### UI Components
+
+- Syncfusion Scheduler
+
+### Architecture
+
+- Service-Oriented Design
+- Dependency Injection
+- ObservableCollection-based State Management
+
+### Development Tooling
+
+- GitHub Actions Build Validation
+- Dependabot Dependency Monitoring
+- CodeQL Security Analysis
+
+---
+
+## Current Architecture
+
+The project intentionally favors simplicity over premature optimization.
+
+Current structure:
+
+```text
+Pages/
+Models/
+Services/
+Interfaces/
+```
+
+Business logic is centralized through:
+
+```text
+ITaskListService
+TaskListService
+```
+
+which serves as the application's single source of truth for tasks and appointments.
+
+Future architectural refinements may include:
+
+- MVVM
+- Feature-based folder structure
+- SQLite Persistence
+- Cloud Synchronization
+
+---
+
+## Project Structure
+
+```text
+BabyBuddyHelper/
+│
+├── Pages/
+│   ├── MainPage.xaml(.cs)
+│   ├── ChecklistPage.xaml(.cs)
+│   ├── AddTaskPage.xaml(.cs)
+│   └── CalendarPage.xaml(.cs)
+│
+├── Models/
+│   ├── TaskModel.cs
+│   └── AppointmentModel.cs
+│
+├── Services/
+│   └── TaskListService.cs
+│
+├── Interfaces/
+│   └── ITaskListService.cs
+│
+├── Platforms/
+├── Resources/
+│
+├── MauiProgram.cs
+├── App.xaml
+└── BabyBuddyHelper.csproj
+```
+
+---
+
+## Installation
+
+### Prerequisites
+
+- .NET 10 SDK
+- Visual Studio 2026 Community (or later)
+- .NET MAUI Workload
+
+Platform-specific requirements:
+
+- Android SDK (Android)
+- Xcode (iOS/macOS)
+- Windows 10/11 SDK (Windows)
+
+### Clone Repository
+
+```bash
+git clone https://github.com/MatheusCastro99/BabyBuddyHelper.git
+cd BabyBuddyHelper
+```
+
+### Restore Packages
+
+```bash
+dotnet restore
+```
+
+### Build
+
+```bash
+dotnet build
+```
+
+---
+
+## Development Practices
+
+This project follows modern software engineering practices:
+
+- Automated Build Validation
+- Continuous Integration with GitHub Actions
+- Security Scanning with CodeQL
+- Automated Dependency Updates via Dependabot
+- Dependency Injection
+- Interface-Based Service Design
+
+---
+
+## Roadmap
+
+### Near Term
+
+- Calendar UX improvements
+- Recurring appointments
+- Vaccine Record Tracking
+
+### Medium Term
+
+- SQLite persistence
+- Expanded baby-care tracking
+
+### Long Term
+
+- MVVM architecture
+- Cloud synchronization
+- Shared family calendars
+
+---
+
+## Organization
+
+Developed as part of:
+
+- Microsoft Software and Systems Academy (MSSA)
+- Cloud Application Development (PCAD21)
+
+---
+
+## Support
+
+Issues, feature requests, and feedback are welcome through GitHub Issues:
+
+https://github.com/MatheusCastro99/BabyBuddyHelper/issues
+
+---
+
+## Author
+
+**Matheus Castro**
+
+Repository:
+https://github.com/MatheusCastro99/BabyBuddyHelper
