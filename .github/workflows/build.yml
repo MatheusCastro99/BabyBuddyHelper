@@ -1,7 +1,13 @@
 name: Build Validation
 
 on:
+  workflow_dispatch:
   push:
+    branches:
+      - main
+      - master
+      - stage
+      - develop
   pull_request:
 
 permissions:
