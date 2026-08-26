@@ -1,10 +1,13 @@
 # BabyBuddyHelper
 
-[![Build Validation](https://github.com/MatheusCastro99/BabyBuddyHelper/actions/workflows/build-validation.yml/badge.svg)](https://github.com/MatheusCastro99/BabyBuddyHelper/actions/workflows/build-validation.yml)
+[![Build Validation](https://github.com/MatheusCastro99/BabyBuddyHelper/actions/workflows/build.yml/badge.svg)](https://github.com/MatheusCastro99/BabyBuddyHelper/actions/workflows/build.yml)
+[![CodeQL](https://github.com/MatheusCastro99/BabyBuddyHelper/actions/workflows/github-code-scanning/codeql/badge.svg)](https://github.com/MatheusCastro99/BabyBuddyHelper/security/code-scanning)
+![Dependabot](https://img.shields.io/badge/Dependabot-Enabled-br)
 
-![.NET](https://img.shields.io/badge/.NET-10-
-![Status](https://img.shields.io/badgetive%20Development-green
-![Platforms](https://img.shields.io/badge/Platforms-Windows%20%20macOS-success
+[![Status](https://img.shields.io/badge/Status-Active%20Development-orange)](https://github.com/MatheusCastro99/BabyBuddyHelper)
+
+[![.NET](https://img.shields.io/badge/.NET%20MAUI-Cross--Platform-blue)](https://learn.com/dotnet/maui/)
+[![Platforms](https://img.shields.io/badge/Platforms-Windows%20%7C%20Android%20%7C%20iOS%20%7C%20macOS-success)](https://github.com/MatheusCastro99)
 
 BabyBuddyHelper is a cross-platform parenting and baby-care assistant built with .NET MAUI. The application helps parents and caregivers organize tasks, track appointments, and visualize schedules through an intuitive checklist and calendar experience.
 
