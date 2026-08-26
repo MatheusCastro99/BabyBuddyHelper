@@ -7,7 +7,7 @@
 [![Status](https://img.shields.io/badge/Status-Active%20Development-orange)](https://github.com/MatheusCastro99/BabyBuddyHelper)
 
 [![.NET](https://img.shields.io/badge/.NET%20MAUI-Cross--Platform-blue)](https://learn.com/dotnet/maui/)
-[![Platforms](https://img.shields.io/badge/Platforms-Windows%20%7C%20Android%20%7C%20iOS%20%7C%20macOS-success)](https://github.com/MatheusCastro99)
+[![Platforms](https://img.shields.io/badge/Platforms-Windows%20%7C%20Android%20%7C%20iOS%20%7C%20macOS-success)](https://learn.com/dotnet/maui/)
 
 BabyBuddyHelper is a cross-platform parenting and baby-care assistant built with .NET MAUI. The application helps parents and caregivers organize tasks, track appointments, and visualize schedules through an intuitive checklist and calendar experience.
 
