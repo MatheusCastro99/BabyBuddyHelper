@@ -31,15 +31,15 @@ namespace BabyBuddyHelper.Services
             Tasks.Remove(task);
         }
 
-        public void Update(TaskModel updatedTask)
+        public void Update(TaskModel task)
         {
-            var existingTask = Tasks.FirstOrDefault(x => x.Id == updatedTask.Id);
+            var existingTask = Tasks.FirstOrDefault(x => x.Id == task.Id);
 
             if (existingTask is null)
                 return;
 
             var index = Tasks.IndexOf(existingTask);
-            Tasks[index] = updatedTask;
+            Tasks[index] = task;
         }
 
         public void OrganizeByPriority()

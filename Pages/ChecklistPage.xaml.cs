@@ -58,11 +58,10 @@ public partial class ChecklistPage : ContentPage
     {
         if (taskToEdit is null) return;
 
-        if (taskToEdit is AppointmentModel) //Checks task type to trigger right constructor on AddTaskPage
+        if (taskToEdit is AppointmentModel appointmentToEdit) //Checks task type to trigger right constructor on AddTaskPage
         {
             await Navigation.PushModalAsync(
-                new AddTaskPage(_taskListService, (AppointmentModel)taskToEdit));
-            return;
+                new AddTaskPage(_taskListService, appointmentToEdit));
         }
         else
         {

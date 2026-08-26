@@ -67,7 +67,7 @@ public partial class CalendarPage : ContentPage
         }
     }
 
-    private async void AddNewAppointment(DateTime? AppointmentDate) //Triggers AddTaskPage Modal with the specified DateTime from event handler
+    private async Task AddNewAppointment(DateTime? AppointmentDate) //Triggers AddTaskPage Modal with the specified DateTime from event handler
     {
         await Navigation.PushModalAsync(new AddTaskPage(_taskListService, AppointmentDate));
     }

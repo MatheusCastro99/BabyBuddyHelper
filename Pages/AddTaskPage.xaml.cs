@@ -21,12 +21,11 @@ public partial class AddTaskPage : ContentPage
         {                        //If it's from CalendarPage, fill information from time cell clicked
             IsAppointmentCheckBox.IsChecked = true;
             DateEntry.Date = dateTime;
-            StartingTimeEntry.Time = dateTime!.Value.TimeOfDay;
-            EndingTimeEntry.Time = dateTime!.Value.TimeOfDay.Add(new TimeSpan(01, 0, 0));
+            StartingTimeEntry.Time = dateTime.Value.TimeOfDay;
+            EndingTimeEntry.Time = dateTime.Value.TimeOfDay.Add(new TimeSpan(01, 0, 0));
         }
 
         Debug.WriteLine("Creating New Task");
-        //Debug.WriteLine($"{dateTime}");
     }
 
     public AddTaskPage(ITaskListService taskListService, TaskModel taskOnEdit) //Constructor that will be triggered on
