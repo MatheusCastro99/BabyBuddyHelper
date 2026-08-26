@@ -1,5 +1,12 @@
 # BabyBuddyHelper
 
+[![Build Validation](https://github.com/MatheusCastro99/BabyBuddyHelper/actions/workflows/build-validation.yml/badge.svg)](https://github.com/MatheusCastro99/BabyBuddyHelper/actions/workflows/build-validation.yml)
+ 
+![.NET](https://img.shieldsssPlatform-blue
+![Platform](https://img.shields.io/badge/Platforms-Windows%20Android%20iOScess
+
+![Status](https://img.shields.io/badge/Status-Activement-green
+
 A cross-platform mobile and desktop application designed to help parents manage and track daily baby care activities. Built with .NET MAUI, BabyBuddyHelper provides a simple yet effective way to organize feeding times, diaper changes, sleep schedules, and other essential tasks.
 
 ## Features
