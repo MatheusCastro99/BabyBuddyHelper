@@ -23,13 +23,25 @@ Complete Context:
 
 ## Current Architecture
 
--   Refer to: [Architecture Design] (docs/ArchitectureDesign.md)
+-   Refer to: [Architecture Design] (docs/ai/context/ARCHITECTURE_DESIGN.md)
+
+---
+
+## Current Project State
+
+-   For a focused look at the current project state, refer to: [Project State] (docs/ai/context/CURRENT_STATE.md)
 
 ---
 
 ## Project Roadmap
 
--   Refer to: [Roadmap] (docs/Roadmap.md)
+-   For a complete Roadmap reference, refer to: [Roadmap] (docs/ai/context/ROADMAP.md)
+
+---
+
+## Project Decisions
+
+-   For a complete list of project decisions, refer to: [Project Decisions] (docs/ai/context/DECISIONS.md)
 
 ---
 
@@ -39,32 +51,7 @@ Complete Context:
 
 ---
 
-## Project Decisions
-
--   For a complete list of project decisions, refer to: [Project Decisions] (docs/Decisions.md)
-
----
-
 -------------------------------------- END OF INDEXED PAGES ----------------------------------------------------
-
----
-
-# Current Stage:
-
-Phase 1 Pre-Redesign
-
-Status:
-
-- Functional Prototype
-- Active Development
-
-The application currently provides a complete foundation for:
-
-- Task Management
-- Appointment Management
-- Calendar Scheduling
-
-but is awaiting a major visual redesign.
 
 ---
 
@@ -330,21 +317,19 @@ Environment Variables
 
 ---
 
-# UI Redesign Roadmap
+# UI Guidelines
 
-## Next Major Effort:
+UI Modernization
 
-Phase 1 - UI Modernization
-
-Goals:
+### Goals:
 
 - Modern appearance
-- Soft color palette
+- Soft, calming color palette
 - Improved spacing
 - Better visual hierarchy
 - Improved data-entry experience
 
-Target feeling:
+### Target feeling:
 
 Parent Companion
 
@@ -352,7 +337,14 @@ NOT
 
 Business Productivity Tool
 
-For a complete roadmap, refer to: [Roadmap] (docs/Roadmap.md)
+### Avoid:
+
+- Harsh colors
+- Overly dense layouts
+- Corporate visual language
+
+For a look on the current project state, refer to: [Current State] (docs/ai/context/CURRENT_STATE.md)
+For a complete roadmap, refer to: [Roadmap] (docs/ai/context/ROADMAP.md)
 
 ## Planned Design System
 

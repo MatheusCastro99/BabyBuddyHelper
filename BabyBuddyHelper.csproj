@@ -76,7 +76,6 @@
 	  <None Include=".github\agents\Coordinator.agent.md" />
 	  <None Include=".github\agents\Q&amp;A.agent.md" />
 	  <None Include=".github\agents\TechLead.agent.md" />
-	  <None Include=".github\context\AI_CONTEXT.md" />
 	</ItemGroup>
 
 	<ItemGroup>
