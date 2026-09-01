@@ -73,12 +73,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <None Include=".github\agents\Coordinator.agent.md" />
-	  <None Include=".github\agents\Q&amp;A.agent.md" />
-	  <None Include=".github\agents\TechLead.agent.md" />
-	</ItemGroup>
-
-	<ItemGroup>
 		<PackageReference Include="DotNetEnv" Version="3.2.0" />
 		<PackageReference Include="Microsoft.Maui.Controls" Version="10.0.100" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="10.0.11" />
@@ -104,6 +98,10 @@
 	  <MauiXaml Update="Pages\CalendarPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include=".github\" />
 	</ItemGroup>
 
 </Project>
