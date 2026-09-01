@@ -2,51 +2,49 @@
 
 ## Structure:
 
-    Pages/
-    Models/
-    Services/
-    Interfaces/
+- Pages/
+- Models/
+- Services/
+- Interfaces/
 
 ## Current key files:
 
-    Models/
-        TaskModel.cs
-        AppointmentModel.cs
+Models/
 
-    Services/
-        TaskListService.cs
+- TaskModel.cs
+- AppointmentModel.cs
 
-    Interfaces/
-        ITaskListService.cs
+Services/
 
-    Pages/
-        ChecklistPage
-        AddTaskPage
-        CalendarPage
-        MainPage
+- TaskListService.cs
+
+Interfaces/
+    ITaskListService.cs
+
+Pages/
+
+- ChecklistPage
+- AddTaskPage
+- CalendarPage
+- MainPage
 
 ## Future Architecture Direction
 
 When architectural redesign becomes necessary, prefer:
 
-    Features/
-    │
-    ├── Tasks
-    │
-    ├── Appointments
-    │
-    ├── Calendar
-    │
-    ├── Dashboard
-    │
-    └── Shared
+Features/
+- Tasks
+- Appointments
+- Calendar
+- Dashboard
+- Shared
 
 Avoid:
 
-    Pages/
-    ViewModels/
-    Services/
-    Models/
+- Pages/
+- ViewModels/
+- Services/
+- Models/
 
 as top-level buckets.
 
