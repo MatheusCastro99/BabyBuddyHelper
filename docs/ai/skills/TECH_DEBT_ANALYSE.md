@@ -26,9 +26,9 @@ Do NOT use when:
 - Reviewing UI/UX decisions.
  
 Use:
-- CODE_REVIEWER for implementation quality.
-- ARCHITECTURE_REVIEWER for system design.
-- FEATURE_PLANNER for new feature proposals.
+- CODE_REVIEW for implementation quality.
+- ARCHITECTURE_REVIEW for system design.
+- FEATURE_PLAN for new feature proposals.
 
 ---
 

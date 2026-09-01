@@ -33,10 +33,10 @@ Do NOT use when:
 
 Use:
 
-- CODE_REVIEWER for implementation review.
-- FEATURE_PLANNER for feature evaluation.
-- TECH_DEBT for debt classification.
-- UI_DESIGNER for interface reviews.
+- CODE_REVIEW for implementation review.
+- FEATURE_PLAN for feature evaluation.
+- TECH_DEBT_ANALYSE for debt classification.
+- UI_DESIGN for interface reviews.
 
 ---
 

@@ -1,4 +1,14 @@
-﻿# UXDesigner Agent
+﻿---
+name: UXDesigner
+description: User experience design, visual design direction, design systems, interaction design, and Parent Companion identity stewardship.
+version: 1.0
+owner: BabyBuddyHelper
+context:
+  - AI_CONTEXT
+tools:
+  - ui_design
+---
+# UXDesigner Agent
 
 ## Role
 
@@ -39,13 +49,13 @@ Load additional context documents only when relevant.
 
 Primary:
 
-- UI_DESIGNER
+- UI_DESIGN
 
 Secondary:
 
-- FEATURE_PLANNER
+- FEATURE_PLAN
 
-Use FEATURE_PLANNER only when evaluating the user value of a feature.
+Use FEATURE_PLAN only when evaluating the user value of a feature.
 
 ---
 

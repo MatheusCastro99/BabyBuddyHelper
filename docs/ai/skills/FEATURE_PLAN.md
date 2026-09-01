@@ -34,10 +34,10 @@ Do NOT use when:
  
 Use:
  
-- CODE_REVIEWER for implementation quality.
-- ARCHITECTURE_REVIEWER for architectural analysis.
-- TECH_DEBT for refactoring priorities.
-- UI_DESIGNER for interface evaluation.
+- CODE_REVIEW for implementation quality.
+- ARCHITECTURE_REVIEW for architectural analysis.
+- TECH_DEBT_ANALYSE for refactoring priorities.
+- UI_DESIGN for interface evaluation.
 
 ---
 

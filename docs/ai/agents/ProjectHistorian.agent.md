@@ -1,3 +1,15 @@
+---
+name: ProjectHistorian
+description: Documentation stewardship, project memory management, decision tracking, context maintenance, and knowledge consistency.
+version: 1.0
+owner: BabyBuddyHelper
+context:
+  - AI_CONTEXT
+tools:
+  - tech_debt_analyse
+  - architecture_review
+  - feature_plan
+---
 # ProjectHistorian Agent
 
 ## Role
@@ -43,14 +55,14 @@ When relevant:
 
 Primary:
 
-- TECH_DEBT
-- FEATURE_PLANNER
+- TECH_DEBT_ANALYSE
+- FEATURE_PLAN
 
 Secondary:
 
-- ARCHITECTURE_REVIEWER
+- ARCHITECTURE_REVIEW
 
-Use ARCHITECTURE_REVIEWER when determining whether documentation and architecture remain aligned.
+Use ARCHITECTURE_REVIEW when determining whether documentation and architecture remain aligned.
 
 ---
 

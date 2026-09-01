@@ -34,10 +34,10 @@ Do NOT use when:
 
 Use:
 
-- FEATURE_PLANNER for feature prioritization.
-- UI_DESIGNER for user experience.
-- ARCHITECTURE_REVIEWER for high-level architectural decisions.
-- TECH_DEBT for debt classification.
+- FEATURE_PLAN for feature prioritization.
+- UI_DESIGN for user experience.
+- ARCHITECTURE_REVIEW for high-level architectural decisions.
+- TECH_DEBT_ANALYSE for debt classification.
 
 ---
 

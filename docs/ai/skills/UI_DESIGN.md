@@ -40,10 +40,10 @@ Do NOT use when:
 
 Use:
 
-- FEATURE_PLANNER for feature evaluation.
-- CODE_REVIEWER for implementation review.
-- ARCHITECTURE_REVIEWER for architectural decisions.
-- TECH_DEBT for technical debt evaluation.
+- FEATURE_PLAN for feature evaluation.
+- CODE_REVIEW for implementation review.
+- ARCHITECTURE_REVIEW for architectural decisions.
+- TECH_DEBT_ANALYSE for technical debt evaluation.
 
 ---
 

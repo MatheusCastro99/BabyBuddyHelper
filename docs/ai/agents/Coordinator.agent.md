@@ -1,4 +1,16 @@
-﻿# Coordinator Agent
+﻿---
+name: Coordinator
+description: Request router responsible for agent selection, skill recommendations, context recommendations, and workflow routing.
+version: 1.0
+owner: BabyBuddyHelper
+context:
+  - AI_CONTEXT
+tools:
+  - routing
+  - workflow_design
+---
+
+# Coordinator Agent
 
 ## Role
 
@@ -75,19 +87,19 @@ Identify the minimum required skills.
 Examples:
 
 Feature Planning
-→ FEATURE_PLANNER
+→ FEATURE_PLAN
 
 Code Review
-→ CODE_REVIEWER
+→ CODE_REVIEW
 
 Architecture Review
-→ ARCHITECTURE_REVIEWER
+→ ARCHITECTURE_REVIEW
 
 UI Design
-→ UI_DESIGNER
+→ UI_DESIGN
 
 Technical Debt
-→ TECH_DEBT
+→ TECH_DEBT_ANALYSE
 
 ---
 
@@ -164,9 +176,9 @@ Use For:
 
 Skills:
 
-- CODE_REVIEWER
-- ARCHITECTURE_REVIEWER
-- TECH_DEBT
+- CODE_REVIEW
+- ARCHITECTURE_REVIEW
+- TECH_DEBT_ANALYSE
 
 ---
 
@@ -184,7 +196,7 @@ Use For:
 
 Skills:
 
-- FEATURE_PLANNER
+- FEATURE_PLAN
 
 ---
 
@@ -203,7 +215,7 @@ Use For:
 
 Skills:
 
-- UI_DESIGNER
+- UI_DESIGN
 - UI_UX_REVIEWER
 
 ---
@@ -223,9 +235,9 @@ Use For:
 
 Skills:
 
-- TECH_DEBT
-- FEATURE_PLANNER
-- ARCHITECTURE_REVIEWER
+- TECH_DEBT_ANALYSE
+- FEATURE_PLAN
+- ARCHITECTURE_REVIEW
 
 ---
 
@@ -243,7 +255,7 @@ TechLead
 
 Skills:
 
-- FEATURE_PLANNER
+- FEATURE_PLAN
 
 ---
 
@@ -255,7 +267,7 @@ ProductOwner
 
 Skills:
 
-- FEATURE_PLANNER
+- FEATURE_PLAN
 
 ---
 
@@ -271,7 +283,7 @@ ProjectHistorian
 
 Skills:
 
-- ARCHITECTURE_REVIEWER
+- ARCHITECTURE_REVIEW
 
 ---
 
@@ -283,7 +295,7 @@ TechLead
 
 Skills:
 
-- CODE_REVIEWER
+- CODE_REVIEW
 
 ---
 
@@ -299,9 +311,9 @@ ProjectHistorian
 
 Skills:
 
-- TECH_DEBT
-- ARCHITECTURE_REVIEWER
-- CODE_REVIEWER
+- TECH_DEBT_ANALYSE
+- ARCHITECTURE_REVIEW
+- CODE_REVIEW
 
 ---
 
@@ -317,7 +329,7 @@ TechLead
 
 Skills:
 
-- UI_DESIGNER
+- UI_DESIGN
 
 ---
 
@@ -329,7 +341,7 @@ ProjectHistorian
 
 Skills:
 
-- TECH_DEBT
+- TECH_DEBT_ANALYSE
 
 ---
 
@@ -341,7 +353,7 @@ ProjectHistorian
 
 Skills:
 
-- FEATURE_PLANNER
+- FEATURE_PLAN
 
 ---
 

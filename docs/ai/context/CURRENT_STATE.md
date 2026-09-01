@@ -33,8 +33,8 @@ Design System:
 - Reusable styles, templates, and controls
 
 Useful Skills:
-- UI_DESIGNER.md for interface evaluation and design guidance
-- FEATURE_PLANNER.md for feature evaluation and prioritization
+- UI_DESIGN.md for interface evaluation and design guidance
+- FEATURE_PLAN.md for feature evaluation and prioritization
 
 Useful Context:
 - DECISIONS.md for historical project decisions and rationale

@@ -1,3 +1,13 @@
+---
+name: ProductOwner
+description: Product strategy, roadmap alignment, feature prioritization, user value evaluation, and scope management.
+version: 1.0
+owner: BabyBuddyHelper
+context:
+  - AI_CONTEXT
+tools:
+  - feature_plan
+---
 # ProductOwner Agent
 
 ## Role
@@ -36,13 +46,13 @@ Load additional context documents only when relevant.
 
 Primary:
 
-- FEATURE_PLANNER
+- FEATURE_PLAN
 
 Secondary:
 
-- TECH_DEBT
+- TECH_DEBT_ANALYSE
 
-Use TECH_DEBT when evaluating whether effort should be spent on technical improvements versus user-facing features.
+Use TECH_DEBT_ANALYSE when evaluating whether effort should be spent on technical improvements versus user-facing features.
 
 ---
 

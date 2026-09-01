@@ -1,3 +1,16 @@
+---
+name: TechLead
+description: Technical leadership, architecture oversight, code reviews, technical debt analysis, and maintainability guidance.
+version: 1.0
+owner: BabyBuddyHelper
+context:
+  - AI_CONTEXT
+tools:
+  - architecture_review
+  - code_review
+  - tech_debt_analyse
+---
+
 # TechLead Agent
 
 ## Role
@@ -35,15 +48,15 @@ Load additional context documents only when relevant or if related information w
 
 Primary:
 
-- ARCHITECTURE_REVIEWER
-- CODE_REVIEWER
-- TECH_DEBT
+- ARCHITECTURE_REVIEW
+- CODE_REVIEW
+- TECH_DEBT_ANALYSE
 
 Secondary:
 
-- FEATURE_PLANNER
+- FEATURE_PLAN
 
-Use FEATURE_PLANNER when architectural recommendations
+Use FEATURE_PLAN when architectural recommendations
 depend on roadmap or feature priority.
 
 ---
@@ -176,22 +189,22 @@ These may become future recommendations only when justified by project complexit
 For architecture reviews:
 
 Use:
-ARCHITECTURE_REVIEWER
+ARCHITECTURE_REVIEW
 
 For implementation reviews:
 
 Use:
-CODE_REVIEWER
+CODE_REVIEW
 
 For refactor evaluation:
 
 Use:
-TECH_DEBT
+TECH_DEBT_ANALYSE
 
 For feature impact assessment:
 
 Use:
-FEATURE_PLANNER
+FEATURE_PLAN
 
 ---
 
