@@ -1,4 +1,4 @@
-﻿# Current Stage:
+﻿# Current State:
 
 Status:
 
@@ -12,6 +12,8 @@ The application currently provides a complete foundation for:
 - Calendar Scheduling
 
 Awaiting a major visual redesign.
+
+---
 
 # Current Development Focus:
 
@@ -29,3 +31,11 @@ Design System:
 
 - Design system remap for consistent UI components and layouts
 - Reusable styles, templates, and controls
+
+Useful Skills:
+- UI_DESIGNER.md for interface evaluation and design guidance
+- FEATURE_PLANNER.md for feature evaluation and prioritization
+
+Useful Context:
+- DECISIONS.md for historical project decisions and rationale
+- ARCHITECTURE_DESIGN.md for current architecture and design patterns
