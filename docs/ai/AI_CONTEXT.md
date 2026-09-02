@@ -45,6 +45,12 @@ Complete Context:
 
 ---
 
+## UI Guidelines
+
+-   For the visual design and UX guardrails, refer to: [UI Guidelines] (docs/ai/context/UI_GUIDELINES.md)
+
+---
+
 ## Current Feature Set
 
 -   For a complete look on current and planned features, refer to: [Feature Set] (docs/FeaturesSet.md)
