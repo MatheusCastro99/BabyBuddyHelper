@@ -2,20 +2,26 @@
 
 [![Build Validation](https://github.com/MatheusCastro99/BabyBuddyHelper/actions/workflows/build.yml/badge.svg)](https://github.com/MatheusCastro99/BabyBuddyHelper/actions/workflows/build.yml)
 [![CodeQL](https://github.com/MatheusCastro99/BabyBuddyHelper/actions/workflows/github-code-scanning/codeql/badge.svg)](https://github.com/MatheusCastro99/BabyBuddyHelper/security/code-scanning)
-![Dependabot](https://img.shields.io/badge/Dependabot-Enabled-br)
+![Dependabot](https://img.shields.io/badge/Dependabot-Enabled-brightgreen)
 
 [![Status](https://img.shields.io/badge/Status-Active%20Development-orange)](https://github.com/MatheusCastro99/BabyBuddyHelper)
 
 [![.NET](https://img.shields.io/badge/.NET%20MAUI-Cross--Platform-blue)](https://learn.com/dotnet/maui/)
 [![Platforms](https://img.shields.io/badge/Platforms-Windows%20%7C%20Android%20%7C%20iOS%20%7C%20macOS-success)](https://learn.com/dotnet/maui/)
 
-BabyBuddyHelper is a cross-platform parenting and baby-care assistant built with .NET MAUI. The application helps parents and caregivers organize tasks, track appointments, and visualize schedules through an intuitive checklist and calendar experience.
+BabyBuddyHelper is a cross-platform parenting companion built with .NET MAUI. Today, it helps parents and caregivers organize tasks, track appointments, and visualize schedules through a checklist and calendar experience.
 
-The project is currently under active development with a focus on appointment management, scheduling, reminders, and future baby-care tracking features.
+The project is currently a functional prototype in active development. Its current focus is building a reliable foundation for tasks, appointments, and scheduling while the domain and user experience continue to take shape.
+
+## Vision and Experience
+
+BabyBuddyHelper is evolving from a task and appointment manager into a warm, friendly, and supportive companion for everyday family life. It is intended to feel low-stress and encouraging, helping caregivers keep track of routines and baby-care activities without becoming another productivity application.
+
+The long-term experience may include a lightweight companion character that surfaces today's appointments, outstanding tasks, positive reinforcement, and gentle reminders. This companion is intended to be welcoming and supportive, not an AI chatbot. Companion behavior, persistence, cloud synchronization, and AI-driven interactions are planned direction rather than shipped functionality.
 
 ---
 
-## Features
+## Implemented Features
 
 ### Task Management
 
@@ -49,6 +55,18 @@ The project is currently under active development with a focus on appointment ma
 - Android
 - iOS
 - macOS
+
+## Planned Direction
+
+- Visual redesign with a calm, encouraging design system
+- Companion character and lightweight supportive interactions
+- Toast messages for task and appointment activity
+- Local persistence for tasks and appointments
+- Backup and restore
+- Cloud synchronization and shared family experiences
+- Later, carefully scoped AI-supported interactions
+
+These capabilities are planned and are not included in the current prototype.
 
 ---
 
@@ -100,12 +118,15 @@ TaskListService
 
 which serves as the application's single source of truth for tasks and appointments.
 
+The current data source is in-memory and uses mock data. Persistence has not yet been implemented. All screens should continue to consume task and appointment state through `TaskListService`, and Syncfusion Scheduler types should remain in the UI layer.
+
 Future architectural refinements may include:
 
-- MVVM
 - Feature-based folder structure
 - SQLite Persistence
 - Cloud Synchronization
+
+MVVM remains deferred until the application's complexity justifies it.
 
 ---
 
@@ -192,20 +213,24 @@ This project follows modern software engineering practices:
 
 ### Near Term
 
+- UI redesign and design-system remap
 - Calendar UX improvements
-- Recurring appointments
-- Vaccine Record Tracking
+- Companion character direction and toast messages
 
 ### Medium Term
 
 - SQLite persistence
 - Expanded baby-care tracking
+- Database backup and restore
 
 ### Long Term
 
-- MVVM architecture
 - Cloud synchronization
 - Shared family calendars
+- Interactive companion behavior
+- Carefully scoped AI-supported interactions
+
+The roadmap is directional; planned items should not be read as currently available features.
 
 ---
 
