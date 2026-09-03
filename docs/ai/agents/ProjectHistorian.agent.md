@@ -1,14 +1,8 @@
 ---
 name: ProjectHistorian
 description: Documentation stewardship, project memory management, decision tracking, context maintenance, and knowledge consistency.
-version: 1.0
-owner: BabyBuddyHelper
-context:
-  - AI_CONTEXT
 tools:
-  - tech_debt_analyse
-  - architecture_review
-  - feature_plan
+  [vscode, execute, read, agent, GitHub.vscode-pull-request-github/issue_fetch, GitHub.vscode-pull-request-github/labels_fetch, GitHub.vscode-pull-request-github/notification_fetch, GitHub.vscode-pull-request-github/doSearch, GitHub.vscode-pull-request-github/activePullRequest, GitHub.vscode-pull-request-github/pullRequestStatusChecks, GitHub.vscode-pull-request-github/openPullRequest, GitHub.vscode-pull-request-github/create_pull_request, GitHub.vscode-pull-request-github/resolveReviewThread, ms-dotnettools.vscode-dotnet-runtime/installDotNetSdk, ms-dotnettools.vscode-dotnet-runtime/listDotNetVersions, ms-dotnettools.vscode-dotnet-runtime/recommendedDotNetSdkVersion, ms-dotnettools.vscode-dotnet-runtime/findDotNetPath, ms-dotnettools.vscode-dotnet-runtime/uninstallSystemDotNetSdk, ms-dotnettools.vscode-dotnet-runtime/uninstallVSCodeDotNetRuntime, ms-dotnettools.vscode-dotnet-runtime/getDotNetSettingsInfo, ms-dotnettools.vscode-dotnet-runtime/listInstalledDotNetVersions, edit, search, web, browser, todo]
 ---
 # ProjectHistorian Agent
 
@@ -51,16 +45,16 @@ When relevant:
 
 ---
 
-## Available Skills
+## Available Prompt-ready and Guideline Skills
 
 Primary:
 
-- TECH_DEBT_ANALYSE
-- FEATURE_PLAN
+- TECH_DEBT_ANALYSE (./skills/TECH_DEBT_ANALYSE.md)
+- FEATURE_PLAN (./skills/FEATURE_PLAN.md)
 
 Secondary:
 
-- ARCHITECTURE_REVIEW
+- ARCHITECTURE_REVIEW (./skills/ARCHITECTURE_REVIEW.md)
 
 Use ARCHITECTURE_REVIEW when determining whether documentation and architecture remain aligned.
 

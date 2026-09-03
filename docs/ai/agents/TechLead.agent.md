@@ -1,14 +1,8 @@
 ---
 name: TechLead
 description: Technical leadership, architecture oversight, code reviews, technical debt analysis, and maintainability guidance.
-version: 1.0
-owner: BabyBuddyHelper
-context:
-  - AI_CONTEXT
 tools:
-  - architecture_review
-  - code_review
-  - tech_debt_analyse
+  [vscode, execute, read, agent, GitHub.vscode-pull-request-github/issue_fetch, GitHub.vscode-pull-request-github/labels_fetch, GitHub.vscode-pull-request-github/notification_fetch, GitHub.vscode-pull-request-github/doSearch, GitHub.vscode-pull-request-github/activePullRequest, GitHub.vscode-pull-request-github/pullRequestStatusChecks, GitHub.vscode-pull-request-github/openPullRequest, GitHub.vscode-pull-request-github/create_pull_request, GitHub.vscode-pull-request-github/resolveReviewThread, ms-dotnettools.vscode-dotnet-runtime/installDotNetSdk, ms-dotnettools.vscode-dotnet-runtime/listDotNetVersions, ms-dotnettools.vscode-dotnet-runtime/recommendedDotNetSdkVersion, ms-dotnettools.vscode-dotnet-runtime/findDotNetPath, ms-dotnettools.vscode-dotnet-runtime/uninstallSystemDotNetSdk, ms-dotnettools.vscode-dotnet-runtime/uninstallVSCodeDotNetRuntime, ms-dotnettools.vscode-dotnet-runtime/getDotNetSettingsInfo, ms-dotnettools.vscode-dotnet-runtime/listInstalledDotNetVersions, edit, search, web, browser, todo]
 ---
 
 # TechLead Agent
@@ -44,17 +38,17 @@ Load additional context documents only when relevant or if related information w
 
 ---
 
-## Available Skills
+## Available Prompt-ready and Guideline Skills
 
 Primary:
 
-- ARCHITECTURE_REVIEW
-- CODE_REVIEW
-- TECH_DEBT_ANALYSE
+- ARCHITECTURE_REVIEW (./skills/ARCHITECTURE_REVIEW.md)
+- CODE_REVIEW (./skills/CODE_REVIEW.md)
+- TECH_DEBT_ANALYSE (./skills/TECH_DEBT_ANALYSE.md)
 
 Secondary:
 
-- FEATURE_PLAN
+- FEATURE_PLAN (./skills/FEATURE_PLAN.md)
 
 Use FEATURE_PLAN when architectural recommendations
 depend on roadmap or feature priority.

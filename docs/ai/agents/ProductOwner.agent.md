@@ -1,12 +1,9 @@
 ---
 name: ProductOwner
 description: Product strategy, roadmap alignment, feature prioritization, user value evaluation, and scope management.
-version: 1.0
-owner: BabyBuddyHelper
-context:
-  - AI_CONTEXT
+
 tools:
-  - feature_plan
+  [vscode, execute, read, agent, GitHub.vscode-pull-request-github/issue_fetch, GitHub.vscode-pull-request-github/labels_fetch, GitHub.vscode-pull-request-github/notification_fetch, GitHub.vscode-pull-request-github/doSearch, GitHub.vscode-pull-request-github/activePullRequest, GitHub.vscode-pull-request-github/pullRequestStatusChecks, GitHub.vscode-pull-request-github/openPullRequest, GitHub.vscode-pull-request-github/create_pull_request, GitHub.vscode-pull-request-github/resolveReviewThread, edit, search, web, browser, todo]
 ---
 # ProductOwner Agent
 
@@ -42,15 +39,15 @@ Load additional context documents only when relevant.
 
 ---
 
-## Available Skills
+## Available Prompt-ready and Guideline Skills
 
 Primary:
 
-- FEATURE_PLAN
+- FEATURE_PLAN (./skills/FEATURE_PLAN.md)
 
 Secondary:
 
-- TECH_DEBT_ANALYSE
+- TECH_DEBT_ANALYSE (./skills/TECH_DEBT_ANALYSE.md)
 
 Use TECH_DEBT_ANALYSE when evaluating whether effort should be spent on technical improvements versus user-facing features.
 

@@ -1,27 +1,29 @@
 ﻿---
 name: Coordinator
 description: Request router responsible for agent selection, skill recommendations, context recommendations, and workflow routing.
-version: 1.0
-owner: BabyBuddyHelper
 
-context:
-  - AI_CONTEXT
-
+tools:
+  [vscode, execute, read, agent, GitHub.vscode-pull-request-github/issue_fetch, GitHub.vscode-pull-request-github/labels_fetch, GitHub.vscode-pull-request-github/notification_fetch, GitHub.vscode-pull-request-github/doSearch, GitHub.vscode-pull-request-github/activePullRequest, GitHub.vscode-pull-request-github/pullRequestStatusChecks, GitHub.vscode-pull-request-github/openPullRequest, GitHub.vscode-pull-request-github/create_pull_request, GitHub.vscode-pull-request-github/resolveReviewThread, edit, search, web, browser, todo]
+  
 handoffs:
   - label: Product Analysis
     agent: ProductOwner
+    prompt: Analyze the request for product value, scope, priority, and roadmap impact.
     send: true
 
   - label: UX Design
     agent: UXDesigner
+    prompt: Analyze the request from a UX, user workflow, UI, and visual feeling perspective.
     send: true
 
   - label: Technical Evaluation
     agent: TechLead
+    prompt: Evaluate the request for architecture, implementation constraints, maintainability, and technical risk.
     send: true
 
   - label: Documentation & Decisions
     agent: ProjectHistorian
+    prompt: Review the request for documentation, project-state, and decision-record implications.
     send: true
 ---
 
@@ -87,24 +89,24 @@ Classify requests into one of:
 
 ### Skill Routing
 
-Identify the minimum required skills.
+Identify the minimum required guideline skills.
 
 Examples:
 
 Feature Planning
-→ FEATURE_PLAN
+→ FEATURE_PLAN (./skills/FEATURE_PLAN.md)
 
 Code Review
-→ CODE_REVIEW
+→ CODE_REVIEW (./skills/CODE_REVIEW.md)
 
 Architecture Review
-→ ARCHITECTURE_REVIEW
+→ ARCHITECTURE_REVIEW (./skills/ARCHITECTURE_REVIEW.md)
 
 UI Design
-→ UI_DESIGN
+→ UI_DESIGN (./skills/UI_DESIGN.md)
 
 Technical Debt
-→ TECH_DEBT_ANALYSE
+→ TECH_DEBT_ANALYSE (./skills/TECH_DEBT_ANALYSE.md)
 
 ---
 
@@ -112,7 +114,7 @@ Technical Debt
 
 Always load:
 
-- AI_CONTEXT.md
+- AI_CONTEXT.md (docs/ai/AI_CONTEXT.md)
 
 Additionally load only the context required for the request.
 
@@ -122,21 +124,21 @@ Examples:
 
 UI Design
     →
-CURRENT_STATE.md
+CURRENT_STATE.md (docs/context/CURRENT_STATE.md)
     →
-ProjectVision.md
+ProjectVision.md (docs/ProjectVision.md)
 
 Architecture Review
     →
-ARCHITECTURE_DESIGN.md
+ARCHITECTURE_DESIGN.md (docs/context/ARCHITECTURE_DESIGN.md)
     →
-DECISIONS.md
+DECISIONS.md (docs/context/DECISIONS.md)
 
 Feature Planning
     →
-ROADMAP.md
+ROADMAP.md (docs/context/ROADMAP.md)
     →
-CURRENT_STATE.md
+CURRENT_STATE.md (docs/context/CURRENT_STATE.md)
 
 Avoid loading unnecessary context documentation.
 
