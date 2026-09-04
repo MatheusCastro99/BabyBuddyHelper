@@ -4,7 +4,14 @@ description: User experience design, visual design direction, design systems, in
 
 tools:
   [vscode, execute, read, agent, GitHub.vscode-pull-request-github/issue_fetch, GitHub.vscode-pull-request-github/labels_fetch, GitHub.vscode-pull-request-github/notification_fetch, GitHub.vscode-pull-request-github/doSearch, GitHub.vscode-pull-request-github/activePullRequest, GitHub.vscode-pull-request-github/pullRequestStatusChecks, GitHub.vscode-pull-request-github/openPullRequest, GitHub.vscode-pull-request-github/create_pull_request, GitHub.vscode-pull-request-github/resolveReviewThread, edit, search, web, browser, todo]
+
+handoffs:
+  - label: Technical Feasibility Review
+    agent: TechLead
+    prompt: Review proposed UX/UI solution for feasibility, implementation complexity, maintainability, and technical constraints.
+    send: true
 ---
+
 # UXDesigner Agent
 
 ## Role

@@ -25,6 +25,11 @@ handoffs:
     agent: ProjectHistorian
     prompt: Review the request for documentation, project-state, and decision-record implications.
     send: true
+
+  - label: Technical Validation
+    agent: RedTeam
+    prompt: Perform goal validation, architecture validation, implementation validation, and critique validation.
+    send: true
 ---
 
 # Coordinator Agent

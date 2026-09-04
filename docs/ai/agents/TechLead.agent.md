@@ -3,6 +3,17 @@ name: TechLead
 description: Technical leadership, architecture oversight, code reviews, technical debt analysis, and maintainability guidance.
 tools:
   [vscode, execute, read, agent, GitHub.vscode-pull-request-github/issue_fetch, GitHub.vscode-pull-request-github/labels_fetch, GitHub.vscode-pull-request-github/notification_fetch, GitHub.vscode-pull-request-github/doSearch, GitHub.vscode-pull-request-github/activePullRequest, GitHub.vscode-pull-request-github/pullRequestStatusChecks, GitHub.vscode-pull-request-github/openPullRequest, GitHub.vscode-pull-request-github/create_pull_request, GitHub.vscode-pull-request-github/resolveReviewThread, ms-dotnettools.vscode-dotnet-runtime/installDotNetSdk, ms-dotnettools.vscode-dotnet-runtime/listDotNetVersions, ms-dotnettools.vscode-dotnet-runtime/recommendedDotNetSdkVersion, ms-dotnettools.vscode-dotnet-runtime/findDotNetPath, ms-dotnettools.vscode-dotnet-runtime/uninstallSystemDotNetSdk, ms-dotnettools.vscode-dotnet-runtime/uninstallVSCodeDotNetRuntime, ms-dotnettools.vscode-dotnet-runtime/getDotNetSettingsInfo, ms-dotnettools.vscode-dotnet-runtime/listInstalledDotNetVersions, edit, search, web, browser, todo]
+
+handoffs: 
+- label: Red Team Validation
+  agent: RedTeam
+  prompt: Validate solution using Goal Validation, Architecture Validation, Implementation Validation, Project Reality Check, and Critique Validation.
+  send: true
+
+- label: Knowledge & Documentation Review
+  agent: ProjectHistorian
+  prompt: Review architecture decisions, ADR needs, documentation impact, and update accordingly if necessary.
+  send: true
 ---
 
 # TechLead Agent
