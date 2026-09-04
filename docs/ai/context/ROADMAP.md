@@ -15,9 +15,24 @@ Design System:
 - Design system remap for consistent UI components and layouts
 - Reusable styles, templates, and controls
 
+Main Page:
+- Turn Main Page into an informative day dashboard.
+- Dashboard will include Today's appointment, Baby(ies) age, Baby(ies) weight
+
 ---
 
 ## Phase 2:
+
+BabyModel:
+- New model that will serve as different profiles for different babies / children
+- Initial properties:
+	- Name (string), Age (int), WeightInLbs (double), HeightInFt (double), LastFeed (DateTime), LastSleep (DateTime)
+
+Baby Profiles:
+
+- Ability to add, edit, and delete babies profiles
+- Refactor Tasks and Appointments to hold an optional BabyName property, indicating which baby the task is related to 
+- Add optional filter on both list and calendar to filter Tasks and Appointments by baby
 
 Companion Character:
 
