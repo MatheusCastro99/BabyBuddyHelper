@@ -3,26 +3,24 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:scheduler="clr-namespace:Syncfusion.Maui.Scheduler;assembly=Syncfusion.Maui.Scheduler"
              x:Class="BabyBuddyHelper.Pages.CalendarPage"
-             Title="CalendarPage">
-    <Grid RowDefinitions="Auto, *">
-        <Label 
-            Grid.Row="0"
-            Text="What your month looks like!"
-            Style="{StaticResource SubHeadline}"
-            Margin="20"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
+             Title="CalendarPage"
+             BackgroundColor="{StaticResource BabyBuddyBackground}">
+    <Grid RowDefinitions="Auto, *" Padding="20" RowSpacing="16">
+        <VerticalStackLayout Grid.Row="0" Spacing="6" Margin="0,8,0,0">
+            <Label Text="Your month" Style="{StaticResource PageTitle}" HorizontalTextAlignment="Center" />
+            <Label Text="A gentle look at what’s coming up." Style="{StaticResource BodyText}" HorizontalTextAlignment="Center" />
+        </VerticalStackLayout>
 
-        <!--Further Implementation Needed-->
-        <scheduler:SfScheduler
-            Grid.Row="1"
-            x:Name="Calendar"
-            View="Week"
-            IsAppointmentToolTipEnabled="True"
-            DoubleTapped="OnCalendarDoubleTapped"
-            SelectedDate="{Binding SelectedDate, Mode=TwoWay}"
-            BackgroundColor="BlueViolet"
-            Margin="75, 0, 75, 20">
-        </scheduler:SfScheduler>
+        <Border Grid.Row="1" Padding="12" BackgroundColor="{StaticResource BabyBuddySurface}" StrokeThickness="0" StrokeShape="RoundRectangle 28">
+            <scheduler:SfScheduler
+                x:Name="Calendar"
+                View="Week"
+                IsAppointmentToolTipEnabled="True"
+                DoubleTapped="OnCalendarDoubleTapped"
+                SelectedDate="{Binding SelectedDate, Mode=TwoWay}"
+                BackgroundColor="{StaticResource BabyBuddySurface}"
+                MinimumHeightRequest="420">
+            </scheduler:SfScheduler>
+        </Border>
     </Grid>
 </ContentPage>

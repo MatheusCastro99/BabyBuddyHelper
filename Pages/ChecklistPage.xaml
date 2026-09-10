@@ -5,115 +5,93 @@
              xmlns:styles="clr-namespace:BabyBuddyHelper.Resources.Styles"
              x:Class="BabyBuddyHelper.Pages.ChecklistPage"
              x:Name="ChecklistRoot"
-             Title="ChecklistPage">
+             Title="ChecklistPage"
+             BackgroundColor="{StaticResource BabyBuddyBackground}">
 
     <ContentPage.Resources>
         <ResourceDictionary>
             <styles:IsAppointmentModelConverter x:Key="IsAppointmentModelConverter"/>
         </ResourceDictionary>
     </ContentPage.Resources>
-    
-        <Grid RowDefinitions="Auto, Auto, *, Auto">
-            <Label
-                Grid.Row="0"
-                Style="{StaticResource SubHeadline}"
-                Text="Classes | Appointments | Task"
-                VerticalOptions="Center" 
-                HorizontalOptions="Center" 
-                Margin="0,20"/>
 
-            <!--#region Filters-->
-            <HorizontalStackLayout
-                Grid.Row="1"
-                x:Name="FiltersLayout"
-                Padding="10"
-                MaximumWidthRequest="750">
+    <Grid RowDefinitions="Auto, Auto, *, Auto" Padding="20" RowSpacing="16">
+        <VerticalStackLayout Grid.Row="0" Spacing="6" Margin="0,8,0,0">
+            <Label Text="Today's rhythm" Style="{StaticResource PageTitle}" HorizontalTextAlignment="Center" />
+            <Label Text="Small steps, steady care." Style="{StaticResource BodyText}" HorizontalTextAlignment="Center" />
+        </VerticalStackLayout>
 
-                <Label
-                    Text="Pending First"
-                    VerticalOptions="Center"
-                    Margin="0, 0, 10, 0"/>
+        <Border Grid.Row="1" Padding="14,10" StrokeThickness="0" BackgroundColor="{StaticResource BabyBuddySurface}" MaximumWidthRequest="650">
+            <HorizontalStackLayout HorizontalOptions="Center" Spacing="12">
+                <Label Text="Pending first" VerticalOptions="Center" Style="{StaticResource BodyText}" />
                 <Switch 
                     IsToggled="{Binding isPendingFirst}"
                     Toggled="IsPendingFirstHandler"
-                    OnColor="Green"
+                    OnColor="{StaticResource BabyBuddySuccess}"
                     ThumbColor="White" />
             </HorizontalStackLayout>
-            <!--#endregion-->
+        </Border>
 
-            <!--#region Tasks and Appointements List-->
-            <CollectionView Grid.Row="2" ItemsSource="{Binding TaskList}" SelectionMode="Single" MaximumWidthRequest="750">
-                <CollectionView.ItemTemplate>
-                    <DataTemplate>
-                        <Border Padding="15" Margin="10" BackgroundColor="Gray" StrokeShape="RoundRectangle 15,15,15,15" >
-                            <StackLayout Spacing="3">
-                                <Grid ColumnDefinitions="*, Auto" VerticalOptions="Center">
-                                    <Label Text="{Binding TaskName}" FontSize="16" FontAttributes="Bold" Grid.Column="0"/>
-                                    <Grid ColumnDefinitions="*, Auto, Auto" Grid.Column="1" ColumnSpacing="10">
-                                        <CheckBox IsChecked="{Binding IsCompleted}" HorizontalOptions="End" Grid.Column="0"/>
-                                        <BoxView WidthRequest="1" BackgroundColor="LightGray" VerticalOptions="Fill" Margin="40, 0 ,0 , 0"/>
+        <CollectionView Grid.Row="2" ItemsSource="{Binding TaskList}" SelectionMode="Single" MaximumWidthRequest="750">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Border Padding="16" Margin="0,0,0,12" BackgroundColor="{StaticResource BabyBuddySurface}" StrokeThickness="0" StrokeShape="RoundRectangle 22">
+                        <StackLayout Spacing="10">
+                            <Grid ColumnDefinitions="*, Auto" VerticalOptions="Center">
+                                <Label Text="{Binding TaskName}" FontSize="18" FontAttributes="Bold" Grid.Column="0" />
+                                <Grid ColumnDefinitions="Auto, Auto, Auto" Grid.Column="1" ColumnSpacing="10" VerticalOptions="Center">
+                                    <CheckBox IsChecked="{Binding IsCompleted}" HorizontalOptions="End" Grid.Column="0" />
+                                    <BoxView WidthRequest="1" BackgroundColor="{StaticResource BabyBuddyBorder}" Grid.Column="1" Margin="4,0" HeightRequest="22" />
 
-                                        <!-- Custom Vector Path Fill / Edit note Icon -->
-                                        <Path Data="M535.6 85.7C513.7 63.8 478.3 63.8 456.4 85.7L432 110.1L529.9 208L554.3 183.6C576.2 161.7 576.2 126.3 554.3 104.4L535.6 85.7zM236.4 305.7C230.3 311.8 225.6 319.3 222.9 327.6L193.3 416.4C190.4 425 192.7 434.5 199.1 441C205.5 447.5 215 449.7 223.7 446.8L312.5 417.2C320.7 414.5 328.2 409.8 334.4 403.7L496 241.9L398.1 144L236.4 305.7zM160 128C107 128 64 171 64 224L64 480C64 533 107 576 160 576L416 576C469 576 512 533 512 480L512 384C512 366.3 497.7 352 480 352C462.3 352 448 366.3 448 384L448 480C448 497.7 433.7 512 416 512L160 512C142.3 512 128 497.7 128 480L128 224C128 206.3 142.3 192 160 192L256 192C273.7 192 288 177.7 288 160C288 142.3 273.7 128 256 128L160 128z"
-                                              HeightRequest="24"
-                                              WidthRequest="24"
-                                              Grid.Column="1">
-                                            <Path.GestureRecognizers>
-                                                <TapGestureRecognizer
-                                                    Command="{Binding Source={x:Reference ChecklistRoot}, Path=EditTaskCommand}"
-                                                    CommandParameter="{Binding .}"/>
-                                            </Path.GestureRecognizers>
-                                        </Path>
+                                    <Path Data="M535.6 85.7C513.7 63.8 478.3 63.8 456.4 85.7L432 110.1L529.9 208L554.3 183.6C576.2 161.7 576.2 126.3 554.3 104.4L535.6 85.7zM236.4 305.7C230.3 311.8 225.6 319.3 222.9 327.6L193.3 416.4C190.4 425 192.7 434.5 199.1 441C205.5 447.5 215 449.7 223.7 446.8L312.5 417.2C320.7 414.5 328.2 409.8 334.4 403.7L496 241.9L398.1 144L236.4 305.7zM160 128C107 128 64 171 64 224L64 480C64 533 107 576 160 576L416 576C469 576 512 533 512 480L512 384C512 366.3 497.7 352 480 352C462.3 352 448 366.3 448 384L448 480C448 497.7 433.7 512 416 512L160 512C142.3 512 128 497.7 128 480L128 224C128 206.3 142.3 192 160 192L256 192C273.7 192 288 177.7 288 160C288 142.3 273.7 128 256 128L160 128z"
+                                          HeightRequest="20"
+                                          WidthRequest="20"
+                                          Fill="{StaticResource BabyBuddyPrimary}"
+                                          Grid.Column="1">
+                                        <Path.GestureRecognizers>
+                                            <TapGestureRecognizer Command="{Binding Source={x:Reference ChecklistRoot}, Path=EditTaskCommand}" CommandParameter="{Binding .}"/>
+                                        </Path.GestureRecognizers>
+                                    </Path>
 
-                                        <!-- Custom Vector Path Fill / Trash can delete Icon -->
-                                        <Path Data="M232.7 69.9L224 96L128 96C110.3 96 96 110.3 96 128C96 145.7 110.3 160 128 160L512 160C529.7 160 544 145.7 544 128C544 110.3 529.7 96 512 96L416 96L407.3 69.9C402.9 56.8 390.7 48 376.9 48L263.1 48C249.3 48 237.1 56.8 232.7 69.9zM512 208L128 208L149.1 531.1C150.7 556.4 171.7 576 197 576L443 576C468.3 576 489.3 556.4 490.9 531.1L512 208z"
-                                              HeightRequest="24"
-                                              WidthRequest="24"
-                                              Grid.Column="2">
-                                            <Path.GestureRecognizers>
-                                                <!--Looks for ChecklistPage file, then looks for DeleteTaskCommand, a command that is bound to the DeleteTask method-->
-                                                <TapGestureRecognizer 
-                                                    Command="{Binding Source={x:Reference ChecklistRoot}, Path=DeleteTaskCommand}"
-                                                    CommandParameter="{Binding .}"/>
-                                                <!--"Binding ." acts similar as the "this" keyword, passing the TaskModel context that the path is inserted in-->
-                                            </Path.GestureRecognizers>
-                                        </Path>
-                                    </Grid>
+                                    <Path Data="M232.7 69.9L224 96L128 96C110.3 96 96 110.3 96 128C96 145.7 110.3 160 128 160L512 160C529.7 160 544 145.7 544 128C544 110.3 529.7 96 512 96L416 96L407.3 69.9C402.9 56.8 390.7 48 376.9 48L263.1 48C249.3 48 237.1 56.8 232.7 69.9zM512 208L128 208L149.1 531.1C150.7 556.4 171.7 576 197 576L443 576C468.3 576 489.3 556.4 490.9 531.1L512 208z"
+                                          HeightRequest="20"
+                                          WidthRequest="20"
+                                          Fill="{StaticResource BabyBuddyAccent}"
+                                          Grid.Column="2">
+                                        <Path.GestureRecognizers>
+                                            <TapGestureRecognizer Command="{Binding Source={x:Reference ChecklistRoot}, Path=DeleteTaskCommand}" CommandParameter="{Binding .}"/>
+                                        </Path.GestureRecognizers>
+                                    </Path>
                                 </Grid>
-                                <Grid ColumnDefinitions="*, *">
-                                    <Label Grid.Column="0" Text="{Binding TaskDescription}" FontSize="12" TextColor="LightGray" />
-                                    <HorizontalStackLayout Grid.Column="1">
-                                        <Label Text="{Binding AppointmentDate, StringFormat='{0:d}'}" FontSize="12" TextColor="LightGray"/>
-                                        <Label Text="{Binding AppointmentStartTime, StringFormat='  {0:%h}:{0:mm} - '}" FontSize="12" TextColor="LightGray"/>
-                                        <Label Text="{Binding AppointmentEndTime, StringFormat=' {0:%h}:{0:mm}'}" FontSize="12" TextColor="LightGray"/>
-                                    </HorizontalStackLayout>
-                                </Grid>
-                                <Grid ColumnDefinitions="*, *">
-                                    <Label Grid.Column="0" Text="{Binding TaskPriority, StringFormat='Priority: {0}'}"  FontSize="12" TextColor="LightGray"/>
-                                    <Label Grid.Column="1" Text="{Binding AppointmentLocation}" FontSize="12" TextColor="LightGray"/>
-                                </Grid>
-                            </StackLayout>
-                        </Border>
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
-            </CollectionView>
-            <!--#endregion-->
+                            </Grid>
 
-            <!--#region Add Task Button-->
-            <FlexLayout
-                Grid.Row="3"
-                x:Name="BtnsLayout"
-                JustifyContent="Center"
-                Padding="0, 40"
-                MaximumWidthRequest="450">
-                <Button
-                 x:Name="AddTaskBtn"
-                 Text="New Task" 
-                 SemanticProperties.Hint="Adds a Task to the list"
-                 Clicked="onAddTaskClicked"
-                 HorizontalOptions="Center" />
-            </FlexLayout>
-            <!--#endregion-->
+                            <Label Text="{Binding TaskDescription}" Style="{StaticResource BodyText}" />
 
-        </Grid>
+                            <Grid ColumnDefinitions="*,*" ColumnSpacing="12">
+                                <Border Grid.Column="0" Padding="8,6" StrokeThickness="0" BackgroundColor="{StaticResource BabyBuddySecondary}" HorizontalOptions="Start">
+                                    <Label Text="{Binding TaskPriority, StringFormat='Priority {0}'}" Style="{StaticResource CaptionText}" />
+                                </Border>
+                                <Label Grid.Column="1" Text="{Binding AppointmentLocation}" Style="{StaticResource BodyText}" HorizontalTextAlignment="End" />
+                            </Grid>
+
+                            <HorizontalStackLayout Spacing="8">
+                                <Label Text="{Binding AppointmentDate, StringFormat='{0:d}'}" Style="{StaticResource CaptionText}" />
+                                <Label Text="{Binding AppointmentStartTime, StringFormat='• {0:hh\:mm}'}" Style="{StaticResource CaptionText}" />
+                                <Label Text="{Binding AppointmentEndTime, StringFormat='– {0:hh\:mm}'}" Style="{StaticResource CaptionText}" />
+                            </HorizontalStackLayout>
+                        </StackLayout>
+                    </Border>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+        <FlexLayout Grid.Row="3" JustifyContent="Center" Padding="0,10,0,0" MaximumWidthRequest="450">
+            <Button
+                x:Name="AddTaskBtn"
+                Text="Add task"
+                Style="{StaticResource PrimaryAction}"
+                SemanticProperties.Hint="Adds a Task to the list"
+                Clicked="onAddTaskClicked"
+                HorizontalOptions="Center" />
+        </FlexLayout>
+    </Grid>
 </ContentPage>

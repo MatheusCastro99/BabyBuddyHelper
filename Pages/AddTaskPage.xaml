@@ -2,82 +2,59 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="BabyBuddyHelper.Pages.AddTaskPage"
-             Title="Add Task">
-    
-    <VerticalStackLayout Padding="20" Spacing="15">
-        <Label
-            Style="{StaticResource SubHeadline}"
-            Text="Add / Edit a Task"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" 
-            Margin="0,20"/>
-        
-        <!--#region Entries and Task/Appointment info-->
-        <Entry x:Name="TaskNameEntry" Placeholder="Task Name" />
-        <Entry x:Name="DescriptionEntry" Placeholder="Description" />
-        
-        <HorizontalStackLayout>
-            <Label 
-                Text="Priority:"
-                Margin="0, 0, 15, 0"
-                VerticalOptions="Center"/>
-            <Label 
-                Text="{Binding Source={x:Reference PriorityStepper}, Path=Value, StringFormat='{0:F0}'}" 
-                VerticalOptions="Center"
-                WidthRequest="30"/>
-            <Stepper x:Name="PriorityStepper" Minimum="1" Maximum="10" Value="5"/>
-        </HorizontalStackLayout>
-        
-        <HorizontalStackLayout>
-            <Label 
-                Text="Appointment:"
-                Margin="0, 0, 15, 0"
-                VerticalOptions="Center"/>
-            <CheckBox
-                x:Name="IsAppointmentCheckBox"/>
-        </HorizontalStackLayout>
+             Title="Add Task"
+             BackgroundColor="{StaticResource BabyBuddyBackground}">
 
-        <!-- Hidden Section. Shows when checkbox is checked -->
-        <StackLayout 
-            IsVisible="{Binding Source={x:Reference IsAppointmentCheckBox}, Path=IsChecked}"
-            Spacing="10"
-             Margin="55,0, 0, 0">
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="18">
+            <Border BackgroundColor="{StaticResource BabyBuddySurface}" StrokeThickness="0" Padding="18">
+                <VerticalStackLayout Spacing="6">
+                    <Label Text="Add care moment" Style="{StaticResource PageTitle}" HorizontalTextAlignment="Center" />
+                    <Label Text="Keep the next step simple and clear." Style="{StaticResource BodyText}" HorizontalTextAlignment="Center" />
+                </VerticalStackLayout>
+            </Border>
 
-            <HorizontalStackLayout Spacing="40">
-                <Label
-                    Text="Date:"
-                    VerticalOptions="Center"/>
+            <Border BackgroundColor="{StaticResource BabyBuddySurface}" StrokeThickness="0" Padding="18" StrokeShape="RoundRectangle 24">
+                <VerticalStackLayout Spacing="18">
+                    <Entry x:Name="TaskNameEntry" Placeholder="Task name" />
+                    <Entry x:Name="DescriptionEntry" Placeholder="Description" />
 
-                <DatePicker
-                    x:Name="DateEntry"
-                    MinimumDate="01/01/2025"/>
+                    <Grid ColumnDefinitions="Auto,Auto,*" ColumnSpacing="12" VerticalOptions="Center">
+                        <Label Grid.Column="0" Text="Priority" VerticalOptions="Center" Style="{StaticResource SectionTitle}" />
+                        <Label Grid.Column="1" Text="{Binding Source={x:Reference PriorityStepper}, Path=Value, StringFormat='{0:F0}'}" VerticalOptions="Center" Style="{StaticResource BodyText}" WidthRequest="30" />
+                        <Stepper Grid.Column="2" x:Name="PriorityStepper" Minimum="1" Maximum="10" Value="5" HorizontalOptions="Fill" />
+                    </Grid>
 
-                <TimePicker
-                    x:Name="StartingTimeEntry"/>
+                    <HorizontalStackLayout Spacing="12">
+                        <Label Text="Appointment" VerticalOptions="Center" Style="{StaticResource SectionTitle}" />
+                        <CheckBox x:Name="IsAppointmentCheckBox" />
+                    </HorizontalStackLayout>
 
-                <TimePicker
-                    x:Name="EndingTimeEntry"/>
-                
-            </HorizontalStackLayout>
+                    <StackLayout IsVisible="{Binding Source={x:Reference IsAppointmentCheckBox}, Path=IsChecked}" Spacing="14" Margin="0,8,0,0">
+                        <Grid ColumnDefinitions="Auto,*,Auto,*" ColumnSpacing="10">
+                            <Label Grid.Column="0" Text="Date" VerticalOptions="Center" Style="{StaticResource BodyText}" />
+                            <DatePicker Grid.Column="1" x:Name="DateEntry" MinimumDate="01/01/2025" />
+                            <Label Grid.Column="2" Text="Start" VerticalOptions="Center" Style="{StaticResource BodyText}" />
+                            <TimePicker Grid.Column="3" x:Name="StartingTimeEntry" />
+                        </Grid>
 
-            <Grid ColumnDefinitions="Auto, *">
-                <Label
-                    Grid.Column="0"
-                    Text="Location:"
-                    VerticalOptions="Center"
-                    Margin="0, 0, 15, 0"/>
-                <Entry 
-                    Grid.Column="1"
-                    x:Name="LocationEntry" 
-                    Placeholder="Location" />
+                        <Grid ColumnDefinitions="Auto, *" ColumnSpacing="12">
+                            <Label Grid.Column="0" Text="End" VerticalOptions="Center" Style="{StaticResource BodyText}" />
+                            <TimePicker Grid.Column="1" x:Name="EndingTimeEntry" />
+                        </Grid>
+
+                        <Grid ColumnDefinitions="Auto, *" ColumnSpacing="12">
+                            <Label Grid.Column="0" Text="Location" VerticalOptions="Center" Style="{StaticResource BodyText}" />
+                            <Entry Grid.Column="1" x:Name="LocationEntry" Placeholder="Location" />
+                        </Grid>
+                    </StackLayout>
+                </VerticalStackLayout>
+            </Border>
+
+            <Grid ColumnDefinitions="*,*" ColumnSpacing="12">
+                <Button Grid.Column="0" Text="Cancel" Style="{StaticResource SecondaryAction}" Clicked="OnCancelClicked" />
+                <Button Grid.Column="1" Text="Save" Style="{StaticResource PrimaryAction}" Clicked="OnSaveClicked" />
             </Grid>
-        </StackLayout>
-        <!--#endregion-->
-
-        <HorizontalStackLayout Spacing="50" HorizontalOptions="Center">
-            <Button Text="Cancel" Clicked="OnCancelClicked" />
-            <Button Text="Save" Clicked="OnSaveClicked" BackgroundColor="Green" />
-        </HorizontalStackLayout>
-    </VerticalStackLayout>
-
+        </VerticalStackLayout>
+    </ScrollView>
 </ContentPage>
