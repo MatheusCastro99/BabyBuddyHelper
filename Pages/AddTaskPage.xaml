@@ -23,11 +23,13 @@
                         <Grid ColumnDefinitions="Auto,Auto,*,Auto" ColumnSpacing="12" VerticalOptions="Center">
                             <Label Grid.Column="0" Text="Priority" VerticalOptions="Center" Style="{StaticResource SectionTitle}" />
                             <Border Grid.Column="1" BackgroundColor="{StaticResource BabyBuddySurface}" Stroke="{StaticResource BabyBuddyBorder}" StrokeShape="RoundRectangle 10" Padding="10,6" WidthRequest="48" HeightRequest="40">
-                                <Label Text="{Binding Source={x:Reference PriorityStepper}, Path=Value, StringFormat='{0:F0}'}" VerticalOptions="Center" HorizontalOptions="Center" Style="{StaticResource BodyText}" FontAttributes="Bold" />
+                                <Label Text="{Binding Source={x:Reference PriorityStepper}, Path=Value, StringFormat='{0:F0}'}" VerticalOptions="Center" HorizontalOptions="Center" Style="{StaticResource BodyText}" FontAttributes="Bold" TextColor="{StaticResource BabyBuddyText}" />
                             </Border>
-                            <Border Grid.Column="2" BackgroundColor="{StaticResource BabyBuddySurface}" Stroke="{StaticResource BabyBuddyBorder}" StrokeShape="RoundRectangle 10" Padding="0" MinimumWidthRequest="120">
-                                <Stepper x:Name="PriorityStepper" Minimum="1" Maximum="10" Value="5" HorizontalOptions="Fill" VerticalOptions="Center" BackgroundColor="Transparent" HeightRequest="44" />
-                            </Border>
+                            <HorizontalStackLayout Grid.Column="2" Spacing="8" HorizontalOptions="End" VerticalOptions="Center">
+                                <Button Text="-" WidthRequest="42" HeightRequest="42" CornerRadius="10" BackgroundColor="{StaticResource BabyBuddySurface}" TextColor="{StaticResource BabyBuddyText}" BorderColor="{StaticResource BabyBuddyBorder}" BorderWidth="1" Clicked="OnPriorityDecreaseClicked" />
+                                <Button Text="+" WidthRequest="42" HeightRequest="42" CornerRadius="10" BackgroundColor="{StaticResource BabyBuddySurface}" TextColor="{StaticResource BabyBuddyText}" BorderColor="{StaticResource BabyBuddyBorder}" BorderWidth="1" Clicked="OnPriorityIncreaseClicked" />
+                            </HorizontalStackLayout>
+                            <Stepper x:Name="PriorityStepper" Minimum="1" Maximum="10" Value="5" IsVisible="False" />
                         </Grid>
                     </Border>
 
@@ -40,22 +42,22 @@
                         <Grid ColumnDefinitions="*,*" ColumnSpacing="12" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto" RowSpacing="12">
                             <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Text="Date" Style="{StaticResource SectionTitle}" />
                             <Border Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" BackgroundColor="{StaticResource BabyBuddySurfaceAlt}" Stroke="{StaticResource BabyBuddyBorder}" StrokeShape="RoundRectangle 12" Padding="10,8">
-                                <DatePicker x:Name="DateEntry" MinimumDate="01/01/2025" HeightRequest="44" />
+                                <DatePicker x:Name="DateEntry" MinimumDate="01/01/2025" HeightRequest="44" BackgroundColor="{StaticResource BabyBuddySurface}" TextColor="{StaticResource BabyBuddyText}" />
                             </Border>
 
                             <Label Grid.Row="2" Grid.Column="0" Text="Start" Style="{StaticResource BodyText}" VerticalOptions="Center" />
                             <Label Grid.Row="2" Grid.Column="1" Text="End" Style="{StaticResource BodyText}" VerticalOptions="Center" HorizontalTextAlignment="End" />
 
                             <Border Grid.Row="3" Grid.Column="0" BackgroundColor="{StaticResource BabyBuddySurfaceAlt}" Stroke="{StaticResource BabyBuddyBorder}" StrokeShape="RoundRectangle 12" Padding="10,8">
-                                <TimePicker x:Name="StartingTimeEntry" HeightRequest="44" />
+                                <TimePicker x:Name="StartingTimeEntry" HeightRequest="44" BackgroundColor="{StaticResource BabyBuddySurface}" TextColor="{StaticResource BabyBuddyText}" />
                             </Border>
                             <Border Grid.Row="3" Grid.Column="1" BackgroundColor="{StaticResource BabyBuddySurfaceAlt}" Stroke="{StaticResource BabyBuddyBorder}" StrokeShape="RoundRectangle 12" Padding="10,8">
-                                <TimePicker x:Name="EndingTimeEntry" HeightRequest="44" />
+                                <TimePicker x:Name="EndingTimeEntry" HeightRequest="44" BackgroundColor="{StaticResource BabyBuddySurface}" TextColor="{StaticResource BabyBuddyText}" />
                             </Border>
 
                             <Label Grid.Row="4" Grid.Column="0" Text="Location" Style="{StaticResource BodyText}" VerticalOptions="Center" />
                             <Border Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" BackgroundColor="{StaticResource BabyBuddySurfaceAlt}" Stroke="{StaticResource BabyBuddyBorder}" StrokeShape="RoundRectangle 12" Padding="10,8">
-                                <Entry x:Name="LocationEntry" Placeholder="Location" />
+                                <Entry x:Name="LocationEntry" Placeholder="Location" TextColor="{StaticResource BabyBuddyText}" />
                             </Border>
                         </Grid>
                     </StackLayout>
