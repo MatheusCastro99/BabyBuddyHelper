@@ -19,33 +19,44 @@
                     <Entry x:Name="TaskNameEntry" Placeholder="Task name" />
                     <Entry x:Name="DescriptionEntry" Placeholder="Description" />
 
-                    <Grid ColumnDefinitions="Auto,Auto,*" ColumnSpacing="12" VerticalOptions="Center">
-                        <Label Grid.Column="0" Text="Priority" VerticalOptions="Center" Style="{StaticResource SectionTitle}" />
-                        <Label Grid.Column="1" Text="{Binding Source={x:Reference PriorityStepper}, Path=Value, StringFormat='{0:F0}'}" VerticalOptions="Center" Style="{StaticResource BodyText}" WidthRequest="30" />
-                        <Stepper Grid.Column="2" x:Name="PriorityStepper" Minimum="1" Maximum="10" Value="5" HorizontalOptions="Fill" />
-                    </Grid>
+                    <Border BackgroundColor="{StaticResource BabyBuddySurfaceAlt}" Stroke="{StaticResource BabyBuddyBorder}" StrokeShape="RoundRectangle 16" Padding="12,10">
+                        <Grid ColumnDefinitions="Auto,Auto,*,Auto" ColumnSpacing="12" VerticalOptions="Center">
+                            <Label Grid.Column="0" Text="Priority" VerticalOptions="Center" Style="{StaticResource SectionTitle}" />
+                            <Border Grid.Column="1" BackgroundColor="{StaticResource BabyBuddySurface}" Stroke="{StaticResource BabyBuddyBorder}" StrokeShape="RoundRectangle 10" Padding="10,6" WidthRequest="48" HeightRequest="40">
+                                <Label Text="{Binding Source={x:Reference PriorityStepper}, Path=Value, StringFormat='{0:F0}'}" VerticalOptions="Center" HorizontalOptions="Center" Style="{StaticResource BodyText}" FontAttributes="Bold" />
+                            </Border>
+                            <Border Grid.Column="2" BackgroundColor="{StaticResource BabyBuddySurface}" Stroke="{StaticResource BabyBuddyBorder}" StrokeShape="RoundRectangle 10" Padding="0" MinimumWidthRequest="120">
+                                <Stepper x:Name="PriorityStepper" Minimum="1" Maximum="10" Value="5" HorizontalOptions="Fill" VerticalOptions="Center" BackgroundColor="Transparent" HeightRequest="44" />
+                            </Border>
+                        </Grid>
+                    </Border>
 
-                    <HorizontalStackLayout Spacing="12">
+                    <HorizontalStackLayout Spacing="12" VerticalOptions="Center">
                         <Label Text="Appointment" VerticalOptions="Center" Style="{StaticResource SectionTitle}" />
                         <CheckBox x:Name="IsAppointmentCheckBox" />
                     </HorizontalStackLayout>
 
-                    <StackLayout IsVisible="{Binding Source={x:Reference IsAppointmentCheckBox}, Path=IsChecked}" Spacing="14" Margin="0,8,0,0">
-                        <Grid ColumnDefinitions="Auto,*,Auto,*" ColumnSpacing="10">
-                            <Label Grid.Column="0" Text="Date" VerticalOptions="Center" Style="{StaticResource BodyText}" />
-                            <DatePicker Grid.Column="1" x:Name="DateEntry" MinimumDate="01/01/2025" />
-                            <Label Grid.Column="2" Text="Start" VerticalOptions="Center" Style="{StaticResource BodyText}" />
-                            <TimePicker Grid.Column="3" x:Name="StartingTimeEntry" />
-                        </Grid>
+                    <StackLayout IsVisible="{Binding Source={x:Reference IsAppointmentCheckBox}, Path=IsChecked}" Spacing="12" Margin="0,8,0,0">
+                        <Grid ColumnDefinitions="*,*" ColumnSpacing="12" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto" RowSpacing="12">
+                            <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Text="Date" Style="{StaticResource SectionTitle}" />
+                            <Border Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" BackgroundColor="{StaticResource BabyBuddySurfaceAlt}" Stroke="{StaticResource BabyBuddyBorder}" StrokeShape="RoundRectangle 12" Padding="10,8">
+                                <DatePicker x:Name="DateEntry" MinimumDate="01/01/2025" HeightRequest="44" />
+                            </Border>
 
-                        <Grid ColumnDefinitions="Auto, *" ColumnSpacing="12">
-                            <Label Grid.Column="0" Text="End" VerticalOptions="Center" Style="{StaticResource BodyText}" />
-                            <TimePicker Grid.Column="1" x:Name="EndingTimeEntry" />
-                        </Grid>
+                            <Label Grid.Row="2" Grid.Column="0" Text="Start" Style="{StaticResource BodyText}" VerticalOptions="Center" />
+                            <Label Grid.Row="2" Grid.Column="1" Text="End" Style="{StaticResource BodyText}" VerticalOptions="Center" HorizontalTextAlignment="End" />
 
-                        <Grid ColumnDefinitions="Auto, *" ColumnSpacing="12">
-                            <Label Grid.Column="0" Text="Location" VerticalOptions="Center" Style="{StaticResource BodyText}" />
-                            <Entry Grid.Column="1" x:Name="LocationEntry" Placeholder="Location" />
+                            <Border Grid.Row="3" Grid.Column="0" BackgroundColor="{StaticResource BabyBuddySurfaceAlt}" Stroke="{StaticResource BabyBuddyBorder}" StrokeShape="RoundRectangle 12" Padding="10,8">
+                                <TimePicker x:Name="StartingTimeEntry" HeightRequest="44" />
+                            </Border>
+                            <Border Grid.Row="3" Grid.Column="1" BackgroundColor="{StaticResource BabyBuddySurfaceAlt}" Stroke="{StaticResource BabyBuddyBorder}" StrokeShape="RoundRectangle 12" Padding="10,8">
+                                <TimePicker x:Name="EndingTimeEntry" HeightRequest="44" />
+                            </Border>
+
+                            <Label Grid.Row="4" Grid.Column="0" Text="Location" Style="{StaticResource BodyText}" VerticalOptions="Center" />
+                            <Border Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" BackgroundColor="{StaticResource BabyBuddySurfaceAlt}" Stroke="{StaticResource BabyBuddyBorder}" StrokeShape="RoundRectangle 12" Padding="10,8">
+                                <Entry x:Name="LocationEntry" Placeholder="Location" />
+                            </Border>
                         </Grid>
                     </StackLayout>
                 </VerticalStackLayout>

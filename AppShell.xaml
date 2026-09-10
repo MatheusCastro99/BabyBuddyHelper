@@ -8,6 +8,7 @@
     Title="BabyBuddyHelper"
     Shell.BackgroundColor="{StaticResource BabyBuddyBackground}"
     Shell.ForegroundColor="{StaticResource BabyBuddyText}"
+    Shell.TitleColor="{StaticResource BabyBuddyText}"
     Shell.TabBarBackgroundColor="{StaticResource BabyBuddySurface}"
     Shell.TabBarForegroundColor="{StaticResource BabyBuddyText}"
     Shell.TabBarTitleColor="{StaticResource BabyBuddyText}"
