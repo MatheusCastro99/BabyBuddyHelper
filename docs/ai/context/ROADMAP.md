@@ -34,7 +34,7 @@ Baby Profiles:
 - Refactor Tasks and Appointments to hold an optional BabyName property, indicating which baby the task is related to 
 - Add optional filter on both list and calendar to filter Tasks and Appointments by baby
 
-Companion Character:
+Companion Character: CONCLUDED
 
 - Introduce a companion character to guide and accompany users through the app
 - Character will provide tips, encouragement, and feedback

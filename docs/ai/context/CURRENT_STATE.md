@@ -29,8 +29,15 @@ UI Redesign:
 
 Design System:
 
-- Design system remap for consistent UI components and layouts
-- Reusable styles, templates, and controls
+Companion Character: CONCLUDED
+
+- Introduce a companion character to guide and accompany users through the app
+- Character will provide tips, encouragement, and feedback
+- Static SVG or Lottie animations for character interactions
+- Simple and short animations to avoid overwhelming users
+- Reside on MainPage only (at least initially)
+
+Toast Messages:
 
 Useful Skills:
 - UI_DESIGN.md for interface evaluation and design guidance
