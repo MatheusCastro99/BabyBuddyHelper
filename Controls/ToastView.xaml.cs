@@ -46,6 +46,8 @@ namespace BabyBuddyHelper.Controls
             if (Handler is null)
             {
                 _hideCts?.Cancel();
+                _hideCts = null;
+                ResetVisualState();
                 return;
             }
 
@@ -59,7 +61,7 @@ namespace BabyBuddyHelper.Controls
         {
             // A newer toast should replace whatever is currently showing
             // instead of queueing behind it.
-            _hideCts?.CancelAsync();
+            _hideCts?.Cancel();
             var cts = new CancellationTokenSource();
             _hideCts = cts;
 
@@ -93,6 +95,11 @@ namespace BabyBuddyHelper.Controls
                 this.FadeToAsync(0, 160, Easing.CubicIn),
                 this.TranslateToAsync(0, HiddenTranslationY, 160, Easing.CubicIn));
 
+            if (cts.IsCancellationRequested || _hideCts != cts)
+            {
+                return;
+            }
+
             IsVisible = false;
         }
 
@@ -100,6 +107,16 @@ namespace BabyBuddyHelper.Controls
         {
             await ToastBadge.ScaleToAsync(1.15, 110, Easing.CubicOut);
             await ToastBadge.ScaleToAsync(1.0, 110, Easing.CubicIn);
+        }
+
+        void ResetVisualState()
+        {
+            this.CancelAnimations();
+            ToastBadge.CancelAnimations();
+            ToastBadge.Scale = 1.0;
+            IsVisible = false;
+            Opacity = 0;
+            TranslationY = HiddenTranslationY;
         }
     }
 }

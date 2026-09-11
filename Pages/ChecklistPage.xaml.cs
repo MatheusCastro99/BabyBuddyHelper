@@ -9,6 +9,7 @@ namespace BabyBuddyHelper.Pages;
 public partial class ChecklistPage : ContentPage
 {
     private readonly ITaskListService _taskListService; //Dependency Injection for TaskListService
+    private readonly HashSet<Guid> _completedTaskIdsWithToast = new();
     public ObservableCollection<TaskModel> TaskList => _taskListService.Tasks; //Will hold instances of TaskModel and AppointmentModel
 
     //ICommand binding for delete and edit buttons on each task card
@@ -26,6 +27,7 @@ public partial class ChecklistPage : ContentPage
         EditTaskCommand = new Command<TaskModel>(EditTask);
 
         BindingContext = this;
+        SyncCompletedTaskToastState();
     }
 
     //Method bound to the IsPendingFirstSwitch
@@ -59,10 +61,21 @@ public partial class ChecklistPage : ContentPage
     //Shows companion-themed toast feedback whenever a task is marked as completed
     private void OnTaskCompletedChanged(object? sender, CheckedChangedEventArgs e)
     {
+        if (sender is not CheckBox { BindingContext: TaskModel task })
+        {
+            return;
+        }
+
         if (e.Value)
         {
-            ToastService.Show(ToastKind.TaskCompleted);
+            if (_completedTaskIdsWithToast.Add(task.Id))
+            {
+                ToastService.Show(ToastKind.TaskCompleted);
+            }
+            return;
         }
+
+        _completedTaskIdsWithToast.Remove(task.Id);
     }
 
     private async void EditTask(TaskModel taskToEdit)
@@ -78,6 +91,16 @@ public partial class ChecklistPage : ContentPage
         {
             await Navigation.PushModalAsync(
                 new AddTaskPage(_taskListService, taskToEdit));
+        }
+    }
+
+    private void SyncCompletedTaskToastState()
+    {
+        _completedTaskIdsWithToast.Clear();
+
+        foreach (var task in TaskList.Where(task => task.IsCompleted))
+        {
+            _completedTaskIdsWithToast.Add(task.Id);
         }
     }
 }
