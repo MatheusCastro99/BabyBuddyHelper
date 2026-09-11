@@ -23,13 +23,44 @@
         <Border Grid.Row="1" Padding="14,5" StrokeThickness="0" BackgroundColor="{StaticResource BabyBuddySurface}" MaximumWidthRequest="650">
             <HorizontalStackLayout HorizontalOptions="Start" Spacing="8" VerticalOptions="Center">
                 <Label Text="Pending first" VerticalOptions="Center" Style="{StaticResource BodyText}" />
-                <Switch 
-                    IsToggled="{Binding isPendingFirst}"
-                    Toggled="IsPendingFirstHandler"
-                    OnColor="{StaticResource BabyBuddyPrimary}"
-                    OffColor="{StaticResource BabyBuddyBorder}"
-                    ThumbColor="White"
-                    Opacity="1" />
+                <Grid WidthRequest="44" HeightRequest="24">
+                    <Switch x:Name="PendingFirstSwitch"
+                            IsToggled="{Binding isPendingFirst}"
+                            Toggled="IsPendingFirstHandler"
+                            Opacity="0"
+                            HorizontalOptions="Fill"
+                            VerticalOptions="Fill" />
+
+                    <Border InputTransparent="True"
+                            WidthRequest="36"
+                            HeightRequest="20"
+                            StrokeThickness="0"
+                            StrokeShape="RoundRectangle 10"
+                            BackgroundColor="{StaticResource BabyBuddyBorder}"
+                            HorizontalOptions="Center"
+                            VerticalOptions="Center">
+                        <Border.Triggers>
+                            <DataTrigger TargetType="Border" Binding="{Binding Source={x:Reference PendingFirstSwitch}, Path=IsToggled}" Value="True">
+                                <Setter Property="BackgroundColor" Value="{StaticResource BabyBuddyPrimary}" />
+                            </DataTrigger>
+                        </Border.Triggers>
+                    </Border>
+
+                    <Ellipse InputTransparent="True"
+                             WidthRequest="14"
+                             HeightRequest="14"
+                             Fill="{StaticResource BabyBuddyText}"
+                             HorizontalOptions="Center"
+                             VerticalOptions="Center"
+                             TranslationX="-8">
+                        <Ellipse.Triggers>
+                            <DataTrigger TargetType="Ellipse" Binding="{Binding Source={x:Reference PendingFirstSwitch}, Path=IsToggled}" Value="True">
+                                <Setter Property="Fill" Value="{StaticResource White}" />
+                                <Setter Property="TranslationX" Value="8" />
+                            </DataTrigger>
+                        </Ellipse.Triggers>
+                    </Ellipse>
+                </Grid>
             </HorizontalStackLayout>
         </Border>
 
