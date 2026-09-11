@@ -1,5 +1,6 @@
 using BabyBuddyHelper.Interfaces;
 using BabyBuddyHelper.Models;
+using BabyBuddyHelper.Services;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 
@@ -51,6 +52,16 @@ public partial class ChecklistPage : ContentPage
         if (taskToDelete != null)
         {
             _taskListService.Remove(taskToDelete);
+            ToastService.Show(ToastKind.TaskDeleted);
+        }
+    }
+
+    //Shows companion-themed toast feedback whenever a task is marked as completed
+    private void OnTaskCompletedChanged(object? sender, CheckedChangedEventArgs e)
+    {
+        if (e.Value)
+        {
+            ToastService.Show(ToastKind.TaskCompleted);
         }
     }
 
