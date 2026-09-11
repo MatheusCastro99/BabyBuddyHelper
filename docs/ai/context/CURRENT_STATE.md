@@ -11,23 +11,23 @@ The application currently provides a complete foundation for:
 - Appointment Management
 - Calendar Scheduling
 
-Awaiting a major visual redesign.
+Major visual redesign Completed.
 
 ---
 
 # Current Development Focus:
 
-## Phase 1: 
+## Phase 2:
 
-UI Redesign:
+BabyModel:
+- New model that will serve as different profiles for different babies / children
+- Initial properties:
+	- Name (string), Age (int), WeightInLbs (double), HeightInFt (double), LastFeed (DateTime), LastSleep (DateTime)
 
-- Complete redesign for all pages
-- Calm and Encouraging soft colors palette and theme
-- Card-based, rounded corners layouts for tasks and appointments
-- Companion character theme and idealization
-	> Current candidates: "Buddy Bear", "Cuddly Lion Cub", "Fox", "Robot"
-
-Design System:
+Baby Profiles:
+- Ability to add, edit, and delete babies profiles
+- Refactor Tasks and Appointments to hold an optional BabyName property, indicating which baby the task is related to 
+- Add optional filter on both list and calendar to filter Tasks and Appointments by baby
 
 Companion Character: CONCLUDED
 
@@ -39,10 +39,6 @@ Companion Character: CONCLUDED
 
 Toast Messages:
 
-Useful Skills:
-- UI_DESIGN.md for interface evaluation and design guidance
-- FEATURE_PLAN.md for feature evaluation and prioritization
-
-Useful Context:
-- DECISIONS.md for historical project decisions and rationale
-- ARCHITECTURE_DESIGN.md for current architecture and design patterns
+- Implement toast messages for Task Completion, added, deleted, and appointment scheduled
+- Toasts will be designed to be non-intrusive and visually appealing
+- Mascot interactions will be included in toast messages for added engagement
