@@ -59,7 +59,7 @@ namespace BabyBuddyHelper.Controls
         {
             // A newer toast should replace whatever is currently showing
             // instead of queueing behind it.
-            _hideCts?.Cancel();
+            _hideCts?.CancelAsync();
             var cts = new CancellationTokenSource();
             _hideCts = cts;
 

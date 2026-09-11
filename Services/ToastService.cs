@@ -26,30 +26,40 @@ namespace BabyBuddyHelper.Services
                 "Cub cheers, another task wrapped up!",
                 "Cub gives you a proud little nod, well done!",
                 "Cub says: one more thing taken care of!",
+                "Cub celebrates that little win with you!",
+                "Cub says: nicely done, that's off your plate!",
             ],
             [ToastKind.TaskAdded] =
             [
                 "Cub tucks a new task into your list.",
                 "Cub says: got it, added to your list!",
                 "Cub is keeping an eye on this new task with you.",
+                "Cub says: one more detail organized for the day!",
+                "Cub makes room for your new task, all set!",
             ],
             [ToastKind.TaskEdited] =
             [
                 "Cub says: all updated and looking good!",
                 "Cub tidies up the details for you.",
                 "Cub gives a little nod, changes saved!",
+                "Cub says: those details are refreshed and ready!",
+                "Cub gives a happy nod to your thoughtful update!",
             ],
             [ToastKind.TaskDeleted] =
             [
                 "Cub waves that task goodbye, one less thing to carry.",
                 "Cub says: all cleared, nice and tidy!",
                 "Cub gives you a little high-five for tidying up.",
+                "Cub helps lighten the list, one task at a time.",
+                "Cub says: cleared away and making room for what matters!",
             ],
             [ToastKind.AppointmentScheduled] =
             [
                 "Cub marks the calendar, that appointment is set!",
                 "Cub says: saved, you're all set for that visit.",
                 "Cub is looking forward to that appointment with you.",
+                "Cub says: that time is safely saved on the calendar!",
+                "Cub adds the appointment to the plan, nice and easy!",
             ],
         };
 
