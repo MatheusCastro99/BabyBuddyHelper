@@ -1,3 +1,5 @@
+using Microsoft.Maui.Dispatching;
+
 namespace BabyBuddyHelper.Controls
 {
     /// <summary>
@@ -7,6 +9,8 @@ namespace BabyBuddyHelper.Controls
     /// </summary>
     public partial class CompanionView : ContentView
     {
+        readonly TimeSpan RefreshInterval = TimeSpan.FromMinutes(5);
+
         static readonly string[] DefaultMessages =
         [
             "A calm rhythm keeps things manageable. Keep the next task small and steady.",
@@ -14,6 +18,9 @@ namespace BabyBuddyHelper.Controls
             "Small wins add up. Take a breath before the next task.",
             "Everything looks steady right now, keep going!",
         ];
+
+        IDispatcherTimer? _refreshTimer;
+        bool _hasPlayedInitialGreeting;
 
         public static readonly BindableProperty MessageProperty =
             BindableProperty.Create(
@@ -49,8 +56,26 @@ namespace BabyBuddyHelper.Controls
             await PlayGreetingAnimationAsync();
         }
 
-        static string PickRandomMessage() =>
-            DefaultMessages[Random.Shared.Next(DefaultMessages.Length)];
+        Task ShowRandomTipAsync() =>
+            ShowTipAsync(PickRandomMessage(Message));
+
+        static string PickRandomMessage(string? currentMessage = null)
+        {
+            if (DefaultMessages.Length == 1)
+            {
+                return DefaultMessages[0];
+            }
+
+            string nextMessage;
+
+            do
+            {
+                nextMessage = DefaultMessages[Random.Shared.Next(DefaultMessages.Length)];
+            }
+            while (nextMessage == currentMessage);
+
+            return nextMessage;
+        }
 
         async Task PlayGreetingAnimationAsync()
         {
@@ -63,10 +88,50 @@ namespace BabyBuddyHelper.Controls
         {
             base.OnHandlerChanged();
 
-            if (Handler is not null)
+            if (Handler is null)
             {
-                _ = PlayGreetingAnimationAsync();
+                StopRefreshTimer();
+                return;
+            }
+
+            StartRefreshTimer();
+
+            if (!_hasPlayedInitialGreeting)
+            {
+                _hasPlayedInitialGreeting = true;
+                _ = ShowTipAsync(Message);
             }
         }
+
+        void StartRefreshTimer()
+        {
+            if (_refreshTimer is not null || Dispatcher is null)
+            {
+                return;
+            }
+
+            _refreshTimer = Dispatcher.CreateTimer();
+            _refreshTimer.Interval = RefreshInterval;
+            _refreshTimer.Tick += OnRefreshTimerTick;
+            _refreshTimer.Start();
+        }
+
+        void StopRefreshTimer()
+        {
+            if (_refreshTimer is null)
+            {
+                return;
+            }
+
+            _refreshTimer.Stop();
+            _refreshTimer.Tick -= OnRefreshTimerTick;
+            _refreshTimer = null;
+        }
+
+        async void OnRefreshTimerTick(object? sender, EventArgs e) =>
+            await ShowRandomTipAsync();
+
+        async void OnTellMeSomethingClicked(object? sender, EventArgs e) =>
+            await ShowRandomTipAsync();
     }
 }

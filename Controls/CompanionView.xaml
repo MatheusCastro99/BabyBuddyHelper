@@ -23,12 +23,16 @@
                        SemanticProperties.Description="Cub, your companion" />
             </Border>
 
-            <VerticalStackLayout Grid.Column="1" Spacing="6" VerticalOptions="Center">
+            <VerticalStackLayout Grid.Column="1" Spacing="10" VerticalOptions="Center">
                 <Label Text="Cub says" Style="{StaticResource SectionTitle}" />
                 <Label x:Name="MessageLabel"
                        Text="{Binding Message, Source={x:Reference CompanionRoot}}"
                        Style="{StaticResource BodyText}"
                        LineBreakMode="WordWrap" />
+                <Button Text="Tell me something"
+                        Style="{StaticResource SecondaryAction}"
+                        HorizontalOptions="Start"
+                        Clicked="OnTellMeSomethingClicked" />
             </VerticalStackLayout>
         </Grid>
     </Border>
