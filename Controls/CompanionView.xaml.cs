@@ -19,8 +19,27 @@ namespace BabyBuddyHelper.Controls
             "Everything looks steady right now, keep going!",
         ];
 
+        enum CompanionAnimation
+        {
+            Scale,
+            Rotate,
+            Bounce,
+            Sway,
+            CircleAround,
+        }
+
+        static readonly CompanionAnimation[] AnimationPool =
+        [
+            CompanionAnimation.Scale,
+            CompanionAnimation.Rotate,
+            CompanionAnimation.Bounce,
+            CompanionAnimation.Sway,
+            CompanionAnimation.CircleAround,
+        ];
+
         IDispatcherTimer? _refreshTimer;
         bool _hasPlayedInitialGreeting;
+        bool _isAnimationRunning;
 
         public static readonly BindableProperty MessageProperty =
             BindableProperty.Create(
@@ -53,7 +72,7 @@ namespace BabyBuddyHelper.Controls
         public async Task ShowTipAsync(string message)
         {
             Message = message;
-            await PlayGreetingAnimationAsync();
+            await PlayRandomAnimationAsync();
         }
 
         Task ShowRandomTipAsync() =>
@@ -77,11 +96,92 @@ namespace BabyBuddyHelper.Controls
             return nextMessage;
         }
 
-        async Task PlayGreetingAnimationAsync()
+        async Task PlayRandomAnimationAsync()
         {
-            // Short, subtle bounce to draw gentle attention without overwhelming the user.
-            await CubBadge.ScaleToAsync(1.08, 90, Easing.CubicOut);
-            await CubBadge.ScaleToAsync(1.0, 90, Easing.CubicIn);
+            // IDispatcherTimer.Tick is not await-aware. Without this guard, a timer
+            // tick can start another animation while the previous one is still running.
+            if (_isAnimationRunning)
+            {
+                return;
+            }
+
+            _isAnimationRunning = true;
+
+            try
+            {
+                // Play exactly one lightweight animation for each new tip.
+                switch (AnimationPool[Random.Shared.Next(AnimationPool.Length)])
+                {
+                    case CompanionAnimation.Scale:
+                        await PlayScaleAnimationAsync();
+                        break;
+                    case CompanionAnimation.Rotate:
+                        await PlayRotateAnimationAsync();
+                        break;
+                    case CompanionAnimation.Bounce:
+                        await PlayBounceAnimationAsync();
+                        break;
+                    case CompanionAnimation.Sway:
+                        await PlaySwayAnimationAsync();
+                        break;
+                    case CompanionAnimation.CircleAround:
+                        await PlayCircleAroundAnimationAsync();
+                        break;
+                }
+            }
+            finally
+            {
+                // A detached view may cancel an animation while it is awaiting.
+                // Restore the baseline for the next handler attachment.
+                CubBadge.CancelAnimations();
+                CubBadge.Scale = 1.0;
+                CubBadge.Rotation = 0;
+                CubBadge.TranslationX = 0;
+                CubBadge.TranslationY = 0;
+                _isAnimationRunning = false;
+            }
+        }
+
+        async Task PlayScaleAnimationAsync()
+        {
+            await CubBadge.ScaleToAsync(1.12, 120, Easing.CubicOut);
+            await CubBadge.ScaleToAsync(1.0, 120, Easing.CubicIn);
+        }
+
+        async Task PlayRotateAnimationAsync()
+        {
+            await CubBadge.RotateToAsync(-25, 140, Easing.CubicOut);
+            await CubBadge.RotateToAsync(25, 220, Easing.SinInOut);
+            await CubBadge.RotateToAsync(0, 140, Easing.CubicIn);
+        }
+
+        async Task PlayBounceAnimationAsync()
+        {
+            await CubBadge.TranslateToAsync(0, -10, 110, Easing.CubicOut);
+            await CubBadge.TranslateToAsync(0, 0, 110, Easing.CubicIn);
+            await CubBadge.TranslateToAsync(0, 5, 80, Easing.CubicOut);
+            await CubBadge.TranslateToAsync(0, 0, 80, Easing.CubicIn);
+        }
+
+        async Task PlaySwayAnimationAsync()
+        {
+            await CubBadge.TranslateToAsync(-6, 0, 120, Easing.CubicOut);
+            await CubBadge.TranslateToAsync(6, 0, 240, Easing.SinInOut);
+            await CubBadge.TranslateToAsync(0, 0, 120, Easing.CubicIn);
+        }
+
+        async Task PlayCircleAroundAnimationAsync()
+        {
+            // Approximate a small circle with short translation segments. Keeping
+            // the offsets small makes this feel like a playful flip, not a jump.
+            await CubBadge.TranslateToAsync(4, -4, 80, Easing.SinInOut);
+            await CubBadge.TranslateToAsync(6, 0, 80, Easing.SinInOut);
+            await CubBadge.TranslateToAsync(4, 4, 80, Easing.SinInOut);
+            await CubBadge.TranslateToAsync(0, 6, 80, Easing.SinInOut);
+            await CubBadge.TranslateToAsync(-4, 4, 80, Easing.SinInOut);
+            await CubBadge.TranslateToAsync(-6, 0, 80, Easing.SinInOut);
+            await CubBadge.TranslateToAsync(-4, -4, 80, Easing.SinInOut);
+            await CubBadge.TranslateToAsync(0, 0, 80, Easing.SinInOut);
         }
 
         protected override void OnHandlerChanged()
@@ -91,6 +191,7 @@ namespace BabyBuddyHelper.Controls
             if (Handler is null)
             {
                 StopRefreshTimer();
+                CubBadge.CancelAnimations();
                 return;
             }
 
