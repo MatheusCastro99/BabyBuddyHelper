@@ -63,6 +63,22 @@ public partial class AddTaskPage : ContentPage
         Debug.WriteLine("Editing an appointment");
     }
 
+    private void OnPriorityDecreaseClicked(object sender, EventArgs e)
+    {
+        if (PriorityStepper.Value > PriorityStepper.Minimum)
+        {
+            PriorityStepper.Value -= 1;
+        }
+    }
+
+    private void OnPriorityIncreaseClicked(object sender, EventArgs e)
+    {
+        if (PriorityStepper.Value < PriorityStepper.Maximum)
+        {
+            PriorityStepper.Value += 1;
+        }
+    }
+
     private async void OnCancelClicked(object sender, EventArgs e) //Exits page without saving anything
     {
         await Navigation.PopModalAsync();
@@ -151,7 +167,7 @@ public partial class AddTaskPage : ContentPage
         {
             if (IsAppointmentCheckBox.IsChecked) //Checks if user is trying to convert existing regular task into an appointment
             {
-                _taskListService.Remove(taskOnEdit); //Removes task from list entirely and resaves it as an appointment
+                _taskListService.Remove(taskOnEdit!); //Removes task from list entirely and resaves it as an appointment
                 await SaveNewTask();
                 return;
             }

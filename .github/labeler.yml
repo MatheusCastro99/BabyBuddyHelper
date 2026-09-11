@@ -1,0 +1,15 @@
+documentation:
+  - changed-files:
+      - any-glob-to-any-file:
+          - 'docs/**'
+          - '**/*.md'
+
+enhancement:
+  - changed-files:
+      - any-glob-to-any-file:
+          - '.github/workflows/**'
+          - '*.csproj'
+          - '*.slnx'
+          - '**/*.cs'
+          - '**/*.xaml'
+          - 'Resources/**'

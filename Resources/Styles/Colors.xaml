@@ -5,33 +5,52 @@
 
     <!-- Note: For Android please see also Platforms\Android\Resources\values\colors.xml -->
 
-    <Color x:Key="Primary">#512BD4</Color>
-    <Color x:Key="PrimaryDark">#ac99ea</Color>
-    <Color x:Key="PrimaryDarkText">#242424</Color>
-    <Color x:Key="Secondary">#DFD8F7</Color>
-    <Color x:Key="SecondaryDarkText">#9880e5</Color>
-    <Color x:Key="Tertiary">#2B0B98</Color>
+    <Color x:Key="Primary">#7EAAC5</Color>
+    <Color x:Key="PrimaryDark">#5D89AE</Color>
+    <Color x:Key="PrimaryDarkText">#23415D</Color>
+    <Color x:Key="Secondary">#DDECF9</Color>
+    <Color x:Key="SecondaryDarkText">#456785</Color>
+    <Color x:Key="Tertiary">#EEF7FF</Color>
+
+    <Color x:Key="BabyBuddyBackground">#EAF5FF</Color>
+    <Color x:Key="BabyBuddySurface">#FFFFFF</Color>
+    <Color x:Key="BabyBuddySurfaceAlt">#F2FAFF</Color>
+    <Color x:Key="BabyBuddyPrimary">#7EAAC5</Color>
+    <Color x:Key="BabyBuddySecondary">#DDECF9</Color>
+    <Color x:Key="BabyBuddyAccent">#B7D6EB</Color>
+    <Color x:Key="BabyBuddySuccess">#B9DCC9</Color>
+    <Color x:Key="BabyBuddyWarm">#CFE6F4</Color>
+    <Color x:Key="BabyBuddyText">#1F3650</Color>
+    <Color x:Key="BabyBuddyMuted">#516B7F</Color>
+    <Color x:Key="BabyBuddyBorder">#D6E4EE</Color>
+    <Color x:Key="BabyBuddyShadow">#C8DDEA</Color>
 
     <Color x:Key="White">White</Color>
     <Color x:Key="Black">Black</Color>
     <Color x:Key="Magenta">#D600AA</Color>
-    <Color x:Key="MidnightBlue">#190649</Color>
+    <Color x:Key="MidnightBlue">#23414B</Color>
     <Color x:Key="OffBlack">#1f1f1f</Color>
 
-    <Color x:Key="Gray100">#E1E1E1</Color>
-    <Color x:Key="Gray200">#C8C8C8</Color>
-    <Color x:Key="Gray300">#ACACAC</Color>
-    <Color x:Key="Gray400">#919191</Color>
-    <Color x:Key="Gray500">#6E6E6E</Color>
-    <Color x:Key="Gray600">#404040</Color>
-    <Color x:Key="Gray900">#212121</Color>
-    <Color x:Key="Gray950">#141414</Color>
+    <Color x:Key="Gray100">#E8E2DE</Color>
+    <Color x:Key="Gray200">#D8D0CC</Color>
+    <Color x:Key="Gray300">#B9B0AD</Color>
+    <Color x:Key="Gray400">#8E8582</Color>
+    <Color x:Key="Gray500">#6E6A67</Color>
+    <Color x:Key="Gray600">#4B4745</Color>
+    <Color x:Key="Gray900">#2B2827</Color>
+    <Color x:Key="Gray950">#1A1818</Color>
 
     <SolidColorBrush x:Key="PrimaryBrush" Color="{StaticResource Primary}"/>
     <SolidColorBrush x:Key="SecondaryBrush" Color="{StaticResource Secondary}"/>
     <SolidColorBrush x:Key="TertiaryBrush" Color="{StaticResource Tertiary}"/>
     <SolidColorBrush x:Key="WhiteBrush" Color="{StaticResource White}"/>
     <SolidColorBrush x:Key="BlackBrush" Color="{StaticResource Black}"/>
+    <SolidColorBrush x:Key="BabyBuddyBackgroundBrush" Color="{StaticResource BabyBuddyBackground}"/>
+    <SolidColorBrush x:Key="BabyBuddySurfaceBrush" Color="{StaticResource BabyBuddySurface}"/>
+    <SolidColorBrush x:Key="BabyBuddySurfaceAltBrush" Color="{StaticResource BabyBuddySurfaceAlt}"/>
+    <SolidColorBrush x:Key="BabyBuddyPrimaryBrush" Color="{StaticResource BabyBuddyPrimary}"/>
+    <SolidColorBrush x:Key="BabyBuddyAccentBrush" Color="{StaticResource BabyBuddyAccent}"/>
+    <SolidColorBrush x:Key="BabyBuddySuccessBrush" Color="{StaticResource BabyBuddySuccess}"/>
 
     <SolidColorBrush x:Key="Gray100Brush" Color="{StaticResource Gray100}"/>
     <SolidColorBrush x:Key="Gray200Brush" Color="{StaticResource Gray200}"/>

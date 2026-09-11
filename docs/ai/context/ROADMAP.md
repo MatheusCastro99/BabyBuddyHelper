@@ -1,26 +1,5 @@
 ﻿# Future features and Roadmap.
 
-## Phase 1: 
-
-UI Redesign:
-
-- Complete redesign for all pages
-- Calm and Encouraging soft colors palette and theme
-- Card-based, rounded corners layouts for tasks and appointments
-- Companion character theme and idealization
-	> Current candidates: "Buddy Bear", "Cuddly Lion Cub", "Fox", "Robot"
-
-Design System:
-
-- Design system remap for consistent UI components and layouts
-- Reusable styles, templates, and controls
-
-Main Page:
-- Turn Main Page into an informative day dashboard.
-- Dashboard will include Today's appointment, Baby(ies) age, Baby(ies) weight
-
----
-
 ## Phase 2:
 
 BabyModel:
