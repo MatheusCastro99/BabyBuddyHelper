@@ -10,16 +10,16 @@
                     x:Name="CubBadge"
                     BackgroundColor="{StaticResource BabyBuddySecondary}"
                     StrokeThickness="0"
-                    Padding="6"
-                    WidthRequest="64"
-                    HeightRequest="64"
+                    Padding="8"
+                    WidthRequest="96"
+                    HeightRequest="96"
                     HorizontalOptions="Center"
                     VerticalOptions="Center"
-                    StrokeShape="RoundRectangle 32">
-                <Image Source="companion_cub.svg"
+                    StrokeShape="RoundRectangle 28">
+                <Image Source="companion_cub.png"
                        Aspect="AspectFit"
-                       WidthRequest="48"
-                       HeightRequest="48"
+                       WidthRequest="80"
+                       HeightRequest="80"
                        SemanticProperties.Description="Cub, your companion" />
             </Border>
 
