@@ -13,6 +13,7 @@ The application currently provides a complete foundation for:
 
 Major visual redesign Completed.
 
+
 ---
 
 # Current Development Focus:
@@ -31,14 +32,10 @@ Baby Profiles:
 
 Companion Character: CONCLUDED
 
-- Introduce a companion character to guide and accompany users through the app
-- Character will provide tips, encouragement, and feedback
-- Static SVG or Lottie animations for character interactions
-- Simple and short animations to avoid overwhelming users
-- Reside on MainPage only (at least initially)
-
 Toast Messages:
 
 - Implement toast messages for Task Completion, added, deleted, and appointment scheduled
 - Toasts will be designed to be non-intrusive and visually appealing
 - Mascot interactions will be included in toast messages for added engagement
+
+---

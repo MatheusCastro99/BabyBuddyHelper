@@ -1,27 +1,71 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="BabyBuddyHelper.MainPage">
+             xmlns:controls="clr-namespace:BabyBuddyHelper.Controls"
+             x:Class="BabyBuddyHelper.MainPage"
+             Title="Home"
+             BackgroundColor="{StaticResource BabyBuddyBackground}">
 
     <ScrollView>
-        <VerticalStackLayout
-            Padding="30,0"
-            Spacing="25">
-            <Image
-                Source="dotnet_bot.png"
-                HeightRequest="185"
-                Aspect="AspectFit"
-                SemanticProperties.Description="dot net bot in a submarine number ten" />
+        <VerticalStackLayout Padding="20" Spacing="18">
+            <Border BackgroundColor="{StaticResource BabyBuddySurface}" StrokeThickness="0" Padding="20" Margin="0,8,0,0">
+                <VerticalStackLayout Spacing="8">
+                    <Label Text="Good morning" Style="{StaticResource BodyText}" FontAttributes="Bold" />
+                    <Label Text="{Binding CountdownText}" Style="{StaticResource PageTitle}" />
+                    <Label Text="Your little routine is looking calm and steady today." Style="{StaticResource BodyText}" />
+                </VerticalStackLayout>
+            </Border>
 
-            <Label
-                Text="{Binding CountdownText}"
-                Style="{StaticResource Headline}"
-                SemanticProperties.HeadingLevel="Level1" />
+            <Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto" ColumnSpacing="14" RowSpacing="14">
+                <Border Grid.Column="0" Grid.Row="0" Padding="16" BackgroundColor="{StaticResource BabyBuddySurfaceAlt}" StrokeThickness="0" StrokeShape="RoundRectangle 22">
+                    <VerticalStackLayout Spacing="8">
+                        <Border BackgroundColor="{StaticResource BabyBuddySecondary}" StrokeThickness="0" Padding="8,6" HorizontalOptions="Center" StrokeShape="RoundRectangle 12">
+                            <Label Text="🗓️" FontSize="22" HorizontalOptions="Center" />
+                        </Border>
+                        <Label Text="Today" Style="{StaticResource SectionTitle}" HorizontalTextAlignment="Center" />
+                        <Label Text="1 appointment" Style="{StaticResource BodyText}" HorizontalTextAlignment="Center" />
+                    </VerticalStackLayout>
+                </Border>
 
-            <Label
-                Text="Baby prep checklist and calendar"
-                Style="{StaticResource SubHeadline}"
-                SemanticProperties.HeadingLevel="Level2" />
+                <Border Grid.Column="1" Grid.Row="0" Padding="16" BackgroundColor="{StaticResource BabyBuddySurfaceAlt}" StrokeThickness="0" StrokeShape="RoundRectangle 22">
+                    <VerticalStackLayout Spacing="8">
+                        <Border BackgroundColor="{StaticResource BabyBuddySuccess}" StrokeThickness="0" Padding="8,6" HorizontalOptions="Center" StrokeShape="RoundRectangle 12">
+                            <Label Text="✅" FontSize="22" HorizontalOptions="Center" />
+                        </Border>
+                        <Label Text="Checklist" Style="{StaticResource SectionTitle}" HorizontalTextAlignment="Center" />
+                        <Label Text="2 tasks done" Style="{StaticResource BodyText}" HorizontalTextAlignment="Center" />
+                    </VerticalStackLayout>
+                </Border>
+
+                <Border Grid.Column="0" Grid.Row="1" Padding="16" BackgroundColor="{StaticResource BabyBuddySurfaceAlt}" StrokeThickness="0" StrokeShape="RoundRectangle 22">
+                    <VerticalStackLayout Spacing="8">
+                        <Border BackgroundColor="{StaticResource BabyBuddyWarm}" StrokeThickness="0" Padding="8,6" HorizontalOptions="Center" StrokeShape="RoundRectangle 12">
+                            <Label Text="🧸" FontSize="22" HorizontalOptions="Center" />
+                        </Border>
+                        <Label Text="Tiny win" Style="{StaticResource SectionTitle}" HorizontalTextAlignment="Center" />
+                        <Label Text="You’ve got this" Style="{StaticResource BodyText}" HorizontalTextAlignment="Center" />
+                    </VerticalStackLayout>
+                </Border>
+
+                <Border Grid.Column="1" Grid.Row="1" Padding="16" BackgroundColor="{StaticResource BabyBuddySurfaceAlt}" StrokeThickness="0" StrokeShape="RoundRectangle 22">
+                    <VerticalStackLayout Spacing="8">
+                        <Border BackgroundColor="{StaticResource BabyBuddyAccent}" StrokeThickness="0" Padding="8,6" HorizontalOptions="Center" StrokeShape="RoundRectangle 12">
+                            <Label Text="💛" FontSize="22" HorizontalOptions="Center" />
+                        </Border>
+                        <Label Text="Next up" Style="{StaticResource SectionTitle}" HorizontalTextAlignment="Center" />
+                        <Label Text="Pediatrician" Style="{StaticResource BodyText}" HorizontalTextAlignment="Center" />
+                    </VerticalStackLayout>
+                </Border>
+            </Grid>
+
+            <controls:CompanionView />
+
+            <Border BackgroundColor="{StaticResource BabyBuddySurface}" StrokeThickness="0" Padding="18">
+                <VerticalStackLayout Spacing="10">
+                    <Label Text="Today's progress" Style="{StaticResource SectionTitle}" />
+                    <ProgressBar Progress="0.65" />
+                </VerticalStackLayout>
+            </Border>
         </VerticalStackLayout>
     </ScrollView>
 
