@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:controls="clr-namespace:BabyBuddyHelper.Controls"
              x:Class="BabyBuddyHelper.MainPage"
              Title="Home"
              BackgroundColor="{StaticResource BabyBuddyBackground}">
@@ -57,10 +58,11 @@
                 </Border>
             </Grid>
 
+            <controls:CompanionView />
+
             <Border BackgroundColor="{StaticResource BabyBuddySurface}" StrokeThickness="0" Padding="18">
                 <VerticalStackLayout Spacing="10">
-                    <Label Text="Companion check-in" Style="{StaticResource SectionTitle}" />
-                    <Label Text="A calm rhythm keeps things manageable. Keep the next task small and steady." Style="{StaticResource BodyText}" />
+                    <Label Text="Today's progress" Style="{StaticResource SectionTitle}" />
                     <ProgressBar Progress="0.65" />
                 </VerticalStackLayout>
             </Border>
