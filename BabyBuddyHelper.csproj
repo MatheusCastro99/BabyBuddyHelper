@@ -102,6 +102,7 @@
 
 	<ItemGroup>
 	  <Folder Include=".github\" />
+	  <Folder Include="Platforms\Windows\Handlers\" />
 	</ItemGroup>
 
 </Project>

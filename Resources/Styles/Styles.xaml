@@ -53,9 +53,10 @@
     </Style>
 
     <Style TargetType="CheckBox">
-        <Setter Property="Color" Value="{AppThemeBinding Light={StaticResource BabyBuddyPrimary}, Dark={StaticResource White}}" />
+        <Setter Property="Color" Value="{StaticResource BabyBuddyPrimary}" />
         <Setter Property="MinimumHeightRequest" Value="44"/>
         <Setter Property="MinimumWidthRequest" Value="44"/>
+        <Setter Property="Opacity" Value="1"/>
     </Style>
 
     <Style TargetType="DatePicker">
@@ -205,8 +206,10 @@
     </Style>
 
     <Style TargetType="Switch">
-        <Setter Property="OnColor" Value="{AppThemeBinding Light={StaticResource BabyBuddySuccess}, Dark={StaticResource Gray200}}" />
+        <Setter Property="OnColor" Value="{StaticResource BabyBuddyPrimary}" />
+        <Setter Property="OffColor" Value="{StaticResource BabyBuddyBorder}" />
         <Setter Property="ThumbColor" Value="{StaticResource White}" />
+        <Setter Property="Opacity" Value="1" />
     </Style>
 
     <Style TargetType="TimePicker">
