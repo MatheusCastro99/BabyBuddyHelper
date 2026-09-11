@@ -45,8 +45,7 @@ namespace BabyBuddyHelper.Controls
 
             if (Handler is null)
             {
-                _hideCts?.Cancel();
-                _hideCts = null;
+                ReplaceHideCts(null);
                 ResetVisualState();
                 return;
             }
@@ -61,9 +60,8 @@ namespace BabyBuddyHelper.Controls
         {
             // A newer toast should replace whatever is currently showing
             // instead of queueing behind it.
-            _hideCts?.Cancel();
             var cts = new CancellationTokenSource();
-            _hideCts = cts;
+            ReplaceHideCts(cts);
 
             Message = message;
             IsVisible = true;
@@ -86,7 +84,7 @@ namespace BabyBuddyHelper.Controls
                 return; // a newer toast has already taken over
             }
 
-            if (cts.IsCancellationRequested)
+            if (_hideCts != cts)
             {
                 return;
             }
@@ -95,12 +93,13 @@ namespace BabyBuddyHelper.Controls
                 this.FadeToAsync(0, 160, Easing.CubicIn),
                 this.TranslateToAsync(0, HiddenTranslationY, 160, Easing.CubicIn));
 
-            if (cts.IsCancellationRequested || _hideCts != cts)
+            if (_hideCts != cts)
             {
                 return;
             }
 
             IsVisible = false;
+            ReplaceHideCts(null);
         }
 
         async Task PlayGreetingBounceAsync()
@@ -117,6 +116,20 @@ namespace BabyBuddyHelper.Controls
             IsVisible = false;
             Opacity = 0;
             TranslationY = HiddenTranslationY;
+        }
+
+        void ReplaceHideCts(CancellationTokenSource? newCts)
+        {
+            var previousCts = _hideCts;
+            _hideCts = newCts;
+
+            if (previousCts is null || ReferenceEquals(previousCts, newCts))
+            {
+                return;
+            }
+
+            previousCts.Cancel();
+            previousCts.Dispose();
         }
     }
 }
