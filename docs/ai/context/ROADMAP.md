@@ -21,7 +21,7 @@ Companion Character: CONCLUDED
 - Simple and short animations to avoid overwhelming users
 - Reside on MainPage only (at least initially)
 
-Toast Messages:
+Toast Messages: CONCLUDED
 
 - Implement toast messages for Task Completion, added, deleted, and appointment scheduled
 - Toasts will be designed to be non-intrusive and visually appealing

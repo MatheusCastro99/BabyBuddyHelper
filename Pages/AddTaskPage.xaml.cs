@@ -1,5 +1,6 @@
 using BabyBuddyHelper.Interfaces;
 using BabyBuddyHelper.Models;
+using BabyBuddyHelper.Services;
 using System.Diagnostics;
 
 namespace BabyBuddyHelper.Pages;
@@ -122,6 +123,7 @@ public partial class AddTaskPage : ContentPage
             _taskListService.Add(newAppointment);
 
             await Navigation.PopModalAsync(); //Closes AddTaskPage
+            ToastService.Show(ToastKind.AppointmentScheduled);
         }
 
         else //thread of execution for non-appointment task
@@ -130,6 +132,7 @@ public partial class AddTaskPage : ContentPage
             _taskListService.Add(newTask);
 
             await Navigation.PopModalAsync();
+            ToastService.Show(ToastKind.TaskAdded);
         }
     }
 
@@ -161,6 +164,7 @@ public partial class AddTaskPage : ContentPage
             _taskListService.Update(updatedAppt); //Updates appointment in task list by reference
 
             await Navigation.PopModalAsync();
+            ToastService.Show(ToastKind.TaskEdited);
         }
 
         else // Regular Task editing Case
@@ -177,6 +181,7 @@ public partial class AddTaskPage : ContentPage
             taskOnEdit?.TaskPriority = Convert.ToInt32(PriorityStepper.Value);
 
             await Navigation.PopModalAsync();
+            ToastService.Show(ToastKind.TaskEdited);
         }
     }
 
