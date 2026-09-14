@@ -18,23 +18,23 @@
                 <VerticalStackLayout Spacing="18">
                     <Label Text="Profile details" Style="{StaticResource SectionTitle}" />
 
-                    <Entry x:Name="NameEntry" Placeholder="Name" />
+                    <Entry x:Name="NameEntry" Placeholder="Name" TextColor="Gray" />
 
                     <Grid ColumnDefinitions="*,*" ColumnSpacing="12">
-                        <Entry x:Name="AgeEntry" Grid.Column="0" Placeholder="Age" Keyboard="Numeric" />
-                        <Entry x:Name="WeightEntry" Grid.Column="1" Placeholder="Weight in lbs" Keyboard="Numeric" />
+                        <Entry x:Name="AgeEntry" Grid.Column="0" Placeholder="Age" Keyboard="Numeric" TextColor="Gray"/>
+                        <Entry x:Name="WeightEntry" Grid.Column="1" Placeholder="Weight in lbs" Keyboard="Numeric" TextColor="Gray"/>
                     </Grid>
 
-                    <Entry x:Name="HeightEntry" Placeholder="Height in ft" Keyboard="Numeric" />
+                    <Entry x:Name="HeightEntry" Placeholder="Height in ft" Keyboard="Numeric" TextColor="Gray"/>
 
                     <VerticalStackLayout Spacing="10">
                         <Label Text="Last feed" Style="{StaticResource SectionTitle}" />
                         <Grid ColumnDefinitions="*,*" ColumnSpacing="12">
                             <Border Grid.Column="0" BackgroundColor="{StaticResource BabyBuddySurfaceAlt}" Stroke="{StaticResource BabyBuddyBorder}" StrokeShape="RoundRectangle 12" Padding="10,8">
-                                <DatePicker x:Name="LastFeedDatePicker" HeightRequest="44" />
+                                <DatePicker x:Name="LastFeedDatePicker" HeightRequest="44" HorizontalOptions="Center" TextColor="{StaticResource BabyBuddyText}"/>
                             </Border>
                             <Border Grid.Column="1" BackgroundColor="{StaticResource BabyBuddySurfaceAlt}" Stroke="{StaticResource BabyBuddyBorder}" StrokeShape="RoundRectangle 12" Padding="10,8">
-                                <TimePicker x:Name="LastFeedTimePicker" HeightRequest="44" />
+                                <TimePicker x:Name="LastFeedTimePicker" HeightRequest="44" HorizontalOptions="Center" TextColor="{StaticResource BabyBuddyText}"/>
                             </Border>
                         </Grid>
                     </VerticalStackLayout>
@@ -43,10 +43,10 @@
                         <Label Text="Last sleep" Style="{StaticResource SectionTitle}" />
                         <Grid ColumnDefinitions="*,*" ColumnSpacing="12">
                             <Border Grid.Column="0" BackgroundColor="{StaticResource BabyBuddySurfaceAlt}" Stroke="{StaticResource BabyBuddyBorder}" StrokeShape="RoundRectangle 12" Padding="10,8">
-                                <DatePicker x:Name="LastSleepDatePicker" HeightRequest="44" />
+                                <DatePicker x:Name="LastSleepDatePicker" HeightRequest="44" HorizontalOptions="Center" TextColor="{StaticResource BabyBuddyText}"/>
                             </Border>
                             <Border Grid.Column="1" BackgroundColor="{StaticResource BabyBuddySurfaceAlt}" Stroke="{StaticResource BabyBuddyBorder}" StrokeShape="RoundRectangle 12" Padding="10,8">
-                                <TimePicker x:Name="LastSleepTimePicker" HeightRequest="44" />
+                                <TimePicker x:Name="LastSleepTimePicker" HeightRequest="44" HorizontalOptions="Center" TextColor="{StaticResource BabyBuddyText}"/>
                             </Border>
                         </Grid>
                     </VerticalStackLayout>
