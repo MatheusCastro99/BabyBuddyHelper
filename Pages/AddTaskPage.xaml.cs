@@ -32,6 +32,8 @@ public partial class AddTaskPage : ContentPage
     public AddTaskPage(ITaskListService taskListService, TaskModel taskOnEdit) //Constructor that will be triggered on
     {                                                                           //EditNoteIcon click for regular tasks
         InitializeComponent();
+        TaskSaveButton.Text = "Update";
+        TaskTitleLabel.Text = "Edit a care moment";
 
         this._taskListService = taskListService;
         this.taskOnEdit = taskOnEdit;
@@ -47,6 +49,8 @@ public partial class AddTaskPage : ContentPage
     public AddTaskPage(ITaskListService taskListService, AppointmentModel appointmentOnEdit) //Constructor that is triggered on
     {                                                                                         //EditNoteIcon click for appointments
         InitializeComponent();
+        TaskSaveButton.Text = "Update";
+        TaskTitleLabel.Text = "Edit a care moment";
 
         this._taskListService = taskListService;
         this.appointmentOnEdit = appointmentOnEdit;
