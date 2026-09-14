@@ -20,11 +20,7 @@
 
 ✅ Real-Time Scheduler Refresh
 
-✅ Baby Profile Creation
-
-✅ Baby Profile Editing
-
-✅ Baby Profile Deletion
+✅ Baby Profile Management (Create, Update, Delete)
 
 ✅ Dependency Injection
 
