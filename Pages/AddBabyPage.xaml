@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="BabyBuddyHelper.Pages.AddBabyPage"
+             Title="Baby Profile"
+             BackgroundColor="{StaticResource BabyBuddyBackground}">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="18">
+            <Border BackgroundColor="{StaticResource BabyBuddySurface}" StrokeThickness="0" Padding="18">
+                <VerticalStackLayout Spacing="6">
+                    <Label x:Name="HeaderTitleLabel" Text="Add baby profile" Style="{StaticResource PageTitle}" HorizontalTextAlignment="Center" />
+                    <Label Text="Keep the details you need in one calm, caring place." Style="{StaticResource BodyText}" HorizontalTextAlignment="Center" />
+                </VerticalStackLayout>
+            </Border>
+
+            <Border BackgroundColor="{StaticResource BabyBuddySurface}" StrokeThickness="0" Padding="18" StrokeShape="RoundRectangle 24">
+                <VerticalStackLayout Spacing="18">
+                    <Label Text="Profile details" Style="{StaticResource SectionTitle}" />
+
+                    <Entry x:Name="NameEntry" Placeholder="Name" />
+
+                    <Grid ColumnDefinitions="*,*" ColumnSpacing="12">
+                        <Entry x:Name="AgeEntry" Grid.Column="0" Placeholder="Age" Keyboard="Numeric" />
+                        <Entry x:Name="WeightEntry" Grid.Column="1" Placeholder="Weight in lbs" Keyboard="Numeric" />
+                    </Grid>
+
+                    <Entry x:Name="HeightEntry" Placeholder="Height in ft" Keyboard="Numeric" />
+
+                    <VerticalStackLayout Spacing="10">
+                        <Label Text="Last feed" Style="{StaticResource SectionTitle}" />
+                        <Grid ColumnDefinitions="*,*" ColumnSpacing="12">
+                            <Border Grid.Column="0" BackgroundColor="{StaticResource BabyBuddySurfaceAlt}" Stroke="{StaticResource BabyBuddyBorder}" StrokeShape="RoundRectangle 12" Padding="10,8">
+                                <DatePicker x:Name="LastFeedDatePicker" HeightRequest="44" />
+                            </Border>
+                            <Border Grid.Column="1" BackgroundColor="{StaticResource BabyBuddySurfaceAlt}" Stroke="{StaticResource BabyBuddyBorder}" StrokeShape="RoundRectangle 12" Padding="10,8">
+                                <TimePicker x:Name="LastFeedTimePicker" HeightRequest="44" />
+                            </Border>
+                        </Grid>
+                    </VerticalStackLayout>
+
+                    <VerticalStackLayout Spacing="10">
+                        <Label Text="Last sleep" Style="{StaticResource SectionTitle}" />
+                        <Grid ColumnDefinitions="*,*" ColumnSpacing="12">
+                            <Border Grid.Column="0" BackgroundColor="{StaticResource BabyBuddySurfaceAlt}" Stroke="{StaticResource BabyBuddyBorder}" StrokeShape="RoundRectangle 12" Padding="10,8">
+                                <DatePicker x:Name="LastSleepDatePicker" HeightRequest="44" />
+                            </Border>
+                            <Border Grid.Column="1" BackgroundColor="{StaticResource BabyBuddySurfaceAlt}" Stroke="{StaticResource BabyBuddyBorder}" StrokeShape="RoundRectangle 12" Padding="10,8">
+                                <TimePicker x:Name="LastSleepTimePicker" HeightRequest="44" />
+                            </Border>
+                        </Grid>
+                    </VerticalStackLayout>
+                </VerticalStackLayout>
+            </Border>
+
+            <Grid ColumnDefinitions="*,*" ColumnSpacing="12">
+                <Button Grid.Column="0" Text="Cancel" Style="{StaticResource SecondaryAction}" Clicked="OnCancelClicked" />
+                <Button x:Name="SaveButton" Grid.Column="1" Text="Save" Style="{StaticResource PrimaryAction}" Clicked="OnSaveClicked" />
+            </Grid>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

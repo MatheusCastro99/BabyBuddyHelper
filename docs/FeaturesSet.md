@@ -20,6 +20,12 @@
 
 ✅ Real-Time Scheduler Refresh
 
+✅ Baby Profile Creation
+
+✅ Baby Profile Editing
+
+✅ Baby Profile Deletion
+
 ✅ Dependency Injection
 
 ✅ Guid-Based IDs
@@ -39,6 +45,5 @@ Database Backup, Redundancy, and Restore
 Companion comes to life with an AI-driven personality and interactions
 
 Evolve companion into a helpful and supportive AI agent for parenting guidance (not a doctor or therapist)
-
 
 

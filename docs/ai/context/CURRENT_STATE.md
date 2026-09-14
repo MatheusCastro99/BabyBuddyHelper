@@ -10,6 +10,7 @@ The application currently provides a complete foundation for:
 - Task Management
 - Appointment Management
 - Calendar Scheduling
+- Baby Profile Management
 
 Major visual redesign Completed.
 
@@ -26,8 +27,8 @@ BabyModel:
 
 Baby Profiles:
 - Ability to add, edit, and delete babies profiles
-- Refactor Tasks and Appointments to hold an optional BabyName property, indicating which baby the task is related to 
-- Add optional filter on both list and calendar to filter Tasks and Appointments by baby
+- Task and appointment baby linking is still pending
+- Baby profile data now lives alongside tasks through a dedicated service
 
 Companion Character: CONCLUDED
 

@@ -13,13 +13,16 @@ Models/
 
 - TaskModel.cs
 - AppointmentModel.cs
+- BabyModel.cs
 
 Services/
 
 - TaskListService.cs
+- BabyProfileService.cs
 
 Interfaces/
     ITaskListService.cs
+    IBabyProfileService.cs
 
 Pages/
 

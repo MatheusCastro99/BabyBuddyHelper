@@ -42,8 +42,8 @@
                         <Border BackgroundColor="{StaticResource BabyBuddyWarm}" StrokeThickness="0" Padding="8,6" HorizontalOptions="Center" StrokeShape="RoundRectangle 12">
                             <Label Text="🧸" FontSize="22" HorizontalOptions="Center" />
                         </Border>
-                        <Label Text="Tiny win" Style="{StaticResource SectionTitle}" HorizontalTextAlignment="Center" />
-                        <Label Text="You’ve got this" Style="{StaticResource BodyText}" HorizontalTextAlignment="Center" />
+                        <Label Text="Profiles" Style="{StaticResource SectionTitle}" HorizontalTextAlignment="Center" />
+                        <Label Text="{Binding ProfileCountText}" Style="{StaticResource BodyText}" HorizontalTextAlignment="Center" />
                     </VerticalStackLayout>
                 </Border>
 
@@ -64,6 +64,92 @@
                 <VerticalStackLayout Spacing="10">
                     <Label Text="Today's progress" Style="{StaticResource SectionTitle}" />
                     <ProgressBar Progress="0.65" />
+                </VerticalStackLayout>
+            </Border>
+
+            <Border BackgroundColor="{StaticResource BabyBuddySurface}" StrokeThickness="0" Padding="18">
+                <VerticalStackLayout Spacing="16">
+                    <Grid ColumnDefinitions="*,Auto" ColumnSpacing="12">
+                        <VerticalStackLayout Spacing="4">
+                            <Label Text="Baby profiles" Style="{StaticResource SectionTitle}" />
+                            <Label Text="Keep each little routine close and easy to update." Style="{StaticResource BodyText}" />
+                        </VerticalStackLayout>
+
+                        <Button Grid.Column="1"
+                                Text="Add profile"
+                                Style="{StaticResource PrimaryAction}"
+                                Padding="14,10"
+                                VerticalOptions="Center"
+                                Clicked="OnAddBabyProfileClicked" />
+                    </Grid>
+
+                    <Border IsVisible="{Binding HasNoBabyProfiles}"
+                            BackgroundColor="{StaticResource BabyBuddySurfaceAlt}"
+                            Stroke="{StaticResource BabyBuddyBorder}"
+                            Padding="16">
+                        <Label Text="No baby profiles yet. Add one whenever you're ready, and we'll keep feeding and sleep details handy for you."
+                               Style="{StaticResource BodyText}" />
+                    </Border>
+
+                    <CollectionView ItemsSource="{Binding BabyProfiles}"
+                                    IsVisible="{Binding HasBabyProfiles}"
+                                    SelectionMode="None">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <Border Padding="16"
+                                        Margin="0,0,0,10"
+                                        BackgroundColor="{StaticResource BabyBuddySurfaceAlt}"
+                                        StrokeThickness="0"
+                                        StrokeShape="RoundRectangle 22">
+                                    <VerticalStackLayout Spacing="12">
+                                        <Grid ColumnDefinitions="*,Auto" ColumnSpacing="12">
+                                            <VerticalStackLayout Spacing="4">
+                                                <Label Text="{Binding Name}" Style="{StaticResource SectionTitle}" />
+                                                <Label Text="{Binding Age, StringFormat='Age {0}'}" Style="{StaticResource BodyText}" />
+                                            </VerticalStackLayout>
+
+                                            <Border Grid.Column="1"
+                                                    Padding="10,6"
+                                                    BackgroundColor="{StaticResource BabyBuddySecondary}"
+                                                    StrokeThickness="0"
+                                                    HorizontalOptions="End"
+                                                    VerticalOptions="Start">
+                                                <Label Text="{Binding WeightInLbs, StringFormat='{}{0:F1} lbs'}" Style="{StaticResource CaptionText}" />
+                                            </Border>
+                                        </Grid>
+
+                                        <Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto" ColumnSpacing="12" RowSpacing="8">
+                                            <VerticalStackLayout Grid.Row="0" Grid.Column="0" Spacing="2">
+                                                <Label Text="Height" Style="{StaticResource CaptionText}" />
+                                                <Label Text="{Binding HeightInFt, StringFormat='{}{0:F1} ft'}" Style="{StaticResource BodyText}" />
+                                            </VerticalStackLayout>
+
+                                            <VerticalStackLayout Grid.Row="0" Grid.Column="1" Spacing="2">
+                                                <Label Text="Last feed" Style="{StaticResource CaptionText}" />
+                                                <Label Text="{Binding LastFeed, StringFormat='{}{0:MMM d, h:mm tt}'}" Style="{StaticResource BodyText}" />
+                                            </VerticalStackLayout>
+
+                                            <VerticalStackLayout Grid.Row="1" Grid.ColumnSpan="2" Spacing="2">
+                                                <Label Text="Last sleep" Style="{StaticResource CaptionText}" />
+                                                <Label Text="{Binding LastSleep, StringFormat='{}{0:MMM d, h:mm tt}'}" Style="{StaticResource BodyText}" />
+                                            </VerticalStackLayout>
+                                        </Grid>
+
+                                        <Grid ColumnDefinitions="*,*" ColumnSpacing="12">
+                                            <Button Grid.Column="0"
+                                                    Text="Edit"
+                                                    Style="{StaticResource SecondaryAction}"
+                                                    Clicked="OnEditBabyProfileClicked" />
+                                            <Button Grid.Column="1"
+                                                    Text="Delete"
+                                                    Style="{StaticResource SecondaryAction}"
+                                                    Clicked="OnDeleteBabyProfileClicked" />
+                                        </Grid>
+                                    </VerticalStackLayout>
+                                </Border>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
                 </VerticalStackLayout>
             </Border>
         </VerticalStackLayout>
