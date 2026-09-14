@@ -41,18 +41,27 @@ namespace BabyBuddyHelper
         {
             base.OnAppearing();
 
-            if (_babyProfileService is not null)
+            if (!TryResolveBabyProfileService())
             {
-                RefreshBabyProfileState();
                 return;
             }
 
-            var serviceProvider = Handler?.MauiContext?.Services;
+            RefreshBabyProfileState();
+        }
+
+        private bool TryResolveBabyProfileService()
+        {
+            if (_babyProfileService is not null)
+            {
+                return true;
+            }
+
+            var serviceProvider = Application.Current?.Handler?.MauiContext?.Services;
             var babyProfileService = serviceProvider?.GetService<IBabyProfileService>();
 
             if (babyProfileService is null)
             {
-                return;
+                return false;
             }
 
             _babyProfileService = babyProfileService;
@@ -64,8 +73,7 @@ namespace BabyBuddyHelper
                 _isSubscribedToBabyProfiles = true;
             }
 
-            OnPropertyChanged(nameof(BabyProfiles));
-            RefreshBabyProfileState();
+            return true;
         }
 
         private void HandleCounter()
@@ -108,27 +116,27 @@ namespace BabyBuddyHelper
 
         private async void OnAddBabyProfileClicked(object? sender, EventArgs e)
         {
-            if (_babyProfileService is null)
+            if (!TryResolveBabyProfileService())
             {
                 return;
             }
 
-            await Navigation.PushModalAsync(new AddBabyPage(_babyProfileService));
+            await Navigation.PushModalAsync(new AddBabyPage(_babyProfileService!));
         }
 
         private async void OnEditBabyProfileClicked(object? sender, EventArgs e)
         {
-            if (_babyProfileService is null || sender is not Button { BindingContext: BabyModel babyProfile })
+            if (!TryResolveBabyProfileService() || sender is not Button { BindingContext: BabyModel babyProfile })
             {
                 return;
             }
 
-            await Navigation.PushModalAsync(new AddBabyPage(_babyProfileService, babyProfile));
+            await Navigation.PushModalAsync(new AddBabyPage(_babyProfileService!, babyProfile));
         }
 
         private async void OnDeleteBabyProfileClicked(object? sender, EventArgs e)
         {
-            if (_babyProfileService is null || sender is not Button { BindingContext: BabyModel babyProfile })
+            if (!TryResolveBabyProfileService() || sender is not Button { BindingContext: BabyModel babyProfile })
             {
                 return;
             }
