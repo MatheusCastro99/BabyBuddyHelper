@@ -9,6 +9,7 @@ namespace BabyBuddyHelper.Pages;
 public partial class ChecklistPage : ContentPage
 {
     private readonly ITaskListService _taskListService; //Dependency Injection for TaskListService
+    private readonly IBabyProfileService _babyProfileService;
     private readonly HashSet<Guid> _completedTaskIdsWithToast = new();
     public ObservableCollection<TaskModel> TaskList => _taskListService.Tasks; //Will hold instances of TaskModel and AppointmentModel
 
@@ -17,12 +18,13 @@ public partial class ChecklistPage : ContentPage
     public ICommand EditTaskCommand { get; }
 
     public bool isPendingFirst { get; set; } = false; //Property bound to the PendingFirst switch on .xaml
-    public ChecklistPage(ITaskListService taskListService)
+    public ChecklistPage(ITaskListService taskListService, IBabyProfileService babyProfileService)
     {
         InitializeComponent();
 
         //Initializes TaskList and Commands
         _taskListService = taskListService;
+        _babyProfileService = babyProfileService;
         DeleteTaskCommand = new Command<TaskModel>(DeleteTask);
         EditTaskCommand = new Command<TaskModel>(EditTask);
 
@@ -46,7 +48,7 @@ public partial class ChecklistPage : ContentPage
     //Method Bound to NewTask button on .xaml
     private async void onAddTaskClicked(object? sender, EventArgs e)
     {
-        await Navigation.PushModalAsync(new AddTaskPage(_taskListService));
+        await Navigation.PushModalAsync(new AddTaskPage(_taskListService, _babyProfileService));
     }
 
     private void DeleteTask(TaskModel taskToDelete)
@@ -85,12 +87,12 @@ public partial class ChecklistPage : ContentPage
         if (taskToEdit is AppointmentModel appointmentToEdit) //Checks task type to trigger right constructor on AddTaskPage
         {
             await Navigation.PushModalAsync(
-                new AddTaskPage(_taskListService, appointmentToEdit));
+                new AddTaskPage(_taskListService, _babyProfileService, appointmentToEdit));
         }
         else
         {
             await Navigation.PushModalAsync(
-                new AddTaskPage(_taskListService, taskToEdit));
+                new AddTaskPage(_taskListService, _babyProfileService, taskToEdit));
         }
     }
 

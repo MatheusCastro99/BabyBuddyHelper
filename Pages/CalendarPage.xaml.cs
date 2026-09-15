@@ -11,13 +11,15 @@ public partial class CalendarPage : ContentPage
 {
     public DateTime? SelectedDate { get; set; } = DateTime.Today;
     private readonly ITaskListService _taskListService; //Dependency Injection for TaskListService
+    private readonly IBabyProfileService _babyProfileService;
     public ObservableCollection<AppointmentModel> TaskList { get; private set; }//Will hold instances of AppointmentModel
 
-    public CalendarPage(ITaskListService taskListService)
+    public CalendarPage(ITaskListService taskListService, IBabyProfileService babyProfileService)
     {
         InitializeComponent();
 
         _taskListService = taskListService;
+        _babyProfileService = babyProfileService;
         _taskListService.Tasks.CollectionChanged += (s, e) => //Subscribe to the CollectionChanged event of the TaskListService's Tasks collection
         {
             CalendarRefresh();
@@ -69,12 +71,12 @@ public partial class CalendarPage : ContentPage
 
     private async Task AddNewAppointment(DateTime? AppointmentDate) //Triggers AddTaskPage Modal with the specified DateTime from event handler
     {
-        await Navigation.PushModalAsync(new AddTaskPage(_taskListService, AppointmentDate));
+        await Navigation.PushModalAsync(new AddTaskPage(_taskListService, _babyProfileService, AppointmentDate));
     }
 
     private async Task EditAppointment(AppointmentModel appointmentToEdit) //Triggers AddTaskPage Modal with the specified AppointmentModel
     {                                                                       //from event handler
         if (appointmentToEdit is null) return;
-        await Navigation.PushModalAsync(new AddTaskPage(_taskListService, appointmentToEdit));
+        await Navigation.PushModalAsync(new AddTaskPage(_taskListService, _babyProfileService, appointmentToEdit));
     }
 }
