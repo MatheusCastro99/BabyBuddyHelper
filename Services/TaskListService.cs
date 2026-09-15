@@ -1,6 +1,7 @@
 ﻿using BabyBuddyHelper.Interfaces;
 using BabyBuddyHelper.Models;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 
 namespace BabyBuddyHelper.Services
 {
@@ -36,8 +37,10 @@ namespace BabyBuddyHelper.Services
             return GetTasks(associatedBabyId).OfType<AppointmentModel>();                    //Will be used on scheduler to display appointments in a calendar view.
         }
 
-        public TaskListService()
+        public TaskListService(IBabyProfileService babyProfileService)
         {
+            babyProfileService.BabyProfiles.CollectionChanged += OnBabyProfilesChanged;
+
             if (Tasks.Count == 0)
             {
                 GenerateMockData();
@@ -97,6 +100,82 @@ namespace BabyBuddyHelper.Services
                     Tasks.Move(currentIndex, targetIndex);
                 }
             }
+        }
+
+        private void OnBabyProfilesChanged(object? sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e.Action == NotifyCollectionChangedAction.Replace && e.NewItems is not null)
+            {
+                foreach (BabyModel updatedProfile in e.NewItems.OfType<BabyModel>())
+                {
+                    UpdateAssociatedBabyName(updatedProfile.Id, updatedProfile.Name);
+                }
+            }
+
+            if (e.Action == NotifyCollectionChangedAction.Remove && e.OldItems is not null)
+            {
+                foreach (BabyModel removedProfile in e.OldItems.OfType<BabyModel>())
+                {
+                    ClearAssociatedBaby(removedProfile.Id);
+                }
+            }
+        }
+
+        private void UpdateAssociatedBabyName(Guid babyId, string babyName)
+        {
+            string resolvedBabyName = string.IsNullOrWhiteSpace(babyName) ? "General" : babyName.Trim();
+
+            for (int taskIndex = 0; taskIndex < Tasks.Count; taskIndex++)
+            {
+                if (Tasks[taskIndex].AssociatedBabyId != babyId)
+                {
+                    continue;
+                }
+
+                Tasks[taskIndex] = CloneWithAssociation(Tasks[taskIndex], babyId, resolvedBabyName);
+            }
+        }
+
+        private void ClearAssociatedBaby(Guid babyId)
+        {
+            for (int taskIndex = 0; taskIndex < Tasks.Count; taskIndex++)
+            {
+                if (Tasks[taskIndex].AssociatedBabyId != babyId)
+                {
+                    continue;
+                }
+
+                Tasks[taskIndex] = CloneWithAssociation(Tasks[taskIndex], null, "General");
+            }
+        }
+
+        private static TaskModel CloneWithAssociation(TaskModel task, Guid? associatedBabyId, string associatedBabyName)
+        {
+            if (task is AppointmentModel appointment)
+            {
+                return new AppointmentModel(
+                    appointment.AppointmentLocation,
+                    appointment.AppointmentDate,
+                    appointment.AppointmentStartTime,
+                    appointment.AppointmentEndTime,
+                    appointment.TaskPriority,
+                    appointment.TaskName,
+                    appointment.TaskDescription)
+                {
+                    Id = appointment.Id,
+                    IsCompleted = appointment.IsCompleted,
+                    AssociatedBabyId = associatedBabyId,
+                    AssociatedBabyName = associatedBabyName
+                };
+            }
+
+            return new TaskModel(task.TaskPriority, task.TaskName, task.TaskDescription)
+            {
+                Id = task.Id,
+                IsCompleted = task.IsCompleted,
+                AssociatedBabyId = associatedBabyId,
+                AssociatedBabyName = associatedBabyName
+            };
         }
 
         private void GenerateMockData() //Method to generate mock data for testing purposes.
