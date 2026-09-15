@@ -4,7 +4,7 @@
     {
         //Properties Definition
         public Guid Id { get; init; } = Guid.NewGuid();
-        public Guid? BabyProfileId { get; set; }
+        public Guid? AssociatedBabyId { get; set; }
         public int TaskPriority { get; set; }
         public string TaskName { get; set; }
         public string TaskDescription { get; set; }

@@ -46,7 +46,7 @@ public partial class AddTaskPage : ContentPage
         TaskNameEntry.Text = taskOnEdit.TaskName; //Populate fields with taskOnEdit info
         DescriptionEntry.Text = taskOnEdit.TaskDescription;
         PriorityStepper.Value = taskOnEdit.TaskPriority;
-        InitializeBabyProfilePicker(taskOnEdit.BabyProfileId);
+        InitializeBabyProfilePicker(taskOnEdit.AssociatedBabyId);
 
         Debug.WriteLine("Editing a regular task");
     }
@@ -70,7 +70,7 @@ public partial class AddTaskPage : ContentPage
         StartingTimeEntry.Time = appointmentOnEdit.AppointmentStartTime;
         EndingTimeEntry.Time = appointmentOnEdit.AppointmentEndTime;
         LocationEntry.Text = appointmentOnEdit.AppointmentLocation;
-        InitializeBabyProfilePicker(appointmentOnEdit.BabyProfileId);
+        InitializeBabyProfilePicker(appointmentOnEdit.AssociatedBabyId);
 
         Debug.WriteLine("Editing an appointment");
     }
@@ -122,7 +122,7 @@ public partial class AddTaskPage : ContentPage
         int priority = Convert.ToInt32(PriorityStepper.Value); //Consolidate entries into variables
         string taskName = TaskNameEntry.Text;
         string taskDescription = DescriptionEntry.Text;
-        Guid? selectedBabyProfileId = GetSelectedBabyProfileId();
+        Guid? selectedAssociatedBabyId = GetSelectedAssociatedBabyId();
 
         if (IsAppointmentCheckBox.IsChecked) //Checks to see if new task being entered is an appointment
         {
@@ -133,7 +133,7 @@ public partial class AddTaskPage : ContentPage
 
             AppointmentModel newAppointment = new(appointmentLocation, appointmentDate, appointmentStartTime, appointmentEndTime, priority, taskName, taskDescription)
             {
-                BabyProfileId = selectedBabyProfileId
+                AssociatedBabyId = selectedAssociatedBabyId
             };
             _taskListService.Add(newAppointment);
 
@@ -145,7 +145,7 @@ public partial class AddTaskPage : ContentPage
         {
             TaskModel newTask = new(priority, taskName, taskDescription)
             {
-                BabyProfileId = selectedBabyProfileId
+                AssociatedBabyId = selectedAssociatedBabyId
             };
             _taskListService.Add(newTask);
 
@@ -177,7 +177,7 @@ public partial class AddTaskPage : ContentPage
             )
             {
                 Id = appointmentOnEdit.Id, //Preserves TaskId for database update
-                BabyProfileId = GetSelectedBabyProfileId()
+                AssociatedBabyId = GetSelectedAssociatedBabyId()
             };
 
             _taskListService.Update(updatedAppt); //Updates appointment in task list by reference
@@ -198,28 +198,28 @@ public partial class AddTaskPage : ContentPage
             taskOnEdit?.TaskName = TaskNameEntry.Text;
             taskOnEdit?.TaskDescription = DescriptionEntry.Text;
             taskOnEdit?.TaskPriority = Convert.ToInt32(PriorityStepper.Value);
-            taskOnEdit?.BabyProfileId = GetSelectedBabyProfileId();
+            taskOnEdit?.AssociatedBabyId = GetSelectedAssociatedBabyId();
 
             await Navigation.PopModalAsync();
             ToastService.Show(ToastKind.TaskEdited);
         }
     }
 
-    private void InitializeBabyProfilePicker(Guid? selectedBabyProfileId = null)
+    private void InitializeBabyProfilePicker(Guid? selectedAssociatedBabyId = null)
     {
         BabyProfilePicker.ItemsSource = _babyProfileService.BabyProfiles;
 
-        if (!selectedBabyProfileId.HasValue)
+        if (!selectedAssociatedBabyId.HasValue)
         {
             BabyProfilePicker.SelectedItem = null;
             return;
         }
 
         BabyProfilePicker.SelectedItem = _babyProfileService.BabyProfiles
-            .FirstOrDefault(profile => profile.Id == selectedBabyProfileId.Value);
+            .FirstOrDefault(profile => profile.Id == selectedAssociatedBabyId.Value);
     }
 
-    private Guid? GetSelectedBabyProfileId()
+    private Guid? GetSelectedAssociatedBabyId()
     {
         return (BabyProfilePicker.SelectedItem as BabyModel)?.Id;
     }
