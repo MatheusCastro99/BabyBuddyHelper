@@ -9,6 +9,7 @@ public partial class AddTaskPage : ContentPage
 {
     private readonly ITaskListService _taskListService;
     private readonly IBabyProfileService _babyProfileService;
+    private Guid? _selectedAssociatedBabyId;
     TaskModel? taskOnEdit;
     AppointmentModel? appointmentOnEdit;
     bool isEditing = false; //false by default, meaning most of tasks are expected to be new tasks
@@ -207,21 +208,54 @@ public partial class AddTaskPage : ContentPage
 
     private void InitializeBabyProfilePicker(Guid? selectedAssociatedBabyId = null)
     {
-        BabyProfilePicker.ItemsSource = _babyProfileService.BabyProfiles;
-
-        if (!selectedAssociatedBabyId.HasValue)
+        if (!selectedAssociatedBabyId.HasValue || !_babyProfileService.BabyProfiles.Any(profile => profile.Id == selectedAssociatedBabyId.Value))
         {
-            BabyProfilePicker.SelectedItem = null;
+            _selectedAssociatedBabyId = null;
+            BabyProfileSelectionButton.Text = "Unassigned";
             return;
         }
 
-        BabyProfilePicker.SelectedItem = _babyProfileService.BabyProfiles
-            .FirstOrDefault(profile => profile.Id == selectedAssociatedBabyId.Value);
+        _selectedAssociatedBabyId = selectedAssociatedBabyId;
+        BabyProfileSelectionButton.Text = _babyProfileService.BabyProfiles
+            .First(profile => profile.Id == selectedAssociatedBabyId.Value)
+            .Name;
+    }
+
+    private async void OnSelectBabyProfileClicked(object sender, EventArgs e)
+    {
+        Dictionary<string, Guid?> selectionOptions = new()
+        {
+            ["Unassigned"] = null
+        };
+
+        foreach (BabyModel profile in _babyProfileService.BabyProfiles)
+        {
+            string optionLabel = profile.Name;
+            int duplicateCounter = 2;
+
+            while (selectionOptions.ContainsKey(optionLabel))
+            {
+                optionLabel = $"{profile.Name} ({duplicateCounter})";
+                duplicateCounter++;
+            }
+
+            selectionOptions[optionLabel] = profile.Id;
+        }
+
+        string selectedOption = await DisplayActionSheet("Select baby", "Cancel", null, selectionOptions.Keys.ToArray());
+
+        if (string.IsNullOrEmpty(selectedOption) || selectedOption == "Cancel")
+        {
+            return;
+        }
+
+        _selectedAssociatedBabyId = selectionOptions[selectedOption];
+        BabyProfileSelectionButton.Text = selectedOption;
     }
 
     private Guid? GetSelectedAssociatedBabyId()
     {
-        return (BabyProfilePicker.SelectedItem as BabyModel)?.Id;
+        return _selectedAssociatedBabyId;
     }
 
     private async Task<bool> ValidateForm()
