@@ -73,7 +73,10 @@
                             <StackLayout Spacing="10">
                                 <Grid ColumnDefinitions="*, Auto" ColumnSpacing="12" VerticalOptions="Center">
                                     <VerticalStackLayout Grid.Column="0" Spacing="2">
-                                        <Label Text="{Binding TaskName}" FontSize="18" FontAttributes="Bold" />
+                                        <HorizontalStackLayout Spacing="0">
+                                            <Label Text="{Binding TaskName}" FontSize="18" FontAttributes="Bold" />
+                                            <Label Text="{Binding AssociatedBabyDisplayName, StringFormat=' - {0}'}" Style="{StaticResource BodyText}" VerticalTextAlignment="End" />
+                                        </HorizontalStackLayout>
                                         <Label Text="{Binding TaskDescription}" Style="{StaticResource BodyText}" Margin="0,0,0,0" />
                                     </VerticalStackLayout>
 
