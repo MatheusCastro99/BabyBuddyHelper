@@ -152,7 +152,8 @@ namespace BabyBuddyHelper
                 return;
             }
 
-            _babyProfileService.Remove(babyProfile);
+            //TryResolveBabyProfile guarantees that _babyProfileService is not null
+            _babyProfileService!.Remove(babyProfile);
             RefreshBabyProfileState();
         }
 
