@@ -110,8 +110,8 @@ public partial class AddBabyPage : ContentPage
             return null;
         }
 
-        var lastFeed = CombineDateAndTime(LastFeedDatePicker.Date.GetValueOrDefault(), LastFeedTimePicker.Time.GetValueOrDefault());
-        var lastSleep = CombineDateAndTime(LastSleepDatePicker.Date.GetValueOrDefault(), LastSleepTimePicker.Time.GetValueOrDefault());
+        var lastFeed = CombineDateAndTime(LastFeedDatePicker.Date, LastFeedTimePicker.Time);
+        var lastSleep = CombineDateAndTime(LastSleepDatePicker.Date, LastSleepTimePicker.Time);
 
         return new BabyModel
         {

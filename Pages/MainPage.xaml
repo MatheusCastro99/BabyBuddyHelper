@@ -6,8 +6,7 @@
              Title="Home"
              BackgroundColor="{StaticResource BabyBuddyBackground}">
 
-    <ScrollView>
-        <VerticalStackLayout Padding="20" Spacing="18">
+    <VerticalStackLayout Padding="20" Spacing="18">
             <Border BackgroundColor="{StaticResource BabyBuddySurface}" StrokeThickness="0" Padding="20" Margin="0,8,0,0">
                 <VerticalStackLayout Spacing="8">
                     <Label Text="Good morning" Style="{StaticResource BodyText}" FontAttributes="Bold" />
@@ -152,7 +151,6 @@
                     </CollectionView>
                 </VerticalStackLayout>
             </Border>
-        </VerticalStackLayout>
-    </ScrollView>
+    </VerticalStackLayout>
 
 </ContentPage>
