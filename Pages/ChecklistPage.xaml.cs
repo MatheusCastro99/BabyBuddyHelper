@@ -12,6 +12,7 @@ public partial class ChecklistPage : ContentPage
     private readonly IBabyProfileService _babyProfileService;
     private readonly HashSet<Guid> _completedTaskIdsWithToast = new();
     private Guid? _selectedBabyFilterId;
+    private bool _isUpdatingOrderingSwitches;
     public ObservableCollection<TaskModel> TaskList { get; } = new(); //Will hold instances of TaskModel and AppointmentModel
 
     //ICommand binding for delete and edit buttons on each task card
@@ -34,19 +35,50 @@ public partial class ChecklistPage : ContentPage
 
         BindingContext = this;
         RefreshTaskList();
+        UpdateOrderingSwitchStates();
         SyncCompletedTaskToastState();
     }
 
     //Method bound to the IsPendingFirstSwitch
     public void IsPendingFirstHandler(object sender, ToggledEventArgs e)
     {
+        if (_isUpdatingOrderingSwitches)
+        {
+            return;
+        }
+
         isPendingFirst = e.Value;
+
+        if (e.Value)
+        {
+            _isUpdatingOrderingSwitches = true;
+            isDateOrderEnabled = false;
+            DateOrderSwitch.IsToggled = false;
+            _isUpdatingOrderingSwitches = false;
+        }
+
+        UpdateOrderingSwitchStates();
         RefreshTaskList();
     }
 
     public void IsDateOrderHandler(object sender, ToggledEventArgs e)
     {
+        if (_isUpdatingOrderingSwitches)
+        {
+            return;
+        }
+
         isDateOrderEnabled = e.Value;
+
+        if (e.Value)
+        {
+            _isUpdatingOrderingSwitches = true;
+            isPendingFirst = false;
+            PendingFirstSwitch.IsToggled = false;
+            _isUpdatingOrderingSwitches = false;
+        }
+
+        UpdateOrderingSwitchStates();
         RefreshTaskList();
     }
 
@@ -113,6 +145,38 @@ public partial class ChecklistPage : ContentPage
 
     private async void OnChecklistBabyFilterClicked(object? sender, EventArgs e)
     {
+        Dictionary<string, Guid?> filterOptions = BuildBabyFilterOptions();
+
+        string selectedOption = await DisplayActionSheetAsync("Filter checklist by baby", "Cancel", null, filterOptions.Keys.ToArray());
+
+        if (string.IsNullOrEmpty(selectedOption) || selectedOption == "Cancel")
+        {
+            return;
+        }
+
+        _selectedBabyFilterId = filterOptions[selectedOption];
+        ChecklistBabyFilterButton.Text = selectedOption;
+        RefreshTaskList();
+    }
+
+    private void RefreshTaskList()
+    {
+        RefreshSelectedBabyFilterLabel();
+
+        List<TaskModel> visibleTasks = _taskListService
+            .GetTasks(_selectedBabyFilterId, isPendingFirst, isDateOrderEnabled)
+            .ToList();
+
+        TaskList.Clear();
+
+        foreach (TaskModel task in visibleTasks)
+        {
+            TaskList.Add(task);
+        }
+    }
+
+    private Dictionary<string, Guid?> BuildBabyFilterOptions()
+    {
         Dictionary<string, Guid?> filterOptions = new()
         {
             ["All babies"] = null
@@ -132,35 +196,35 @@ public partial class ChecklistPage : ContentPage
             filterOptions[optionLabel] = profile.Id;
         }
 
-        string selectedOption = await DisplayActionSheetAsync("Filter checklist by baby", "Cancel", null, filterOptions.Keys.ToArray());
+        return filterOptions;
+    }
 
-        if (string.IsNullOrEmpty(selectedOption) || selectedOption == "Cancel")
+    private void RefreshSelectedBabyFilterLabel()
+    {
+        if (!_selectedBabyFilterId.HasValue)
         {
+            ChecklistBabyFilterButton.Text = "All babies";
             return;
         }
 
-        _selectedBabyFilterId = filterOptions[selectedOption];
-        ChecklistBabyFilterButton.Text = selectedOption;
-        RefreshTaskList();
-    }
+        string? selectedLabel = BuildBabyFilterOptions()
+            .Where(option => option.Value == _selectedBabyFilterId.Value)
+            .Select(option => option.Key)
+            .FirstOrDefault();
 
-    private void RefreshTaskList()
-    {
-        if (_selectedBabyFilterId.HasValue && !_babyProfileService.BabyProfiles.Any(profile => profile.Id == _selectedBabyFilterId.Value))
+        if (selectedLabel is null)
         {
             _selectedBabyFilterId = null;
             ChecklistBabyFilterButton.Text = "All babies";
+            return;
         }
 
-        List<TaskModel> visibleTasks = _taskListService
-            .GetTasks(_selectedBabyFilterId, isPendingFirst, isDateOrderEnabled)
-            .ToList();
+        ChecklistBabyFilterButton.Text = selectedLabel;
+    }
 
-        TaskList.Clear();
-
-        foreach (TaskModel task in visibleTasks)
-        {
-            TaskList.Add(task);
-        }
+    private void UpdateOrderingSwitchStates()
+    {
+        PendingFirstSwitch.IsEnabled = !isDateOrderEnabled;
+        DateOrderSwitch.IsEnabled = !isPendingFirst;
     }
 }
