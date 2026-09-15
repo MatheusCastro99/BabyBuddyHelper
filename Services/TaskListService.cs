@@ -5,8 +5,9 @@ using System.Collections.Specialized;
 
 namespace BabyBuddyHelper.Services
 {
-    public class TaskListService : ITaskListService //Implemente Interface ITaskListService to provide functionality for managing a list of tasks.
+    public class TaskListService : ITaskListService, IDisposable //Implemente Interface ITaskListService to provide functionality for managing a list of tasks.
     {                                                 //This class will be used to add, remove, update, and organize tasks in the application.
+        private readonly IBabyProfileService? _babyProfileService;
         public ObservableCollection<TaskModel> Tasks { get; } = new();
         public IEnumerable<TaskModel> GetTasks(Guid? associatedBabyId = null, bool pendingFirst = false, bool orderByUpcomingDate = false)
         {
@@ -48,6 +49,7 @@ namespace BabyBuddyHelper.Services
         public TaskListService(IBabyProfileService babyProfileService)
             : this()
         {
+            _babyProfileService = babyProfileService;
             babyProfileService.BabyProfiles.CollectionChanged += OnBabyProfilesChanged;
         }
 
@@ -123,6 +125,11 @@ namespace BabyBuddyHelper.Services
                     ClearAssociatedBaby(removedProfile.Id);
                 }
             }
+
+            if (e.Action == NotifyCollectionChangedAction.Reset)
+            {
+                ClearMissingBabyAssociations();
+            }
         }
 
         private void UpdateAssociatedBabyName(Guid babyId, string babyName)
@@ -145,6 +152,25 @@ namespace BabyBuddyHelper.Services
             for (int taskIndex = 0; taskIndex < Tasks.Count; taskIndex++)
             {
                 if (Tasks[taskIndex].AssociatedBabyId != babyId)
+                {
+                    continue;
+                }
+
+                Tasks[taskIndex] = CloneWithAssociation(Tasks[taskIndex], null, "General");
+            }
+        }
+
+        private void ClearMissingBabyAssociations()
+        {
+            HashSet<Guid> activeBabyIds = _babyProfileService?.BabyProfiles
+                .Select(profile => profile.Id)
+                .ToHashSet() ?? [];
+
+            for (int taskIndex = 0; taskIndex < Tasks.Count; taskIndex++)
+            {
+                Guid? associatedBabyId = Tasks[taskIndex].AssociatedBabyId;
+
+                if (!associatedBabyId.HasValue || activeBabyIds.Contains(associatedBabyId.Value))
                 {
                     continue;
                 }
@@ -180,6 +206,16 @@ namespace BabyBuddyHelper.Services
                 AssociatedBabyId = associatedBabyId,
                 AssociatedBabyName = associatedBabyName
             };
+        }
+
+        public void Dispose()
+        {
+            if (_babyProfileService is null)
+            {
+                return;
+            }
+
+            _babyProfileService.BabyProfiles.CollectionChanged -= OnBabyProfilesChanged;
         }
 
         private void GenerateMockData() //Method to generate mock data for testing purposes.
