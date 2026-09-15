@@ -34,6 +34,8 @@
 
 ✅ Linking tasks and appointments to baby profiles
 
+✅ Filtering based upon upcoming date, priority, or specific baby profiles
+
 ## Planned Features:
 
 Local Data Persistence

@@ -33,22 +33,4 @@ Pages/
 
 ## Future Architecture Direction
 
-When architectural redesign becomes necessary, prefer:
-
-Features/
-- Tasks
-- Appointments
-- Calendar
-- Dashboard
-- Shared
-
-Avoid:
-
-- Pages/
-- ViewModels/
-- Services/
-- Models/
-
-as top-level buckets.
-
-Feature-based organization is the intended end-state.
+When architectural redesign becomes necessary, Service-based organization is the intended end-state.

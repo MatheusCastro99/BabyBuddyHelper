@@ -32,7 +32,7 @@ Status: Accepted, permanent.
 
 ### ADR-004
 
-AddTaskPage is the single adding/editing experience.
+AddTaskPage is the single adding/editing experience for Tasks and Appointments.
 
 Reason:
 - Enables consistency and uniformity when creating / editing instances
@@ -44,3 +44,15 @@ Status: Accepted, permanent.
 MVVM deferred until application complexity justifies it.
 
 Status: Accepted, current.
+
+### ADR-006
+
+Modular components that are highly reusable are to be developed as Services and used through Interfaces
+
+Examples:
+- Filtering
+- TaskList Management
+- Baby Profile Management
+- Database interactions (future)
+
+Status: Accepted, Pending Refactor.

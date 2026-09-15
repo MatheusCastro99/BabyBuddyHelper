@@ -26,11 +26,9 @@ Toast Messages: CONCLUDED
 - Toasts will be designed to be non-intrusive and visually appealing
 - Mascot interactions will be included in toast messages for added engagement
 
-Toast Messages for Baby Profile Management
+Toast Messages for Baby Profile Management: CONCLUDED
 
-Filters Update:
-- Date filter to filter appointments by upcoming date order
-- Baby profile filter to filter tasks and appointments by associated baby
+Filters Update: CONCLUDED
 
 ---
 
@@ -38,10 +36,11 @@ Filters Update:
 
 CodeBase Refactor:
 
+- When Refactoring, ALWAYS consult AI_CONTEXT.md, DECISIONS.md, and ARCHITECTURE_DESIGN.md as guidelines for code production
 - Scan codebase for files that
 	-> Have too much responsibility
 	-> Are way too large (e.g AddTaskPage)
-	-> Could be broken down into services
+	-> Could be broken down into services (Filtering processes)
 - Scan codebase for secrets
 - Prepare codebase for DataBase interaction
 
