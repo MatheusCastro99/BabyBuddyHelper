@@ -26,11 +26,15 @@
 
 ✅ Guid-Based IDs
 
+✅ Companion Character
+
+✅ Toast Messages confirming user actions
+
+✅ Baby profile creation and management
+
+✅ Linking tasks and appointments to baby profiles
+
 ## Planned Features:
-
-Companion Character
-
-Toast Messages
 
 Local Data Persistence
 

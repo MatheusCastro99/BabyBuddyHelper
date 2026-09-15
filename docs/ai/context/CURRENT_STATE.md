@@ -20,18 +20,18 @@ Major visual redesign Completed.
 
 ## Phase 2:
 
-BabyModel:
-- New model that will serve as different profiles for different babies / children
-- Initial properties:
-	- Name (string), Age (int), WeightInLbs (double), HeightInFt (double), LastFeed (DateTime), LastSleep (DateTime)
+BabyModel: CONCLUDED
 
-Baby Profiles:
-- Ability to add, edit, and delete babies profiles
-- Task and appointment baby linking is still pending
-- Baby profile data now lives alongside tasks through a dedicated service
+Baby Profiles: CONCLUDED
 
 Companion Character: CONCLUDED
 
-Toast Messages: CONCLUDED
+Toast Messages:
+- Add toast messages for Baby profile management user actions.
+
+Filter Overhaul:
+- Implement filters for
+	-> Upcoming date order (Appointments)
+	-> Associated Baby (Tasks and Appointments)
 
 ---

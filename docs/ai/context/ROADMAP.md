@@ -2,16 +2,15 @@
 
 ## Phase 2:
 
-BabyModel:
+BabyModel: CONCLUDED
 - New model that will serve as different profiles for different babies / children
 - Initial properties:
 	- Name (string), Age (int), WeightInLbs (double), HeightInFt (double), LastFeed (DateTime), LastSleep (DateTime)
 
-Baby Profiles:
+Baby Profiles: CONCLUDED
 
 - Ability to add, edit, and delete babies profiles
 - Refactor Tasks and Appointments to hold an optional BabyName property, indicating which baby the task is related to 
-- Add optional filter on both list and calendar to filter Tasks and Appointments by baby
 
 Companion Character: CONCLUDED
 
@@ -27,9 +26,24 @@ Toast Messages: CONCLUDED
 - Toasts will be designed to be non-intrusive and visually appealing
 - Mascot interactions will be included in toast messages for added engagement
 
+Toast Messages for Baby Profile Management
+
+Filters Update:
+- Date filter to filter appointments by upcoming date order
+- Baby profile filter to filter tasks and appointments by associated baby
+
 ---
 
 ## Phase 3: 
+
+CodeBase Refactor:
+
+- Scan codebase for files that
+	-> Have too much responsibility
+	-> Are way too large (e.g AddTaskPage)
+	-> Could be broken down into services
+- Scan codebase for secrets
+- Prepare codebase for DataBase interaction
 
 Data Persistence:
 
