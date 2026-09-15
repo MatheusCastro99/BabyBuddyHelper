@@ -10,6 +10,8 @@ namespace BabyBuddyHelper.Services
         TaskEdited,
         TaskDeleted,
         AppointmentScheduled,
+        BabyProfileCreated,
+        BabyProfileUpdated,
     }
 
     /// <summary>
@@ -60,6 +62,22 @@ namespace BabyBuddyHelper.Services
                 "Cub is looking forward to that appointment with you.",
                 "Cub says: that time is safely saved on the calendar!",
                 "Cub adds the appointment to the plan, nice and easy!",
+            ],
+            [ToastKind.BabyProfileCreated] =
+            [
+                "Cub says: that little profile is all set!",
+                "Cub carefully tucked that baby profile into place.",
+                "Cub gives a happy wiggle, profile saved!",
+                "Cub says: your baby's details are ready whenever you need them.",
+                "Cub helps you keep that new profile close at hand!",
+            ],
+            [ToastKind.BabyProfileUpdated] =
+            [
+                "Cub says: that baby profile is refreshed and ready!",
+                "Cub tidied up those profile details for you.",
+                "Cub gives a warm little nod, changes saved!",
+                "Cub says: those baby details are up to date now.",
+                "Cub helps keep that profile current and cozy!",
             ],
         };
 
