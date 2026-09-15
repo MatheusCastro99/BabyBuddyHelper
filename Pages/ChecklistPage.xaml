@@ -22,8 +22,8 @@
         </VerticalStackLayout>
 
         <Border Grid.Row="1" Padding="14,10" StrokeThickness="0" BackgroundColor="{StaticResource BabyBuddySurface}" MaximumWidthRequest="650">
-            <VerticalStackLayout Spacing="10">
-                <HorizontalStackLayout HorizontalOptions="Start" Spacing="8" VerticalOptions="Center">
+            <Grid ColumnDefinitions="*,Auto,*">
+                <HorizontalStackLayout Grid.Column="0" HorizontalOptions="Start" Spacing="8" VerticalOptions="Center">
                     <Label Text="Pending first" VerticalOptions="Center" Style="{StaticResource BodyText}" />
                     <Grid WidthRequest="44" HeightRequest="24">
                         <Switch x:Name="PendingFirstSwitch"
@@ -65,17 +65,18 @@
                     </Grid>
                 </HorizontalStackLayout>
 
-                <HorizontalStackLayout HorizontalOptions="Start" Spacing="8" VerticalOptions="Center">
+                <HorizontalStackLayout Grid.Column="1" HorizontalOptions="Start" Spacing="8" VerticalOptions="Center">
                     <Label Text="Upcoming first" VerticalOptions="Center" Style="{StaticResource BodyText}" />
                     <Switch x:Name="DateOrderSwitch" Toggled="IsDateOrderHandler" />
                 </HorizontalStackLayout>
 
                 <Button x:Name="ChecklistBabyFilterButton"
+                        Grid.Column="2"
                         Text="All babies"
                         Style="{StaticResource SecondaryAction}"
-                        HorizontalOptions="Start"
-                        Clicked="OnChecklistBabyFilterClicked" />
-            </VerticalStackLayout>
+                        HorizontalOptions="End"
+                        Clicked="OnChecklistBabyFilterClicked"/>
+            </Grid>
         </Border>
 
         <CollectionView Grid.Row="2" ItemsSource="{Binding TaskList}" SelectionMode="Single" MaximumWidthRequest="750" Margin="0,0,0,0">
