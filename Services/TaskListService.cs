@@ -37,14 +37,18 @@ namespace BabyBuddyHelper.Services
             return GetTasks(associatedBabyId).OfType<AppointmentModel>();                    //Will be used on scheduler to display appointments in a calendar view.
         }
 
-        public TaskListService(IBabyProfileService babyProfileService)
+        public TaskListService()
         {
-            babyProfileService.BabyProfiles.CollectionChanged += OnBabyProfilesChanged;
-
             if (Tasks.Count == 0)
             {
                 GenerateMockData();
             }
+        }
+
+        public TaskListService(IBabyProfileService babyProfileService)
+            : this()
+        {
+            babyProfileService.BabyProfiles.CollectionChanged += OnBabyProfilesChanged;
         }
 
         public void Add(TaskModel task)
