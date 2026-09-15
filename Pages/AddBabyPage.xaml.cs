@@ -134,8 +134,10 @@ public partial class AddBabyPage : ContentPage
         return didParse && parsedValue >= 0;
     }
 
-    private static DateTime CombineDateAndTime(DateTime date, TimeSpan time)
+    private static DateTime CombineDateAndTime(DateTime? date, TimeSpan? time)
     {
-        return DateTime.SpecifyKind(date.Date + time, DateTimeKind.Local);
+        var resolvedDate = date ?? DateTime.Now.Date;
+        var resolvedTime = time ?? TimeSpan.Zero;
+        return DateTime.SpecifyKind(resolvedDate.Date + resolvedTime, DateTimeKind.Local);
     }
 }
