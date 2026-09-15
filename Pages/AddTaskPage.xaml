@@ -9,7 +9,7 @@
         <VerticalStackLayout Padding="20" Spacing="18">
             <Border BackgroundColor="{StaticResource BabyBuddySurface}" StrokeThickness="0" Padding="18">
                 <VerticalStackLayout Spacing="6">
-                    <Label Text="Add care moment" Style="{StaticResource PageTitle}" HorizontalTextAlignment="Center" />
+                    <Label x:Name="TaskTitleLabel" Text="Add care moment" Style="{StaticResource PageTitle}" HorizontalTextAlignment="Center" />
                     <Label Text="Keep the next step simple and clear." Style="{StaticResource BodyText}" HorizontalTextAlignment="Center" />
                 </VerticalStackLayout>
             </Border>
@@ -63,7 +63,7 @@
 
             <Grid ColumnDefinitions="*,*" ColumnSpacing="12">
                 <Button Grid.Column="0" Text="Cancel" Style="{StaticResource SecondaryAction}" Clicked="OnCancelClicked" />
-                <Button Grid.Column="1" Text="Save" Style="{StaticResource PrimaryAction}" Clicked="OnSaveClicked" />
+                <Button x:Name="TaskSaveButton" Grid.Column="1" Text="Save" Style="{StaticResource PrimaryAction}" Clicked="OnSaveClicked" />
             </Grid>
         </VerticalStackLayout>
     </ScrollView>
