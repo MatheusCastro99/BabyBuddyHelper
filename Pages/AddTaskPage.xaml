@@ -19,6 +19,14 @@
                     <Label Text="Task Details" Style="{StaticResource SectionTitle}" />
                     <Entry x:Name="TaskNameEntry" Placeholder="Task name" TextColor="Gray"/>
                     <Entry x:Name="DescriptionEntry" Placeholder="Description" TextColor="Gray"/>
+                    <Label Text="Baby profile (optional)" Style="{StaticResource SectionTitle}" />
+                    <Border BackgroundColor="{StaticResource BabyBuddySurfaceAlt}" Stroke="{StaticResource BabyBuddyBorder}" StrokeShape="RoundRectangle 12" Padding="10,8">
+                        <Picker x:Name="BabyProfilePicker"
+                                Title="Unassigned"
+                                ItemDisplayBinding="{Binding Name}"
+                                HeightRequest="44"
+                                TextColor="{StaticResource BabyBuddyText}" />
+                    </Border>
 
                     <Grid ColumnDefinitions="Auto,Auto,Auto,Auto" ColumnSpacing="12" Padding="12,5" VerticalOptions="Center">
                         <Stepper x:Name="PriorityStepper" Grid.Column="3" Minimum="1" Maximum="10" Value="5" IsVisible="False" />
