@@ -19,7 +19,8 @@
                     <Label Text="Task Details" Style="{StaticResource SectionTitle}" />
                     <Entry x:Name="TaskNameEntry" Placeholder="Task name" TextColor="Gray"/>
                     <Entry x:Name="DescriptionEntry" Placeholder="Description" TextColor="Gray"/>
-                    <Label Text="Baby profile (optional)" Style="{StaticResource SectionTitle}" />
+                    
+                    <Label Text="Baby (optional)" Style="{StaticResource SectionTitle}" />
                     <Border BackgroundColor="{StaticResource BabyBuddySurfaceAlt}" Stroke="{StaticResource BabyBuddyBorder}" StrokeShape="RoundRectangle 12" Padding="10,8">
                         <Picker x:Name="BabyProfilePicker"
                                 Title="Unassigned"
