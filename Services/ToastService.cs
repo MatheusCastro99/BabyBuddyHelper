@@ -12,6 +12,7 @@ namespace BabyBuddyHelper.Services
         AppointmentScheduled,
         BabyProfileCreated,
         BabyProfileUpdated,
+        BabyProfileDeleted,
     }
 
     /// <summary>
@@ -78,6 +79,14 @@ namespace BabyBuddyHelper.Services
                 "Cub gives a warm little nod, changes saved!",
                 "Cub says: those baby details are up to date now.",
                 "Cub helps keep that profile current and cozy!",
+            ],
+            [ToastKind.BabyProfileDeleted] =
+            [
+                "Cub says: that profile is tucked away for now.",
+                "Cub gently cleared that little profile from the list.",
+                "Cub gives a soft nod, that profile has been removed.",
+                "Cub says: all set, that profile is no longer in your nest.",
+                "Cub made a little extra room by clearing that profile away.",
             ],
         };
 

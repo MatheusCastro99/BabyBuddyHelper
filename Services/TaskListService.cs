@@ -1,11 +1,13 @@
 ﻿using BabyBuddyHelper.Interfaces;
 using BabyBuddyHelper.Models;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 
 namespace BabyBuddyHelper.Services
 {
-    public class TaskListService : ITaskListService //Implemente Interface ITaskListService to provide functionality for managing a list of tasks.
+    public class TaskListService : ITaskListService, IDisposable //Implemente Interface ITaskListService to provide functionality for managing a list of tasks.
     {                                                 //This class will be used to add, remove, update, and organize tasks in the application.
+        private readonly IBabyProfileService? _babyProfileService;
         public ObservableCollection<TaskModel> Tasks { get; } = new();
         public IEnumerable<TaskModel> GetTasks(Guid? associatedBabyId = null, bool pendingFirst = false, bool orderByUpcomingDate = false)
         {
@@ -42,6 +44,13 @@ namespace BabyBuddyHelper.Services
             {
                 GenerateMockData();
             }
+        }
+
+        public TaskListService(IBabyProfileService babyProfileService)
+            : this()
+        {
+            _babyProfileService = babyProfileService;
+            babyProfileService.BabyProfiles.CollectionChanged += OnBabyProfilesChanged;
         }
 
         public void Add(TaskModel task)
@@ -97,6 +106,116 @@ namespace BabyBuddyHelper.Services
                     Tasks.Move(currentIndex, targetIndex);
                 }
             }
+        }
+
+        private void OnBabyProfilesChanged(object? sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e.Action == NotifyCollectionChangedAction.Replace && e.NewItems is not null)
+            {
+                foreach (BabyModel updatedProfile in e.NewItems.OfType<BabyModel>())
+                {
+                    UpdateAssociatedBabyName(updatedProfile.Id, updatedProfile.Name);
+                }
+            }
+
+            if (e.Action == NotifyCollectionChangedAction.Remove && e.OldItems is not null)
+            {
+                foreach (BabyModel removedProfile in e.OldItems.OfType<BabyModel>())
+                {
+                    ClearAssociatedBaby(removedProfile.Id);
+                }
+            }
+
+            if (e.Action == NotifyCollectionChangedAction.Reset)
+            {
+                ClearMissingBabyAssociations();
+            }
+        }
+
+        private void UpdateAssociatedBabyName(Guid babyId, string babyName)
+        {
+            string resolvedBabyName = string.IsNullOrWhiteSpace(babyName) ? "General" : babyName.Trim();
+
+            for (int taskIndex = 0; taskIndex < Tasks.Count; taskIndex++)
+            {
+                if (Tasks[taskIndex].AssociatedBabyId != babyId)
+                {
+                    continue;
+                }
+
+                Tasks[taskIndex] = CloneWithAssociation(Tasks[taskIndex], babyId, resolvedBabyName);
+            }
+        }
+
+        private void ClearAssociatedBaby(Guid babyId)
+        {
+            for (int taskIndex = 0; taskIndex < Tasks.Count; taskIndex++)
+            {
+                if (Tasks[taskIndex].AssociatedBabyId != babyId)
+                {
+                    continue;
+                }
+
+                Tasks[taskIndex] = CloneWithAssociation(Tasks[taskIndex], null, "General");
+            }
+        }
+
+        private void ClearMissingBabyAssociations()
+        {
+            HashSet<Guid> activeBabyIds = _babyProfileService?.BabyProfiles
+                .Select(profile => profile.Id)
+                .ToHashSet() ?? [];
+
+            for (int taskIndex = 0; taskIndex < Tasks.Count; taskIndex++)
+            {
+                Guid? associatedBabyId = Tasks[taskIndex].AssociatedBabyId;
+
+                if (!associatedBabyId.HasValue || activeBabyIds.Contains(associatedBabyId.Value))
+                {
+                    continue;
+                }
+
+                Tasks[taskIndex] = CloneWithAssociation(Tasks[taskIndex], null, "General");
+            }
+        }
+
+        private static TaskModel CloneWithAssociation(TaskModel task, Guid? associatedBabyId, string associatedBabyName)
+        {
+            if (task is AppointmentModel appointment)
+            {
+                return new AppointmentModel(
+                    appointment.AppointmentLocation,
+                    appointment.AppointmentDate,
+                    appointment.AppointmentStartTime,
+                    appointment.AppointmentEndTime,
+                    appointment.TaskPriority,
+                    appointment.TaskName,
+                    appointment.TaskDescription)
+                {
+                    Id = appointment.Id,
+                    IsCompleted = appointment.IsCompleted,
+                    AssociatedBabyId = associatedBabyId,
+                    AssociatedBabyName = associatedBabyName
+                };
+            }
+
+            return new TaskModel(task.TaskPriority, task.TaskName, task.TaskDescription)
+            {
+                Id = task.Id,
+                IsCompleted = task.IsCompleted,
+                AssociatedBabyId = associatedBabyId,
+                AssociatedBabyName = associatedBabyName
+            };
+        }
+
+        public void Dispose()
+        {
+            if (_babyProfileService is null)
+            {
+                return;
+            }
+
+            _babyProfileService.BabyProfiles.CollectionChanged -= OnBabyProfilesChanged;
         }
 
         private void GenerateMockData() //Method to generate mock data for testing purposes.

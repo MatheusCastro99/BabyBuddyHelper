@@ -35,7 +35,6 @@ public partial class ChecklistPage : ContentPage
 
         BindingContext = this;
         RefreshTaskList();
-        UpdateOrderingSwitchStates();
         SyncCompletedTaskToastState();
     }
 
@@ -47,17 +46,10 @@ public partial class ChecklistPage : ContentPage
             return;
         }
 
-        isPendingFirst = e.Value;
+        SetOrderingState(
+            pendingFirstEnabled: e.Value,
+            dateOrderEnabled: false);
 
-        if (e.Value)
-        {
-            _isUpdatingOrderingSwitches = true;
-            isDateOrderEnabled = false;
-            DateOrderSwitch.IsToggled = false;
-            _isUpdatingOrderingSwitches = false;
-        }
-
-        UpdateOrderingSwitchStates();
         RefreshTaskList();
     }
 
@@ -68,17 +60,10 @@ public partial class ChecklistPage : ContentPage
             return;
         }
 
-        isDateOrderEnabled = e.Value;
+        SetOrderingState(
+            pendingFirstEnabled: false,
+            dateOrderEnabled: e.Value);
 
-        if (e.Value)
-        {
-            _isUpdatingOrderingSwitches = true;
-            isPendingFirst = false;
-            PendingFirstSwitch.IsToggled = false;
-            _isUpdatingOrderingSwitches = false;
-        }
-
-        UpdateOrderingSwitchStates();
         RefreshTaskList();
     }
 
@@ -222,9 +207,16 @@ public partial class ChecklistPage : ContentPage
         ChecklistBabyFilterButton.Text = selectedLabel;
     }
 
-    private void UpdateOrderingSwitchStates()
+    private void SetOrderingState(bool pendingFirstEnabled, bool dateOrderEnabled)
     {
-        PendingFirstSwitch.IsEnabled = !isDateOrderEnabled;
-        DateOrderSwitch.IsEnabled = !isPendingFirst;
+        _isUpdatingOrderingSwitches = true;
+
+        isPendingFirst = pendingFirstEnabled;
+        isDateOrderEnabled = dateOrderEnabled;
+
+        PendingFirstSwitch.IsToggled = isPendingFirst;
+        DateOrderSwitch.IsToggled = isDateOrderEnabled;
+
+        _isUpdatingOrderingSwitches = false;
     }
 }

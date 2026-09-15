@@ -1,6 +1,7 @@
 ﻿using BabyBuddyHelper.Interfaces;
 using BabyBuddyHelper.Models;
 using BabyBuddyHelper.Pages;
+using BabyBuddyHelper.Services;
 using Microsoft.Extensions.DependencyInjection;
 using System.Collections.ObjectModel;
 
@@ -155,6 +156,7 @@ namespace BabyBuddyHelper
             //TryResolveBabyProfile guarantees that _babyProfileService is not null
             _babyProfileService!.Remove(babyProfile);
             RefreshBabyProfileState();
+            ToastService.Show(ToastKind.BabyProfileDeleted);
         }
 
         private void RefreshBabyProfileState()
