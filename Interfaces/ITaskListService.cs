@@ -12,6 +12,7 @@ namespace BabyBuddyHelper.Interfaces
         void Update(TaskModel task);
         void OrganizeByPriority();
         void OrganizeByPending();
-        IEnumerable<AppointmentModel> GetAppointments();
+        IEnumerable<TaskModel> GetTasks(Guid? associatedBabyId = null, bool pendingFirst = false, bool orderByUpcomingDate = false);
+        IEnumerable<AppointmentModel> GetAppointments(Guid? associatedBabyId = null);
     }
 }
