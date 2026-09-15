@@ -7,9 +7,33 @@ namespace BabyBuddyHelper.Services
     public class TaskListService : ITaskListService //Implemente Interface ITaskListService to provide functionality for managing a list of tasks.
     {                                                 //This class will be used to add, remove, update, and organize tasks in the application.
         public ObservableCollection<TaskModel> Tasks { get; } = new();
-        public IEnumerable<AppointmentModel> GetAppointments() //return a list of AppointmentModel objects from the Tasks collection, 
-        {                                                       //filtering out any tasks that are not of type AppointmentModel.
-            return Tasks.OfType<AppointmentModel>();             //Will be used on scheduler to display appointments in a calendar view.
+        public IEnumerable<TaskModel> GetTasks(Guid? associatedBabyId = null, bool pendingFirst = false, bool orderByUpcomingDate = false)
+        {
+            IEnumerable<TaskModel> filteredTasks = Tasks
+                .Where(task => associatedBabyId is null || task.AssociatedBabyId == associatedBabyId);
+
+            if (orderByUpcomingDate)
+            {
+                return filteredTasks
+                    .OrderBy(task => task is AppointmentModel appointment && appointment.AppointmentDate.HasValue ? 0 : 1)
+                    .ThenBy(task => (task as AppointmentModel)?.AppointmentDate ?? DateTime.MaxValue)
+                    .ThenByDescending(task => task.TaskPriority);
+            }
+
+            if (pendingFirst)
+            {
+                return filteredTasks
+                    .OrderBy(task => task.IsCompleted)
+                    .ThenByDescending(task => task.TaskPriority);
+            }
+
+            return filteredTasks
+                .OrderByDescending(task => task.TaskPriority);
+        }
+
+        public IEnumerable<AppointmentModel> GetAppointments(Guid? associatedBabyId = null) //return a list of AppointmentModel objects from the Tasks collection, 
+        {                                                                                    //filtering out any tasks that are not of type AppointmentModel.
+            return GetTasks(associatedBabyId).OfType<AppointmentModel>();                    //Will be used on scheduler to display appointments in a calendar view.
         }
 
         public TaskListService()

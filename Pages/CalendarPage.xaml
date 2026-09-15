@@ -6,13 +6,20 @@
              x:Class="BabyBuddyHelper.Pages.CalendarPage"
              Title="Calendar"
              BackgroundColor="{StaticResource BabyBuddyBackground}">
-    <Grid RowDefinitions="Auto, *" Padding="20" RowSpacing="16">
+    <Grid RowDefinitions="Auto, Auto, *" Padding="20" RowSpacing="16">
         <VerticalStackLayout Grid.Row="0" Spacing="6" Margin="0,8,0,0">
             <Label Text="Your month" Style="{StaticResource PageTitle}" HorizontalTextAlignment="Center" />
             <Label Text="A gentle look at what’s coming up." Style="{StaticResource BodyText}" HorizontalTextAlignment="Center" />
         </VerticalStackLayout>
 
-        <Border Grid.Row="1" Padding="12" BackgroundColor="{StaticResource BabyBuddySurface}" StrokeThickness="0" StrokeShape="RoundRectangle 28">
+        <Button Grid.Row="1"
+                x:Name="CalendarBabyFilterButton"
+                Text="All babies"
+                Style="{StaticResource SecondaryAction}"
+                HorizontalOptions="Start"
+                Clicked="OnCalendarBabyFilterClicked" />
+
+        <Border Grid.Row="2" Padding="12" BackgroundColor="{StaticResource BabyBuddySurface}" StrokeThickness="0" StrokeShape="RoundRectangle 28">
             <scheduler:SfScheduler
                 x:Name="Calendar"
                 View="Week"
@@ -24,6 +31,6 @@
             </scheduler:SfScheduler>
         </Border>
 
-        <controls:ToastView Grid.RowSpan="2" />
+        <controls:ToastView Grid.RowSpan="3" />
     </Grid>
 </ContentPage>
