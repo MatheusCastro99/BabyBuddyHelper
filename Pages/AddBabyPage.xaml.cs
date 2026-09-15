@@ -1,5 +1,6 @@
 using BabyBuddyHelper.Interfaces;
 using BabyBuddyHelper.Models;
+using BabyBuddyHelper.Services;
 using System.Globalization;
 
 namespace BabyBuddyHelper.Pages;
@@ -65,6 +66,8 @@ public partial class AddBabyPage : ContentPage
         if (_babyProfileOnEdit is null)
         {
             _babyProfileService.Add(validatedProfile);
+            await Navigation.PopModalAsync();
+            ToastService.Show(ToastKind.BabyProfileCreated);
         }
         else
         {
@@ -79,9 +82,9 @@ public partial class AddBabyPage : ContentPage
                 LastSleep = validatedProfile.LastSleep
             };
             _babyProfileService.Update(updatedProfile);
+            await Navigation.PopModalAsync();
+            ToastService.Show(ToastKind.BabyProfileUpdated);
         }
-
-        await Navigation.PopModalAsync();
     }
 
     private async Task<BabyModel?> ValidateForm()
