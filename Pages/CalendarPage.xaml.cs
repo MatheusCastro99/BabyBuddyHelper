@@ -13,7 +13,7 @@ public partial class CalendarPage : ContentPage
     private readonly ITaskListService _taskListService; //Dependency Injection for TaskListService
     private readonly IBabyProfileService _babyProfileService;
     private Guid? _selectedBabyFilterId;
-    public ObservableCollection<AppointmentModel> TaskList { get; private set; }//Will hold instances of AppointmentModel
+    public ObservableCollection<AppointmentModel>? TaskList { get; private set; }//Will hold instances of AppointmentModel
 
     public CalendarPage(ITaskListService taskListService, IBabyProfileService babyProfileService)
     {
@@ -135,7 +135,7 @@ public partial class CalendarPage : ContentPage
         }
         else                                            //Creating a new appointment through Calendar
         {
-            AddNewAppointment(e.Date);
+            await AddNewAppointment(e.Date);
         }
     }
 
