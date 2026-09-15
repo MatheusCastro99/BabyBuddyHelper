@@ -134,7 +134,8 @@ public partial class AddTaskPage : ContentPage
 
             AppointmentModel newAppointment = new(appointmentLocation, appointmentDate, appointmentStartTime, appointmentEndTime, priority, taskName, taskDescription)
             {
-                AssociatedBabyId = selectedAssociatedBabyId
+                AssociatedBabyId = selectedAssociatedBabyId,
+                AssociatedBabyName = ResolveAssociatedBabyName(selectedAssociatedBabyId)
             };
             _taskListService.Add(newAppointment);
 
@@ -146,7 +147,8 @@ public partial class AddTaskPage : ContentPage
         {
             TaskModel newTask = new(priority, taskName, taskDescription)
             {
-                AssociatedBabyId = selectedAssociatedBabyId
+                AssociatedBabyId = selectedAssociatedBabyId,
+                AssociatedBabyName = ResolveAssociatedBabyName(selectedAssociatedBabyId)
             };
             _taskListService.Add(newTask);
 
@@ -178,7 +180,8 @@ public partial class AddTaskPage : ContentPage
             )
             {
                 Id = appointmentOnEdit.Id, //Preserves TaskId for database update
-                AssociatedBabyId = GetSelectedAssociatedBabyId()
+                AssociatedBabyId = GetSelectedAssociatedBabyId(),
+                AssociatedBabyName = ResolveAssociatedBabyName(GetSelectedAssociatedBabyId())
             };
 
             _taskListService.Update(updatedAppt); //Updates appointment in task list by reference
@@ -196,10 +199,27 @@ public partial class AddTaskPage : ContentPage
                 return;
             }
 
-            taskOnEdit?.TaskName = TaskNameEntry.Text;
-            taskOnEdit?.TaskDescription = DescriptionEntry.Text;
-            taskOnEdit?.TaskPriority = Convert.ToInt32(PriorityStepper.Value);
-            taskOnEdit?.AssociatedBabyId = GetSelectedAssociatedBabyId();
+            if (taskOnEdit is null)
+            {
+                return;
+            }
+
+            Guid? selectedAssociatedBabyId = GetSelectedAssociatedBabyId();
+
+            TaskModel updatedTask = new
+            (
+                Convert.ToInt32(PriorityStepper.Value),
+                TaskNameEntry.Text,
+                DescriptionEntry.Text
+            )
+            {
+                Id = taskOnEdit.Id,
+                IsCompleted = taskOnEdit.IsCompleted,
+                AssociatedBabyId = selectedAssociatedBabyId,
+                AssociatedBabyName = ResolveAssociatedBabyName(selectedAssociatedBabyId)
+            };
+
+            _taskListService.Update(updatedTask);
 
             await Navigation.PopModalAsync();
             ToastService.Show(ToastKind.TaskEdited);
@@ -242,7 +262,7 @@ public partial class AddTaskPage : ContentPage
             selectionOptions[optionLabel] = profile.Id;
         }
 
-        string selectedOption = await DisplayActionSheet("Select baby", "Cancel", null, selectionOptions.Keys.ToArray());
+        string selectedOption = await DisplayActionSheetAsync("Select baby", "Cancel", null, selectionOptions.Keys.ToArray());
 
         if (string.IsNullOrEmpty(selectedOption) || selectedOption == "Cancel")
         {
@@ -256,6 +276,19 @@ public partial class AddTaskPage : ContentPage
     private Guid? GetSelectedAssociatedBabyId()
     {
         return _selectedAssociatedBabyId;
+    }
+
+    private string ResolveAssociatedBabyName(Guid? selectedAssociatedBabyId)
+    {
+        if (!selectedAssociatedBabyId.HasValue)
+        {
+            return "General";
+        }
+
+        BabyModel? matchedProfile = _babyProfileService.BabyProfiles
+            .FirstOrDefault(profile => profile.Id == selectedAssociatedBabyId.Value);
+
+        return string.IsNullOrWhiteSpace(matchedProfile?.Name) ? "General" : matchedProfile.Name;
     }
 
     private async Task<bool> ValidateForm()
