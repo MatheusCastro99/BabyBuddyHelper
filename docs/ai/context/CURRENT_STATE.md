@@ -9,18 +9,24 @@ Status:
 
 # Current Development Focus:
 
-## Phase 2:
+## Phase 3: 
 
-BabyModel: CONCLUDED
+CodeBase Refactor:
 
-Baby Profiles: CONCLUDED
+- When Refactoring, ALWAYS consult AI_CONTEXT.md, DECISIONS.md, and ARCHITECTURE_DESIGN.md as guidelines for code production
+- Scan codebase for files that
+	-> Have too much responsibility
+	-> Are way too large (e.g AddTaskPage)
+	-> Could be broken down into services (Filtering processes)
+- Scan codebase for secrets
+- Prepare codebase for DataBase interaction
 
-Companion Character: CONCLUDED
+Data Persistence:
 
-Toast Messages: CONCLUDED
-
-Filter Overhaul: CONCLUDED
-
-Final Pass
+- Reflect on which strategy to use: Local DB with cloud Sync later OR Online DB
+- Implement data persistence for tasks, appointments, and Baby Profiles
+- Use SQLite or similar local database for offline-first functionality OR PostgresDB for online DB
+- Ensure data is saved, read, and retrieved efficiently
+- Turn Current TaskListService into a cache service (Will hold in-memory copies of tasks and appointments)
 
 ---

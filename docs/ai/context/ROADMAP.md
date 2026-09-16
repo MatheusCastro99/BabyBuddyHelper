@@ -1,6 +1,25 @@
 ﻿# Future features and Roadmap.
 
-## Phase 2:
+## Phase 1: CONCLUDED
+
+UI Redesign: CONCLUDED
+
+- Complete redesign for all pages
+- Calm and Encouraging soft colors palette and theme
+- Card-based, rounded corners layouts for tasks and appointments
+- Companion character theme and idealization
+	> Current candidates: "Buddy Bear", "Cuddly Lion Cub", "Fox", "Robot"
+
+Design System: CONCLUDED
+
+- Design system remap for consistent UI components and layouts
+- Reusable styles, templates, and controls
+
+Main Page: CONCLUDED
+- Turn Main Page into an informative day dashboard.
+- Dashboard will include Today's appointment, Baby(ies) age, Baby(ies) weight
+
+## Phase 2: CONCLUDED
 
 BabyModel: CONCLUDED
 - New model that will serve as different profiles for different babies / children
@@ -32,7 +51,7 @@ Filters Update: CONCLUDED
 
 ---
 
-## Phase 3: 
+## => Phase 3: 
 
 CodeBase Refactor:
 
@@ -46,9 +65,11 @@ CodeBase Refactor:
 
 Data Persistence:
 
-- Implement local data persistence for tasks and appointments
-- Use SQLite or similar local database for offline-first functionality
-- Ensure data is saved and retrieved efficiently
+- Reflect on which strategy to use: Local DB with cloud Sync later OR Online DB
+- Implement data persistence for tasks, appointments, and Baby Profiles
+- Use SQLite or similar local database for offline-first functionality OR PostgresDB for online DB
+- Ensure data is saved, read, and retrieved efficiently
+- Turn Current TaskListService into a cache service (Will hold in-memory copies of tasks and appointments)
 
 ---
 
