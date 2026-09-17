@@ -111,4 +111,8 @@
 	  <Folder Include="Platforms\Windows\Handlers\" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <None Include=".claude\agents\README.md" />
+	</ItemGroup>
+
 </Project>
