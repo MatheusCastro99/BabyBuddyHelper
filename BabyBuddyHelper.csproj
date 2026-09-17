@@ -71,6 +71,13 @@
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
 	</ItemGroup>
+	<ItemGroup>
+	  <Content Include=".claude\agents\productowner.json" />
+	  <Content Include=".claude\agents\projecthistorian.json" />
+	  <Content Include=".claude\agents\redteam.json" />
+	  <Content Include=".claude\agents\techlead.json" />
+	  <Content Include=".claude\agents\uxdesigner.json" />
+	</ItemGroup>
 
 	<ItemGroup>
 		<PackageReference Include="DotNetEnv" Version="3.2.0" />
@@ -109,6 +116,10 @@
 	<ItemGroup>
 	  <Folder Include=".github\" />
 	  <Folder Include="Platforms\Windows\Handlers\" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Include=".claude\agents\README.md" />
 	</ItemGroup>
 
 </Project>
