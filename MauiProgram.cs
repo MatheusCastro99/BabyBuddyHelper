@@ -23,7 +23,8 @@ namespace BabyBuddyHelper
                 })
                 .ConfigureSyncfusionCore()
                 .Services.AddSingleton<Interfaces.ITaskListService, Services.TaskListService>()
-                .AddSingleton<Interfaces.IBabyProfileService, Services.BabyProfileService>();
+                .AddSingleton<Interfaces.IBabyProfileService, Services.BabyProfileService>()
+                .AddSingleton<Interfaces.IBabyFilterService, Services.BabyFilterService>();
 
 #if DEBUG
             builder.Logging.AddDebug();
