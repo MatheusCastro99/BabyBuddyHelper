@@ -61,7 +61,12 @@ namespace BabyBuddyHelper.Services
 
         public void Remove(TaskModel task)
         {
-            Tasks.Remove(task);
+            var existingTask = Tasks.FirstOrDefault(x => x.Id == task.Id); //Resolves by Id so a stale reference still removes the right entry
+
+            if (existingTask is null)
+                return;
+
+            Tasks.Remove(existingTask);
         }
 
         public void Update(TaskModel task)
