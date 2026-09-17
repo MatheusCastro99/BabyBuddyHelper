@@ -6,7 +6,7 @@ This file tells claude-code and local subagents how to safely interact with this
 
 Repository facts
 ---------------
-- Repo root: C:\Users\mathe\source\repos\BabyBuddyHelper
+- Repo root: the directory containing `BabyBuddyHelper.slnx`
 - Solution: BabyBuddyHelper.slnx
 - Platform: .NET MAUI targeting .NET 10
 - C# language version: 14.0
