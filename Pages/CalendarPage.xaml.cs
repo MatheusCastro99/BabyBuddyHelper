@@ -12,15 +12,17 @@ public partial class CalendarPage : ContentPage
     public DateTime? SelectedDate { get; set; } = DateTime.Today;
     private readonly ITaskListService _taskListService; //Dependency Injection for TaskListService
     private readonly IBabyProfileService _babyProfileService;
+    private readonly IBabyFilterService _babyFilterService;
     private Guid? _selectedBabyFilterId;
     public ObservableCollection<AppointmentModel>? TaskList { get; private set; }//Will hold instances of AppointmentModel
 
-    public CalendarPage(ITaskListService taskListService, IBabyProfileService babyProfileService)
+    public CalendarPage(ITaskListService taskListService, IBabyProfileService babyProfileService, IBabyFilterService babyFilterService)
     {
         InitializeComponent();
 
         _taskListService = taskListService;
         _babyProfileService = babyProfileService;
+        _babyFilterService = babyFilterService;
         _taskListService.Tasks.CollectionChanged += (s, e) => //Subscribe to the CollectionChanged event of the TaskListService's Tasks collection
         {
             CalendarRefresh();
@@ -57,7 +59,7 @@ public partial class CalendarPage : ContentPage
 
     private async void OnCalendarBabyFilterClicked(object sender, EventArgs e)
     {
-        Dictionary<string, Guid?> filterOptions = BuildBabyFilterOptions();
+        Dictionary<string, Guid?> filterOptions = _babyFilterService.BuildOptions("All babies");
 
         string selectedOption = await DisplayActionSheetAsync("Filter calendar by baby", "Cancel", null, filterOptions.Keys.ToArray());
 
@@ -71,51 +73,12 @@ public partial class CalendarPage : ContentPage
         CalendarRefresh();
     }
 
-    private Dictionary<string, Guid?> BuildBabyFilterOptions()
-    {
-        Dictionary<string, Guid?> filterOptions = new()
-        {
-            ["All babies"] = null
-        };
-
-        foreach (BabyModel profile in _babyProfileService.BabyProfiles)
-        {
-            string optionLabel = profile.Name;
-            int duplicateCounter = 2;
-
-            while (filterOptions.ContainsKey(optionLabel))
-            {
-                optionLabel = $"{profile.Name} ({duplicateCounter})";
-                duplicateCounter++;
-            }
-
-            filterOptions[optionLabel] = profile.Id;
-        }
-
-        return filterOptions;
-    }
-
     private void RefreshSelectedBabyFilterLabel()
     {
-        if (!_selectedBabyFilterId.HasValue)
-        {
-            CalendarBabyFilterButton.Text = "All babies";
-            return;
-        }
+        (Guid? resolvedBabyId, string label) = _babyFilterService.ResolveSelection(_selectedBabyFilterId, "All babies");
 
-        string? selectedLabel = BuildBabyFilterOptions()
-            .Where(option => option.Value == _selectedBabyFilterId.Value)
-            .Select(option => option.Key)
-            .FirstOrDefault();
-
-        if (selectedLabel is null)
-        {
-            _selectedBabyFilterId = null;
-            CalendarBabyFilterButton.Text = "All babies";
-            return;
-        }
-
-        CalendarBabyFilterButton.Text = selectedLabel;
+        _selectedBabyFilterId = resolvedBabyId;
+        CalendarBabyFilterButton.Text = label;
     }
 
     private async void OnCalendarDoubleTapped(object? sender, SchedulerDoubleTappedEventArgs e)
@@ -141,12 +104,12 @@ public partial class CalendarPage : ContentPage
 
     private async Task AddNewAppointment(DateTime? AppointmentDate) //Triggers AddTaskPage Modal with the specified DateTime from event handler
     {
-        await Navigation.PushModalAsync(new AddTaskPage(_taskListService, _babyProfileService, AppointmentDate));
+        await Navigation.PushModalAsync(new AddTaskPage(_taskListService, _babyProfileService, _babyFilterService, AppointmentDate));
     }
 
     private async Task EditAppointment(AppointmentModel appointmentToEdit) //Triggers AddTaskPage Modal with the specified AppointmentModel
     {                                                                       //from event handler
         if (appointmentToEdit is null) return;
-        await Navigation.PushModalAsync(new AddTaskPage(_taskListService, _babyProfileService, appointmentToEdit));
+        await Navigation.PushModalAsync(new AddTaskPage(_taskListService, _babyProfileService, _babyFilterService, appointmentToEdit));
     }
 }

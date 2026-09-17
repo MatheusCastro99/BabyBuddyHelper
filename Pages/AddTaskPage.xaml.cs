@@ -9,17 +9,20 @@ public partial class AddTaskPage : ContentPage
 {
     private readonly ITaskListService _taskListService;
     private readonly IBabyProfileService _babyProfileService;
+    private readonly IBabyFilterService _babyFilterService;
     private Guid? _selectedAssociatedBabyId;
     TaskModel? taskOnEdit;
     AppointmentModel? appointmentOnEdit;
-    bool isEditing = false; //false by default, meaning most of tasks are expected to be new tasks
 
-    public AddTaskPage(ITaskListService taskListService, IBabyProfileService babyProfileService, DateTime? dateTime = null) //Regular constructor called by New Task button
-    {                                                                                                     //on ChecklistPage or clicking an empty time cell on
-        InitializeComponent();                                                        //CalendarPage
+    private bool IsEditing => taskOnEdit is not null || appointmentOnEdit is not null;
+
+    public AddTaskPage(ITaskListService taskListService, IBabyProfileService babyProfileService, IBabyFilterService babyFilterService, DateTime? dateTime = null) //Regular constructor called by New Task
+    {                                                                                                                                       //button on ChecklistPage or clicking an
+        InitializeComponent();                                                                                                               //empty time cell on CalendarPage
 
         this._taskListService = taskListService;
         this._babyProfileService = babyProfileService;
+        this._babyFilterService = babyFilterService;
         InitializeBabyProfilePicker();
 
         if (!(dateTime is null)) //Determines which Page modal is being called from.
@@ -33,47 +36,47 @@ public partial class AddTaskPage : ContentPage
         Debug.WriteLine("Creating New Task");
     }
 
-    public AddTaskPage(ITaskListService taskListService, IBabyProfileService babyProfileService, TaskModel taskOnEdit) //Constructor that will be triggered on
-    {                                                                                                    //EditNoteIcon click for regular tasks
+    public AddTaskPage(ITaskListService taskListService, IBabyProfileService babyProfileService, IBabyFilterService babyFilterService, TaskModel taskOnEdit) //Constructor that will be
+    {                                                                                                                                  //triggered on EditNoteIcon click for regular tasks
         InitializeComponent();
-        TaskSaveButton.Text = "Update";
-        TaskTitleLabel.Text = "Edit a care moment";
 
         this._taskListService = taskListService;
         this._babyProfileService = babyProfileService;
+        this._babyFilterService = babyFilterService;
         this.taskOnEdit = taskOnEdit;
-        isEditing = true; //Sets isEditing to change OnSaveClicked() behavior
-
-        TaskNameEntry.Text = taskOnEdit.TaskName; //Populate fields with taskOnEdit info
-        DescriptionEntry.Text = taskOnEdit.TaskDescription;
-        PriorityStepper.Value = taskOnEdit.TaskPriority;
-        InitializeBabyProfilePicker(taskOnEdit.AssociatedBabyId);
+        ApplyEditMode(taskOnEdit);
 
         Debug.WriteLine("Editing a regular task");
     }
 
-    public AddTaskPage(ITaskListService taskListService, IBabyProfileService babyProfileService, AppointmentModel appointmentOnEdit) //Constructor that is triggered on
-    {                                                                                                                  //EditNoteIcon click for appointments
+    public AddTaskPage(ITaskListService taskListService, IBabyProfileService babyProfileService, IBabyFilterService babyFilterService, AppointmentModel appointmentOnEdit) //Constructor that
+    {                                                                                                                             //is triggered on EditNoteIcon click for appointments
         InitializeComponent();
-        TaskSaveButton.Text = "Update";
-        TaskTitleLabel.Text = "Edit a care moment";
 
         this._taskListService = taskListService;
         this._babyProfileService = babyProfileService;
+        this._babyFilterService = babyFilterService;
         this.appointmentOnEdit = appointmentOnEdit;
-        isEditing = true; //Sets isEditing to change OnSaveClicked() behavior
+        ApplyEditMode(appointmentOnEdit);
 
-        TaskNameEntry.Text = appointmentOnEdit.TaskName; //Populate fields with appointmentOnEdit info
-        DescriptionEntry.Text = appointmentOnEdit.TaskDescription;
-        PriorityStepper.Value = appointmentOnEdit.TaskPriority;
         IsAppointmentCheckBox.IsChecked = true;
         DateEntry.Date = appointmentOnEdit.AppointmentDate;
         StartingTimeEntry.Time = appointmentOnEdit.AppointmentStartTime;
         EndingTimeEntry.Time = appointmentOnEdit.AppointmentEndTime;
         LocationEntry.Text = appointmentOnEdit.AppointmentLocation;
-        InitializeBabyProfilePicker(appointmentOnEdit.AssociatedBabyId);
 
         Debug.WriteLine("Editing an appointment");
+    }
+
+    private void ApplyEditMode(TaskModel taskToEdit) //Shared field population for both editing constructors
+    {
+        TaskSaveButton.Text = "Update";
+        TaskTitleLabel.Text = "Edit a care moment";
+
+        TaskNameEntry.Text = taskToEdit.TaskName;
+        DescriptionEntry.Text = taskToEdit.TaskDescription;
+        PriorityStepper.Value = taskToEdit.TaskPriority;
+        InitializeBabyProfilePicker(taskToEdit.AssociatedBabyId);
     }
 
     private void OnPriorityDecreaseClicked(object sender, EventArgs e)
@@ -105,8 +108,7 @@ public partial class AddTaskPage : ContentPage
             return;
         }
 
-        //isEditing is false by default, and modified by the constructors when clicking on EditNoteIcon
-        if (!isEditing) //New Task
+        if (!IsEditing) //New Task
         {
             await SaveNewTask();
         }
@@ -118,149 +120,83 @@ public partial class AddTaskPage : ContentPage
         }
     }
 
-    private async Task SaveNewTask() //Task instead of void to allow for more consistent async/await usage in the method
+    //Single place where form controls are turned into a model. Passing existingTask preserves identity and completion state while editing.
+    private TaskModel BuildTaskFromForm(TaskModel? existingTask = null)
     {
-        int priority = Convert.ToInt32(PriorityStepper.Value); //Consolidate entries into variables
+        int priority = Convert.ToInt32(PriorityStepper.Value);
         string taskName = TaskNameEntry.Text;
         string taskDescription = DescriptionEntry.Text;
-        Guid? selectedAssociatedBabyId = GetSelectedAssociatedBabyId();
+        string associatedBabyName = ResolveAssociatedBabyName(_selectedAssociatedBabyId);
 
-        if (IsAppointmentCheckBox.IsChecked) //Checks to see if new task being entered is an appointment
+        if (IsAppointmentCheckBox.IsChecked) //Appointments additionally carry the scheduling fields
         {
-            string appointmentLocation = LocationEntry.Text;
-            DateTime? appointmentDate = DateEntry.Date; //Implemented DatePicker instead of regular text field
-            TimeSpan? appointmentStartTime = StartingTimeEntry.Time; //Implemented TimePicker instead of regular text field
-            TimeSpan? appointmentEndTime = EndingTimeEntry.Time;
-
-            AppointmentModel newAppointment = new(appointmentLocation, appointmentDate, appointmentStartTime, appointmentEndTime, priority, taskName, taskDescription)
+            return new AppointmentModel(LocationEntry.Text, DateEntry.Date, StartingTimeEntry.Time, EndingTimeEntry.Time, priority, taskName, taskDescription)
             {
-                AssociatedBabyId = selectedAssociatedBabyId,
-                AssociatedBabyName = ResolveAssociatedBabyName(selectedAssociatedBabyId)
+                Id = existingTask?.Id ?? Guid.NewGuid(),
+                IsCompleted = existingTask?.IsCompleted ?? false,
+                AssociatedBabyId = _selectedAssociatedBabyId,
+                AssociatedBabyName = associatedBabyName
             };
-            _taskListService.Add(newAppointment);
-
-            await Navigation.PopModalAsync(); //Closes AddTaskPage
-            ToastService.Show(ToastKind.AppointmentScheduled);
         }
 
-        else //thread of execution for non-appointment task
+        return new TaskModel(priority, taskName, taskDescription)
         {
-            TaskModel newTask = new(priority, taskName, taskDescription)
-            {
-                AssociatedBabyId = selectedAssociatedBabyId,
-                AssociatedBabyName = ResolveAssociatedBabyName(selectedAssociatedBabyId)
-            };
-            _taskListService.Add(newTask);
+            Id = existingTask?.Id ?? Guid.NewGuid(),
+            IsCompleted = existingTask?.IsCompleted ?? false,
+            AssociatedBabyId = _selectedAssociatedBabyId,
+            AssociatedBabyName = associatedBabyName
+        };
+    }
 
-            await Navigation.PopModalAsync();
-            ToastService.Show(ToastKind.TaskAdded);
-        }
+    private async Task SaveNewTask() //Task instead of void to allow for more consistent async/await usage in the method
+    {
+        TaskModel newTask = BuildTaskFromForm();
+        _taskListService.Add(newTask);
+
+        await Navigation.PopModalAsync(); //Closes AddTaskPage
+        ToastService.Show(newTask is AppointmentModel ? ToastKind.AppointmentScheduled : ToastKind.TaskAdded);
     }
 
     private async Task SaveEditedTask()
     {
-        if (appointmentOnEdit != null) //appointment instance editing case
+        TaskModel? existingTask = (TaskModel?)appointmentOnEdit ?? taskOnEdit;
+
+        if (existingTask is null)
         {
-            if (!IsAppointmentCheckBox.IsChecked) //Checks if user it trying to convert existing appointment to regular task
-            {
-                _taskListService.Remove(appointmentOnEdit); //Removes Appointment Instance of task list (prevents duplicates)
-                await SaveNewTask();                         //Resaves task from 0 as a regular non-appointment task
-                return;
-            }
-
-            AppointmentModel updatedAppt = new
-            (
-                LocationEntry.Text,
-                DateEntry.Date,
-                StartingTimeEntry.Time,
-                EndingTimeEntry.Time,
-                Convert.ToInt32(PriorityStepper.Value),
-                TaskNameEntry.Text,
-                DescriptionEntry.Text
-            )
-            {
-                Id = appointmentOnEdit.Id, //Preserves TaskId for database update
-                AssociatedBabyId = GetSelectedAssociatedBabyId(),
-                AssociatedBabyName = ResolveAssociatedBabyName(GetSelectedAssociatedBabyId())
-            };
-
-            _taskListService.Update(updatedAppt); //Updates appointment in task list by reference
-
-            await Navigation.PopModalAsync();
-            ToastService.Show(ToastKind.TaskEdited);
+            return;
         }
 
-        else // Regular Task editing Case
+        bool shouldBeAppointment = IsAppointmentCheckBox.IsChecked;
+        bool isCurrentlyAppointment = appointmentOnEdit is not null;
+        TaskModel updatedTask = BuildTaskFromForm(existingTask);
+
+        if (shouldBeAppointment != isCurrentlyAppointment) //User converted between task and appointment, so the old entry is replaced
         {
-            if (IsAppointmentCheckBox.IsChecked) //Checks if user is trying to convert existing regular task into an appointment
-            {
-                _taskListService.Remove(taskOnEdit!); //Removes task from list entirely and resaves it as an appointment
-                await SaveNewTask();
-                return;
-            }
-
-            if (taskOnEdit is null)
-            {
-                return;
-            }
-
-            Guid? selectedAssociatedBabyId = GetSelectedAssociatedBabyId();
-
-            TaskModel updatedTask = new
-            (
-                Convert.ToInt32(PriorityStepper.Value),
-                TaskNameEntry.Text,
-                DescriptionEntry.Text
-            )
-            {
-                Id = taskOnEdit.Id,
-                IsCompleted = taskOnEdit.IsCompleted,
-                AssociatedBabyId = selectedAssociatedBabyId,
-                AssociatedBabyName = ResolveAssociatedBabyName(selectedAssociatedBabyId)
-            };
-
-            _taskListService.Update(updatedTask);
+            _taskListService.Remove(existingTask);
+            _taskListService.Add(updatedTask);
 
             await Navigation.PopModalAsync();
-            ToastService.Show(ToastKind.TaskEdited);
+            ToastService.Show(shouldBeAppointment ? ToastKind.AppointmentScheduled : ToastKind.TaskAdded);
+            return;
         }
+
+        _taskListService.Update(updatedTask);
+
+        await Navigation.PopModalAsync();
+        ToastService.Show(ToastKind.TaskEdited);
     }
 
     private void InitializeBabyProfilePicker(Guid? selectedAssociatedBabyId = null)
     {
-        if (!selectedAssociatedBabyId.HasValue || !_babyProfileService.BabyProfiles.Any(profile => profile.Id == selectedAssociatedBabyId.Value))
-        {
-            _selectedAssociatedBabyId = null;
-            BabyProfileSelectionButton.Text = "Unassigned";
-            return;
-        }
+        (Guid? resolvedBabyId, string label) = _babyFilterService.ResolveSelection(selectedAssociatedBabyId, "Unassigned");
 
-        _selectedAssociatedBabyId = selectedAssociatedBabyId;
-        BabyProfileSelectionButton.Text = _babyProfileService.BabyProfiles
-            .First(profile => profile.Id == selectedAssociatedBabyId.Value)
-            .Name;
+        _selectedAssociatedBabyId = resolvedBabyId;
+        BabyProfileSelectionButton.Text = label;
     }
 
     private async void OnSelectBabyProfileClicked(object sender, EventArgs e)
     {
-        Dictionary<string, Guid?> selectionOptions = new()
-        {
-            ["Unassigned"] = null
-        };
-
-        foreach (BabyModel profile in _babyProfileService.BabyProfiles)
-        {
-            string optionLabel = profile.Name;
-            int duplicateCounter = 2;
-
-            while (selectionOptions.ContainsKey(optionLabel))
-            {
-                optionLabel = $"{profile.Name} ({duplicateCounter})";
-                duplicateCounter++;
-            }
-
-            selectionOptions[optionLabel] = profile.Id;
-        }
+        Dictionary<string, Guid?> selectionOptions = _babyFilterService.BuildOptions("Unassigned");
 
         string selectedOption = await DisplayActionSheetAsync("Select baby", "Cancel", null, selectionOptions.Keys.ToArray());
 
@@ -273,11 +209,7 @@ public partial class AddTaskPage : ContentPage
         BabyProfileSelectionButton.Text = selectedOption;
     }
 
-    private Guid? GetSelectedAssociatedBabyId()
-    {
-        return _selectedAssociatedBabyId;
-    }
-
+    //Resolves the raw profile name stored on the model. Must stay raw, unlike the de-duplicated picker label.
     private string ResolveAssociatedBabyName(Guid? selectedAssociatedBabyId)
     {
         if (!selectedAssociatedBabyId.HasValue)
