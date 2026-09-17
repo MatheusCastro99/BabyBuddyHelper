@@ -15,7 +15,12 @@ namespace BabyBuddyHelper.Services
 
         public void Remove(BabyModel babyProfile)
         {
-            BabyProfiles.Remove(babyProfile);
+            var existingProfile = BabyProfiles.FirstOrDefault(x => x.Id == babyProfile.Id); //Resolves by Id so a stale reference still removes the right profile
+
+            if (existingProfile is null)
+                return;
+
+            BabyProfiles.Remove(existingProfile);
         }
 
         public void Update(BabyModel babyProfile)

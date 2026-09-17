@@ -16,28 +16,28 @@
                     </VerticalStackLayout>
                 </Border>
 
-                <Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto" ColumnSpacing="14" RowSpacing="14">
-                    <Border Grid.Column="0" Grid.Row="0" Padding="16" BackgroundColor="{StaticResource BabyBuddySurfaceAlt}" StrokeThickness="0" StrokeShape="RoundRectangle 22">
+                <Grid ColumnDefinitions="*,*,*" ColumnSpacing="14">
+                    <Border Grid.Column="0" Padding="16" BackgroundColor="{StaticResource BabyBuddySurfaceAlt}" StrokeThickness="0" StrokeShape="RoundRectangle 22">
                         <VerticalStackLayout Spacing="8">
                             <Border BackgroundColor="{StaticResource BabyBuddySecondary}" StrokeThickness="0" Padding="8,6" HorizontalOptions="Center" StrokeShape="RoundRectangle 12">
                                 <Label Text="🗓️" FontSize="22" HorizontalOptions="Center" />
                             </Border>
-                            <Label Text="Today" Style="{StaticResource SectionTitle}" HorizontalTextAlignment="Center" />
-                            <Label Text="1 appointment" Style="{StaticResource BodyText}" HorizontalTextAlignment="Center" />
+                            <Label Text="This Week" Style="{StaticResource SectionTitle}" HorizontalTextAlignment="Center" />
+                            <Label Text="{Binding WeeklyAppointmentText}" Style="{StaticResource BodyText}" HorizontalTextAlignment="Center" />
                         </VerticalStackLayout>
                     </Border>
 
-                    <Border Grid.Column="1" Grid.Row="0" Padding="16" BackgroundColor="{StaticResource BabyBuddySurfaceAlt}" StrokeThickness="0" StrokeShape="RoundRectangle 22">
+                    <Border Grid.Column="1" Padding="16" BackgroundColor="{StaticResource BabyBuddySurfaceAlt}" StrokeThickness="0" StrokeShape="RoundRectangle 22">
                         <VerticalStackLayout Spacing="8">
                             <Border BackgroundColor="{StaticResource BabyBuddySuccess}" StrokeThickness="0" Padding="8,6" HorizontalOptions="Center" StrokeShape="RoundRectangle 12">
                                 <Label Text="✅" FontSize="22" HorizontalOptions="Center" />
                             </Border>
                             <Label Text="Checklist" Style="{StaticResource SectionTitle}" HorizontalTextAlignment="Center" />
-                            <Label Text="2 tasks done" Style="{StaticResource BodyText}" HorizontalTextAlignment="Center" />
+                            <Label Text="{Binding CompletedTaskText}" Style="{StaticResource BodyText}" HorizontalTextAlignment="Center" />
                         </VerticalStackLayout>
                     </Border>
 
-                    <Border Grid.Column="0" Grid.Row="1" Padding="16" BackgroundColor="{StaticResource BabyBuddySurfaceAlt}" StrokeThickness="0" StrokeShape="RoundRectangle 22">
+                    <Border Grid.Column="2" Padding="16" BackgroundColor="{StaticResource BabyBuddySurfaceAlt}" StrokeThickness="0" StrokeShape="RoundRectangle 22">
                         <VerticalStackLayout Spacing="8">
                             <Border BackgroundColor="{StaticResource BabyBuddyWarm}" StrokeThickness="0" Padding="8,6" HorizontalOptions="Center" StrokeShape="RoundRectangle 12">
                                 <Label Text="🧸" FontSize="22" HorizontalOptions="Center" />
@@ -46,26 +46,9 @@
                             <Label Text="{Binding ProfileCountText}" Style="{StaticResource BodyText}" HorizontalTextAlignment="Center" />
                         </VerticalStackLayout>
                     </Border>
-
-                    <Border Grid.Column="1" Grid.Row="1" Padding="16" BackgroundColor="{StaticResource BabyBuddySurfaceAlt}" StrokeThickness="0" StrokeShape="RoundRectangle 22">
-                        <VerticalStackLayout Spacing="8">
-                            <Border BackgroundColor="{StaticResource BabyBuddyAccent}" StrokeThickness="0" Padding="8,6" HorizontalOptions="Center" StrokeShape="RoundRectangle 12">
-                                <Label Text="💛" FontSize="22" HorizontalOptions="Center" />
-                            </Border>
-                            <Label Text="Next up" Style="{StaticResource SectionTitle}" HorizontalTextAlignment="Center" />
-                            <Label Text="Pediatrician" Style="{StaticResource BodyText}" HorizontalTextAlignment="Center" />
-                        </VerticalStackLayout>
-                    </Border>
                 </Grid>
 
                 <controls:CompanionView />
-
-                <Border BackgroundColor="{StaticResource BabyBuddySurface}" StrokeThickness="0" Padding="18">
-                    <VerticalStackLayout Spacing="10">
-                        <Label Text="Today's progress" Style="{StaticResource SectionTitle}" />
-                        <ProgressBar Progress="0.65" />
-                    </VerticalStackLayout>
-                </Border>
 
                 <Border BackgroundColor="{StaticResource BabyBuddySurface}" StrokeThickness="0" Padding="18">
                     <VerticalStackLayout Spacing="16">

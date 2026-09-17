@@ -2,23 +2,22 @@
 using BabyBuddyHelper.Models;
 using BabyBuddyHelper.Pages;
 using BabyBuddyHelper.Services;
-using Microsoft.Extensions.DependencyInjection;
 using System.Collections.ObjectModel;
+using System.Globalization;
 
 namespace BabyBuddyHelper
 {
     public partial class MainPage : ContentPage
     {
         private readonly DateTime expectedDueDate = new(2027, 02, 02, 0, 0, 0, DateTimeKind.Local);
-        private readonly ObservableCollection<BabyModel> _emptyBabyProfiles = new();
-        private IBabyProfileService? _babyProfileService;
-        private bool _isSubscribedToBabyProfiles;
+        private readonly ITaskListService _taskListService;
+        private readonly IBabyProfileService _babyProfileService;
         private DateTime currentDate;
 
         public int MonthsUntilDue { get; private set; }
         public int DaysUntilDue { get; private set; }
         public string CountdownText { get; private set; } = "";
-        public ObservableCollection<BabyModel> BabyProfiles { get; private set; }
+        public ObservableCollection<BabyModel> BabyProfiles { get; }
         public bool HasBabyProfiles => BabyProfiles.Count > 0;
         public bool HasNoBabyProfiles => !HasBabyProfiles;
         public string ProfileCountText => BabyProfiles.Count switch
@@ -28,11 +27,31 @@ namespace BabyBuddyHelper
             _ => $"{BabyProfiles.Count} little profiles"
         };
 
-        public MainPage()
+        public string WeeklyAppointmentText => CountAppointmentsThisWeek() switch
+        {
+            0 => "Nothing scheduled",
+            1 => "1 appointment",
+            var count => $"{count} appointments"
+        };
+
+        public string CompletedTaskText => _taskListService.Tasks.Count(task => task.IsCompleted) switch
+        {
+            0 => "None yet",
+            1 => "1 done",
+            var count => $"{count} done"
+        };
+
+        public MainPage(ITaskListService taskListService, IBabyProfileService babyProfileService)
         {
             InitializeComponent();
 
-            BabyProfiles = _emptyBabyProfiles;
+            _taskListService = taskListService;
+            _babyProfileService = babyProfileService;
+            BabyProfiles = babyProfileService.BabyProfiles;
+
+            _taskListService.Tasks.CollectionChanged += (_, _) => RefreshDashboardState();
+            BabyProfiles.CollectionChanged += (_, _) => RefreshDashboardState();
+
             HandleCounter(); //Starts counter
 
             BindingContext = this;
@@ -42,39 +61,23 @@ namespace BabyBuddyHelper
         {
             base.OnAppearing();
 
-            if (!TryResolveBabyProfileService())
-            {
-                return;
-            }
-
-            RefreshBabyProfileState();
+            //Completing a task mutates the model in place without touching the collection, so returning to this
+            //tab is what brings the completion count back in sync.
+            RefreshDashboardState();
         }
 
-        private bool TryResolveBabyProfileService()
+        private int CountAppointmentsThisWeek()
         {
-            if (_babyProfileService is not null)
-            {
-                return true;
-            }
+            DayOfWeek firstDayOfWeek = CultureInfo.CurrentCulture.DateTimeFormat.FirstDayOfWeek;
+            DateTime today = DateTime.Today;
 
-            var serviceProvider = Application.Current?.Handler?.MauiContext?.Services;
-            var babyProfileService = serviceProvider?.GetService<IBabyProfileService>();
+            DateTime weekStart = today.AddDays(-(((int)today.DayOfWeek - (int)firstDayOfWeek + 7) % 7));
+            DateTime weekEnd = weekStart.AddDays(6);
 
-            if (babyProfileService is null)
-            {
-                return false;
-            }
-
-            _babyProfileService = babyProfileService;
-            BabyProfiles = babyProfileService.BabyProfiles;
-
-            if (!_isSubscribedToBabyProfiles)
-            {
-                BabyProfiles.CollectionChanged += (_, _) => RefreshBabyProfileState();
-                _isSubscribedToBabyProfiles = true;
-            }
-
-            return true;
+            return _taskListService.GetAppointments()
+                .Count(appointment => appointment.AppointmentDate.HasValue
+                    && appointment.AppointmentDate.Value.Date >= weekStart
+                    && appointment.AppointmentDate.Value.Date <= weekEnd);
         }
 
         private void HandleCounter()
@@ -117,27 +120,22 @@ namespace BabyBuddyHelper
 
         private async void OnAddBabyProfileClicked(object? sender, EventArgs e)
         {
-            if (!TryResolveBabyProfileService())
-            {
-                return;
-            }
-
-            await Navigation.PushModalAsync(new AddBabyPage(_babyProfileService!));
+            await Navigation.PushModalAsync(new AddBabyPage(_babyProfileService));
         }
 
         private async void OnEditBabyProfileClicked(object? sender, EventArgs e)
         {
-            if (!TryResolveBabyProfileService() || sender is not Button { BindingContext: BabyModel babyProfile })
+            if (sender is not Button { BindingContext: BabyModel babyProfile })
             {
                 return;
             }
 
-            await Navigation.PushModalAsync(new AddBabyPage(_babyProfileService!, babyProfile));
+            await Navigation.PushModalAsync(new AddBabyPage(_babyProfileService, babyProfile));
         }
 
         private async void OnDeleteBabyProfileClicked(object? sender, EventArgs e)
         {
-            if (!TryResolveBabyProfileService() || sender is not Button { BindingContext: BabyModel babyProfile })
+            if (sender is not Button { BindingContext: BabyModel babyProfile })
             {
                 return;
             }
@@ -153,18 +151,19 @@ namespace BabyBuddyHelper
                 return;
             }
 
-            //TryResolveBabyProfile guarantees that _babyProfileService is not null
-            _babyProfileService!.Remove(babyProfile);
-            RefreshBabyProfileState();
+            _babyProfileService.Remove(babyProfile);
+            RefreshDashboardState();
             ToastService.Show(ToastKind.BabyProfileDeleted);
         }
 
-        private void RefreshBabyProfileState()
+        private void RefreshDashboardState()
         {
             OnPropertyChanged(nameof(BabyProfiles));
             OnPropertyChanged(nameof(HasBabyProfiles));
             OnPropertyChanged(nameof(HasNoBabyProfiles));
             OnPropertyChanged(nameof(ProfileCountText));
+            OnPropertyChanged(nameof(WeeklyAppointmentText));
+            OnPropertyChanged(nameof(CompletedTaskText));
         }
     }
 }

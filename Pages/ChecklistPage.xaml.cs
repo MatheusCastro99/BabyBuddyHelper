@@ -10,6 +10,7 @@ public partial class ChecklistPage : ContentPage
 {
     private readonly ITaskListService _taskListService; //Dependency Injection for TaskListService
     private readonly IBabyProfileService _babyProfileService;
+    private readonly IBabyFilterService _babyFilterService;
     private readonly HashSet<Guid> _completedTaskIdsWithToast = new();
     private Guid? _selectedBabyFilterId;
     private bool _isUpdatingOrderingSwitches;
@@ -21,13 +22,14 @@ public partial class ChecklistPage : ContentPage
 
     public bool isPendingFirst { get; set; } = false; //Property bound to the PendingFirst switch on .xaml
     public bool isDateOrderEnabled { get; set; } = false;
-    public ChecklistPage(ITaskListService taskListService, IBabyProfileService babyProfileService)
+    public ChecklistPage(ITaskListService taskListService, IBabyProfileService babyProfileService, IBabyFilterService babyFilterService)
     {
         InitializeComponent();
 
         //Initializes TaskList and Commands
         _taskListService = taskListService;
         _babyProfileService = babyProfileService;
+        _babyFilterService = babyFilterService;
         DeleteTaskCommand = new Command<TaskModel>(DeleteTask);
         EditTaskCommand = new Command<TaskModel>(EditTask);
         _taskListService.Tasks.CollectionChanged += (_, _) => RefreshTaskList();
@@ -70,7 +72,7 @@ public partial class ChecklistPage : ContentPage
     //Method Bound to NewTask button on .xaml
     private async void onAddTaskClicked(object? sender, EventArgs e)
     {
-        await Navigation.PushModalAsync(new AddTaskPage(_taskListService, _babyProfileService));
+        await Navigation.PushModalAsync(new AddTaskPage(_taskListService, _babyProfileService, _babyFilterService));
     }
 
     private void DeleteTask(TaskModel taskToDelete)
@@ -109,12 +111,12 @@ public partial class ChecklistPage : ContentPage
         if (taskToEdit is AppointmentModel appointmentToEdit) //Checks task type to trigger right constructor on AddTaskPage
         {
             await Navigation.PushModalAsync(
-                new AddTaskPage(_taskListService, _babyProfileService, appointmentToEdit));
+                new AddTaskPage(_taskListService, _babyProfileService, _babyFilterService, appointmentToEdit));
         }
         else
         {
             await Navigation.PushModalAsync(
-                new AddTaskPage(_taskListService, _babyProfileService, taskToEdit));
+                new AddTaskPage(_taskListService, _babyProfileService, _babyFilterService, taskToEdit));
         }
     }
 
@@ -130,7 +132,7 @@ public partial class ChecklistPage : ContentPage
 
     private async void OnChecklistBabyFilterClicked(object? sender, EventArgs e)
     {
-        Dictionary<string, Guid?> filterOptions = BuildBabyFilterOptions();
+        Dictionary<string, Guid?> filterOptions = _babyFilterService.BuildOptions("All babies");
 
         string selectedOption = await DisplayActionSheetAsync("Filter checklist by baby", "Cancel", null, filterOptions.Keys.ToArray());
 
@@ -160,51 +162,12 @@ public partial class ChecklistPage : ContentPage
         }
     }
 
-    private Dictionary<string, Guid?> BuildBabyFilterOptions()
-    {
-        Dictionary<string, Guid?> filterOptions = new()
-        {
-            ["All babies"] = null
-        };
-
-        foreach (BabyModel profile in _babyProfileService.BabyProfiles)
-        {
-            string optionLabel = profile.Name;
-            int duplicateCounter = 2;
-
-            while (filterOptions.ContainsKey(optionLabel))
-            {
-                optionLabel = $"{profile.Name} ({duplicateCounter})";
-                duplicateCounter++;
-            }
-
-            filterOptions[optionLabel] = profile.Id;
-        }
-
-        return filterOptions;
-    }
-
     private void RefreshSelectedBabyFilterLabel()
     {
-        if (!_selectedBabyFilterId.HasValue)
-        {
-            ChecklistBabyFilterButton.Text = "All babies";
-            return;
-        }
+        (Guid? resolvedBabyId, string label) = _babyFilterService.ResolveSelection(_selectedBabyFilterId, "All babies");
 
-        string? selectedLabel = BuildBabyFilterOptions()
-            .Where(option => option.Value == _selectedBabyFilterId.Value)
-            .Select(option => option.Key)
-            .FirstOrDefault();
-
-        if (selectedLabel is null)
-        {
-            _selectedBabyFilterId = null;
-            ChecklistBabyFilterButton.Text = "All babies";
-            return;
-        }
-
-        ChecklistBabyFilterButton.Text = selectedLabel;
+        _selectedBabyFilterId = resolvedBabyId;
+        ChecklistBabyFilterButton.Text = label;
     }
 
     private void SetOrderingState(bool pendingFirstEnabled, bool dateOrderEnabled)
