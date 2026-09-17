@@ -19,17 +19,27 @@ Services/
 
 - TaskListService.cs
 - BabyProfileService.cs
+- BabyFilterService.cs
+- ToastService.cs
 
 Interfaces/
-    ITaskListService.cs
-    IBabyProfileService.cs
+
+- ITaskListService.cs
+- IBabyProfileService.cs
+- IBabyFilterService.cs
 
 Pages/
 
+- MainPage
 - ChecklistPage
 - AddTaskPage
+- AddBabyPage
 - CalendarPage
-- MainPage
+
+Controls/
+
+- CompanionView
+- ToastView
 
 ## Future Architecture Direction
 

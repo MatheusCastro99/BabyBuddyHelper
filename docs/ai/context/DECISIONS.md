@@ -55,7 +55,7 @@ Examples:
 - Baby Profile Management
 - Database interactions (future)
 
-Status: Accepted, Pending Refactor.
+Status: Accepted, current.
 
 ### ADR-007
 

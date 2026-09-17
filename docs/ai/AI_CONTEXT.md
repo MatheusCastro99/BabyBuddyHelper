@@ -2,7 +2,7 @@
 
 # BabyBuddyHelper - AI Development Context
 
-Last Updated: 2026-08-31
+Last Updated: 2026-09-17
 
 ---
 # Context References:
@@ -105,6 +105,8 @@ Current responsibilities:
 - Description
 - Priority
 - Completion State
+- Associated Baby Id
+- Associated Baby Display Name
 - Guid Identifier
 
 TaskModel uses Guid identifiers.
@@ -112,6 +114,8 @@ TaskModel uses Guid identifiers.
 The project previously used integer IDs.
 
 Guid migration was completed because update operations became unreliable.
+
+See ADR-007 in DECISIONS.md for the mandatory Id-based lookup/update/remove rule.
 
 Do not revert.
 
@@ -352,14 +356,18 @@ Business Productivity Tool
 For a look on the current project state, refer to: [Current State] (docs/ai/context/CURRENT_STATE.md)
 For a complete roadmap, refer to: [Roadmap] (docs/ai/context/ROADMAP.md)
 
-## Planned Design System
+## Design System Status
 
-Future shared resources:
+Current shared resources include:
 
-Resources/
+Resources/Styles/
     Colors.xaml
-    Typography.xaml
     Styles.xaml
+
+Future expansion candidates:
+
+Resources/Styles/
+    Typography.xaml
     Themes.xaml
 
 Goal:

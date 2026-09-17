@@ -13,13 +13,9 @@ Status:
 
 CodeBase Refactor:
 
-- When Refactoring, ALWAYS consult AI_CONTEXT.md, DECISIONS.md, and ARCHITECTURE_DESIGN.md as guidelines for code production
-- Scan codebase for files that
-	-> Have too much responsibility
-	-> Are way too large (e.g AddTaskPage)
-	-> Could be broken down into services (Filtering processes)
-- Scan codebase for secrets
-- Prepare codebase for DataBase interaction
+- Refactor baseline completed for oversized files and service extraction work (including filtering service split).
+- Remaining security pass: run and document a full secrets scan.
+- Prepare codebase for database interaction (#27).
 
 Data Persistence:
 

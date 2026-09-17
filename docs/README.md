@@ -9,15 +9,16 @@
 [![.NET](https://img.shields.io/badge/.NET%20MAUI-Cross--Platform-blue)](https://learn.com/dotnet/maui/)
 [![Platforms](https://img.shields.io/badge/Platforms-Windows%20%7C%20Android%20%7C%20iOS%20%7C%20macOS-success)](https://learn.com/dotnet/maui/)
 
-BabyBuddyHelper is a cross-platform parenting companion built with .NET MAUI. Today, it helps parents and caregivers organize tasks, track appointments, and visualize schedules through a checklist and calendar experience.
+BabyBuddyHelper is a cross-platform parenting companion built with .NET MAUI. Today, it helps parents and caregivers organize tasks, track appointments, manage baby profiles, and visualize schedules through checklist and calendar experiences.
 
-The project is currently a functional prototype in active development. Its current focus is building a reliable foundation for tasks, appointments, and scheduling while the domain and user experience continue to take shape.
+The project is currently a functional prototype in active development. Its current focus is preparing persistence while preserving the shipped task, appointment, baby-profile, filtering, and companion experience.
 
 ## Vision and Experience
 
 BabyBuddyHelper is evolving from a task and appointment manager into a warm, friendly, and supportive companion for everyday family life. It is intended to feel low-stress and encouraging, helping caregivers keep track of routines and baby-care activities without becoming another productivity application.
 
-The long-term experience may include a lightweight companion character that surfaces today's appointments, outstanding tasks, positive reinforcement, and gentle reminders. This companion is intended to be welcoming and supportive, not an AI chatbot. Companion behavior, persistence, cloud synchronization, and AI-driven interactions are planned direction rather than shipped functionality.
+The current experience already includes a lightweight companion character and supportive toast feedback. The companion is intended to be welcoming and supportive, not an AI chatbot. 
+Advanced companion behavior, persistence, cloud synchronization, and AI-driven interactions remain planned direction.
 
 ---
 
@@ -49,6 +50,23 @@ The long-term experience may include a lightweight companion character that surf
 - Create appointments directly from empty calendar cells
 - Real-time calendar refresh when tasks change
 
+### Baby Profiles & Task Association
+
+- Create, edit, and delete baby profiles
+- Link tasks and appointments to specific baby profiles
+- Automatically project profile names into checklist and calendar-related workflows
+
+### Companion & Feedback
+
+- Companion character on MainPage
+- Companion-themed toast feedback for key user actions
+
+### Filtering & Ordering
+
+- Completion-first ordering (pending first)
+- Upcoming-date ordering for appointments
+- Baby-specific checklist filtering
+
 ### Cross-Platform
 
 - Windows
@@ -58,10 +76,7 @@ The long-term experience may include a lightweight companion character that surf
 
 ## Planned Direction
 
-- Visual redesign with a calm, encouraging design system
-- Companion character and lightweight supportive interactions
-- Toast messages for task and appointment activity
-- Local persistence for tasks and appointments
+- Local persistence for tasks, appointments, and baby profiles
 - Backup and restore
 - Cloud synchronization and shared family experiences
 - Later, carefully scoped AI-supported interactions
@@ -109,14 +124,15 @@ Services/
 Interfaces/
 ```
 
-Business logic is centralized through:
+Business logic is centralized through services and interfaces, including:
 
 ```text
-ITaskListService
-TaskListService
+ITaskListService / TaskListService
+IBabyProfileService / BabyProfileService
+IBabyFilterService / BabyFilterService
 ```
 
-which serves as the application's single source of truth for tasks and appointments.
+`TaskListService` remains the application's single source of truth for tasks and appointments.
 
 The current data source is in-memory and uses mock data. Persistence has not yet been implemented. All screens should continue to consume task and appointment state through `TaskListService`, and Syncfusion Scheduler types should remain in the UI layer.
 
@@ -139,20 +155,34 @@ BabyBuddyHelper/
 │   ├── MainPage.xaml(.cs)
 │   ├── ChecklistPage.xaml(.cs)
 │   ├── AddTaskPage.xaml(.cs)
+│   ├── AddBabyPage.xaml(.cs)
 │   └── CalendarPage.xaml(.cs)
 │
 ├── Models/
 │   ├── TaskModel.cs
-│   └── AppointmentModel.cs
+│   ├── AppointmentModel.cs
+│   └── BabyModel.cs
 │
 ├── Services/
-│   └── TaskListService.cs
+│   ├── TaskListService.cs
+│   ├── BabyProfileService.cs
+│   ├── BabyFilterService.cs
+│   └── ToastService.cs
 │
 ├── Interfaces/
-│   └── ITaskListService.cs
+│   ├── ITaskListService.cs
+│   ├── IBabyProfileService.cs
+│   └── IBabyFilterService.cs
+│
+├── Controls/
+│   ├── CompanionView.xaml(.cs)
+│   └── ToastView.xaml(.cs)
 │
 ├── Platforms/
 ├── Resources/
+│   └── Styles/
+│       ├── Colors.xaml
+│       └── Styles.xaml
 │
 ├── MauiProgram.cs
 ├── App.xaml
@@ -213,9 +243,9 @@ This project follows modern software engineering practices:
 
 ### Near Term
 
-- UI redesign and design-system remap
-- Calendar UX improvements
-- Companion character direction and toast messages
+- Prepare the codebase for database interaction
+- Implement local persistence for tasks, appointments, and baby profiles
+- Decide and lock the persistence strategy for offline-first behavior
 
 ### Medium Term
 

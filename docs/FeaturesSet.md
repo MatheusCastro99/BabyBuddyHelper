@@ -30,8 +30,6 @@
 
 ✅ Toast Messages confirming user actions
 
-✅ Baby profile creation and management
-
 ✅ Linking tasks and appointments to baby profiles
 
 ✅ Filtering based upon upcoming date, priority, or specific baby profiles
@@ -40,12 +38,10 @@
 
 Local Data Persistence
 
-Clound Synchronization
+Cloud Synchronization
 
 Database Backup, Redundancy, and Restore
 
 Companion comes to life with an AI-driven personality and interactions
 
 Evolve companion into a helpful and supportive AI agent for parenting guidance (not a doctor or therapist)
-
-
