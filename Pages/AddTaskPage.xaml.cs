@@ -172,7 +172,12 @@ public partial class AddTaskPage : ContentPage
 
         if (shouldBeAppointment != isCurrentlyAppointment) //User converted between task and appointment, so the old entry is replaced
         {
-            _taskListService.Remove(existingTask);
+            //Resolve the live instance by Id first: TaskListService swaps entries for new instances when baby
+            //profiles change, so removing by the reference captured at open time could silently no-op and,
+            //because the conversion keeps the Id, leave two entries sharing it.
+            TaskModel taskToReplace = _taskListService.Tasks.FirstOrDefault(task => task.Id == existingTask.Id) ?? existingTask;
+
+            _taskListService.Remove(taskToReplace);
             _taskListService.Add(updatedTask);
 
             await Navigation.PopModalAsync();
