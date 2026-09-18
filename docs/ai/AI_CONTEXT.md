@@ -141,18 +141,28 @@ These computed properties exist specifically for Syncfusion Scheduler integratio
 
 # Data Source
 
-Current source of truth:
+Current cache services:
 
-TaskListService
+- TaskListService for tasks and appointments
+- BabyProfileService for baby profiles
+
+Persistence boundary:
+
+- ITrackerDbService
 
 TaskListService owns:
 
 ObservableCollection<TaskModel>
 
+BabyProfileService owns:
+
+ObservableCollection<BabyModel>
+
 ### WARNINGS: 
 
--   All screens consume data from this service.
+-   All screens consume data through these cache services.
 -   No page should become an alternate source of truth.
+-   No page should talk directly to `ITrackerDbService`.
 
 ---
 
@@ -160,18 +170,17 @@ ObservableCollection<TaskModel>
 
 Persistence Status:
 
-Not Implemented
+In Progress
 
 Current storage:
 
-- In-Memory
-- Mock Data
+- In-memory cache services
+- `InMemoryTrackerDbService` temporary persistence stand-in
+- Debug-only seeded development data
 
 Reason:
 
-Domain model is still evolving.
-
-SQLite is intentionally deferred.
+The persistence boundary is now in place, but the SQLite / EF Core backend is still pending.
 
 Future persistence plan includes:
     SQLite for local storage
@@ -381,7 +390,7 @@ Consistent warm and soothing visual language.
 Low Priority:
 
 - No MVVM
-- No SQLite
+- SQLite backend still pending
 - No INotifyPropertyChanged
 
 Accepted trade-offs.

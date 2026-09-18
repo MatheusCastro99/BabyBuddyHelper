@@ -11,14 +11,13 @@
 
 BabyBuddyHelper is a cross-platform parenting companion built with .NET MAUI. Today, it helps parents and caregivers organize tasks, track appointments, manage baby profiles, and visualize schedules through checklist and calendar experiences.
 
-The project is currently a functional prototype in active development. Its current focus is preparing persistence while preserving the shipped task, appointment, baby-profile, filtering, and companion experience.
+The project is currently a functional prototype in active development. Its current focus is finishing the database layer while preserving the shipped task, appointment, baby-profile, filtering, and companion experience.
 
 ## Vision and Experience
 
 BabyBuddyHelper is evolving from a task and appointment manager into a warm, friendly, and supportive companion for everyday family life. It is intended to feel low-stress and encouraging, helping caregivers keep track of routines and baby-care activities without becoming another productivity application.
 
-The current experience already includes a lightweight companion character and supportive toast feedback. The companion is intended to be welcoming and supportive, not an AI chatbot. 
-Advanced companion behavior, persistence, cloud synchronization, and AI-driven interactions remain planned direction.
+The current experience already includes a lightweight companion character and supportive toast feedback. The companion is intended to be welcoming and supportive, not an AI chatbot. Advanced companion behavior, cloud synchronization, and AI-driven interactions remain planned direction.
 
 ---
 
@@ -130,11 +129,12 @@ Business logic is centralized through services and interfaces, including:
 ITaskListService / TaskListService
 IBabyProfileService / BabyProfileService
 IBabyFilterService / BabyFilterService
+ITrackerDbService / InMemoryTrackerDbService
 ```
 
 `TaskListService` remains the application's single source of truth for tasks and appointments.
 
-The current data source is in-memory and uses mock data. Persistence has not yet been implemented. All screens should continue to consume task and appointment state through `TaskListService`, and Syncfusion Scheduler types should remain in the UI layer.
+The app now uses in-memory cache services backed by `ITrackerDbService`. `InMemoryTrackerDbService` is a temporary stand-in until the SQLite backend lands. All screens should continue to consume task and appointment state through `TaskListService`, and Syncfusion Scheduler types should remain in the UI layer.
 
 Future architectural refinements may include:
 
@@ -167,12 +167,15 @@ BabyBuddyHelper/
 │   ├── TaskListService.cs
 │   ├── BabyProfileService.cs
 │   ├── BabyFilterService.cs
+│   ├── InMemoryTrackerDbService.cs
+│   ├── TrackerDataSeeder.cs
 │   └── ToastService.cs
 │
 ├── Interfaces/
 │   ├── ITaskListService.cs
 │   ├── IBabyProfileService.cs
-│   └── IBabyFilterService.cs
+│   ├── IBabyFilterService.cs
+│   └── ITrackerDbService.cs
 │
 ├── Controls/
 │   ├── CompanionView.xaml(.cs)
@@ -243,9 +246,9 @@ This project follows modern software engineering practices:
 
 ### Near Term
 
-- Prepare the codebase for database interaction
-- Implement local persistence for tasks, appointments, and baby profiles
-- Decide and lock the persistence strategy for offline-first behavior
+- Finish the database interaction layer
+- Replace the in-memory tracker service with SQLite / EF Core
+- Keep cache services stable during the storage transition
 
 ### Medium Term
 

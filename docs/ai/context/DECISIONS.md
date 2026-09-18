@@ -2,24 +2,25 @@
 
 ### ADR-001
 
-TaskListService remains the single source of truth.
+TaskListService remains the single source of truth for Tasks and Appointments.
+BabyProfileService remains the single source of truth for Baby Profiles.
 
 Reason: 
 - Keeps domain model simple and updating the UI is easier. 
-- TaskListService is the only place where tasks are added, updated, or removed. 
-- This reduces the risk of inconsistencies in the application state.
+- TaskListService is the only place where user can interact through Pages to add, update, or remove tasks and appointments.
+- BabyProfileService is the only place where user can interact through Pages to add, update, or remove baby profiles.
+- This reduces the risk of inconsistencies in the application state, specially as data persistance arrives.
+
+Data Flow:
+Page -> Service -> ITrackerDbService (InMemoryTrackerDbService / Cache) -> SQLite (future)
 
 Status: Accepted, current.
 
 ### ADR-002
 
-SQLite implementation deferred until domain stabilizes.
+SQLite implementation In-Progress, but not yet implemented.
 
-Reason:
-- Domain and Models are still evolving
-- SQLite implementation will be added when the domain is stable.
-
-Status: Accepted, current.
+Status: Accepted, temporary.
 
 ### ADR-003
 
@@ -33,15 +34,28 @@ Status: Accepted, permanent.
 ### ADR-004
 
 AddTaskPage is the single adding/editing experience for Tasks and Appointments.
+AddBabyPage is the single adding/editing experience for Baby Profiles.
+
+AddTaskPage can be accessed from:
+- ChecklistPage (Add / Edit)
+- CalendarPage (Add / Edit Appointment)
+
+AddBabyPage can be accessed from:
+- MainPage (Add / Edit)
 
 Reason:
-- Enables consistency and uniformity when creating / editing instances
+- Enables consistency and uniformity when creating / editing instances, specially as data persistence arrives.
 
-Status: Accepted, permanent.
+Status: Accepted, current.
 
 ### ADR-005
 
-MVVM deferred until application complexity justifies it.
+Proper architecture pattern deferred until application complexity justifies it.
+
+Candidate patterns include:
+- MVVM
+- Service-based architecture
+- Feature-based folder structure
 
 Status: Accepted, current.
 
@@ -74,3 +88,16 @@ Examples:
 - Matching UI selections back to domain records
 
 Status: Accepted, permanent.
+
+### ADR-008
+
+`TaskListService` and `BabyProfileService` are cache services for UI state.
+`ITrackerDbService` is the persistence contract, and `InMemoryTrackerDbService` is its current implementation.
+
+Reason:
+- Keeps pages out of storage concerns.
+- Keeps the UI responsive while the cache services persist through a separate boundary.
+- Allows `InMemoryTrackerDbService` to stand in for the future SQLite implementation.
+- Keeps the database swap isolated from the rest of the app.
+
+Status: Accepted, current.

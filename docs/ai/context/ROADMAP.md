@@ -53,23 +53,21 @@ Filters Update: CONCLUDED
 
 ## => Phase 3: 
 
-CodeBase Refactor:
+CodeBase Refactor: CONCLUDED
 
-- When Refactoring, ALWAYS consult AI_CONTEXT.md, DECISIONS.md, and ARCHITECTURE_DESIGN.md as guidelines for code production
-- Scan codebase for files that
-	-> Have too much responsibility
-	-> Are way too large (e.g AddTaskPage)
-	-> Could be broken down into services (Filtering processes)
-- Scan codebase for secrets
-- Prepare codebase for DataBase interaction
+- Oversized-file audit completed.
+- Filtering processes split into dedicated services.
+- Baby profile and checklist/calendar filtering now run through service interfaces.
+- Remaining security pass: scan the codebase for secrets and document the result.
 
-Data Persistence:
+Data Persistence: IN PROGRESS
 
-- Reflect on which strategy to use: Local DB with cloud Sync later OR Online DB
-- Implement data persistence for tasks, appointments, and Baby Profiles
-- Use SQLite or similar local database for offline-first functionality OR PostgresDB for online DB
-- Ensure data is saved, read, and retrieved efficiently
-- Turn Current TaskListService into a cache service (Will hold in-memory copies of tasks and appointments)
+- `ITrackerDbService` now defines the persistence boundary.
+- `TaskListService` and `BabyProfileService` now load through in-memory cache services.
+- `InMemoryTrackerDbService` is the temporary stand-in while SQLite / EF Core is implemented.
+- Prepare codebase for database interaction (#27).
+- Implement data persistence for tasks, appointments, and Baby Profiles.
+- Ensure data is saved, read, and retrieved efficiently.
 
 ---
 
