@@ -104,12 +104,12 @@ public partial class CalendarPage : ContentPage
 
     private async Task AddNewAppointment(DateTime? AppointmentDate) //Triggers AddTaskPage Modal with the specified DateTime from event handler
     {
-        await Navigation.PushModalAsync(new AddTaskPage(_taskListService, _babyProfileService, _babyFilterService, AppointmentDate));
+        await Navigation.PushModalAsync(new AddTaskPage(_taskListService, _babyFilterService, AppointmentDate));
     }
 
     private async Task EditAppointment(AppointmentModel appointmentToEdit) //Triggers AddTaskPage Modal with the specified AppointmentModel
     {                                                                       //from event handler
         if (appointmentToEdit is null) return;
-        await Navigation.PushModalAsync(new AddTaskPage(_taskListService, _babyProfileService, _babyFilterService, appointmentToEdit));
+        await Navigation.PushModalAsync(new AddTaskPage(_taskListService, _babyFilterService, appointmentToEdit));
     }
 }

@@ -76,7 +76,7 @@ public partial class ChecklistPage : ContentPage
     //Method Bound to NewTask button on .xaml
     private async void onAddTaskClicked(object? sender, EventArgs e)
     {
-        await Navigation.PushModalAsync(new AddTaskPage(_taskListService, _babyProfileService, _babyFilterService));
+        await Navigation.PushModalAsync(new AddTaskPage(_taskListService, _babyFilterService));
     }
 
     private async Task DeleteTaskAsync(TaskModel taskToDelete)
@@ -115,12 +115,12 @@ public partial class ChecklistPage : ContentPage
         if (taskToEdit is AppointmentModel appointmentToEdit) //Checks task type to trigger right constructor on AddTaskPage
         {
             await Navigation.PushModalAsync(
-                new AddTaskPage(_taskListService, _babyProfileService, _babyFilterService, appointmentToEdit));
+                new AddTaskPage(_taskListService, _babyFilterService, appointmentToEdit));
         }
         else
         {
             await Navigation.PushModalAsync(
-                new AddTaskPage(_taskListService, _babyProfileService, _babyFilterService, taskToEdit));
+                new AddTaskPage(_taskListService, _babyFilterService, taskToEdit));
         }
     }
 

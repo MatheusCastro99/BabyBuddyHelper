@@ -8,7 +8,6 @@ namespace BabyBuddyHelper.Pages;
 public partial class AddTaskPage : ContentPage
 {
     private readonly ITaskListService _taskListService;
-    private readonly IBabyProfileService _babyProfileService;
     private readonly IBabyFilterService _babyFilterService;
     private Guid? _selectedAssociatedBabyId;
     TaskModel? taskOnEdit;
@@ -16,12 +15,11 @@ public partial class AddTaskPage : ContentPage
 
     private bool IsEditing => taskOnEdit is not null || appointmentOnEdit is not null;
 
-    public AddTaskPage(ITaskListService taskListService, IBabyProfileService babyProfileService, IBabyFilterService babyFilterService, DateTime? dateTime = null) //Regular constructor called by New Task
+    public AddTaskPage(ITaskListService taskListService, IBabyFilterService babyFilterService, DateTime? dateTime = null) //Regular constructor called by New Task
     {                                                                                                                                       //button on ChecklistPage or clicking an
         InitializeComponent();                                                                                                               //empty time cell on CalendarPage
 
         this._taskListService = taskListService;
-        this._babyProfileService = babyProfileService;
         this._babyFilterService = babyFilterService;
         InitializeBabyProfilePicker();
 
@@ -36,12 +34,11 @@ public partial class AddTaskPage : ContentPage
         Debug.WriteLine("Creating New Task");
     }
 
-    public AddTaskPage(ITaskListService taskListService, IBabyProfileService babyProfileService, IBabyFilterService babyFilterService, TaskModel taskOnEdit) //Constructor that will be
+    public AddTaskPage(ITaskListService taskListService, IBabyFilterService babyFilterService, TaskModel taskOnEdit) //Constructor that will be
     {                                                                                                                                  //triggered on EditNoteIcon click for regular tasks
         InitializeComponent();
 
         this._taskListService = taskListService;
-        this._babyProfileService = babyProfileService;
         this._babyFilterService = babyFilterService;
         this.taskOnEdit = taskOnEdit;
         ApplyEditMode(taskOnEdit);
@@ -49,12 +46,11 @@ public partial class AddTaskPage : ContentPage
         Debug.WriteLine("Editing a regular task");
     }
 
-    public AddTaskPage(ITaskListService taskListService, IBabyProfileService babyProfileService, IBabyFilterService babyFilterService, AppointmentModel appointmentOnEdit) //Constructor that
+    public AddTaskPage(ITaskListService taskListService, IBabyFilterService babyFilterService, AppointmentModel appointmentOnEdit) //Constructor that
     {                                                                                                                             //is triggered on EditNoteIcon click for appointments
         InitializeComponent();
 
         this._taskListService = taskListService;
-        this._babyProfileService = babyProfileService;
         this._babyFilterService = babyFilterService;
         this.appointmentOnEdit = appointmentOnEdit;
         ApplyEditMode(appointmentOnEdit);
