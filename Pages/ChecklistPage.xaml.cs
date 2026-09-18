@@ -16,6 +16,10 @@ public partial class ChecklistPage : ContentPage
     private bool _isUpdatingOrderingSwitches;
     public ObservableCollection<TaskModel> TaskList { get; } = new(); //Will hold instances of TaskModel and AppointmentModel
 
+    //Baby name lookup consumed by AssociatedBabyNameConverter. Replaced (not mutated) on every refresh so the
+    //PropertyChanged notification re-evaluates each task card's baby label, including after a profile rename.
+    public IReadOnlyDictionary<Guid, string> BabyNamesById { get; private set; } = new Dictionary<Guid, string>();
+
     //ICommand binding for delete and edit buttons on each task card
     public ICommand DeleteTaskCommand { get; }
     public ICommand EditTaskCommand { get; }
@@ -149,6 +153,9 @@ public partial class ChecklistPage : ContentPage
     private void RefreshTaskList()
     {
         RefreshSelectedBabyFilterLabel();
+
+        BabyNamesById = _babyProfileService.BabyProfiles.ToDictionary(profile => profile.Id, profile => profile.Name);
+        OnPropertyChanged(nameof(BabyNamesById));
 
         List<TaskModel> visibleTasks = _taskListService
             .GetTasks(_selectedBabyFilterId, isPendingFirst, isDateOrderEnabled)

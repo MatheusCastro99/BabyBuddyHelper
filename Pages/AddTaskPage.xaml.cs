@@ -126,7 +126,6 @@ public partial class AddTaskPage : ContentPage
         int priority = Convert.ToInt32(PriorityStepper.Value);
         string taskName = TaskNameEntry.Text;
         string taskDescription = DescriptionEntry.Text;
-        string associatedBabyName = ResolveAssociatedBabyName(_selectedAssociatedBabyId);
 
         if (IsAppointmentCheckBox.IsChecked) //Appointments additionally carry the scheduling fields
         {
@@ -134,8 +133,7 @@ public partial class AddTaskPage : ContentPage
             {
                 Id = existingTask?.Id ?? Guid.NewGuid(),
                 IsCompleted = existingTask?.IsCompleted ?? false,
-                AssociatedBabyId = _selectedAssociatedBabyId,
-                AssociatedBabyName = associatedBabyName
+                AssociatedBabyId = _selectedAssociatedBabyId
             };
         }
 
@@ -143,8 +141,7 @@ public partial class AddTaskPage : ContentPage
         {
             Id = existingTask?.Id ?? Guid.NewGuid(),
             IsCompleted = existingTask?.IsCompleted ?? false,
-            AssociatedBabyId = _selectedAssociatedBabyId,
-            AssociatedBabyName = associatedBabyName
+            AssociatedBabyId = _selectedAssociatedBabyId
         };
     }
 
@@ -207,20 +204,6 @@ public partial class AddTaskPage : ContentPage
 
         _selectedAssociatedBabyId = selectionOptions[selectedOption];
         BabyProfileSelectionButton.Text = selectedOption;
-    }
-
-    //Resolves the raw profile name stored on the model. Must stay raw, unlike the de-duplicated picker label.
-    private string ResolveAssociatedBabyName(Guid? selectedAssociatedBabyId)
-    {
-        if (!selectedAssociatedBabyId.HasValue)
-        {
-            return "General";
-        }
-
-        BabyModel? matchedProfile = _babyProfileService.BabyProfiles
-            .FirstOrDefault(profile => profile.Id == selectedAssociatedBabyId.Value);
-
-        return string.IsNullOrWhiteSpace(matchedProfile?.Name) ? "General" : matchedProfile.Name;
     }
 
     private async Task<bool> ValidateForm()

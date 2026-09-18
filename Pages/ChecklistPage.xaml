@@ -12,6 +12,7 @@
     <ContentPage.Resources>
         <ResourceDictionary>
             <styles:IsAppointmentModelConverter x:Key="IsAppointmentModelConverter"/>
+            <styles:AssociatedBabyNameConverter x:Key="AssociatedBabyNameConverter"/>
         </ResourceDictionary>
     </ContentPage.Resources>
 
@@ -125,7 +126,14 @@
                                     <VerticalStackLayout Grid.Column="0" Spacing="2">
                                         <HorizontalStackLayout Spacing="0">
                                             <Label Text="{Binding TaskName}" FontSize="18" FontAttributes="Bold" />
-                                            <Label Text="{Binding AssociatedBabyDisplayName, StringFormat=' - {0}'}" Style="{StaticResource BodyText}" VerticalTextAlignment="End" />
+                                            <Label Style="{StaticResource BodyText}" VerticalTextAlignment="End">
+                                                <Label.Text>
+                                                    <MultiBinding Converter="{StaticResource AssociatedBabyNameConverter}" StringFormat=" - {0}">
+                                                        <Binding Path="AssociatedBabyId" />
+                                                        <Binding Source="{x:Reference ChecklistRoot}" Path="BabyNamesById" />
+                                                    </MultiBinding>
+                                                </Label.Text>
+                                            </Label>
                                         </HorizontalStackLayout>
                                         <Label Text="{Binding TaskDescription}" Style="{StaticResource BodyText}" Margin="0,0,0,0" />
                                     </VerticalStackLayout>

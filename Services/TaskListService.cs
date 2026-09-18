@@ -113,16 +113,9 @@ namespace BabyBuddyHelper.Services
             }
         }
 
+        //Renames need no handling here: tasks only store the baby Id, and pages resolve the name when displaying it.
         private void OnBabyProfilesChanged(object? sender, NotifyCollectionChangedEventArgs e)
         {
-            if (e.Action == NotifyCollectionChangedAction.Replace && e.NewItems is not null)
-            {
-                foreach (BabyModel updatedProfile in e.NewItems.OfType<BabyModel>())
-                {
-                    UpdateAssociatedBabyName(updatedProfile.Id, updatedProfile.Name);
-                }
-            }
-
             if (e.Action == NotifyCollectionChangedAction.Remove && e.OldItems is not null)
             {
                 foreach (BabyModel removedProfile in e.OldItems.OfType<BabyModel>())
@@ -137,21 +130,6 @@ namespace BabyBuddyHelper.Services
             }
         }
 
-        private void UpdateAssociatedBabyName(Guid babyId, string babyName)
-        {
-            string resolvedBabyName = string.IsNullOrWhiteSpace(babyName) ? "General" : babyName.Trim();
-
-            for (int taskIndex = 0; taskIndex < Tasks.Count; taskIndex++)
-            {
-                if (Tasks[taskIndex].AssociatedBabyId != babyId)
-                {
-                    continue;
-                }
-
-                Tasks[taskIndex] = CloneWithAssociation(Tasks[taskIndex], babyId, resolvedBabyName);
-            }
-        }
-
         private void ClearAssociatedBaby(Guid babyId)
         {
             for (int taskIndex = 0; taskIndex < Tasks.Count; taskIndex++)
@@ -161,7 +139,7 @@ namespace BabyBuddyHelper.Services
                     continue;
                 }
 
-                Tasks[taskIndex] = CloneWithAssociation(Tasks[taskIndex], null, "General");
+                Tasks[taskIndex] = CloneWithAssociation(Tasks[taskIndex], null);
             }
         }
 
@@ -180,11 +158,12 @@ namespace BabyBuddyHelper.Services
                     continue;
                 }
 
-                Tasks[taskIndex] = CloneWithAssociation(Tasks[taskIndex], null, "General");
+                Tasks[taskIndex] = CloneWithAssociation(Tasks[taskIndex], null);
             }
         }
 
-        private static TaskModel CloneWithAssociation(TaskModel task, Guid? associatedBabyId, string associatedBabyName)
+        //Replaces the entry instead of mutating it, so CollectionChanged fires and every page refreshes (see ADR-007)
+        private static TaskModel CloneWithAssociation(TaskModel task, Guid? associatedBabyId)
         {
             if (task is AppointmentModel appointment)
             {
@@ -199,8 +178,7 @@ namespace BabyBuddyHelper.Services
                 {
                     Id = appointment.Id,
                     IsCompleted = appointment.IsCompleted,
-                    AssociatedBabyId = associatedBabyId,
-                    AssociatedBabyName = associatedBabyName
+                    AssociatedBabyId = associatedBabyId
                 };
             }
 
@@ -208,8 +186,7 @@ namespace BabyBuddyHelper.Services
             {
                 Id = task.Id,
                 IsCompleted = task.IsCompleted,
-                AssociatedBabyId = associatedBabyId,
-                AssociatedBabyName = associatedBabyName
+                AssociatedBabyId = associatedBabyId
             };
         }
 
