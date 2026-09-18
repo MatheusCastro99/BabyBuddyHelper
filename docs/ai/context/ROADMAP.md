@@ -63,9 +63,8 @@ CodeBase Refactor: CONCLUDED
 Data Persistence: IN PROGRESS
 
 - `ITrackerDbService` now defines the persistence boundary.
-- `TaskListService` and `BabyProfileService` now load through in-memory cache services.
+- `TaskListService` and `BabyProfileService` are the cache services backed by `ITrackerDbService`.
 - `InMemoryTrackerDbService` is the temporary stand-in while SQLite / EF Core is implemented.
-- Prepare codebase for database interaction (#27).
 - Implement data persistence for tasks, appointments, and Baby Profiles.
 - Ensure data is saved, read, and retrieved efficiently.
 

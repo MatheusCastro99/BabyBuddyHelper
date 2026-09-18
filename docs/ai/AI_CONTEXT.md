@@ -106,7 +106,6 @@ Current responsibilities:
 - Priority
 - Completion State
 - Associated Baby Id
-- Associated Baby Display Name
 - Guid Identifier
 
 TaskModel uses Guid identifiers.
@@ -116,6 +115,8 @@ The project previously used integer IDs.
 Guid migration was completed because update operations became unreliable.
 
 See ADR-007 in DECISIONS.md for the mandatory Id-based lookup/update/remove rule.
+
+Checklist completion must remain one-way bound in XAML and must route through `SetCompletionAsync`; switching it back to two-way would skip persistence.
 
 Do not revert.
 
@@ -183,7 +184,7 @@ Reason:
 The persistence boundary is now in place, but the SQLite / EF Core backend is still pending.
 
 Future persistence plan includes:
-    SQLite for local storage
+    SQLite / EF Core for local storage
     Azure for cloud synchronization and redundancy.
 
 ---

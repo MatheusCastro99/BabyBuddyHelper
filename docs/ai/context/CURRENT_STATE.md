@@ -16,13 +16,14 @@ CodeBase Refactor: CONCLUDED
 - Oversized-file audit completed.
 - Filtering processes split into dedicated services.
 - Baby profile and checklist/calendar filtering now run through service interfaces.
+- Remaining security pass: run and document a full secrets scan.
 
 Data Persistence:
 
 - Persistence boundary introduced through `ITrackerDbService`.
-- `TaskListService` and `BabyProfileService` now load through in-memory cache services backed by the tracker data service.
+- `TaskListService` and `BabyProfileService` are the cache services backed by `ITrackerDbService`.
 - SQLite / EF Core implementation (#25) is still pending.
-- Remaining security pass: run and document a full secrets scan.
-- Prepare codebase for database interaction (#27).
+- Implement data persistence for tasks, appointments, and Baby Profiles.
+- Ensure data is saved, read, and retrieved efficiently.
 
 ---
