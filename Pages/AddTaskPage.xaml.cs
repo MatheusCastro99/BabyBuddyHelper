@@ -8,7 +8,6 @@ namespace BabyBuddyHelper.Pages;
 public partial class AddTaskPage : ContentPage
 {
     private readonly ITaskListService _taskListService;
-    private readonly IBabyProfileService _babyProfileService;
     private readonly IBabyFilterService _babyFilterService;
     private Guid? _selectedAssociatedBabyId;
     TaskModel? taskOnEdit;
@@ -16,12 +15,11 @@ public partial class AddTaskPage : ContentPage
 
     private bool IsEditing => taskOnEdit is not null || appointmentOnEdit is not null;
 
-    public AddTaskPage(ITaskListService taskListService, IBabyProfileService babyProfileService, IBabyFilterService babyFilterService, DateTime? dateTime = null) //Regular constructor called by New Task
+    public AddTaskPage(ITaskListService taskListService, IBabyFilterService babyFilterService, DateTime? dateTime = null) //Regular constructor called by New Task
     {                                                                                                                                       //button on ChecklistPage or clicking an
         InitializeComponent();                                                                                                               //empty time cell on CalendarPage
 
         this._taskListService = taskListService;
-        this._babyProfileService = babyProfileService;
         this._babyFilterService = babyFilterService;
         InitializeBabyProfilePicker();
 
@@ -36,12 +34,11 @@ public partial class AddTaskPage : ContentPage
         Debug.WriteLine("Creating New Task");
     }
 
-    public AddTaskPage(ITaskListService taskListService, IBabyProfileService babyProfileService, IBabyFilterService babyFilterService, TaskModel taskOnEdit) //Constructor that will be
+    public AddTaskPage(ITaskListService taskListService, IBabyFilterService babyFilterService, TaskModel taskOnEdit) //Constructor that will be
     {                                                                                                                                  //triggered on EditNoteIcon click for regular tasks
         InitializeComponent();
 
         this._taskListService = taskListService;
-        this._babyProfileService = babyProfileService;
         this._babyFilterService = babyFilterService;
         this.taskOnEdit = taskOnEdit;
         ApplyEditMode(taskOnEdit);
@@ -49,12 +46,11 @@ public partial class AddTaskPage : ContentPage
         Debug.WriteLine("Editing a regular task");
     }
 
-    public AddTaskPage(ITaskListService taskListService, IBabyProfileService babyProfileService, IBabyFilterService babyFilterService, AppointmentModel appointmentOnEdit) //Constructor that
+    public AddTaskPage(ITaskListService taskListService, IBabyFilterService babyFilterService, AppointmentModel appointmentOnEdit) //Constructor that
     {                                                                                                                             //is triggered on EditNoteIcon click for appointments
         InitializeComponent();
 
         this._taskListService = taskListService;
-        this._babyProfileService = babyProfileService;
         this._babyFilterService = babyFilterService;
         this.appointmentOnEdit = appointmentOnEdit;
         ApplyEditMode(appointmentOnEdit);
@@ -79,7 +75,7 @@ public partial class AddTaskPage : ContentPage
         InitializeBabyProfilePicker(taskToEdit.AssociatedBabyId);
     }
 
-    private void OnPriorityDecreaseClicked(object sender, EventArgs e)
+    private void OnPriorityDecreaseClicked(object? sender, EventArgs e)
     {
         if (PriorityStepper.Value > PriorityStepper.Minimum)
         {
@@ -87,7 +83,7 @@ public partial class AddTaskPage : ContentPage
         }
     }
 
-    private void OnPriorityIncreaseClicked(object sender, EventArgs e)
+    private void OnPriorityIncreaseClicked(object? sender, EventArgs e)
     {
         if (PriorityStepper.Value < PriorityStepper.Maximum)
         {
@@ -95,28 +91,37 @@ public partial class AddTaskPage : ContentPage
         }
     }
 
-    private async void OnCancelClicked(object sender, EventArgs e) //Exits page without saving anything
+    private async void OnCancelClicked(object? sender, EventArgs e) //Exits page without saving anything
     {
         await Navigation.PopModalAsync();
     }
 
-    private async void OnSaveClicked(object sender, EventArgs e)
+    private async void OnSaveClicked(object? sender, EventArgs e)
     {
-        bool isFormValid = await ValidateForm(); //Validates form before saving
-        if (!isFormValid)
-        {
-            return;
-        }
+        TaskSaveButton.IsEnabled = false; //Blocks a second tap from saving twice while the save is in flight
 
-        if (!IsEditing) //New Task
+        try
         {
-            await SaveNewTask();
-        }
+            bool isFormValid = await ValidateForm(); //Validates form before saving
+            if (!isFormValid)
+            {
+                return;
+            }
 
-        else //edited task
+            if (!IsEditing) //New Task
+            {
+                await SaveNewTask();
+            }
+
+            else //edited task
+            {
+                Debug.WriteLine("Saving Edited Task");
+                await SaveEditedTask();
+            }
+        }
+        finally
         {
-            Debug.WriteLine("Saving Edited Task");
-            await SaveEditedTask();
+            TaskSaveButton.IsEnabled = true;
         }
     }
 
@@ -126,7 +131,6 @@ public partial class AddTaskPage : ContentPage
         int priority = Convert.ToInt32(PriorityStepper.Value);
         string taskName = TaskNameEntry.Text;
         string taskDescription = DescriptionEntry.Text;
-        string associatedBabyName = ResolveAssociatedBabyName(_selectedAssociatedBabyId);
 
         if (IsAppointmentCheckBox.IsChecked) //Appointments additionally carry the scheduling fields
         {
@@ -134,8 +138,7 @@ public partial class AddTaskPage : ContentPage
             {
                 Id = existingTask?.Id ?? Guid.NewGuid(),
                 IsCompleted = existingTask?.IsCompleted ?? false,
-                AssociatedBabyId = _selectedAssociatedBabyId,
-                AssociatedBabyName = associatedBabyName
+                AssociatedBabyId = _selectedAssociatedBabyId
             };
         }
 
@@ -143,15 +146,14 @@ public partial class AddTaskPage : ContentPage
         {
             Id = existingTask?.Id ?? Guid.NewGuid(),
             IsCompleted = existingTask?.IsCompleted ?? false,
-            AssociatedBabyId = _selectedAssociatedBabyId,
-            AssociatedBabyName = associatedBabyName
+            AssociatedBabyId = _selectedAssociatedBabyId
         };
     }
 
     private async Task SaveNewTask() //Task instead of void to allow for more consistent async/await usage in the method
     {
         TaskModel newTask = BuildTaskFromForm();
-        _taskListService.Add(newTask);
+        await _taskListService.AddAsync(newTask);
 
         await Navigation.PopModalAsync(); //Closes AddTaskPage
         ToastService.Show(newTask is AppointmentModel ? ToastKind.AppointmentScheduled : ToastKind.TaskAdded);
@@ -170,19 +172,16 @@ public partial class AddTaskPage : ContentPage
         bool isCurrentlyAppointment = appointmentOnEdit is not null;
         TaskModel updatedTask = BuildTaskFromForm(existingTask);
 
-        if (shouldBeAppointment != isCurrentlyAppointment) //User converted between task and appointment, so the old entry is replaced
-        {
-            _taskListService.Remove(existingTask);
-            _taskListService.Add(updatedTask);
+        await _taskListService.UpdateAsync(updatedTask); //Also covers task <-> appointment conversion, handled by the service as one update
 
-            await Navigation.PopModalAsync();
+        await Navigation.PopModalAsync();
+
+        if (shouldBeAppointment != isCurrentlyAppointment) //Conversions keep their own toast
+        {
             ToastService.Show(shouldBeAppointment ? ToastKind.AppointmentScheduled : ToastKind.TaskAdded);
             return;
         }
 
-        _taskListService.Update(updatedTask);
-
-        await Navigation.PopModalAsync();
         ToastService.Show(ToastKind.TaskEdited);
     }
 
@@ -194,7 +193,7 @@ public partial class AddTaskPage : ContentPage
         BabyProfileSelectionButton.Text = label;
     }
 
-    private async void OnSelectBabyProfileClicked(object sender, EventArgs e)
+    private async void OnSelectBabyProfileClicked(object? sender, EventArgs e)
     {
         Dictionary<string, Guid?> selectionOptions = _babyFilterService.BuildOptions("Unassigned");
 
@@ -207,20 +206,6 @@ public partial class AddTaskPage : ContentPage
 
         _selectedAssociatedBabyId = selectionOptions[selectedOption];
         BabyProfileSelectionButton.Text = selectedOption;
-    }
-
-    //Resolves the raw profile name stored on the model. Must stay raw, unlike the de-duplicated picker label.
-    private string ResolveAssociatedBabyName(Guid? selectedAssociatedBabyId)
-    {
-        if (!selectedAssociatedBabyId.HasValue)
-        {
-            return "General";
-        }
-
-        BabyModel? matchedProfile = _babyProfileService.BabyProfiles
-            .FirstOrDefault(profile => profile.Id == selectedAssociatedBabyId.Value);
-
-        return string.IsNullOrWhiteSpace(matchedProfile?.Name) ? "General" : matchedProfile.Name;
     }
 
     private async Task<bool> ValidateForm()

@@ -56,6 +56,20 @@ public partial class AddBabyPage : ContentPage
 
     private async void OnSaveClicked(object? sender, EventArgs e)
     {
+        SaveButton.IsEnabled = false; //Blocks a second tap from saving twice while the save is in flight
+
+        try
+        {
+            await SaveProfile();
+        }
+        finally
+        {
+            SaveButton.IsEnabled = true;
+        }
+    }
+
+    private async Task SaveProfile()
+    {
         var validatedProfile = await ValidateForm();
 
         if (validatedProfile is null)
@@ -65,7 +79,7 @@ public partial class AddBabyPage : ContentPage
 
         if (_babyProfileOnEdit is null)
         {
-            _babyProfileService.Add(validatedProfile);
+            await _babyProfileService.AddAsync(validatedProfile);
             await Navigation.PopModalAsync();
             ToastService.Show(ToastKind.BabyProfileCreated);
         }
@@ -81,7 +95,7 @@ public partial class AddBabyPage : ContentPage
                 LastFeed = validatedProfile.LastFeed,
                 LastSleep = validatedProfile.LastSleep
             };
-            _babyProfileService.Update(updatedProfile);
+            await _babyProfileService.UpdateAsync(updatedProfile);
             await Navigation.PopModalAsync();
             ToastService.Show(ToastKind.BabyProfileUpdated);
         }

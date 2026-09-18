@@ -7,9 +7,11 @@ namespace BabyBuddyHelper.Interfaces
                                       // and better encapsulation.
     {
         ObservableCollection<TaskModel> Tasks { get; }
-        void Add(TaskModel task);
-        void Remove(TaskModel task);
-        void Update(TaskModel task);
+        Task InitializeAsync();
+        Task AddAsync(TaskModel task);
+        Task RemoveAsync(Guid taskId);
+        Task UpdateAsync(TaskModel task);
+        Task SetCompletionAsync(Guid taskId, bool isCompleted);
         void OrganizeByPriority();
         void OrganizeByPending();
         IEnumerable<TaskModel> GetTasks(Guid? associatedBabyId = null, bool pendingFirst = false, bool orderByUpcomingDate = false);

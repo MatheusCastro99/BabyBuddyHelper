@@ -9,20 +9,21 @@ Status:
 
 # Current Development Focus:
 
-## Phase 3: 
+## Phase 3:
 
-CodeBase Refactor:
+CodeBase Refactor: CONCLUDED
 
-- Refactor baseline completed for oversized files and service extraction work (including filtering service split). CONCLUDED
+- Oversized-file audit completed.
+- Filtering processes split into dedicated services.
+- Baby profile and checklist/calendar filtering now run through service interfaces.
 - Remaining security pass: run and document a full secrets scan.
-- Prepare codebase for database interaction (#27).
 
 Data Persistence:
 
-- Reflect on which strategy to use: Local DB with cloud Sync later OR Online DB
-- Implement data persistence for tasks, appointments, and Baby Profiles
-- Use SQLite or similar local database for offline-first functionality OR PostgresDB for online DB
-- Ensure data is saved, read, and retrieved efficiently
-- Turn Current TaskListService into a cache service (Will hold in-memory copies of tasks and appointments)
+- Persistence boundary introduced through `ITrackerDbService`.
+- `TaskListService` and `BabyProfileService` are the cache services backed by `ITrackerDbService`.
+- SQLite / EF Core implementation (#25) is still pending.
+- Implement data persistence for tasks, appointments, and Baby Profiles.
+- Ensure data is saved, read, and retrieved efficiently.
 
 ---

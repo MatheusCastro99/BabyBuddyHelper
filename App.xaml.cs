@@ -1,15 +1,48 @@
-﻿namespace BabyBuddyHelper
+using BabyBuddyHelper.Interfaces;
+using BabyBuddyHelper.Services;
+
+namespace BabyBuddyHelper
 {
     public partial class App : Application
     {
-        public App()
+        private readonly ITaskListService _taskListService;
+        private readonly IBabyProfileService _babyProfileService;
+        private Task? _startupTask;
+
+        public App(ITaskListService taskListService, IBabyProfileService babyProfileService)
         {
             InitializeComponent();
+
+            _taskListService = taskListService;
+            _babyProfileService = babyProfileService;
         }
 
         protected override Window CreateWindow(IActivationState? activationState)
         {
-            return new Window(new AppShell());
+            Window window = new(new AppShell());
+            window.Created += OnWindowCreated;
+            return window;
+        }
+
+        //Pages already exist at this point and fill in through CollectionChanged as the caches load.
+        //Created can fire again if the platform re-creates the native window, possibly while an earlier run is still
+        //awaiting. Every invocation shares one startup run, so the seeder's check-then-insert can never run twice.
+        //Startup error handling (surfacing or recovering from a failed load) is deferred to the cache work in #26.
+        private async void OnWindowCreated(object? sender, EventArgs e)
+        {
+            if (_startupTask is null || _startupTask.IsFaulted || _startupTask.IsCanceled)
+            {
+                _startupTask = RunStartupAsync();
+            }
+
+            await _startupTask;
+        }
+
+        private async Task RunStartupAsync()
+        {
+            await _babyProfileService.InitializeAsync(); //Profiles first, so any baby a task refers to already exists
+            await _taskListService.InitializeAsync();
+            await TrackerDataSeeder.SeedIfEmptyAsync(_taskListService); //Seeds through the cache, so TaskListService stays the only task writer (ADR-001)
         }
     }
 }

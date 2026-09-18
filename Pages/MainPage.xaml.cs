@@ -61,8 +61,8 @@ namespace BabyBuddyHelper
         {
             base.OnAppearing();
 
-            //Completing a task mutates the model in place without touching the collection, so returning to this
-            //tab is what brings the completion count back in sync.
+            //TaskListService.SetCompletionAsync updates the cached task in place without raising CollectionChanged,
+            //so returning to this tab is what brings the completion count back in sync.
             RefreshDashboardState();
         }
 
@@ -151,7 +151,7 @@ namespace BabyBuddyHelper
                 return;
             }
 
-            _babyProfileService.Remove(babyProfile);
+            await _babyProfileService.RemoveAsync(babyProfile.Id);
             RefreshDashboardState();
             ToastService.Show(ToastKind.BabyProfileDeleted);
         }

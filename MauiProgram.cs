@@ -24,7 +24,8 @@ namespace BabyBuddyHelper
                 .ConfigureSyncfusionCore()
                 .Services.AddSingleton<Interfaces.ITaskListService, Services.TaskListService>()
                 .AddSingleton<Interfaces.IBabyProfileService, Services.BabyProfileService>()
-                .AddSingleton<Interfaces.IBabyFilterService, Services.BabyFilterService>();
+                .AddSingleton<Interfaces.IBabyFilterService, Services.BabyFilterService>()
+                .AddSingleton<Interfaces.ITrackerDbService, Services.InMemoryTrackerDbService>(); //Swapped for the EF Core SQLite implementation in #25
 
 #if DEBUG
             builder.Logging.AddDebug();
