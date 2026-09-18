@@ -57,7 +57,7 @@ public partial class CalendarPage : ContentPage
         Calendar.AppointmentsSource = schedulerAppointments; //Actual Binding for sfScheduler
     }
 
-    private async void OnCalendarBabyFilterClicked(object sender, EventArgs e)
+    private async void OnCalendarBabyFilterClicked(object? sender, EventArgs e)
     {
         Dictionary<string, Guid?> filterOptions = _babyFilterService.BuildOptions("All babies");
 

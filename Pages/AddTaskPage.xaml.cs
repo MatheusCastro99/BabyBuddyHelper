@@ -75,7 +75,7 @@ public partial class AddTaskPage : ContentPage
         InitializeBabyProfilePicker(taskToEdit.AssociatedBabyId);
     }
 
-    private void OnPriorityDecreaseClicked(object sender, EventArgs e)
+    private void OnPriorityDecreaseClicked(object? sender, EventArgs e)
     {
         if (PriorityStepper.Value > PriorityStepper.Minimum)
         {
@@ -83,7 +83,7 @@ public partial class AddTaskPage : ContentPage
         }
     }
 
-    private void OnPriorityIncreaseClicked(object sender, EventArgs e)
+    private void OnPriorityIncreaseClicked(object? sender, EventArgs e)
     {
         if (PriorityStepper.Value < PriorityStepper.Maximum)
         {
@@ -91,12 +91,12 @@ public partial class AddTaskPage : ContentPage
         }
     }
 
-    private async void OnCancelClicked(object sender, EventArgs e) //Exits page without saving anything
+    private async void OnCancelClicked(object? sender, EventArgs e) //Exits page without saving anything
     {
         await Navigation.PopModalAsync();
     }
 
-    private async void OnSaveClicked(object sender, EventArgs e)
+    private async void OnSaveClicked(object? sender, EventArgs e)
     {
         TaskSaveButton.IsEnabled = false; //Blocks a second tap from saving twice while the save is in flight
 
@@ -193,7 +193,7 @@ public partial class AddTaskPage : ContentPage
         BabyProfileSelectionButton.Text = label;
     }
 
-    private async void OnSelectBabyProfileClicked(object sender, EventArgs e)
+    private async void OnSelectBabyProfileClicked(object? sender, EventArgs e)
     {
         Dictionary<string, Guid?> selectionOptions = _babyFilterService.BuildOptions("Unassigned");
 

@@ -43,7 +43,7 @@ public partial class ChecklistPage : ContentPage
     }
 
     //Method bound to the IsPendingFirstSwitch
-    public void IsPendingFirstHandler(object sender, ToggledEventArgs e)
+    public void IsPendingFirstHandler(object? sender, ToggledEventArgs e)
     {
         if (_isUpdatingOrderingSwitches)
         {
@@ -57,7 +57,7 @@ public partial class ChecklistPage : ContentPage
         RefreshTaskList();
     }
 
-    public void IsDateOrderHandler(object sender, ToggledEventArgs e)
+    public void IsDateOrderHandler(object? sender, ToggledEventArgs e)
     {
         if (_isUpdatingOrderingSwitches)
         {
