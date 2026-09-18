@@ -7,6 +7,7 @@ namespace BabyBuddyHelper.Interfaces
                                       // and better encapsulation.
     {
         ObservableCollection<TaskModel> Tasks { get; }
+        Task InitializeAsync();
         Task AddAsync(TaskModel task);
         Task RemoveAsync(Guid taskId);
         Task UpdateAsync(TaskModel task);

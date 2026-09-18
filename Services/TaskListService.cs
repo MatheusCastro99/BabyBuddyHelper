@@ -9,6 +9,7 @@ namespace BabyBuddyHelper.Services
     {                                                 //This class will be used to add, remove, update, and organize tasks in the application.
         private readonly IBabyProfileService _babyProfileService;
         private readonly ITrackerDbService _trackerDbService;
+        private bool _isInitialized;
         public ObservableCollection<TaskModel> Tasks { get; } = new();
         public IEnumerable<TaskModel> GetTasks(Guid? associatedBabyId = null, bool pendingFirst = false, bool orderByUpcomingDate = false)
         {
@@ -44,11 +45,22 @@ namespace BabyBuddyHelper.Services
             _babyProfileService = babyProfileService;
             _trackerDbService = trackerDbService;
             babyProfileService.BabyProfiles.CollectionChanged += OnBabyProfilesChanged;
+        }
 
-            if (Tasks.Count == 0)
+        //Loads the cache from the database once at startup. Later calls are ignored, so a re-created window can't duplicate entries.
+        public async Task InitializeAsync()
+        {
+            if (_isInitialized)
+                return;
+
+            _isInitialized = true;
+
+            foreach (TaskModel task in await _trackerDbService.GetTasksAsync())
             {
-                GenerateMockData();
+                Tasks.Add(task);
             }
+
+            OrganizeByPriority();
         }
 
         //Writes update the in-memory collection first so the UI responds instantly, then persist through ITrackerDbService.
@@ -211,17 +223,6 @@ namespace BabyBuddyHelper.Services
         public void Dispose()
         {
             _babyProfileService.BabyProfiles.CollectionChanged -= OnBabyProfilesChanged;
-        }
-
-        private void GenerateMockData() //Method to generate mock data for testing purposes.
-        {                              //This will be called in the constructor of the ChecklistPage to populate the list with some initial tasks.
-            Tasks.Add(new TaskModel(5, "Organize Room", "Make Space for the baby!"));
-            Tasks.Add(new TaskModel(10, "Prepare for baby", "Baby about to go Hello World!"));
-            Tasks.Add(new AppointmentModel("NJ", new(2026, 09, 15, 0, 0, 0, DateTimeKind.Local), new(23, 0, 0), new(23, 30, 0), 7, "BabyShower", "Get gifts"));
-            Tasks.Add(new AppointmentModel("Hospotal", new(2026, 09, 25, 0, 0, 0, DateTimeKind.Local), new(09, 15, 0), new(10, 0, 0), 8, "Imaging", "See the baby!"));
-            Tasks.Add(new AppointmentModel("Home", new(2026, 08, 25, 0, 0, 0, DateTimeKind.Local), new(09, 15, 0), new(10, 0, 0), 8, "Chilling", "Testing some stuff"));
-            Tasks.Add(new AppointmentModel("In my pc", new(2026, 08, 26, 0, 0, 0, DateTimeKind.Local), new(10, 0, 0), new(11, 0, 0), 8, "Testing", "Will it bind now?"));
-            Tasks.Add(new AppointmentModel("Bed", new(2026, 08, 24, 0, 0, 0, DateTimeKind.Local), new(20, 0, 0), new(21, 30, 0), 8, "Sleep", "Or try to"));
         }
     }
 }
