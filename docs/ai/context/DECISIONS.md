@@ -114,3 +114,5 @@ Reason:
 - Keeps clear separation between development and production builds and features.
 - Mock data still obeys the same rules as real data, so it is a valid test of the app's behavior.
 - Data flow is still through the cache services, so the persistence boundary is exercised even with mock data.
+
+Status: Accepted, permanent.
