@@ -3,24 +3,22 @@ using BabyBuddyHelper.Models;
 
 namespace BabyBuddyHelper.Services
 {
-    //Seeds mock tasks into the database for development. Debug builds only, and only when the store has no tasks,
-    //so relaunching never duplicates them. Writes go through ITrackerDbService, exercising the real persistence path.
-    //The check-then-insert is not atomic: callers must not run it concurrently. App's single startup run guarantees that.
+    //Seeds mock tasks for development. Debug builds only, and only when the loaded cache has no tasks, so relaunching
+    //never duplicates them. Writes go through ITaskListService (ADR-001), exercising the full cache -> database path.
+    //Must run after ITaskListService.InitializeAsync, and callers must not run it concurrently; App's single startup run guarantees both.
     public static class TrackerDataSeeder
     {
-        public static async Task SeedIfEmptyAsync(ITrackerDbService trackerDbService)
+        public static async Task SeedIfEmptyAsync(ITaskListService taskListService)
         {
 #if DEBUG
-            IReadOnlyList<TaskModel> existingTasks = await trackerDbService.GetTasksAsync();
-
-            if (existingTasks.Count > 0)
+            if (taskListService.Tasks.Count > 0)
             {
                 return;
             }
 
             foreach (TaskModel mockTask in CreateMockTasks())
             {
-                await trackerDbService.AddTaskAsync(mockTask);
+                await taskListService.AddAsync(mockTask);
             }
 #else
             await Task.CompletedTask;

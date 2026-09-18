@@ -7,16 +7,14 @@ namespace BabyBuddyHelper
     {
         private readonly ITaskListService _taskListService;
         private readonly IBabyProfileService _babyProfileService;
-        private readonly ITrackerDbService _trackerDbService;
         private Task? _startupTask;
 
-        public App(ITaskListService taskListService, IBabyProfileService babyProfileService, ITrackerDbService trackerDbService)
+        public App(ITaskListService taskListService, IBabyProfileService babyProfileService)
         {
             InitializeComponent();
 
             _taskListService = taskListService;
             _babyProfileService = babyProfileService;
-            _trackerDbService = trackerDbService;
         }
 
         protected override Window CreateWindow(IActivationState? activationState)
@@ -43,8 +41,8 @@ namespace BabyBuddyHelper
         private async Task RunStartupAsync()
         {
             await _babyProfileService.InitializeAsync(); //Profiles first, so any baby a task refers to already exists
-            await TrackerDataSeeder.SeedIfEmptyAsync(_trackerDbService);
             await _taskListService.InitializeAsync();
+            await TrackerDataSeeder.SeedIfEmptyAsync(_taskListService); //Seeds through the cache, so TaskListService stays the only task writer (ADR-001)
         }
     }
 }
