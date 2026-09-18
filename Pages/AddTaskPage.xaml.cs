@@ -172,19 +172,16 @@ public partial class AddTaskPage : ContentPage
         bool isCurrentlyAppointment = appointmentOnEdit is not null;
         TaskModel updatedTask = BuildTaskFromForm(existingTask);
 
-        if (shouldBeAppointment != isCurrentlyAppointment) //User converted between task and appointment, so the old entry is replaced
-        {
-            await _taskListService.RemoveAsync(existingTask.Id);
-            await _taskListService.AddAsync(updatedTask);
+        await _taskListService.UpdateAsync(updatedTask); //Also covers task <-> appointment conversion, handled by the service as one update
 
-            await Navigation.PopModalAsync();
+        await Navigation.PopModalAsync();
+
+        if (shouldBeAppointment != isCurrentlyAppointment) //Conversions keep their own toast
+        {
             ToastService.Show(shouldBeAppointment ? ToastKind.AppointmentScheduled : ToastKind.TaskAdded);
             return;
         }
 
-        await _taskListService.UpdateAsync(updatedTask);
-
-        await Navigation.PopModalAsync();
         ToastService.Show(ToastKind.TaskEdited);
     }
 

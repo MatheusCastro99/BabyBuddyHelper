@@ -70,6 +70,7 @@ namespace BabyBuddyHelper.Services
             await _trackerDbService.RemoveTaskAsync(taskId);
         }
 
+        //The replacement may be a different concrete type (task <-> appointment conversion); the entry keeps its Id and slot
         public async Task UpdateAsync(TaskModel task)
         {
             var existingTask = Tasks.FirstOrDefault(x => x.Id == task.Id);
