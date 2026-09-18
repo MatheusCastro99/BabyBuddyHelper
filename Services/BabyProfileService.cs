@@ -4,26 +4,35 @@ using System.Collections.ObjectModel;
 
 namespace BabyBuddyHelper.Services
 {
+    //In-memory cache of baby profiles. Writes update the collection first so the UI responds instantly, then persist.
     public class BabyProfileService : IBabyProfileService
     {
+        private readonly ITrackerDbService _trackerDbService;
         public ObservableCollection<BabyModel> BabyProfiles { get; } = new();
 
-        public void Add(BabyModel babyProfile)
+        public BabyProfileService(ITrackerDbService trackerDbService)
         {
-            BabyProfiles.Add(babyProfile);
+            _trackerDbService = trackerDbService;
         }
 
-        public void Remove(BabyModel babyProfile)
+        public async Task AddAsync(BabyModel babyProfile)
         {
-            var existingProfile = BabyProfiles.FirstOrDefault(x => x.Id == babyProfile.Id); //Resolves by Id so a stale reference still removes the right profile
+            BabyProfiles.Add(babyProfile);
+            await _trackerDbService.AddBabyProfileAsync(babyProfile);
+        }
+
+        public async Task RemoveAsync(Guid babyId)
+        {
+            var existingProfile = BabyProfiles.FirstOrDefault(x => x.Id == babyId);
 
             if (existingProfile is null)
                 return;
 
             BabyProfiles.Remove(existingProfile);
+            await _trackerDbService.RemoveBabyProfileAsync(babyId); //The database also clears this baby from its tasks
         }
 
-        public void Update(BabyModel babyProfile)
+        public async Task UpdateAsync(BabyModel babyProfile)
         {
             var existingProfile = BabyProfiles.FirstOrDefault(x => x.Id == babyProfile.Id);
 
@@ -32,6 +41,7 @@ namespace BabyBuddyHelper.Services
 
             var index = BabyProfiles.IndexOf(existingProfile);
             BabyProfiles[index] = babyProfile;
+            await _trackerDbService.UpdateBabyProfileAsync(babyProfile);
         }
     }
 }

@@ -61,9 +61,16 @@ namespace BabyBuddyHelper.Services
             return Task.CompletedTask;
         }
 
+        //Mirrors the EF Core SetNull relationship (#25): deleting a baby clears it from its tasks in the same operation
         public Task RemoveBabyProfileAsync(Guid babyId)
         {
             _babyProfiles.RemoveAll(x => x.Id == babyId);
+
+            foreach (TaskModel task in _tasks.Where(x => x.AssociatedBabyId == babyId))
+            {
+                task.AssociatedBabyId = null;
+            }
+
             return Task.CompletedTask;
         }
     }

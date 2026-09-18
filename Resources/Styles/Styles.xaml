@@ -41,6 +41,18 @@
         <Setter Property="CornerRadius" Value="18"/>
         <Setter Property="Padding" Value="18,12"/>
         <Setter Property="FontAttributes" Value="Bold"/>
+        <Setter Property="VisualStateManager.VisualStateGroups">
+            <VisualStateGroupList>
+                <VisualStateGroup x:Name="CommonStates">
+                    <VisualState x:Name="Normal" />
+                    <VisualState x:Name="Disabled">
+                        <VisualState.Setters>
+                            <Setter Property="BackgroundColor" Value="{StaticResource Gray300}"/>
+                        </VisualState.Setters>
+                    </VisualState>
+                </VisualStateGroup>
+            </VisualStateGroupList>
+        </Setter>
     </Style>
 
     <Style x:Key="SecondaryAction" TargetType="Button">

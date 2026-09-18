@@ -151,7 +151,7 @@ namespace BabyBuddyHelper
                 return;
             }
 
-            _babyProfileService.Remove(babyProfile);
+            await _babyProfileService.RemoveAsync(babyProfile.Id);
             RefreshDashboardState();
             ToastService.Show(ToastKind.BabyProfileDeleted);
         }
