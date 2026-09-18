@@ -83,6 +83,20 @@ namespace BabyBuddyHelper.Services
             await _trackerDbService.UpdateTaskAsync(task);
         }
 
+        //Mutates the cached entry in place rather than replacing it: a replacement would raise CollectionChanged and rebuild
+        //the checklist on every tick (scroll jump, rows reordering under the user's finger). Pages that need the new count
+        //refresh on appearing.
+        public async Task SetCompletionAsync(Guid taskId, bool isCompleted)
+        {
+            var existingTask = Tasks.FirstOrDefault(x => x.Id == taskId);
+
+            if (existingTask is null || existingTask.IsCompleted == isCompleted)
+                return;
+
+            existingTask.IsCompleted = isCompleted;
+            await _trackerDbService.UpdateTaskAsync(existingTask);
+        }
+
         public void OrganizeByPriority()
         {
             var sortedList = Tasks

@@ -11,7 +11,6 @@ public partial class ChecklistPage : ContentPage
     private readonly ITaskListService _taskListService; //Dependency Injection for TaskListService
     private readonly IBabyProfileService _babyProfileService;
     private readonly IBabyFilterService _babyFilterService;
-    private readonly HashSet<Guid> _completedTaskIdsWithToast = new();
     private Guid? _selectedBabyFilterId;
     private bool _isUpdatingOrderingSwitches;
     public ObservableCollection<TaskModel> TaskList { get; } = new(); //Will hold instances of TaskModel and AppointmentModel
@@ -41,7 +40,6 @@ public partial class ChecklistPage : ContentPage
 
         BindingContext = this;
         RefreshTaskList();
-        SyncCompletedTaskToastState();
     }
 
     //Method bound to the IsPendingFirstSwitch
@@ -88,24 +86,22 @@ public partial class ChecklistPage : ContentPage
         }
     }
 
-    //Shows companion-themed toast feedback whenever a task is marked as completed
-    private void OnTaskCompletedChanged(object? sender, CheckedChangedEventArgs e)
+    //Persists completion through the service and shows companion-themed toast feedback when a task is completed.
+    //The binding is OneWay, so the model only changes through the service. This event also fires when a row is
+    //rendered; the model already matches the checkbox then, so only a real user tap gets past the first check.
+    private async void OnTaskCompletedChanged(object? sender, CheckedChangedEventArgs e)
     {
-        if (sender is not CheckBox { BindingContext: TaskModel task })
+        if (sender is not CheckBox { BindingContext: TaskModel task } || task.IsCompleted == e.Value)
         {
             return;
         }
+
+        await _taskListService.SetCompletionAsync(task.Id, e.Value);
 
         if (e.Value)
         {
-            if (_completedTaskIdsWithToast.Add(task.Id))
-            {
-                ToastService.Show(ToastKind.TaskCompleted);
-            }
-            return;
+            ToastService.Show(ToastKind.TaskCompleted);
         }
-
-        _completedTaskIdsWithToast.Remove(task.Id);
     }
 
     private async void EditTask(TaskModel taskToEdit)
@@ -121,16 +117,6 @@ public partial class ChecklistPage : ContentPage
         {
             await Navigation.PushModalAsync(
                 new AddTaskPage(_taskListService, _babyFilterService, taskToEdit));
-        }
-    }
-
-    private void SyncCompletedTaskToastState()
-    {
-        _completedTaskIdsWithToast.Clear();
-
-        foreach (var task in _taskListService.Tasks.Where(task => task.IsCompleted))
-        {
-            _completedTaskIdsWithToast.Add(task.Id);
         }
     }
 

@@ -10,6 +10,7 @@ namespace BabyBuddyHelper.Interfaces
         Task AddAsync(TaskModel task);
         Task RemoveAsync(Guid taskId);
         Task UpdateAsync(TaskModel task);
+        Task SetCompletionAsync(Guid taskId, bool isCompleted);
         void OrganizeByPriority();
         void OrganizeByPending();
         IEnumerable<TaskModel> GetTasks(Guid? associatedBabyId = null, bool pendingFirst = false, bool orderByUpcomingDate = false);
