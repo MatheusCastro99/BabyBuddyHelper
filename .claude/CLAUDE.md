@@ -24,7 +24,7 @@ When planning or making changes, the agent MUST read these files first and follo
 
 AI tooling (Claude Code)
 ------------------------
-Runnable definitions live in `.claude/agents/` and `.claude/skills/` (gitignored, maintainer's personal tooling). Documentation lives in `docs/ai/agents/` and `docs/ai/skills/`.
+Runnable definitions live in `.claude/agents/` and `.claude/skills/` (gitignored, maintainer's personal tooling). Skill documentation lives in `docs/ai/skills/` (tracked). Agent documentation lives in `docs/ai/agents/`, which is also gitignored and exists only in the maintainer's local checkout.
 
 Subagent:
 - red-team — independent adversarial reviewer, read-only. Spawn it before handing over a large or risky PR, or to challenge a design. It preloads `review-guardrails`.
