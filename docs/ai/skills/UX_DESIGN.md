@@ -14,15 +14,15 @@ A UX/UI lens used alongside the working session. It keeps screens, XAML styling 
 ## Context it loads
 
 - [UI_GUIDELINES.md](../context/UI_GUIDELINES.md) is the authority for identity, principles, palette, typography and screen purposes.
-- `Resources/Styles/Colors.xaml` and `Resources/Styles/Styles.xaml` hold the shared tokens, with light and dark values via `AppThemeBinding`.
+- `Resources/Styles/Colors.xaml` and `Resources/Styles/Styles.xaml` hold the shared tokens, which pages use via `StaticResource`.
 - The page or control being changed.
 
 ## What it checks
 
 - **Identity:** warm, calm, encouraging, low-stress; never corporate, clinical or guilt-inducing
 - **Screen purpose:** each screen still answers its question (Dashboard: "What does my day look like?", Checklist: "What needs my attention?", Calendar: "When is everything happening?", Add/Edit: "What information do I need right now?")
-- **Design system:** existing tokens and styles are used, with no hardcoded colors or sizes in pages; new tokens get light and dark values
-- **Accessibility:** contrast ≥ 4.5:1 in both themes, touch targets ≥ 44/48, semantic descriptions, state never conveyed by color alone
+- **Design system:** existing tokens and styles are used, and new or changed XAML has no hardcoded colors or sizes. The existing cases are tracked as known debt.
+- **Accessibility:** contrast ≥ 4.5:1, touch targets ≥ 44/48, semantic descriptions, state never conveyed by color alone
 - **Flow:** one clear primary action, and adding/editing route through `AddTaskPage` or `AddBabyPage` (ADR-004)
 - **Copy:** short, friendly, reassuring
 

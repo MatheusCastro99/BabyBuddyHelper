@@ -22,25 +22,29 @@ When planning or making changes, the agent MUST read these files first and follo
 - docs/README.md
 - docs/FeaturesSet.md
 
-Subagents available
--------------------
-The codebase exposes the following logical subagents. Use them for specialized tasks:
-- TechLead (technical design, refactors)
-- ProductOwner (feature scope and acceptance criteria)
-- UXDesigner (UI / accessibility guidance)
-- ProjectHistorian (changelog, decisions)
-- RedTeam (security, secrets, and sensitive data)
+AI tooling (Claude Code)
+------------------------
+Runnable definitions live in `.claude/agents/` and `.claude/skills/` (gitignored, maintainer's personal tooling). Documentation lives in `docs/ai/agents/` and `docs/ai/skills/`.
+
+Subagent:
+- red-team — independent adversarial reviewer, read-only. Spawn it before handing over a large or risky PR, or to challenge a design. It preloads `review-guardrails`.
+
+Skills (applied inline, alongside the session context):
+- review-guardrails — project review checklist: ADR rules, known regression traps, severity scale
+- product-owner — feature value, scope, acceptance criteria, P0–P3 priority
+- ux-design — Parenting Companion identity, style tokens, accessibility
 
 Subagent invocation
 -------------------
-- When invoking a specialized subagent, include: goal, files (globs or exact paths), constraints, and expected deliverable.
+- Brief the subagent with: goal (issue number and decided scope), target (branch, commit range, PR, or design doc), constraints (ADRs in play, out-of-scope items), and expected deliverable.
+- Agents and skills recommend; the maintainer makes every decision.
 - Always return a concise summary and list of modified files before committing.
 
 Coding and design constraints
 ----------------------------
 - Preserve .NET MAUI idioms; do not recommend Xamarin.Forms.
 - Keep C# 14 and .NET 10 compatibility.
-- TaskListService is the single source of truth for tasks/appointments.
+- TaskListService is the single source of truth for tasks/appointments; BabyProfileService for baby profiles (ADR-001).
 - Follow ADRs in docs/ai/context/DECISIONS.md (especially ADR-007: id-based CRUD). Do not change GUID migration.
 - Prefer small, safe changes. Avoid big architectural rewrites unless explicitly requested.
 - Avoid introducing: CQRS, MediatR, Repository pattern, heavy MVVM unless the user explicitly requests an MVVM migration.
@@ -48,7 +52,7 @@ Coding and design constraints
 
 Documentation rules
 -------------------
-- When a change affects public behavior or exported types, notify the engineer about updating corresponding docs in docs/ and the top-level README.md.
+- When a change affects public behavior or exported types, notify the engineer about updating corresponding docs in docs/ (including docs/README.md).
 - Keep docs consistent with reality: update implemented feature lists, architecture lists, and roadmap when features ship.
 
 Branching and commits
@@ -58,7 +62,7 @@ Branching and commits
 
 Safety and secrets
 ------------------
-- Do not commit secrets or .env with secrets. If a secrets scan is needed, invoke the RedTeam subagent and follow its remediation guidance.
+- Do not commit secrets or .env with secrets. red-team checks for secrets only within the change it reviews; a repository-wide secrets scan is separate work (see issue #30).
 
 Contacting the user
 -------------------
@@ -68,3 +72,4 @@ Contacting the user
 Change log
 ----------
 - 2026-09-17: Initial CLAUDE.md added (aligns with repo docs and subagent list).
+- 2026-09-18 (#33): Replaced the subagent list with the Claude Code tooling (red-team + three skills); retired TechLead, ProductOwner, UXDesigner, ProjectHistorian and Coordinator. Secrets scans now route to #30.
