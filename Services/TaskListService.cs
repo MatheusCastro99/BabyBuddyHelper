@@ -9,7 +9,7 @@ namespace BabyBuddyHelper.Services
     {                                                 //This class will be used to add, remove, update, and organize tasks in the application.
         private readonly IBabyProfileService _babyProfileService;
         private readonly ITrackerDbService _trackerDbService;
-        private bool _isInitialized;
+        private Task? _initializationTask;
         public ObservableCollection<TaskModel> Tasks { get; } = new();
         public IEnumerable<TaskModel> GetTasks(Guid? associatedBabyId = null, bool pendingFirst = false, bool orderByUpcomingDate = false)
         {
@@ -47,14 +47,20 @@ namespace BabyBuddyHelper.Services
             babyProfileService.BabyProfiles.CollectionChanged += OnBabyProfilesChanged;
         }
 
-        //Loads the cache from the database once at startup. Later calls are ignored, so a re-created window can't duplicate entries.
-        public async Task InitializeAsync()
+        //Loads the cache from the database once at startup. Concurrent callers share the same load, so a re-created window
+        //can't duplicate entries; a failed load is retried on the next call instead of leaving the cache empty for the session.
+        public Task InitializeAsync()
         {
-            if (_isInitialized)
-                return;
+            if (_initializationTask is null || _initializationTask.IsFaulted || _initializationTask.IsCanceled)
+            {
+                _initializationTask = LoadTasksAsync();
+            }
 
-            _isInitialized = true;
+            return _initializationTask;
+        }
 
+        private async Task LoadTasksAsync()
+        {
             foreach (TaskModel task in await _trackerDbService.GetTasksAsync())
             {
                 Tasks.Add(task);

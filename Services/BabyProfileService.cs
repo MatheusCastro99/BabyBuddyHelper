@@ -8,7 +8,7 @@ namespace BabyBuddyHelper.Services
     public class BabyProfileService : IBabyProfileService
     {
         private readonly ITrackerDbService _trackerDbService;
-        private bool _isInitialized;
+        private Task? _initializationTask;
         public ObservableCollection<BabyModel> BabyProfiles { get; } = new();
 
         public BabyProfileService(ITrackerDbService trackerDbService)
@@ -16,14 +16,20 @@ namespace BabyBuddyHelper.Services
             _trackerDbService = trackerDbService;
         }
 
-        //Loads the cache from the database once at startup. Later calls are ignored, so a re-created window can't duplicate entries.
-        public async Task InitializeAsync()
+        //Loads the cache from the database once at startup. Concurrent callers share the same load, so a re-created window
+        //can't duplicate entries; a failed load is retried on the next call instead of leaving the cache empty for the session.
+        public Task InitializeAsync()
         {
-            if (_isInitialized)
-                return;
+            if (_initializationTask is null || _initializationTask.IsFaulted || _initializationTask.IsCanceled)
+            {
+                _initializationTask = LoadBabyProfilesAsync();
+            }
 
-            _isInitialized = true;
+            return _initializationTask;
+        }
 
+        private async Task LoadBabyProfilesAsync()
+        {
             foreach (BabyModel babyProfile in await _trackerDbService.GetBabyProfilesAsync())
             {
                 BabyProfiles.Add(babyProfile);
