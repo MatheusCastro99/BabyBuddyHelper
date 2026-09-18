@@ -366,6 +366,7 @@ FodyWeavers.xsd
 .github/agents
 docs/ai/agents
 .claude/agents
+.claude/skills
 
 #Environment variables
 .env
