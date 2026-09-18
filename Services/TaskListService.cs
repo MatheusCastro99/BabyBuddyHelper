@@ -7,7 +7,8 @@ namespace BabyBuddyHelper.Services
 {
     public class TaskListService : ITaskListService, IDisposable //Implemente Interface ITaskListService to provide functionality for managing a list of tasks.
     {                                                 //This class will be used to add, remove, update, and organize tasks in the application.
-        private readonly IBabyProfileService? _babyProfileService;
+        private readonly IBabyProfileService _babyProfileService;
+        private readonly ITrackerDbService _trackerDbService;
         public ObservableCollection<TaskModel> Tasks { get; } = new();
         public IEnumerable<TaskModel> GetTasks(Guid? associatedBabyId = null, bool pendingFirst = false, bool orderByUpcomingDate = false)
         {
@@ -38,38 +39,38 @@ namespace BabyBuddyHelper.Services
             return GetTasks(associatedBabyId).OfType<AppointmentModel>();                    //Will be used on scheduler to display appointments in a calendar view.
         }
 
-        public TaskListService()
+        public TaskListService(IBabyProfileService babyProfileService, ITrackerDbService trackerDbService)
         {
+            _babyProfileService = babyProfileService;
+            _trackerDbService = trackerDbService;
+            babyProfileService.BabyProfiles.CollectionChanged += OnBabyProfilesChanged;
+
             if (Tasks.Count == 0)
             {
                 GenerateMockData();
             }
         }
 
-        public TaskListService(IBabyProfileService babyProfileService)
-            : this()
-        {
-            _babyProfileService = babyProfileService;
-            babyProfileService.BabyProfiles.CollectionChanged += OnBabyProfilesChanged;
-        }
-
-        public void Add(TaskModel task)
+        //Writes update the in-memory collection first so the UI responds instantly, then persist through ITrackerDbService.
+        public async Task AddAsync(TaskModel task)
         {
             Tasks.Add(task);
             OrganizeByPriority();
+            await _trackerDbService.AddTaskAsync(task);
         }
 
-        public void Remove(TaskModel task)
+        public async Task RemoveAsync(Guid taskId)
         {
-            var existingTask = Tasks.FirstOrDefault(x => x.Id == task.Id); //Resolves by Id so a stale reference still removes the right entry
+            var existingTask = Tasks.FirstOrDefault(x => x.Id == taskId);
 
             if (existingTask is null)
                 return;
 
             Tasks.Remove(existingTask);
+            await _trackerDbService.RemoveTaskAsync(taskId);
         }
 
-        public void Update(TaskModel task)
+        public async Task UpdateAsync(TaskModel task)
         {
             var existingTask = Tasks.FirstOrDefault(x => x.Id == task.Id);
 
@@ -78,6 +79,7 @@ namespace BabyBuddyHelper.Services
 
             var index = Tasks.IndexOf(existingTask);
             Tasks[index] = task;
+            await _trackerDbService.UpdateTaskAsync(task);
         }
 
         public void OrganizeByPriority()
@@ -114,6 +116,7 @@ namespace BabyBuddyHelper.Services
         }
 
         //Renames need no handling here: tasks only store the baby Id, and pages resolve the name when displaying it.
+        //Removals only update the in-memory copy. The database clears the deleted baby from stored tasks itself (see #25).
         private void OnBabyProfilesChanged(object? sender, NotifyCollectionChangedEventArgs e)
         {
             if (e.Action == NotifyCollectionChangedAction.Remove && e.OldItems is not null)
@@ -145,9 +148,9 @@ namespace BabyBuddyHelper.Services
 
         private void ClearMissingBabyAssociations()
         {
-            HashSet<Guid> activeBabyIds = _babyProfileService?.BabyProfiles
+            HashSet<Guid> activeBabyIds = _babyProfileService.BabyProfiles
                 .Select(profile => profile.Id)
-                .ToHashSet() ?? [];
+                .ToHashSet();
 
             for (int taskIndex = 0; taskIndex < Tasks.Count; taskIndex++)
             {
@@ -192,11 +195,6 @@ namespace BabyBuddyHelper.Services
 
         public void Dispose()
         {
-            if (_babyProfileService is null)
-            {
-                return;
-            }
-
             _babyProfileService.BabyProfiles.CollectionChanged -= OnBabyProfilesChanged;
         }
 

@@ -102,21 +102,30 @@ public partial class AddTaskPage : ContentPage
 
     private async void OnSaveClicked(object sender, EventArgs e)
     {
-        bool isFormValid = await ValidateForm(); //Validates form before saving
-        if (!isFormValid)
-        {
-            return;
-        }
+        TaskSaveButton.IsEnabled = false; //Blocks a second tap from saving twice while the save is in flight
 
-        if (!IsEditing) //New Task
+        try
         {
-            await SaveNewTask();
-        }
+            bool isFormValid = await ValidateForm(); //Validates form before saving
+            if (!isFormValid)
+            {
+                return;
+            }
 
-        else //edited task
+            if (!IsEditing) //New Task
+            {
+                await SaveNewTask();
+            }
+
+            else //edited task
+            {
+                Debug.WriteLine("Saving Edited Task");
+                await SaveEditedTask();
+            }
+        }
+        finally
         {
-            Debug.WriteLine("Saving Edited Task");
-            await SaveEditedTask();
+            TaskSaveButton.IsEnabled = true;
         }
     }
 
@@ -148,7 +157,7 @@ public partial class AddTaskPage : ContentPage
     private async Task SaveNewTask() //Task instead of void to allow for more consistent async/await usage in the method
     {
         TaskModel newTask = BuildTaskFromForm();
-        _taskListService.Add(newTask);
+        await _taskListService.AddAsync(newTask);
 
         await Navigation.PopModalAsync(); //Closes AddTaskPage
         ToastService.Show(newTask is AppointmentModel ? ToastKind.AppointmentScheduled : ToastKind.TaskAdded);
@@ -169,15 +178,15 @@ public partial class AddTaskPage : ContentPage
 
         if (shouldBeAppointment != isCurrentlyAppointment) //User converted between task and appointment, so the old entry is replaced
         {
-            _taskListService.Remove(existingTask);
-            _taskListService.Add(updatedTask);
+            await _taskListService.RemoveAsync(existingTask.Id);
+            await _taskListService.AddAsync(updatedTask);
 
             await Navigation.PopModalAsync();
             ToastService.Show(shouldBeAppointment ? ToastKind.AppointmentScheduled : ToastKind.TaskAdded);
             return;
         }
 
-        _taskListService.Update(updatedTask);
+        await _taskListService.UpdateAsync(updatedTask);
 
         await Navigation.PopModalAsync();
         ToastService.Show(ToastKind.TaskEdited);

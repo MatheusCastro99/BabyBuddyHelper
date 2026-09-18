@@ -34,7 +34,7 @@ public partial class ChecklistPage : ContentPage
         _taskListService = taskListService;
         _babyProfileService = babyProfileService;
         _babyFilterService = babyFilterService;
-        DeleteTaskCommand = new Command<TaskModel>(DeleteTask);
+        DeleteTaskCommand = new Command<TaskModel>(async task => await DeleteTaskAsync(task));
         EditTaskCommand = new Command<TaskModel>(EditTask);
         _taskListService.Tasks.CollectionChanged += (_, _) => RefreshTaskList();
         _babyProfileService.BabyProfiles.CollectionChanged += (_, _) => RefreshTaskList();
@@ -79,11 +79,11 @@ public partial class ChecklistPage : ContentPage
         await Navigation.PushModalAsync(new AddTaskPage(_taskListService, _babyProfileService, _babyFilterService));
     }
 
-    private void DeleteTask(TaskModel taskToDelete)
+    private async Task DeleteTaskAsync(TaskModel taskToDelete)
     {
         if (taskToDelete != null)
         {
-            _taskListService.Remove(taskToDelete);
+            await _taskListService.RemoveAsync(taskToDelete.Id);
             ToastService.Show(ToastKind.TaskDeleted);
         }
     }
