@@ -32,6 +32,10 @@ jobs:
         run: dotnet restore
       
       - name: Build
+        env:
+          # Baked into the app by the GenerateBuildSecrets target. Empty when the secret is absent: the build
+          # still succeeds and the app simply runs unlicensed.
+          SYNCFUSION_LICENSE: ${{ secrets.SYNCFUSION_LICENSE }}
         run: dotnet build `
                 -f net10.0-windows10.0.19041.0 `
                 -c Release
