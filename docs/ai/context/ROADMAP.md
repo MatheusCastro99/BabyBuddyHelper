@@ -76,7 +76,7 @@ Filters Update: CONCLUDED
 > Baby Profile Page:
 
 - Baby's name as the title
-- Age (computed from BirthDate), weight and height
+- Age (computed from DateOfBirth), weight and height
 - Last feed and last sleep
 - An empty area reserved for the Vaccines section (sub-issue 2)
 - Reads data only from IBabyProfileService (ADR-001/008).
@@ -128,10 +128,10 @@ Filters Update: CONCLUDED
 - Documentation updates: ROADMAP, FeaturesSet, ARCHITECTURE_DESIGN, CURRENT_STATE, AI_CONTEXT
 - Decisions ammendments:
 	- ADR-001: IVaccineService is the single owner of vaccination records.
-	- ADR-004: AddVaccinePage is the single record editor; BabyProfilePage is the entry point.
+	- ADR-004: AddVaccineRecordPage is the single record editor; BabyProfilePage is the entry point.
 	- ADR-006: add IVaccineCatalog as an example.
 	- ADR-008: add IVaccineService as a cache service.
-	- new ADR-010: Vaccine catalog is fixed reference data kept outside the database.
+	- new ADR-011: Vaccine catalog is fixed reference data kept outside the database.
 - Wording review (disclaimer, overdue label, empty states) against UI_GUIDELINES.md.
 - Backlog issues for the epic's out-of-scope items and any annotated follow-ups.
 

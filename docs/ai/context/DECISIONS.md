@@ -123,3 +123,5 @@ Secret Rules:
 - Secrets are NEVER committed to source control.
 - Secrets will always be compiled in at build time, file is a build input only.
 - No Server-side credentials in the client app.
+
+Status: Accepted, permanent.

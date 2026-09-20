@@ -305,9 +305,7 @@ DEVELOPMENT ONLY.
 
 .env is compiled in at build time, file is a build input only.
 
-Environment variables loaded from:
-
-AppContext.BaseDirectory
+Values are compiled into BuildSecrets by the GenerateBuildSecrets target.
 
 Do NOT embed .env as EmbeddedResource.
 Do NOT copy .env to output directory.
