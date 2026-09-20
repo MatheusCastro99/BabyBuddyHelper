@@ -62,7 +62,7 @@ Branching and commits
 
 Safety and secrets
 ------------------
-- Do not commit secrets or .env with secrets. red-team checks for secrets only within the change it reviews; a repository-wide secrets scan is separate work (see issue #30).
+- Do not commit secrets or .env with secrets. red-team checks for secrets only within the change it reviews;
 
 Contacting the user
 -------------------
@@ -72,4 +72,4 @@ Contacting the user
 Change log
 ----------
 - 2026-09-17: Initial CLAUDE.md added (aligns with repo docs and subagent list).
-- 2026-09-18 (#33): Replaced the subagent list with the Claude Code tooling (red-team + three skills); retired TechLead, ProductOwner, UXDesigner, ProjectHistorian and Coordinator. Secrets scans now route to #30.
+- 2026-09-18 (#33): Replaced the subagent list with the Claude Code tooling (red-team + three skills); retired TechLead, ProductOwner, UXDesigner, ProjectHistorian and Coordinator.

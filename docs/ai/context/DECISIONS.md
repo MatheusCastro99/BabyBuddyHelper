@@ -116,3 +116,10 @@ Reason:
 - Data flow is still through the cache services, so the persistence boundary is exercised even with mock data.
 
 Status: Accepted, permanent.
+
+### ADR-010
+
+Secret Rules:
+- Secrets are NEVER committed to source control.
+- Secrets will always be compiled in at build time, file is a build input only.
+- No Server-side credentials in the client app.

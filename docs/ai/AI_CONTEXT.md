@@ -303,19 +303,16 @@ DEVELOPMENT ONLY.
 
 ## Configuration:
 
-.env copied to output directory.
+.env is compiled in at build time, file is a build input only.
 
 Environment variables loaded from:
 
 AppContext.BaseDirectory
 
-Do NOT embed:
+Do NOT embed .env as EmbeddedResource.
+Do NOT copy .env to output directory.
 
-.env
-
-as EmbeddedResource.
-
-This approach was removed.
+These approaches were removed due to security concerns.
 
 ## Preferred pattern:
 
@@ -327,13 +324,10 @@ CI/CD
     ->
 GitHub Secrets
 
-Production
-    ->
-Environment Variables
-
 ### WARNINGS:
 
 -   Do NOT commit secrets to source control, NEVER.
+-   Server-side credentials never go into the client app
 
 ---
 

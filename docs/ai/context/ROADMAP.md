@@ -53,15 +53,16 @@ Filters Update: CONCLUDED
 
 ## => Phase 3: 
 
-CodeBase Refactor: CONCLUDED
+> CodeBase Refactor: CONCLUDED
 
 - Oversized-file audit completed.
 - Filtering processes split into dedicated services.
 - Baby profile and checklist/calendar filtering now run through service interfaces.
-- Remaining security pass: scan the codebase for secrets and document the result.
+- Repository-wide secret audit completed
 
-Data Persistence: IN PROGRESS
+> Data Persistence: IN PROGRESS
 
+- Prior to introducing data persistence, change BabyModel logic from Age to DateOfBirth.
 - `ITrackerDbService` now defines the persistence boundary.
 - `TaskListService` and `BabyProfileService` are the cache services backed by `ITrackerDbService`.
 - `InMemoryTrackerDbService` is the temporary stand-in while SQLite / EF Core is implemented.
@@ -72,16 +73,83 @@ Data Persistence: IN PROGRESS
 
 ## Phase 4:
 
-Architecture Enhancements:
+> Baby Profile Page:
 
-- Refactor codebase to adopt MVVM architecture
-- Implement feature-based folder structure for better expansibility and modularity
-- Introduce dependency injection for services and view models
-- Improve state management using ObservableCollection or similar patterns
+- Baby's name as the title
+- Age (computed from BirthDate), weight and height
+- Last feed and last sleep
+- An empty area reserved for the Vaccines section (sub-issue 2)
+- Reads data only from IBabyProfileService (ADR-001/008).
+- Profile Navigation Plan: 
+	- MainPage -> Tap Baby Profile Card -> BabyProfilePage
+	- BabyProfilePage -> Tap Edit Button -> AddBabyPage (sub-issue 1)
+
+> Vaccine Catalog:
+
+- VaccineModel: 
+	- Guid Id (Not Instantiated, these will be fixed and hardcoded)
+	- string CvxCode
+	- string Name
+	- string Description
+- IVaccineCatalog
+- Catalog does not touches the database, it is a static list of vaccines
+- Explicit Disclaimers:
+	- Vaccine catalog is for personal tracking purposes only and not a substitute for professional medical advice
+	- Mention source of information (CDC, WHO, etc.) and provide links to official resources
+
+> Vaccination Records:
+
+- VaccinationRecordModel:
+	- Guid Id
+	- Guid BabyId
+	- Guid VaccineId
+	- int TotalDoses
+	- int CompletedDoses
+	- DateTime LastAdministered
+	- DateTime NextDose
+	- Bool IsOverdue => Computed property based on NextDose and current date
+	- Bool IsCompleted => Computed property based on CompletedDoses and TotalDoses
+- IVaccineService
+- VaccineService:
+	- cache service and single source of truth for vaccination records
+	- Will handle vaccination records for each baby profile
+- At most one vaccination record per baby per vaccine
+- Deleting Baby Profile deletes all associated vaccination records (No orphaned records)
+- SQLite: entity mapping plus EF Core migration (Db will be created by then)
+
+> AddVaccineRecordPage:
+
+- Opened from a vaccine in the profile's Vaccines section.
+- Creates a record for a "Not started" vaccine, or edits an existing one; a record can also be removed.
+- Fields: total doses (depends on the brand), completed doses, last applied date, next dose date.
+
+> Phase 4 Cleanup:
+
+- Documentation updates: ROADMAP, FeaturesSet, ARCHITECTURE_DESIGN, CURRENT_STATE, AI_CONTEXT
+- Decisions ammendments:
+	- ADR-001: IVaccineService is the single owner of vaccination records.
+	- ADR-004: AddVaccinePage is the single record editor; BabyProfilePage is the entry point.
+	- ADR-006: add IVaccineCatalog as an example.
+	- ADR-008: add IVaccineService as a cache service.
+	- new ADR-010: Vaccine catalog is fixed reference data kept outside the database.
+- Wording review (disclaimer, overdue label, empty states) against UI_GUIDELINES.md.
+- Backlog issues for the epic's out-of-scope items and any annotated follow-ups.
 
 ---
 
 ## Phase 5:
+
+Architecture Enhancements:
+
+- Reflect on what architecture patterns are working well and what can be improved
+- Candidate patterns include:
+  - MVVM
+  - Service-based architecture
+  - Feature-based folder structure
+
+---
+
+## Phase 6:
 
 Cloud Synchronization:
 
@@ -98,7 +166,7 @@ Database Backup and Restore:
 
 ---
 
-## Phase 6: 
+## Phase 7: 
 
 Companion comes to life:
 
@@ -110,7 +178,7 @@ Companion comes to life:
 
 ---
 
-## Phase 7:
+## Phase 8:
 
 Advanced AI Features:
 
