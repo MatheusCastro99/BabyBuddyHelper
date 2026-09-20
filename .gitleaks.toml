@@ -1,0 +1,47 @@
+# gitleaks configuration for BabyBuddyHelper (#50, from the #30 secret audit).
+#
+# Why this file exists: gitleaks' built-in rules do NOT detect Syncfusion license keys. During the audit a clean
+# gitleaks run therefore proved nothing about this project's only real secret. These rules close that gap.
+#
+# Usage:
+#   gitleaks git . --log-opts="--all -m" --redact=100     # full history, every branch, merge commits included
+#   gitleaks dir . --redact=100                           # working tree
+#
+# A directory scan flags the local .env on purpose: that file holds the real key and must never be committed.
+# History scans never see it, because .env is gitignored.
+
+title = "BabyBuddyHelper"
+
+[extend]
+useDefault = true
+
+[[rules]]
+id = "syncfusion-license-key"
+description = "Syncfusion license key (base64 blob starting with a known Syncfusion prefix)"
+# Prefixes seen on Syncfusion keys. If a future key starts differently, add it here and re-verify with the
+# detection check below, otherwise the rule silently stops matching.
+regex = '''\b(?:Ngo9BigB|NRAiBiAa|ORg4AjUW|Mgo\+DSMB)[A-Za-z0-9+/=]{40,}'''
+keywords = ["ngo9bigb", "nraibiaa", "org4ajuw", "mgo+dsmb"]
+
+[[rules]]
+id = "syncfusion-license-assignment"
+description = "SYNCFUSION_LICENSE assigned a literal value"
+regex = '''(?i)SYNCFUSION_LICENSE\s*[:=]\s*["']?[A-Za-z0-9+/=]{30,}'''
+keywords = ["syncfusion_license"]
+
+[[rules]]
+id = "syncfusion-register-license"
+description = "Syncfusion license passed to RegisterLicense as a literal instead of the build-time constant"
+regex = '''RegisterLicense\(\s*["'][A-Za-z0-9+/=]{30,}["']'''
+keywords = ["registerlicense"]
+
+# Detection check (run after changing the rules above; it must report a finding):
+#   gitleaks dir <folder containing a copy of .env> --redact=100
+# A run that reports nothing means the rules no longer match this project's key.
+
+[allowlist]
+description = "Build output only. .env is deliberately NOT allowlisted: a hit there is a true positive."
+paths = [
+  '''^bin/''',
+  '''^obj/''',
+]

@@ -65,15 +65,54 @@
 		<MauiAsset Include="Resources\Raw\**" LogicalName="%(RecursiveDir)%(Filename)%(Extension)" />
 	</ItemGroup>
 
-	<!-- Embeds environment variables or Loads them dynamically -->
-	<ItemGroup Condition="Exists('.env')">
-		<None Include=".env">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-	</ItemGroup>
+	<!-- Bakes the Syncfusion license into the compiled app instead of shipping a readable .env next to it (#49).
+	     Value order: the SYNCFUSION_LICENSE environment variable (GitHub secret in CI), then the local .env file.
+	     The generated file lives under obj/ and is never committed. Missing value = empty constant = app runs unlicensed. -->
+	<Target Name="GenerateBuildSecrets" BeforeTargets="BeforeCompile;XamlPreCompile;CoreCompile" Condition="'$(_BuildSecretsGenerated)' != 'true'">
+		<PropertyGroup>
+			<_EnvFile>$(MSBuildProjectDirectory)/.env</_EnvFile>
+			<_SyncfusionLicense>$(SYNCFUSION_LICENSE)</_SyncfusionLicense>
+			<_BuildSecretsFile>$(IntermediateOutputPath)BuildSecrets.g.cs</_BuildSecretsFile>
+		</PropertyGroup>
+
+		<ReadLinesFromFile File="$(_EnvFile)" Condition="'$(_SyncfusionLicense)' == '' And Exists('$(_EnvFile)')">
+			<Output TaskParameter="Lines" ItemName="_EnvLine" />
+		</ReadLinesFromFile>
+
+		<ItemGroup>
+			<_LicenseLine Include="@(_EnvLine)" Condition="$([System.String]::Copy('%(Identity)').StartsWith('SYNCFUSION_LICENSE='))" />
+		</ItemGroup>
+
+		<!-- The item has to become a property first: MSBuild does not expand @(item) inside a property function. -->
+		<PropertyGroup>
+			<_RawLicenseLine>@(_LicenseLine)</_RawLicenseLine>
+			<_SyncfusionLicense Condition="'$(_SyncfusionLicense)' == '' And '$(_RawLicenseLine)' != ''">$([System.Text.RegularExpressions.Regex]::Replace('$(_RawLicenseLine)', '^\s*SYNCFUSION_LICENSE\s*=\s*', ''))</_SyncfusionLicense>
+		</PropertyGroup>
+
+		<!-- Guards against silently baking in a malformed value, which would look like a clean build but run unlicensed. -->
+		<!-- %40 is an escaped '@'. A license key is base64, so an '@' means the value is an unexpanded MSBuild reference. -->
+		<Error Condition="$(_SyncfusionLicense.Contains('SYNCFUSION_LICENSE')) Or $(_SyncfusionLicense.Contains('%40'))"
+		       Text="GenerateBuildSecrets could not parse the license value. Check the SYNCFUSION_LICENSE entry in .env." />
+
+		<Message Importance="high" Condition="'$(_SyncfusionLicense)' == ''"
+		         Text="SYNCFUSION_LICENSE not found (no environment variable, no .env entry). The app will run unlicensed." />
+
+		<WriteLinesToFile File="$(_BuildSecretsFile)" Overwrite="true" WriteOnlyWhenDifferent="true"
+		                  Lines="// &lt;auto-generated /&gt; Written by the GenerateBuildSecrets target. Do not edit or commit.;namespace BabyBuddyHelper%3B;;internal static class BuildSecrets;{;    public const string SyncfusionLicense = &quot;$(_SyncfusionLicense)&quot;%3B;}" />
+
+		<ItemGroup>
+			<Compile Include="$(_BuildSecretsFile)" />
+			<FileWrites Include="$(_BuildSecretsFile)" />
+		</ItemGroup>
+
+		<!-- Windows builds compile twice (XAML pass, then the real one). The flag keeps this target from running again
+		     and adding the same file to Compile a second time. -->
+		<PropertyGroup>
+			<_BuildSecretsGenerated>true</_BuildSecretsGenerated>
+		</PropertyGroup>
+	</Target>
 
 	<ItemGroup>
-		<PackageReference Include="DotNetEnv" Version="3.2.0" />
 		<PackageReference Include="Microsoft.Maui.Controls" Version="10.0.100" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="10.0.11" />
 		<PackageReference Include="Syncfusion.Maui.Scheduler" Version="34.2.4" />
