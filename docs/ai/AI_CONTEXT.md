@@ -2,7 +2,7 @@
 
 # BabyBuddyHelper - AI Development Context
 
-Last Updated: 2026-09-17
+Last Updated: 2026-09-21
 
 ---
 # Context References:
@@ -171,20 +171,21 @@ ObservableCollection<BabyModel>
 
 Persistence Status:
 
-In Progress
+Implemented (local SQLite via EF Core)
 
 Current storage:
 
 - In-memory cache services
-- `InMemoryTrackerDbService` temporary persistence stand-in
+- `EfTrackerDbService` over EF Core + SQLite
+- SQLite file: `babybuddy.db3` under `FileSystem.AppDataDirectory`
+- Database path is written to Debug output on first use
 - Debug-only seeded development data
 
 Reason:
 
-The persistence boundary is now in place, but the SQLite / EF Core backend is still pending.
+The persistence boundary and SQLite backend are active; schema evolution currently uses `EnsureCreated` with debug-only reset during development.
 
 Future persistence plan includes:
-    SQLite / EF Core for local storage
     Azure for cloud synchronization and redundancy.
 
 ---
@@ -383,7 +384,7 @@ Consistent warm and soothing visual language.
 Low Priority:
 
 - No MVVM
-- SQLite backend still pending
+- No EF migration workflow yet (current schema strategy is `EnsureCreated` + debug reset)
 - No INotifyPropertyChanged
 
 Accepted trade-offs.

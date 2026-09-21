@@ -22,7 +22,7 @@ Services/
 - BabyFilterService.cs
 - ToastService.cs
 - TrackerDataSeeder.cs
-- InMemoryTrackerDbService.cs
+- EfTrackerDbService.cs
 
 Interfaces/
 
@@ -43,6 +43,14 @@ Controls/
 
 - CompanionView
 - ToastView
+
+Data/
+
+- TrackerContext.cs
+
+Collections/
+
+- RangeObservableCollection.cs
 
 ## Future Architecture Direction
 

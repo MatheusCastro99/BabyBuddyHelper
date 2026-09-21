@@ -75,7 +75,6 @@ The current experience already includes a lightweight companion character and su
 
 ## Planned Direction
 
-- Local persistence for tasks, appointments, and baby profiles
 - Backup and restore
 - Cloud synchronization and shared family experiences
 - Later, carefully scoped AI-supported interactions
@@ -129,17 +128,16 @@ Business logic is centralized through services and interfaces, including:
 ITaskListService / TaskListService
 IBabyProfileService / BabyProfileService
 IBabyFilterService / BabyFilterService
-ITrackerDbService / InMemoryTrackerDbService
+ITrackerDbService / EfTrackerDbService
 ```
 
 `TaskListService` remains the application's single source of truth for tasks and appointments.
 
-The app now uses in-memory cache services backed by `ITrackerDbService`. `InMemoryTrackerDbService` is a temporary stand-in until the SQLite backend lands. All screens should continue to consume task and appointment state through `TaskListService`, and Syncfusion Scheduler types should remain in the UI layer.
+The app uses in-memory cache services (`TaskListService`, `BabyProfileService`) backed by `ITrackerDbService`. `EfTrackerDbService` is the active EF Core + SQLite implementation. All screens should continue to consume task and appointment state through `TaskListService`, and Syncfusion Scheduler types should remain in the UI layer.
 
 Future architectural refinements may include:
 
 - Feature-based folder structure
-- SQLite Persistence
 - Cloud Synchronization
 
 MVVM remains deferred until the application's complexity justifies it.
@@ -167,7 +165,7 @@ BabyBuddyHelper/
 │   ├── TaskListService.cs
 │   ├── BabyProfileService.cs
 │   ├── BabyFilterService.cs
-│   ├── InMemoryTrackerDbService.cs
+│   ├── EfTrackerDbService.cs
 │   ├── TrackerDataSeeder.cs
 │   └── ToastService.cs
 │
@@ -180,6 +178,12 @@ BabyBuddyHelper/
 ├── Controls/
 │   ├── CompanionView.xaml(.cs)
 │   └── ToastView.xaml(.cs)
+│
+├── Data/
+│   └── TrackerContext.cs
+│
+├── Collections/
+│   └── RangeObservableCollection.cs
 │
 ├── Platforms/
 ├── Resources/
@@ -246,19 +250,17 @@ This project follows modern software engineering practices:
 
 ### Near Term
 
-- Finish the database interaction layer
-- Replace the in-memory tracker service with SQLite / EF Core
-- Keep cache services stable during the storage transition
+- Stabilize EF Core + SQLite behavior across pages and startup flows
+- Keep cache services stable during persistence evolution
 
 ### Medium Term
 
-- SQLite persistence
 - Expanded baby-care tracking
-- Database backup and restore
 
 ### Long Term
 
 - Cloud synchronization
+- Data backup and restore
 - Shared family calendars
 - Interactive companion behavior
 - Carefully scoped AI-supported interactions

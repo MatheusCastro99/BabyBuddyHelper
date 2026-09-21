@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using Syncfusion.Maui.Core.Hosting;
 using System.Diagnostics;
 
@@ -23,7 +24,9 @@ namespace BabyBuddyHelper
                 .Services.AddSingleton<Interfaces.ITaskListService, Services.TaskListService>()
                 .AddSingleton<Interfaces.IBabyProfileService, Services.BabyProfileService>()
                 .AddSingleton<Interfaces.IBabyFilterService, Services.BabyFilterService>()
-                .AddSingleton<Interfaces.ITrackerDbService, Services.InMemoryTrackerDbService>(); //Swapped for the EF Core SQLite implementation in #25
+                .AddSingleton<Interfaces.ITrackerDbService, Services.EfTrackerDbService>()
+                .AddDbContextFactory<Data.TrackerContext>(options =>
+                    options.UseSqlite($"Data Source={Path.Combine(FileSystem.AppDataDirectory, "babybuddy.db3")}"));
 
 #if DEBUG
             builder.Logging.AddDebug();

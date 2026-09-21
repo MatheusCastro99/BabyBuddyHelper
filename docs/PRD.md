@@ -46,7 +46,7 @@ BabyBuddyHelper/
 ```
 
 ## External Resources
-- **Database**: in-memory storage currently; scalable to SQLite, MSSQL, Azure, etc
+- **Database**: SQLite via EF Core (local persistence active); cloud synchronization remains deferred
 - **Cloud Services**: None currently; candidate for Azure migration
 - **APIs**: None currently
 

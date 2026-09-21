@@ -34,13 +34,17 @@
 
 ✅ Filtering based upon upcoming date, priority, or specific baby profiles
 
-## Planned Features:
+✅ Local Data Persistence (EF Core + SQLite)
 
-Local Data Persistence
+## Planned Features:
 
 Cloud Synchronization
 
 Database Backup, Redundancy, and Restore
+
+Baby Profile Page (dedicated details and navigation flow)
+
+Vaccination Tracker (catalog + per-baby vaccination records)
 
 Companion comes to life with an AI-driven personality and interactions
 

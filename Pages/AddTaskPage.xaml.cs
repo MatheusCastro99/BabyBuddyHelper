@@ -129,12 +129,13 @@ public partial class AddTaskPage : ContentPage
     private TaskModel BuildTaskFromForm(TaskModel? existingTask = null)
     {
         int priority = Convert.ToInt32(PriorityStepper.Value);
-        string taskName = TaskNameEntry.Text;
-        string taskDescription = DescriptionEntry.Text;
+        //An Entry that was never touched returns null, and the database columns are NOT NULL
+        string taskName = TaskNameEntry.Text ?? string.Empty;
+        string taskDescription = DescriptionEntry.Text ?? string.Empty;
 
         if (IsAppointmentCheckBox.IsChecked) //Appointments additionally carry the scheduling fields
         {
-            return new AppointmentModel(LocationEntry.Text, DateEntry.Date, StartingTimeEntry.Time, EndingTimeEntry.Time, priority, taskName, taskDescription)
+            return new AppointmentModel(LocationEntry.Text ?? string.Empty, DateEntry.Date, StartingTimeEntry.Time, EndingTimeEntry.Time, priority, taskName, taskDescription)
             {
                 Id = existingTask?.Id ?? Guid.NewGuid(),
                 IsCompleted = existingTask?.IsCompleted ?? false,
