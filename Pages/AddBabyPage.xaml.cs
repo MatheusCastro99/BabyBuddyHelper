@@ -29,7 +29,7 @@ public partial class AddBabyPage : ContentPage
         SaveButton.Text = "Update";
 
         NameEntry.Text = babyProfileOnEdit.Name;
-        AgeEntry.Text = babyProfileOnEdit.Age.ToString(CultureInfo.InvariantCulture);
+        DateOfBirthPicker.Date = babyProfileOnEdit.DateOfBirth.Date;
         WeightEntry.Text = babyProfileOnEdit.WeightInLbs.ToString("0.##", CultureInfo.InvariantCulture);
         HeightEntry.Text = babyProfileOnEdit.HeightInFt.ToString("0.##", CultureInfo.InvariantCulture);
         LastFeedDatePicker.Date = babyProfileOnEdit.LastFeed.Date;
@@ -43,6 +43,7 @@ public partial class AddBabyPage : ContentPage
         var now = DateTime.Now;
         var recentSleep = now.AddHours(-2);
 
+        DateOfBirthPicker.Date = now.Date;
         LastFeedDatePicker.Date = now.Date;
         LastFeedTimePicker.Time = now.TimeOfDay;
         LastSleepDatePicker.Date = recentSleep.Date;
@@ -89,7 +90,7 @@ public partial class AddBabyPage : ContentPage
             {
                 Id = _babyProfileOnEdit.Id,
                 Name = validatedProfile.Name,
-                Age = validatedProfile.Age,
+                DateOfBirth = validatedProfile.DateOfBirth,
                 WeightInLbs = validatedProfile.WeightInLbs,
                 HeightInFt = validatedProfile.HeightInFt,
                 LastFeed = validatedProfile.LastFeed,
@@ -106,12 +107,6 @@ public partial class AddBabyPage : ContentPage
         if (string.IsNullOrWhiteSpace(NameEntry.Text))
         {
             await DisplayAlertAsync("Required Field Missing", "Please add your baby's name.", "OK");
-            return null;
-        }
-
-        if (!int.TryParse(AgeEntry.Text, NumberStyles.Integer, CultureInfo.InvariantCulture, out var age) || age < 0)
-        {
-            await DisplayAlertAsync("Invalid Age", "Please enter a whole number for age.", "OK");
             return null;
         }
 
@@ -133,7 +128,7 @@ public partial class AddBabyPage : ContentPage
         return new BabyModel
         {
             Name = NameEntry.Text.Trim(),
-            Age = age,
+            DateOfBirth = CombineDateAndTime(DateOfBirthPicker.Date, TimeSpan.Zero),
             WeightInLbs = weightInLbs,
             HeightInFt = heightInFt,
             LastFeed = lastFeed,
