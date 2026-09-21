@@ -1,3 +1,4 @@
+using BabyBuddyHelper.Collections;
 using BabyBuddyHelper.Interfaces;
 using BabyBuddyHelper.Models;
 using System.Collections.ObjectModel;
@@ -9,7 +10,8 @@ namespace BabyBuddyHelper.Services
     {
         private readonly ITrackerDbService _trackerDbService;
         private Task? _initializationTask;
-        public ObservableCollection<BabyModel> BabyProfiles { get; } = new();
+        private readonly RangeObservableCollection<BabyModel> _babyProfiles = new();
+        public ObservableCollection<BabyModel> BabyProfiles => _babyProfiles;
 
         public BabyProfileService(ITrackerDbService trackerDbService)
         {
@@ -28,12 +30,11 @@ namespace BabyBuddyHelper.Services
             return _initializationTask;
         }
 
+        //One Reset for the whole load. TaskListService treats a Reset as "clear links to missing babies"; that is harmless here
+        //because profiles load before tasks (see App.RunStartupAsync), so the task list is still empty.
         private async Task LoadBabyProfilesAsync()
         {
-            foreach (BabyModel babyProfile in await _trackerDbService.GetBabyProfilesAsync())
-            {
-                BabyProfiles.Add(babyProfile);
-            }
+            _babyProfiles.AddRange(await _trackerDbService.GetBabyProfilesAsync());
         }
 
         public async Task AddAsync(BabyModel babyProfile)

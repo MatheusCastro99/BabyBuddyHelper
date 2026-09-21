@@ -1,4 +1,5 @@
-﻿using BabyBuddyHelper.Interfaces;
+﻿using BabyBuddyHelper.Collections;
+using BabyBuddyHelper.Interfaces;
 using BabyBuddyHelper.Models;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
@@ -10,7 +11,8 @@ namespace BabyBuddyHelper.Services
         private readonly IBabyProfileService _babyProfileService;
         private readonly ITrackerDbService _trackerDbService;
         private Task? _initializationTask;
-        public ObservableCollection<TaskModel> Tasks { get; } = new();
+        private readonly RangeObservableCollection<TaskModel> _tasks = new();
+        public ObservableCollection<TaskModel> Tasks => _tasks;
         public IEnumerable<TaskModel> GetTasks(Guid? associatedBabyId = null, bool pendingFirst = false, bool orderByUpcomingDate = false)
         {
             IEnumerable<TaskModel> filteredTasks = Tasks
@@ -59,14 +61,11 @@ namespace BabyBuddyHelper.Services
             return _initializationTask;
         }
 
+        //Sorted before publishing, so the pages get one Reset instead of one event per task plus one per reorder
         private async Task LoadTasksAsync()
         {
-            foreach (TaskModel task in await _trackerDbService.GetTasksAsync())
-            {
-                Tasks.Add(task);
-            }
-
-            OrganizeByPriority();
+            IReadOnlyList<TaskModel> storedTasks = await _trackerDbService.GetTasksAsync();
+            _tasks.AddRange(storedTasks.OrderByDescending(x => x.TaskPriority));
         }
 
         //Writes update the in-memory collection first so the UI responds instantly, then persist through ITrackerDbService.
