@@ -88,7 +88,7 @@
                                             <Grid ColumnDefinitions="*,Auto" ColumnSpacing="12">
                                                 <VerticalStackLayout Spacing="4">
                                                     <Label Text="{Binding Name}" Style="{StaticResource SectionTitle}" />
-                                                    <Label Text="{Binding Age, StringFormat='Age {0}'}" Style="{StaticResource BodyText}" />
+                                                    <Label Text="{Binding AgeText}" Style="{StaticResource BodyText}" />
                                                 </VerticalStackLayout>
 
                                                 <Border Grid.Column="1"
