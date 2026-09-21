@@ -12,15 +12,21 @@ Reason:
 - This reduces the risk of inconsistencies in the application state, specially as data persistance arrives.
 
 Data Flow:
-Page -> TaskListService / BabyProfileService (In-memory cache) -> ITrackerDbService (Currently consumes InMemoryTrackerDbService, will consume EF Core + SQLite in the future)
+Page -> TaskListService / BabyProfileService (in-memory cache) -> ITrackerDbService (currently implemented by EfTrackerDbService over EF Core + SQLite)
 
 Status: Accepted, current.
 
 ### ADR-002
 
-EF Core + SQLite implementation In-Progress, but not yet implemented.
+EF Core + SQLite implementation is active through `EfTrackerDbService`.
 
-Status: Accepted, temporary.
+Implementation notes:
+- Database lifecycle uses `EnsureCreated` (no EF migrations yet).
+- While the app is not live, schema changes may reset the local database.
+- Debug-only `ResetDatabaseOnStartup` in `Services/EfTrackerDbService.cs` exists for one-run schema resets.
+- Persistence operations use one short-lived `TrackerContext` per call through `IDbContextFactory<TrackerContext>`.
+
+Status: Accepted, current.
 
 ### ADR-003
 
@@ -67,7 +73,7 @@ Examples:
 - Filtering (BabyFilterService)
 - TaskList Management (TaskListService)
 - Baby Profile Management (BabyProfileService)
-- Database interactions (ITrackerDbService consuming InMemoryTrackerDbService(temporary))
+- Database interactions (ITrackerDbService consuming EfTrackerDbService)
 
 Status: Accepted, current.
 
@@ -92,16 +98,16 @@ Status: Accepted, permanent.
 ### ADR-008
 
 `TaskListService` and `BabyProfileService` are cache services for UI state.
-`ITrackerDbService` is the persistence contract, and `InMemoryTrackerDbService` is its current implementation.
-Only cache services should interact with the persistence boundary, no negotiation.
+`ITrackerDbService` is the persistence contract, and `EfTrackerDbService` is its current implementation.
+Only cache services should interact with the persistence boundary.
 
 Reason:
 - Keeps pages out of storage concerns.
 - Keeps the UI responsive while the cache services handle persistence through a separate boundary.
 - Reads come from the cache. 
 - Writes update the cache first and are saved immediately, with no deferral or batching
-- Allows `InMemoryTrackerDbService` to stand in for the future EF Core + SQLite implementation.
-- Keeps the database swap isolated from the rest of the app.
+- Keeps persistence isolated behind `ITrackerDbService`, so implementation swaps remain localized.
+- Supports one-context-per-operation persistence through `IDbContextFactory<TrackerContext>`.
 
 Status: Accepted, current.
 
@@ -123,5 +129,16 @@ Secret Rules:
 - Secrets are NEVER committed to source control.
 - Secrets will always be compiled in at build time, file is a build input only.
 - No Server-side credentials in the client app.
+
+Status: Accepted, permanent.
+
+### ADR-011
+
+Database referential integrity is enforced in the database model, and cache services mirror the persisted result.
+
+Reason:
+- Deleting a baby profile must not leave orphaned task associations.
+- `TrackerContext` enforces `ON DELETE SET NULL` for `TaskModel.AssociatedBabyId`.
+- Services continue using Id-based operations while persisted constraints guarantee data consistency.
 
 Status: Accepted, permanent.

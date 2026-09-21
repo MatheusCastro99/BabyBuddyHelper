@@ -20,11 +20,9 @@ CodeBase Refactor: CONCLUDED
 
 Data Persistence:
 
-- Prior to introducing data persistence, change BabyModel logic from Age to DateOfBirth.
-- Persistence boundary introduced through `ITrackerDbService`.
+- BabyModel DateOfBirth migration is complete (Age is computed from DateOfBirth).
+- Persistence boundary is active through `ITrackerDbService`.
 - `TaskListService` and `BabyProfileService` are the cache services backed by `ITrackerDbService`.
-- SQLite / EF Core implementation (#25) is still pending.
-- Implement data persistence for tasks, appointments, and Baby Profiles.
-- Ensure data is saved, read, and retrieved efficiently.
+- SQLite / EF Core implementation (#25) is complete through `EfTrackerDbService`.
 
 ---

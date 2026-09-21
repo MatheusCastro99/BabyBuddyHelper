@@ -24,7 +24,7 @@ Main Page: CONCLUDED
 BabyModel: CONCLUDED
 - New model that will serve as different profiles for different babies / children
 - Initial properties:
-	- Name (string), Age (int), WeightInLbs (double), HeightInFt (double), LastFeed (DateTime), LastSleep (DateTime)
+	- Name (string), DateOfBirth (DateTime), WeightInLbs (double), HeightInFt (double), LastFeed (DateTime), LastSleep (DateTime)
 
 Baby Profiles: CONCLUDED
 
@@ -62,12 +62,10 @@ Filters Update: CONCLUDED
 
 > Data Persistence: IN PROGRESS
 
-- Prior to introducing data persistence, change BabyModel logic from Age to DateOfBirth.
-- `ITrackerDbService` now defines the persistence boundary.
+- BabyModel logic has been migrated from stored Age to DateOfBirth with computed age display.
+- `ITrackerDbService` defines the persistence boundary.
 - `TaskListService` and `BabyProfileService` are the cache services backed by `ITrackerDbService`.
-- `InMemoryTrackerDbService` is the temporary stand-in while SQLite / EF Core is implemented.
-- Implement data persistence for tasks, appointments, and Baby Profiles.
-- Ensure data is saved, read, and retrieved efficiently.
+- `EfTrackerDbService` is the active EF Core + SQLite implementation.
 
 ---
 
@@ -115,7 +113,7 @@ Filters Update: CONCLUDED
 	- Will handle vaccination records for each baby profile
 - At most one vaccination record per baby per vaccine
 - Deleting Baby Profile deletes all associated vaccination records (No orphaned records)
-- SQLite: entity mapping plus EF Core migration (Db will be created by then)
+- SQLite: entity mapping plus EF Core integration. Current strategy uses `EnsureCreated`; if migrations are still not adopted then schema changes require a debug reset run.
 
 > AddVaccineRecordPage:
 
@@ -131,7 +129,7 @@ Filters Update: CONCLUDED
 	- ADR-004: AddVaccineRecordPage is the single record editor; BabyProfilePage is the entry point.
 	- ADR-006: add IVaccineCatalog as an example.
 	- ADR-008: add IVaccineService as a cache service.
-	- new ADR-011: Vaccine catalog is fixed reference data kept outside the database.
+	- new ADR-012: Vaccine catalog is fixed reference data kept outside the database.
 - Wording review (disclaimer, overdue label, empty states) against UI_GUIDELINES.md.
 - Backlog issues for the epic's out-of-scope items and any annotated follow-ups.
 
