@@ -149,7 +149,7 @@ namespace BabyBuddyHelper.Services
         }
 
         //Renames need no handling here: tasks only store the baby Id, and pages resolve the name when displaying it.
-        //Removals only update the in-memory copy. The database clears the deleted baby from stored tasks itself (see #25).
+        //Removals only update the in-memory copy. The database clears the deleted baby from stored tasks itself (ON DELETE SET NULL, see TrackerContext).
         private void OnBabyProfilesChanged(object? sender, NotifyCollectionChangedEventArgs e)
         {
             if (e.Action == NotifyCollectionChangedAction.Remove && e.OldItems is not null)
