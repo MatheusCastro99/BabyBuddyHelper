@@ -260,6 +260,7 @@ This project follows modern software engineering practices:
 ### Long Term
 
 - Cloud synchronization
+- Data backup and restore
 - Shared family calendars
 - Interactive companion behavior
 - Carefully scoped AI-supported interactions
