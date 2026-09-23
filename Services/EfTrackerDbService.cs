@@ -22,7 +22,8 @@ namespace BabyBuddyHelper.Services
 
         //Set for a run to exercise the failure handling. Load fails every read (the startup load), Save fails every write.
         //The call throws before it reaches the database, so no stored data is touched. Set it back to None afterwards.
-        private static readonly SimulatedDbFailure SimulateDbFailure = SimulatedDbFailure.None;
+        //Use breakpoint + Watch window to change it at runtime, so the same run can exercise both failure types.
+        private static SimulatedDbFailure SimulateDbFailure = SimulatedDbFailure.None;
 #endif
 
         private readonly IDbContextFactory<TrackerContext> _contextFactory;
@@ -156,6 +157,9 @@ namespace BabyBuddyHelper.Services
 #if DEBUG
         private static void ThrowIfSimulated(SimulatedDbFailure failure, string operationName)
         {
+            //failure is the SimulatedDbFailure state passed as argument when method is called.
+            //SimulateDbFailure is the current state of the static field, which the method uses to test against failure.
+            //For forced failures only. SimulateDbFailure controls the behavior of this method
             if (SimulateDbFailure != failure)
                 return;
 
