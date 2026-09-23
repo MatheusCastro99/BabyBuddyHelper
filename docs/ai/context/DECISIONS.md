@@ -103,7 +103,6 @@ Only cache services should interact with the persistence boundary.
 
 Reason:
 - Keeps pages out of storage concerns.
-- Keeps the UI responsive while the cache services handle persistence through a separate boundary.
 - Write, read, and failure order, and the full data path: see ADR-014
 - Keeps persistence isolated behind `ITrackerDbService`, so implementation swaps remain localized.
 - Supports one-context-per-operation persistence through `IDbContextFactory<TrackerContext>`.

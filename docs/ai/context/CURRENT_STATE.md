@@ -24,7 +24,7 @@ Data Persistence: CONCLUDED
 - Persistence boundary is active through `ITrackerDbService`.
 - `TaskListService` and `BabyProfileService` are the cache services backed by `ITrackerDbService`.
 - SQLite / EF Core implementation (#25) is complete through `EfTrackerDbService`.
-- Database-first writes are complete: `EfTrackerDbService` commits first, `DbCommunicationException` reports write failures, and startup load failures alert the user so they can retry.
+- Database-first writes are complete: `EfTrackerDbService` commits first, `DbCommunicationException` reports database failures, and startup load failures alert the user so they can retry.
 - Debug-only `SimulateDbFailure` and `ResetDatabaseOnStartup` support development-only failure and schema-reset testing.
 - Phase 3 is complete.
 

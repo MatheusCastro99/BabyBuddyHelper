@@ -66,7 +66,7 @@ Filters Update: CONCLUDED
 - `ITrackerDbService` defines the persistence boundary.
 - `TaskListService` and `BabyProfileService` are the cache services backed by `ITrackerDbService`.
 - `EfTrackerDbService` is the active EF Core + SQLite implementation.
-- Database-first writes are complete: `EfTrackerDbService` commits first, `DbCommunicationException` reports write failures, and startup load failures alert the user so they can retry.
+- Database-first writes are complete: `EfTrackerDbService` commits first, `DbCommunicationException` reports database failures, and startup load failures alert the user so they can retry.
 - Debug-only `SimulateDbFailure` and `ResetDatabaseOnStartup` support development-time failure and schema-reset testing.
 - Phase 3 is complete.
 
@@ -132,7 +132,7 @@ Filters Update: CONCLUDED
 	- ADR-004: AddVaccineRecordPage is the single record editor; BabyProfilePage is the entry point.
 	- ADR-006: add IVaccineCatalog as an example.
 	- ADR-008: add IVaccineService as a cache service.
-- Wording review (disclaimer, overdue label, empty states) against UI_GUIDELINES.md using ux-review skill.
+- Wording review (disclaimer, overdue label, empty states) against UI_GUIDELINES.md using ux-design skill.
 - Backlog issues for the epic's out-of-scope items and any annotated follow-ups.
 
 ---
