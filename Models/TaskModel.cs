@@ -23,5 +23,10 @@
             TaskDescription = taskDescription;
             IsCompleted = false;
         }
+
+        //Shallow copy of every field, keeping the runtime type (an AppointmentModel clones as an AppointmentModel), so fields
+        //added later are copied without anyone updating this. Safe while every field is a value type or a string: a mutable
+        //reference field (e.g. a List) would be shared between the copy and the original.
+        public TaskModel Clone() => (TaskModel)MemberwiseClone();
     }
 }

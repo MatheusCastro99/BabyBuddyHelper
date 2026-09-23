@@ -5,7 +5,8 @@ using System.Collections.ObjectModel;
 
 namespace BabyBuddyHelper.Services
 {
-    //In-memory cache of baby profiles. Writes update the collection first so the UI responds instantly, then persist.
+    //In-memory cache of baby profiles. Writes persist through ITrackerDbService first; the collection only changes once the
+    //database has committed, so a failed save (DbCommunicationException) leaves it untouched. Entries are found again by Id after the await (ADR-007).
     public class BabyProfileService : IBabyProfileService
     {
         private readonly ITrackerDbService _trackerDbService;
@@ -39,31 +40,40 @@ namespace BabyBuddyHelper.Services
 
         public async Task AddAsync(BabyModel babyProfile)
         {
-            BabyProfiles.Add(babyProfile);
             await _trackerDbService.AddBabyProfileAsync(babyProfile);
+            BabyProfiles.Add(babyProfile);
         }
 
+        //The database clears this baby from its tasks first (ON DELETE SET NULL). Removing the profile from the cache afterwards
+        //raises CollectionChanged, and TaskListService mirrors that by clearing the same links in memory.
         public async Task RemoveAsync(Guid babyId)
         {
-            var existingProfile = BabyProfiles.FirstOrDefault(x => x.Id == babyId);
-
-            if (existingProfile is null)
+            if (!BabyProfiles.Any(x => x.Id == babyId))
                 return;
 
-            BabyProfiles.Remove(existingProfile);
-            await _trackerDbService.RemoveBabyProfileAsync(babyId); //The database also clears this baby from its tasks
+            await _trackerDbService.RemoveBabyProfileAsync(babyId);
+
+            var removedProfile = BabyProfiles.FirstOrDefault(x => x.Id == babyId);
+
+            if (removedProfile is not null)
+            {
+                BabyProfiles.Remove(removedProfile);
+            }
         }
 
         public async Task UpdateAsync(BabyModel babyProfile)
         {
-            var existingProfile = BabyProfiles.FirstOrDefault(x => x.Id == babyProfile.Id);
-
-            if (existingProfile is null)
+            if (!BabyProfiles.Any(x => x.Id == babyProfile.Id))
                 return;
 
-            var index = BabyProfiles.IndexOf(existingProfile);
-            BabyProfiles[index] = babyProfile;
             await _trackerDbService.UpdateBabyProfileAsync(babyProfile);
+
+            var existingProfile = BabyProfiles.FirstOrDefault(x => x.Id == babyProfile.Id);
+
+            if (existingProfile is not null)
+            {
+                BabyProfiles[BabyProfiles.IndexOf(existingProfile)] = babyProfile;
+            }
         }
     }
 }
