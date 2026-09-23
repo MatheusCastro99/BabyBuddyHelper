@@ -57,10 +57,10 @@ namespace BabyBuddyHelper.Services
                 await using TrackerContext db = await CreateContextAsync();
                 TaskModel? storedTask = await db.Tasks.AsNoTracking().FirstOrDefaultAsync(x => x.Id == task.Id);
 
-                if (storedTask is null)
-                    return;
-
-                if (storedTask.GetType() == task.GetType())
+                //A missing row goes through Update too: SaveChanges then affects 0 rows and throws DbUpdateConcurrencyException,
+                //so the caller gets DbCommunicationException instead of a silent success, and the cache is never updated for a
+                //row that wasn't saved. Same behavior as UpdateBabyProfileAsync.
+                if (storedTask is null || storedTask.GetType() == task.GetType())
                 {
                     db.Tasks.Update(task);
                     await db.SaveChangesAsync();
