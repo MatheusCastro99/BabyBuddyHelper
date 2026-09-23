@@ -112,9 +112,11 @@ public partial class ChecklistPage : ContentPage
         }
         catch (DbCommunicationException)
         {
-            //The model never changed, so this puts the tap back. The CheckedChanged it raises stops at the check above.
-            //Reset before the alert, so the corrected state is already visible behind it.
-            checkBox.IsChecked = task.IsCompleted;
+            //The model never changed, so clearing the tap's value makes the checkbox fall back to its binding, which is the
+            //stored state. The CheckedChanged it raises stops at the check above. Reset before the alert, so the corrected
+            //state is already visible behind it. Never assign IsChecked here: a value set from code outranks the OneWay
+            //binding for good, and the recycled checkbox would then show the wrong state for other tasks.
+            checkBox.ClearValue(CheckBox.IsCheckedProperty);
             await AlertService.ShowWriteFailedAsync(this, "Couldn't update this task", "The checkbox is back to how it was. Please try again in a moment.");
             return;
         }
