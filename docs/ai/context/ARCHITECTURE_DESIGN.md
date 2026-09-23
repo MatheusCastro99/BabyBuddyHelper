@@ -6,6 +6,7 @@
 - Models/
 - Services/
 - Interfaces/
+- Exceptions/
 
 ## Current key files:
 
@@ -21,6 +22,7 @@ Services/
 - BabyProfileService.cs
 - BabyFilterService.cs
 - ToastService.cs
+- AlertService.cs
 - TrackerDataSeeder.cs
 - EfTrackerDbService.cs
 
@@ -52,6 +54,12 @@ Collections/
 
 - RangeObservableCollection.cs
 
+Exceptions/
+
+- DbCommunicationException.cs
+
+See the data-flow diagram: [DataFlow.excalidraw](../../DataFlow.excalidraw)
+
 ## Future Architecture Direction
 
-When architectural redesign becomes necessary, Service-based organization is the intended end-state.
+When architectural redesign becomes necessary, Service-based, Feature-based, Layered, and Modular organization are some of the candidates for potential end-state.

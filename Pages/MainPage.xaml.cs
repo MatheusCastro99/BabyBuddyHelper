@@ -1,4 +1,5 @@
-﻿using BabyBuddyHelper.Interfaces;
+﻿using BabyBuddyHelper.Exceptions;
+using BabyBuddyHelper.Interfaces;
 using BabyBuddyHelper.Models;
 using BabyBuddyHelper.Pages;
 using BabyBuddyHelper.Services;
@@ -151,7 +152,16 @@ namespace BabyBuddyHelper
                 return;
             }
 
-            await _babyProfileService.RemoveAsync(babyProfile.Id);
+            try
+            {
+                await _babyProfileService.RemoveAsync(babyProfile.Id);
+            }
+            catch (DbCommunicationException) //Nothing was removed, including the links from its tasks, so there's nothing to refresh
+            {
+                await AlertService.ShowWriteFailedAsync(this, $"Couldn't remove {babyProfile.Name}'s profile", "The profile and its linked tasks haven't changed. Please try again in a moment.");
+                return;
+            }
+
             RefreshDashboardState();
             ToastService.Show(ToastKind.BabyProfileDeleted);
         }

@@ -36,6 +36,8 @@
 
 ✅ Local Data Persistence (EF Core + SQLite)
 
+✅ Friendly recovery when saving or loading fails
+
 ## Planned Features:
 
 Cloud Synchronization

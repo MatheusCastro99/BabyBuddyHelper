@@ -58,14 +58,17 @@ Filters Update: CONCLUDED
 - Oversized-file audit completed.
 - Filtering processes split into dedicated services.
 - Baby profile and checklist/calendar filtering now run through service interfaces.
-- Repository-wide secret audit completed
+- Repository-wide secret audit completed; remaining hardening follow-ups are tracked in issue #51.
 
-> Data Persistence: IN PROGRESS
+> Data Persistence: CONCLUDED
 
 - BabyModel logic has been migrated from stored Age to DateOfBirth with computed age display.
 - `ITrackerDbService` defines the persistence boundary.
 - `TaskListService` and `BabyProfileService` are the cache services backed by `ITrackerDbService`.
 - `EfTrackerDbService` is the active EF Core + SQLite implementation.
+- Database-first writes are complete: `EfTrackerDbService` commits first, `DbCommunicationException` reports database failures, and startup load failures alert the user so they can retry.
+- Debug-only `SimulateDbFailure` and `ResetDatabaseOnStartup` support development-time failure and schema-reset testing.
+- Phase 3 is complete.
 
 ---
 
@@ -129,8 +132,7 @@ Filters Update: CONCLUDED
 	- ADR-004: AddVaccineRecordPage is the single record editor; BabyProfilePage is the entry point.
 	- ADR-006: add IVaccineCatalog as an example.
 	- ADR-008: add IVaccineService as a cache service.
-	- new ADR-012: Vaccine catalog is fixed reference data kept outside the database.
-- Wording review (disclaimer, overdue label, empty states) against UI_GUIDELINES.md.
+- Wording review (disclaimer, overdue label, empty states) against UI_GUIDELINES.md using ux-design skill.
 - Backlog issues for the epic's out-of-scope items and any annotated follow-ups.
 
 ---

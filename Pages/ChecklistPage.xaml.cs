@@ -1,3 +1,4 @@
+using BabyBuddyHelper.Exceptions;
 using BabyBuddyHelper.Interfaces;
 using BabyBuddyHelper.Models;
 using BabyBuddyHelper.Services;
@@ -79,10 +80,19 @@ public partial class ChecklistPage : ContentPage
 
     private async Task DeleteTaskAsync(TaskModel taskToDelete)
     {
-        if (taskToDelete != null)
+        if (taskToDelete == null)
+        {
+            return;
+        }
+
+        try
         {
             await _taskListService.RemoveAsync(taskToDelete.Id);
             ToastService.Show(ToastKind.TaskDeleted);
+        }
+        catch (DbCommunicationException) //Nothing was removed, so the task is still on the list
+        {
+            await AlertService.ShowWriteFailedAsync(this, "Couldn't remove this task", "It's still on your list. Please try again in a moment.");
         }
     }
 
@@ -91,12 +101,25 @@ public partial class ChecklistPage : ContentPage
     //rendered; the model already matches the checkbox then, so only a real user tap gets past the first check.
     private async void OnTaskCompletedChanged(object? sender, CheckedChangedEventArgs e)
     {
-        if (sender is not CheckBox { BindingContext: TaskModel task } || task.IsCompleted == e.Value)
+        if (sender is not CheckBox { BindingContext: TaskModel task } checkBox || task.IsCompleted == e.Value)
         {
             return;
         }
 
-        await _taskListService.SetCompletionAsync(task.Id, e.Value);
+        try
+        {
+            await _taskListService.SetCompletionAsync(task.Id, e.Value);
+        }
+        catch (DbCommunicationException)
+        {
+            //The model never changed, so clearing the tap's value makes the checkbox fall back to its binding, which is the
+            //stored state. The CheckedChanged it raises stops at the check above. Reset before the alert, so the corrected
+            //state is already visible behind it. Never assign IsChecked here: a value set from code outranks the OneWay
+            //binding for good, and the recycled checkbox would then show the wrong state for other tasks.
+            checkBox.ClearValue(CheckBox.IsCheckedProperty);
+            await AlertService.ShowWriteFailedAsync(this, "Couldn't update this task", "The checkbox is back to how it was. Please try again in a moment.");
+            return;
+        }
 
         if (e.Value)
         {

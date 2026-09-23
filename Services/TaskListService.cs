@@ -68,41 +68,50 @@ namespace BabyBuddyHelper.Services
             _tasks.AddRange(storedTasks.OrderByDescending(x => x.TaskPriority));
         }
 
-        //Writes update the in-memory collection first so the UI responds instantly, then persist through ITrackerDbService.
+        //Writes persist through ITrackerDbService first; the cache only changes once the database has committed. A failed save
+        //throws DbCommunicationException before the cache is touched, so it never shows data that wasn't stored.
+        //After the await, entries are found again by Id (ADR-007): the instance found before the save may have been replaced meanwhile.
         public async Task AddAsync(TaskModel task)
         {
+            await _trackerDbService.AddTaskAsync(task);
             Tasks.Add(task);
             OrganizeByPriority();
-            await _trackerDbService.AddTaskAsync(task);
         }
 
         public async Task RemoveAsync(Guid taskId)
         {
-            var existingTask = Tasks.FirstOrDefault(x => x.Id == taskId);
-
-            if (existingTask is null)
+            if (!Tasks.Any(x => x.Id == taskId))
                 return;
 
-            Tasks.Remove(existingTask);
             await _trackerDbService.RemoveTaskAsync(taskId);
+
+            var removedTask = Tasks.FirstOrDefault(x => x.Id == taskId);
+
+            if (removedTask is not null)
+            {
+                Tasks.Remove(removedTask);
+            }
         }
 
         //The replacement may be a different concrete type (task <-> appointment conversion); the entry keeps its Id and slot
         public async Task UpdateAsync(TaskModel task)
         {
-            var existingTask = Tasks.FirstOrDefault(x => x.Id == task.Id);
-
-            if (existingTask is null)
+            if (!Tasks.Any(x => x.Id == task.Id))
                 return;
 
-            var index = Tasks.IndexOf(existingTask);
-            Tasks[index] = task;
             await _trackerDbService.UpdateTaskAsync(task);
+
+            var existingTask = Tasks.FirstOrDefault(x => x.Id == task.Id);
+
+            if (existingTask is not null)
+            {
+                Tasks[Tasks.IndexOf(existingTask)] = task;
+            }
         }
 
-        //Mutates the cached entry in place rather than replacing it: a replacement would raise CollectionChanged and rebuild
-        //the checklist on every tick (scroll jump, rows reordering under the user's finger). Pages that need the new count
-        //refresh on appearing.
+        //Saves a copy carrying the new state, so the cached entry only changes after the database commits. The cached entry is
+        //then mutated in place rather than replaced: a replacement would raise CollectionChanged and rebuild the checklist on
+        //every tick (scroll jump, rows reordering under the user's finger). Pages that need the new count refresh on appearing.
         public async Task SetCompletionAsync(Guid taskId, bool isCompleted)
         {
             var existingTask = Tasks.FirstOrDefault(x => x.Id == taskId);
@@ -110,8 +119,16 @@ namespace BabyBuddyHelper.Services
             if (existingTask is null || existingTask.IsCompleted == isCompleted)
                 return;
 
-            existingTask.IsCompleted = isCompleted;
-            await _trackerDbService.UpdateTaskAsync(existingTask);
+            TaskModel updatedTask = existingTask.Clone();
+            updatedTask.IsCompleted = isCompleted;
+            await _trackerDbService.UpdateTaskAsync(updatedTask);
+
+            var cachedTask = Tasks.FirstOrDefault(x => x.Id == taskId);
+
+            if (cachedTask is not null)
+            {
+                cachedTask.IsCompleted = isCompleted;
+            }
         }
 
         public void OrganizeByPriority()
@@ -148,7 +165,8 @@ namespace BabyBuddyHelper.Services
         }
 
         //Renames need no handling here: tasks only store the baby Id, and pages resolve the name when displaying it.
-        //Removals only update the in-memory copy. The database clears the deleted baby from stored tasks itself (ON DELETE SET NULL, see TrackerContext).
+        //Removals only update the in-memory copy. By the time a profile leaves the cache, the database has already cleared it from
+        //the stored tasks (ON DELETE SET NULL, see TrackerContext), so this mirrors a change that is already saved.
         private void OnBabyProfilesChanged(object? sender, NotifyCollectionChangedEventArgs e)
         {
             if (e.Action == NotifyCollectionChangedAction.Remove && e.OldItems is not null)
@@ -200,29 +218,9 @@ namespace BabyBuddyHelper.Services
         //Replaces the entry instead of mutating it, so CollectionChanged fires and every page refreshes (see ADR-007)
         private static TaskModel CloneWithAssociation(TaskModel task, Guid? associatedBabyId)
         {
-            if (task is AppointmentModel appointment)
-            {
-                return new AppointmentModel(
-                    appointment.AppointmentLocation,
-                    appointment.AppointmentDate,
-                    appointment.AppointmentStartTime,
-                    appointment.AppointmentEndTime,
-                    appointment.TaskPriority,
-                    appointment.TaskName,
-                    appointment.TaskDescription)
-                {
-                    Id = appointment.Id,
-                    IsCompleted = appointment.IsCompleted,
-                    AssociatedBabyId = associatedBabyId
-                };
-            }
-
-            return new TaskModel(task.TaskPriority, task.TaskName, task.TaskDescription)
-            {
-                Id = task.Id,
-                IsCompleted = task.IsCompleted,
-                AssociatedBabyId = associatedBabyId
-            };
+            TaskModel clone = task.Clone();
+            clone.AssociatedBabyId = associatedBabyId;
+            return clone;
         }
 
         public void Dispose()

@@ -1,3 +1,4 @@
+using BabyBuddyHelper.Exceptions;
 using BabyBuddyHelper.Interfaces;
 using BabyBuddyHelper.Models;
 using BabyBuddyHelper.Services;
@@ -118,6 +119,11 @@ public partial class AddTaskPage : ContentPage
                 Debug.WriteLine("Saving Edited Task");
                 await SaveEditedTask();
             }
+        }
+        catch (DbCommunicationException) //Nothing was saved and the modal stays open, so the user can retry without retyping
+        {
+            string itemLabel = IsAppointmentCheckBox.IsChecked ? "appointment" : "task";
+            await AlertService.ShowWriteFailedAsync(this, $"Couldn't save your {itemLabel}", "Everything you entered is still here. Please try again in a moment.");
         }
         finally
         {
