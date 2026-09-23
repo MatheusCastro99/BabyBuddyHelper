@@ -1,3 +1,4 @@
+using BabyBuddyHelper.Exceptions;
 using BabyBuddyHelper.Interfaces;
 using BabyBuddyHelper.Models;
 using BabyBuddyHelper.Services;
@@ -62,6 +63,11 @@ public partial class AddBabyPage : ContentPage
         try
         {
             await SaveProfile();
+        }
+        catch (DbCommunicationException) //Nothing was saved and the modal stays open, so the user can retry without retyping
+        {
+            //Only reachable after validation, so the name is never empty here
+            await AlertService.ShowWriteFailedAsync(this, $"Couldn't save {NameEntry.Text.Trim()}'s profile", "Everything you entered is still here. Please try again in a moment.");
         }
         finally
         {
