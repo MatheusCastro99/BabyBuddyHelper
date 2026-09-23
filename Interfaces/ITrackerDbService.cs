@@ -4,6 +4,7 @@ namespace BabyBuddyHelper.Interfaces
 {
     //Persistence boundary for tasks, appointments, and baby profiles. Only the cache services (TaskListService,
     //BabyProfileService) talk to it; pages never do. Records are located by Id (ADR-007).
+    //Every method throws DbCommunicationException when the database can't be reached or rejects the command.
     public interface ITrackerDbService
     {
         Task<IReadOnlyList<TaskModel>> GetTasksAsync();

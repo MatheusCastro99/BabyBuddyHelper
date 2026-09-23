@@ -1,18 +1,28 @@
 using BabyBuddyHelper.Data;
+using BabyBuddyHelper.Exceptions;
 using BabyBuddyHelper.Interfaces;
 using BabyBuddyHelper.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Data.Common;
 using System.Diagnostics;
+using System.Runtime.CompilerServices;
 
 namespace BabyBuddyHelper.Services
 {
     //EF Core SQLite implementation of the persistence boundary. Every call uses its own short-lived context.
+    //Every public method runs through ExecuteReadAsync or ExecuteWriteAsync, which turn database failures into DbCommunicationException.
     public class EfTrackerDbService : ITrackerDbService
     {
 #if DEBUG
+        private enum SimulatedDbFailure { None, Load, Save }
+
         //Set to true for one run after a schema change: EnsureCreated never alters an existing database. Set it back afterwards,
         //or every launch starts from an empty database. static readonly rather than const, so the compiler doesn't flag dead code.
         private static readonly bool ResetDatabaseOnStartup = false;
+
+        //Set for a run to exercise the failure handling. Load fails every read (the startup load), Save fails every write.
+        //The call throws before it reaches the database, so no stored data is touched. Set it back to None afterwards.
+        private static readonly SimulatedDbFailure SimulateDbFailure = SimulatedDbFailure.None;
 #endif
 
         private readonly IDbContextFactory<TrackerContext> _contextFactory;
@@ -23,75 +33,136 @@ namespace BabyBuddyHelper.Services
             _contextFactory = contextFactory;
         }
 
-        public async Task<IReadOnlyList<TaskModel>> GetTasksAsync()
-        {
-            await using TrackerContext db = await CreateContextAsync();
-            return await db.Tasks.AsNoTracking().ToListAsync();
-        }
+        public Task<IReadOnlyList<TaskModel>> GetTasksAsync() =>
+            ExecuteReadAsync<IReadOnlyList<TaskModel>>(async () =>
+            {
+                await using TrackerContext db = await CreateContextAsync();
+                return await db.Tasks.AsNoTracking().ToListAsync();
+            });
 
-        public async Task AddTaskAsync(TaskModel task)
-        {
-            await using TrackerContext db = await CreateContextAsync();
-            db.Tasks.Add(task);
-            await db.SaveChangesAsync();
-        }
+        public Task AddTaskAsync(TaskModel task) =>
+            ExecuteWriteAsync(async () =>
+            {
+                await using TrackerContext db = await CreateContextAsync();
+                db.Tasks.Add(task);
+                await db.SaveChangesAsync();
+            });
 
         //A task <-> appointment conversion changes the row's type, which EF can't do in place. The row is deleted and
         //re-inserted under the same Id, in one transaction so a failure can't lose the record.
-        public async Task UpdateTaskAsync(TaskModel task)
-        {
-            await using TrackerContext db = await CreateContextAsync();
-            TaskModel? storedTask = await db.Tasks.AsNoTracking().FirstOrDefaultAsync(x => x.Id == task.Id);
-
-            if (storedTask is null)
-                return;
-
-            if (storedTask.GetType() == task.GetType())
+        public Task UpdateTaskAsync(TaskModel task) =>
+            ExecuteWriteAsync(async () =>
             {
-                db.Tasks.Update(task);
+                await using TrackerContext db = await CreateContextAsync();
+                TaskModel? storedTask = await db.Tasks.AsNoTracking().FirstOrDefaultAsync(x => x.Id == task.Id);
+
+                if (storedTask is null)
+                    return;
+
+                if (storedTask.GetType() == task.GetType())
+                {
+                    db.Tasks.Update(task);
+                    await db.SaveChangesAsync();
+                    return;
+                }
+
+                await using var transaction = await db.Database.BeginTransactionAsync();
+                await db.Tasks.Where(x => x.Id == task.Id).ExecuteDeleteAsync();
+                db.Tasks.Add(task);
                 await db.SaveChangesAsync();
-                return;
-            }
+                await transaction.CommitAsync();
+            });
 
-            await using var transaction = await db.Database.BeginTransactionAsync();
-            await db.Tasks.Where(x => x.Id == task.Id).ExecuteDeleteAsync();
-            db.Tasks.Add(task);
-            await db.SaveChangesAsync();
-            await transaction.CommitAsync();
-        }
+        public Task RemoveTaskAsync(Guid taskId) =>
+            ExecuteWriteAsync(async () =>
+            {
+                await using TrackerContext db = await CreateContextAsync();
+                await db.Tasks.Where(x => x.Id == taskId).ExecuteDeleteAsync();
+            });
 
-        public async Task RemoveTaskAsync(Guid taskId)
-        {
-            await using TrackerContext db = await CreateContextAsync();
-            await db.Tasks.Where(x => x.Id == taskId).ExecuteDeleteAsync();
-        }
+        public Task<IReadOnlyList<BabyModel>> GetBabyProfilesAsync() =>
+            ExecuteReadAsync<IReadOnlyList<BabyModel>>(async () =>
+            {
+                await using TrackerContext db = await CreateContextAsync();
+                return await db.BabyProfiles.AsNoTracking().ToListAsync();
+            });
 
-        public async Task<IReadOnlyList<BabyModel>> GetBabyProfilesAsync()
-        {
-            await using TrackerContext db = await CreateContextAsync();
-            return await db.BabyProfiles.AsNoTracking().ToListAsync();
-        }
+        public Task AddBabyProfileAsync(BabyModel babyProfile) =>
+            ExecuteWriteAsync(async () =>
+            {
+                await using TrackerContext db = await CreateContextAsync();
+                db.BabyProfiles.Add(babyProfile);
+                await db.SaveChangesAsync();
+            });
 
-        public async Task AddBabyProfileAsync(BabyModel babyProfile)
-        {
-            await using TrackerContext db = await CreateContextAsync();
-            db.BabyProfiles.Add(babyProfile);
-            await db.SaveChangesAsync();
-        }
-
-        public async Task UpdateBabyProfileAsync(BabyModel babyProfile)
-        {
-            await using TrackerContext db = await CreateContextAsync();
-            db.BabyProfiles.Update(babyProfile);
-            await db.SaveChangesAsync();
-        }
+        public Task UpdateBabyProfileAsync(BabyModel babyProfile) =>
+            ExecuteWriteAsync(async () =>
+            {
+                await using TrackerContext db = await CreateContextAsync();
+                db.BabyProfiles.Update(babyProfile);
+                await db.SaveChangesAsync();
+            });
 
         //The foreign key's ON DELETE SET NULL clears this baby from its tasks in the same statement
-        public async Task RemoveBabyProfileAsync(Guid babyId)
+        public Task RemoveBabyProfileAsync(Guid babyId) =>
+            ExecuteWriteAsync(async () =>
+            {
+                await using TrackerContext db = await CreateContextAsync();
+                await db.BabyProfiles.Where(x => x.Id == babyId).ExecuteDeleteAsync();
+            });
+
+        //Context creation runs inside the wrapped operation, so a database that can't be created or opened surfaces the same way.
+        private static async Task<T> ExecuteReadAsync<T>(Func<Task<T>> operation, [CallerMemberName] string operationName = "")
         {
-            await using TrackerContext db = await CreateContextAsync();
-            await db.BabyProfiles.Where(x => x.Id == babyId).ExecuteDeleteAsync();
+#if DEBUG
+            ThrowIfSimulated(SimulatedDbFailure.Load, operationName);
+#endif
+            try
+            {
+                return await operation();
+            }
+            catch (Exception ex) when (IsDatabaseFailure(ex))
+            {
+                throw Wrap(ex, operationName);
+            }
         }
+
+        private static async Task ExecuteWriteAsync(Func<Task> operation, [CallerMemberName] string operationName = "")
+        {
+#if DEBUG
+            ThrowIfSimulated(SimulatedDbFailure.Save, operationName);
+#endif
+            try
+            {
+                await operation();
+            }
+            catch (Exception ex) when (IsDatabaseFailure(ex))
+            {
+                throw Wrap(ex, operationName);
+            }
+        }
+
+        //SqliteException derives from DbException. Anything else is a programming error and is left to surface as-is.
+        private static bool IsDatabaseFailure(Exception ex) => ex is DbUpdateException or DbException;
+
+        //A model-vs-schema bug (e.g. a NULL written into a NOT NULL column) is also a DbUpdateException, so the user sees a failed
+        //save. The full inner exception goes to Debug output so the real cause stays visible while developing.
+        private static DbCommunicationException Wrap(Exception ex, string operationName)
+        {
+            Debug.WriteLine($"Database failure in {operationName}: {ex}");
+            return new DbCommunicationException($"Database communication failed during {operationName}.", ex);
+        }
+
+#if DEBUG
+        private static void ThrowIfSimulated(SimulatedDbFailure failure, string operationName)
+        {
+            if (SimulateDbFailure != failure)
+                return;
+
+            Debug.WriteLine($"Simulated {failure} failure in {operationName}. Set SimulateDbFailure back to None afterwards.");
+            throw new DbCommunicationException($"Simulated {failure} failure during {operationName}.");
+        }
+#endif
 
         private async Task<TrackerContext> CreateContextAsync()
         {
