@@ -117,6 +117,7 @@ Guid migration was completed because update operations became unreliable.
 See ADR-007 in DECISIONS.md for the mandatory Id-based lookup/update/remove rule.
 
 Checklist completion must remain one-way bound in XAML and must route through `SetCompletionAsync`; switching it back to two-way would skip persistence.
+Never set a bound property from code (for example, `checkBox.IsChecked = ...`); the binding must own the state. Use `ClearValue` when a UI reset is required.
 
 Do not revert.
 
@@ -150,6 +151,7 @@ Current cache services:
 Persistence boundary:
 
 - ITrackerDbService
+- `EfTrackerDbService` is the current implementation
 
 TaskListService owns:
 
@@ -183,7 +185,12 @@ Current storage:
 
 Reason:
 
-The persistence boundary and SQLite backend are active; schema evolution currently uses `EnsureCreated` with debug-only reset during development.
+The persistence boundary and SQLite backend are active. Writes are database-first, failed writes throw `DbCommunicationException`, and startup load failures surface alerts so the user can retry or continue.
+Schema evolution currently uses `EnsureCreated` with debug-only reset during development.
+
+Debug-only flags:
+- `ResetDatabaseOnStartup` for one-run schema resets after a schema change
+- `SimulateDbFailure` for exercising write-failure and startup-retry paths
 
 Future persistence plan includes:
     Azure for cloud synchronization and redundancy.

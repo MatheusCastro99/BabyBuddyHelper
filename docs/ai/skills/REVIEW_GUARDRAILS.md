@@ -16,7 +16,7 @@ It is preloaded by the `red-team` agent, and can also be used directly in a sess
 
 | Area | Source of truth |
 |---|---|
-| Data ownership: cache services are the only writers; only they touch `ITrackerDbService` | ADR-001, ADR-008 |
+| Data ownership: cache services are the only write entry points; `EfTrackerDbService` commits first and the cache mirrors the persisted result | ADR-001, ADR-008, ADR-011 |
 | Id-based lookup, update and remove; no reference equality | ADR-007 |
 | Single add/edit pages (`AddTaskPage`, `AddBabyPage`) | ADR-004 |
 | Syncfusion types stay in the UI layer | ADR-003 |
@@ -28,6 +28,7 @@ It also carries the project's **known regression traps**:
 
 - Sorting from `CollectionChanged` causes re-entrancy exceptions.
 - Checklist completion must stay `OneWay` and go through `SetCompletionAsync`.
+- Never set a bound property from code (for example, `checkBox.IsChecked = ...`); if a UI reset is required, use `ClearValue` so the binding remains authoritative.
 - Converting between task and appointment replaces the instance.
 - Un-awaited async saves lose their exceptions.
 

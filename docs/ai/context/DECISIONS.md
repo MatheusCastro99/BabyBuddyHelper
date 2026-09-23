@@ -104,8 +104,7 @@ Only cache services should interact with the persistence boundary.
 Reason:
 - Keeps pages out of storage concerns.
 - Keeps the UI responsive while the cache services handle persistence through a separate boundary.
-- Reads come from the cache. 
-- Writes update the cache first and are saved immediately, with no deferral or batching
+- Write, read, and failure order, and the full data path: see ADR-014
 - Keeps persistence isolated behind `ITrackerDbService`, so implementation swaps remain localized.
 - Supports one-context-per-operation persistence through `IDbContextFactory<TrackerContext>`.
 
@@ -142,3 +141,56 @@ Reason:
 - Services continue using Id-based operations while persisted constraints guarantee data consistency.
 
 Status: Accepted, permanent.
+
+### ADR-012
+
+The vaccine catalog is fixed reference data and lives outside the database.
+
+Reason:
+- Vaccine definitions are not user-owned records.
+- The catalog should remain stable and reusable while vaccination records stay per-baby.
+- Keeping the catalog outside the database avoids unnecessary churn when local persistence evolves.
+
+Status: Accepted, current.
+
+### ADR-013
+
+ToastService confirms successful user actions, AlertService reports failures that need acknowledgement, and the companion stays out of alert flows.
+
+Reason:
+- Positive actions should feel encouraging and lightweight.
+- Failures need a blocking, acknowledged response so the user knows the app did not save or load as expected.
+- Alert text belongs to recovery and safety, not to the companion persona.
+- Cub remains part of positive feedback only.
+
+Status: Accepted, current.
+
+### ADR-014
+Data flows through one fixed path. Every layer talks only to the interface of the layer below it.
+
+Write path:
+Page (UI) -> ITaskListService / IBabyProfileService (in-memory cache services) -> ITrackerDbService (EfTrackerDbService) -> TrackerContext -> babybuddy.db3 (SQLite)
+
+Return path:
+The database commits -> the call returns up the same path -> the cache service updates its collection -> the UI refreshes through bindings.
+
+Failure path:
+EfTrackerDbService throws DbCommunicationException -> the cache is left untouched -> the page tells the user through an alert.
+
+Read path:
+Pages read from the cache services only. The database is read once, at startup, to fill the cache.
+
+Rules:
+- The database is the source of truth. The cache only mirrors what the database has already committed.
+- Pages never skip a layer. They never talk to ITrackerDbService, TrackerContext or the database (ADR-001, ADR-008).
+- Each database call uses its own short-lived TrackerContext, created through IDbContextFactory (ADR-002).
+
+Reason:
+- One write order means no rollback: a failed save leaves nothing to undo.
+- The UI can never show data that wasn't stored.
+- Constraints enforced by the database (ADR-011) reach the cache as results, not predictions.
+- Every layer can be swapped behind its interface without touching the layers above it.
+
+Diagram: docs/DataFlow.excalidraw
+
+Status: Accepted, current.

@@ -120,6 +120,9 @@ Pages/
 Models/
 Services/
 Interfaces/
+Data/
+Collections/
+Exceptions/
 ```
 
 Business logic is centralized through services and interfaces, including:
@@ -166,6 +169,7 @@ BabyBuddyHelper/
 │   ├── BabyProfileService.cs
 │   ├── BabyFilterService.cs
 │   ├── EfTrackerDbService.cs
+│   ├── AlertService.cs
 │   ├── TrackerDataSeeder.cs
 │   └── ToastService.cs
 │
@@ -184,6 +188,9 @@ BabyBuddyHelper/
 │
 ├── Collections/
 │   └── RangeObservableCollection.cs
+│
+├── Exceptions/
+│   └── DbCommunicationException.cs
 │
 ├── Platforms/
 ├── Resources/
