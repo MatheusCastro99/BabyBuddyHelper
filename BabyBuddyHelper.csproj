@@ -120,33 +120,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Compile Update="Pages\AddTaskPage.xaml.cs">
-	    <DependentUpon>AddTaskPage.xaml</DependentUpon>
-	  </Compile>
-	  <Compile Update="Pages\AddBabyPage.xaml.cs">
-	    <DependentUpon>AddBabyPage.xaml</DependentUpon>
-	  </Compile>
-	  <Compile Update="Pages\CalendarPage.xaml.cs">
-	    <DependentUpon>CalendarPage.xaml</DependentUpon>
-	  </Compile>
-	</ItemGroup>
-
-	<ItemGroup>
-	  <MauiXaml Update="Pages\AddBabyPage.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="Pages\ChecklistPage.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="Pages\AddTaskPage.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="Pages\CalendarPage.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	</ItemGroup>
-
-	<ItemGroup>
 	  <Folder Include=".github\" />
 	  <Folder Include="Platforms\Windows\Handlers\" />
 	</ItemGroup>

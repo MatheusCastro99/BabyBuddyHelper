@@ -1,6 +1,7 @@
-using BabyBuddyHelper.Exceptions;
-using BabyBuddyHelper.Interfaces;
-using BabyBuddyHelper.Services;
+using BabyBuddyHelper.Core.Exceptions;
+using BabyBuddyHelper.Core.Interfaces;
+using BabyBuddyHelper.Core.Services;
+using BabyBuddyHelper.UI.Services;
 
 namespace BabyBuddyHelper
 {

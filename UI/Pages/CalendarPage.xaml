@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:scheduler="clr-namespace:Syncfusion.Maui.Scheduler;assembly=Syncfusion.Maui.Scheduler"
+             xmlns:controls="clr-namespace:BabyBuddyHelper.UI.Controls"
+             x:Class="BabyBuddyHelper.UI.Pages.CalendarPage"
+             Title="Calendar"
+             BackgroundColor="{StaticResource BabyBuddyBackground}">
+    <Grid RowDefinitions="Auto, Auto, *" Padding="20" RowSpacing="16">
+        <VerticalStackLayout Grid.Row="0" Spacing="6" Margin="0,8,0,0">
+            <Label Text="Your week" Style="{StaticResource PageTitle}" HorizontalTextAlignment="Center" />
+            <Label Text="A gentle look at what’s coming up." Style="{StaticResource BodyText}" HorizontalTextAlignment="Center" />
+        </VerticalStackLayout>
+
+        <Button Grid.Row="1"
+                x:Name="CalendarBabyFilterButton"
+                Text="All babies"
+                Style="{StaticResource SecondaryAction}"
+                HorizontalOptions="Start"
+                Clicked="OnCalendarBabyFilterClicked" />
+
+        <Border Grid.Row="2" Padding="12" BackgroundColor="{StaticResource BabyBuddySurface}" StrokeThickness="0" StrokeShape="RoundRectangle 28">
+            <scheduler:SfScheduler
+                x:Name="Calendar"
+                View="Week"
+                IsAppointmentToolTipEnabled="True"
+                DoubleTapped="OnCalendarDoubleTapped"
+                SelectedDate="{Binding SelectedDate, Mode=TwoWay}"
+                BackgroundColor="{StaticResource BabyBuddySurface}"
+                MinimumHeightRequest="420">
+            </scheduler:SfScheduler>
+        </Border>
+
+        <controls:ToastView Grid.RowSpan="3" />
+    </Grid>
+</ContentPage>

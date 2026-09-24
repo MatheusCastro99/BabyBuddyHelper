@@ -1,4 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using BabyBuddyHelper.Core.Interfaces;
+using BabyBuddyHelper.Core.Persistence;
+using BabyBuddyHelper.Core.Services;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Syncfusion.Maui.Core.Hosting;
 using System.Diagnostics;
@@ -21,11 +24,11 @@ namespace BabyBuddyHelper
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                 })
                 .ConfigureSyncfusionCore()
-                .Services.AddSingleton<Interfaces.ITaskListService, Services.TaskListService>()
-                .AddSingleton<Interfaces.IBabyProfileService, Services.BabyProfileService>()
-                .AddSingleton<Interfaces.IBabyFilterService, Services.BabyFilterService>()
-                .AddSingleton<Interfaces.ITrackerDbService, Services.EfTrackerDbService>()
-                .AddDbContextFactory<Data.TrackerContext>(options =>
+                .Services.AddSingleton<ITaskListService, TaskListService>()
+                .AddSingleton<IBabyProfileService, BabyProfileService>()
+                .AddSingleton<IBabyFilterService, BabyFilterService>()
+                .AddSingleton<ITrackerDbService, EfTrackerDbService>()
+                .AddDbContextFactory<TrackerContext>(options =>
                     options.UseSqlite($"Data Source={Path.Combine(FileSystem.AppDataDirectory, "babybuddy.db3")}"));
 
 #if DEBUG

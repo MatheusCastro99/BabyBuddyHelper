@@ -3,8 +3,7 @@
     x:Class="BabyBuddyHelper.AppShell"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:local="clr-namespace:BabyBuddyHelper"
-    xmlns:pages="clr-namespace:BabyBuddyHelper.Pages"
+    xmlns:pages="clr-namespace:BabyBuddyHelper.UI.Pages"
     Title="BabyBuddyHelper"
     Shell.BackgroundColor="{StaticResource BabyBuddyBackground}"
     Shell.ForegroundColor="{StaticResource BabyBuddyText}"
@@ -17,7 +16,7 @@
     <TabBar >
         <ShellContent
             Title="Home"
-            ContentTemplate="{DataTemplate local:MainPage}"
+            ContentTemplate="{DataTemplate pages:MainPage}"
             Route="MainPage" />
         <ShellContent
             Title="Checklist"
