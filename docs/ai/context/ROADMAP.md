@@ -96,6 +96,8 @@ Filters Update: CONCLUDED
 			- CompanionView, ToastView
 		- Services/ 
 			- ToastService, AlertService
+		- Converters/
+			- AssociatedBabyNameConverter
 - Rest remain unchanged (App.xaml, AppShell.xaml, Resources/, Assets/, etc.)
 
 ## Phase 4:
