@@ -1,11 +1,11 @@
-using BabyBuddyHelper.Interfaces;
-using BabyBuddyHelper.Models;
+using BabyBuddyHelper.Core.Interfaces;
+using BabyBuddyHelper.Core.Models;
 using Syncfusion.Maui.DataSource.Extensions;
 using Syncfusion.Maui.Scheduler;
 using System.Collections.ObjectModel;
 
 
-namespace BabyBuddyHelper.Pages;
+namespace BabyBuddyHelper.UI.Pages;
 
 public partial class CalendarPage : ContentPage
 {

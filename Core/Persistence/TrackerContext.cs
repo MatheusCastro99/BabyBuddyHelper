@@ -1,8 +1,8 @@
-using BabyBuddyHelper.Models;
+using BabyBuddyHelper.Core.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace BabyBuddyHelper.Data
+namespace BabyBuddyHelper.Core.Persistence
 {
     //EF Core SQLite context. Only EfTrackerDbService uses it, through IDbContextFactory (one short-lived context per operation).
     public class TrackerContext : DbContext

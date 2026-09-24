@@ -1,9 +1,9 @@
-using BabyBuddyHelper.Collections;
-using BabyBuddyHelper.Interfaces;
-using BabyBuddyHelper.Models;
+using BabyBuddyHelper.Core.Collections;
+using BabyBuddyHelper.Core.Interfaces;
+using BabyBuddyHelper.Core.Models;
 using System.Collections.ObjectModel;
 
-namespace BabyBuddyHelper.Services
+namespace BabyBuddyHelper.Core.Services
 {
     //In-memory cache of baby profiles. Writes persist through ITrackerDbService first; the collection only changes once the
     //database has committed, so a failed save (DbCommunicationException) leaves it untouched. Entries are found again by Id after the await (ADR-007).

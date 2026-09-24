@@ -1,7 +1,7 @@
-using BabyBuddyHelper.Interfaces;
-using BabyBuddyHelper.Models;
+using BabyBuddyHelper.Core.Interfaces;
+using BabyBuddyHelper.Core.Models;
 
-namespace BabyBuddyHelper.Services
+namespace BabyBuddyHelper.Core.Services
 {
     //Seeds mock tasks for development. Debug builds only, and only when the loaded cache has no tasks, so relaunching
     //never duplicates them. Writes go through ITaskListService (ADR-001), exercising the full cache -> database path.

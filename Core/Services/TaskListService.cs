@@ -1,10 +1,10 @@
-﻿using BabyBuddyHelper.Collections;
-using BabyBuddyHelper.Interfaces;
-using BabyBuddyHelper.Models;
+﻿using BabyBuddyHelper.Core.Collections;
+using BabyBuddyHelper.Core.Interfaces;
+using BabyBuddyHelper.Core.Models;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 
-namespace BabyBuddyHelper.Services
+namespace BabyBuddyHelper.Core.Services
 {
     public class TaskListService : ITaskListService, IDisposable //Implemente Interface ITaskListService to provide functionality for managing a list of tasks.
     {                                                 //This class will be used to add, remove, update, and organize tasks in the application.

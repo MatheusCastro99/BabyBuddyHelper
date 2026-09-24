@@ -1,4 +1,4 @@
-namespace BabyBuddyHelper.Services
+namespace BabyBuddyHelper.UI.Services
 {
     /// <summary>
     /// Categories of actions that can trigger companion-themed toast feedback.

@@ -1,6 +1,6 @@
-using BabyBuddyHelper.Models;
+using BabyBuddyHelper.Core.Models;
 
-namespace BabyBuddyHelper.Interfaces
+namespace BabyBuddyHelper.Core.Interfaces
 {
     //Persistence boundary for tasks, appointments, and baby profiles. Only the cache services (TaskListService,
     //BabyProfileService) talk to it; pages never do. Records are located by Id (ADR-007).

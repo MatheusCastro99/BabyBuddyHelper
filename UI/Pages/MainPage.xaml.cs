@@ -1,12 +1,11 @@
-﻿using BabyBuddyHelper.Exceptions;
-using BabyBuddyHelper.Interfaces;
-using BabyBuddyHelper.Models;
-using BabyBuddyHelper.Pages;
-using BabyBuddyHelper.Services;
+﻿using BabyBuddyHelper.Core.Exceptions;
+using BabyBuddyHelper.Core.Interfaces;
+using BabyBuddyHelper.Core.Models;
+using BabyBuddyHelper.UI.Services;
 using System.Collections.ObjectModel;
 using System.Globalization;
 
-namespace BabyBuddyHelper
+namespace BabyBuddyHelper.UI.Pages
 {
     public partial class MainPage : ContentPage
     {

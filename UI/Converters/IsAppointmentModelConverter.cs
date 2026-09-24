@@ -1,7 +1,7 @@
-﻿using BabyBuddyHelper.Models;
+﻿using BabyBuddyHelper.Core.Models;
 using System.Globalization;
 
-namespace BabyBuddyHelper.Resources.Styles
+namespace BabyBuddyHelper.UI.Converters
 {
     internal class IsAppointmentModelConverter : IValueConverter
     {

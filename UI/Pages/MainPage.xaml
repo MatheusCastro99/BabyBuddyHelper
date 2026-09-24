@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:controls="clr-namespace:BabyBuddyHelper.Controls"
-             x:Class="BabyBuddyHelper.MainPage"
+             xmlns:controls="clr-namespace:BabyBuddyHelper.UI.Controls"
+             x:Class="BabyBuddyHelper.UI.Pages.MainPage"
              Title="Home"
              BackgroundColor="{StaticResource BabyBuddyBackground}">
     <Grid>

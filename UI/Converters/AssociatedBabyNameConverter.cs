@@ -1,6 +1,6 @@
 using System.Globalization;
 
-namespace BabyBuddyHelper.Resources.Styles
+namespace BabyBuddyHelper.UI.Converters
 {
     //Resolves a task's AssociatedBabyId into the baby's display name at render time, so tasks only store the Id.
     //Expects values[0] = AssociatedBabyId (Guid?) and values[1] = a name lookup (IReadOnlyDictionary<Guid, string>).

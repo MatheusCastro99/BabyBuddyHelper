@@ -1,13 +1,12 @@
-using BabyBuddyHelper.Data;
-using BabyBuddyHelper.Exceptions;
-using BabyBuddyHelper.Interfaces;
-using BabyBuddyHelper.Models;
+using BabyBuddyHelper.Core.Exceptions;
+using BabyBuddyHelper.Core.Interfaces;
+using BabyBuddyHelper.Core.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Data.Common;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 
-namespace BabyBuddyHelper.Services
+namespace BabyBuddyHelper.Core.Persistence
 {
     //EF Core SQLite implementation of the persistence boundary. Every call uses its own short-lived context.
     //Every public method runs through ExecuteReadAsync or ExecuteWriteAsync, which turn database failures into DbCommunicationException.

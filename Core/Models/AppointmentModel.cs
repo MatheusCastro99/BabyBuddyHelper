@@ -1,4 +1,4 @@
-﻿namespace BabyBuddyHelper.Models
+﻿namespace BabyBuddyHelper.Core.Models
 {
     public class AppointmentModel : TaskModel
     {

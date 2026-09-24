@@ -1,6 +1,6 @@
-using BabyBuddyHelper.Services;
+using BabyBuddyHelper.UI.Services;
 
-namespace BabyBuddyHelper.Controls
+namespace BabyBuddyHelper.UI.Controls
 {
     /// <summary>
     /// Non-intrusive toast used to give short, companion-themed feedback

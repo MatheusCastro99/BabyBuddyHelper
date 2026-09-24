@@ -1,7 +1,7 @@
-using BabyBuddyHelper.Models;
+using BabyBuddyHelper.Core.Models;
 using System.Collections.ObjectModel;
 
-namespace BabyBuddyHelper.Interfaces
+namespace BabyBuddyHelper.Core.Interfaces
 {
     public interface IBabyProfileService
     {

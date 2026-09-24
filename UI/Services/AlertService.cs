@@ -1,4 +1,4 @@
-namespace BabyBuddyHelper.Services
+namespace BabyBuddyHelper.UI.Services
 {
     //Alerts for moments when the app didn't behave as expected and the user must acknowledge it. Confirmations and
     //encouragement stay in ToastService. Cub is deliberately absent here: the companion only appears in positive moments.

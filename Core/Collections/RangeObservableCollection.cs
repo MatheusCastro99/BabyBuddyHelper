@@ -2,7 +2,7 @@ using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
 
-namespace BabyBuddyHelper.Collections
+namespace BabyBuddyHelper.Core.Collections
 {
     //ObservableCollection that can add many items with one notification. Adding N items one at a time raises N CollectionChanged
     //events, and every subscribed page rebuilds on each one; AddRange raises a single Reset instead.

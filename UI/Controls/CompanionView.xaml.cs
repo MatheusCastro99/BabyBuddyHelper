@@ -1,6 +1,6 @@
 using Microsoft.Maui.Dispatching;
 
-namespace BabyBuddyHelper.Controls
+namespace BabyBuddyHelper.UI.Controls
 {
     /// <summary>
     /// Lightweight companion character (a friendly lion cub) that offers

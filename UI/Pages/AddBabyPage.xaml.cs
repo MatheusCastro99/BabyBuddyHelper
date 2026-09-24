@@ -1,10 +1,10 @@
-using BabyBuddyHelper.Exceptions;
-using BabyBuddyHelper.Interfaces;
-using BabyBuddyHelper.Models;
-using BabyBuddyHelper.Services;
+using BabyBuddyHelper.Core.Exceptions;
+using BabyBuddyHelper.Core.Interfaces;
+using BabyBuddyHelper.Core.Models;
+using BabyBuddyHelper.UI.Services;
 using System.Globalization;
 
-namespace BabyBuddyHelper.Pages;
+namespace BabyBuddyHelper.UI.Pages;
 
 public partial class AddBabyPage : ContentPage
 {
