@@ -39,6 +39,7 @@ If one side makes a mistake, the other is positioned to catch it.
 - **Applies only the listed items.** Anything else it finds is reported and waits for the maintainer's confirmation.
 - **The code wins.** An item that doesn't match the code is left unapplied and reported with evidence.
 - **Checks the whole section it edits,** not just the listed facts. It reports extra errors without fixing them.
+- **Starts from a `git ls-files` snapshot.** Any doc section that lists a set (models, folders, files, pages) is compared against it in both directions: what's missing, and what no longer exists.
 - **Reports every adaptation** of the suggested text, including format changes, so the report matches its diff.
 - **ADRs:**
   - It may correct a listed factual detail inside an existing ADR, such as a path or class name.
@@ -67,3 +68,4 @@ The report must match its diff exactly, since the maintainer reviews one against
 
 - 2026-09-24 (#68): Created. It brings back a documentation agent after ProjectHistorian was retired in #33. This time its scope is narrower: it applies a list the main session prepared, instead of tracking docs on its own.
 - 2026-09-24 (#68, #66): First run, on the Phase 3.5 docs: all 10 items applied correctly. It had two misses: a format adaptation it didn't report, and a stale fact inside an edited section that it didn't check. Two rules were added in response: check every fact in an edited section, and report format changes as adaptations.
+- 2026-09-24 (#68, #66): Second run, on the PRD (full solution structure, data types, purpose, original estimate): all items applied correctly. It again missed something absent rather than wrong (`BabyModel` missing from Custom Data Types). A `git ls-files` snapshot plus a two-way set comparison was added to its first step in response.
