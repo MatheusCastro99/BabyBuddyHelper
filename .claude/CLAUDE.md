@@ -51,7 +51,7 @@ Coding and design constraints
 - Prefer small, safe changes. Avoid big architectural rewrites unless explicitly requested.
 - Avoid introducing: CQRS, MediatR, Repository pattern, heavy MVVM unless the user explicitly requests an MVVM migration.
 - Tests and builds: always run `dotnet build` after code changes; fix warnings where possible.
-- Place new files by layer: Core/ (models, services, interfaces, persistence) or UI/ (pages, controls, UI services, converters). Namespaces follow folders.
+- Place new files by layer: Core/ (models, services, interfaces, persistence, collections, exceptions) or UI/ (pages, controls, UI services, converters). Namespaces follow folders.
 
 Documentation rules
 -------------------
