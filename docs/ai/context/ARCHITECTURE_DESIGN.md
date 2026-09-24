@@ -2,38 +2,55 @@
 
 ## Structure:
 
-- Pages/
-- Models/
-- Services/
-- Interfaces/
-- Exceptions/
+- Core/
+  - Models/
+  - Services/
+  - Interfaces/
+  - Persistence/
+  - Collections/
+  - Exceptions/
+- UI/
+  - Pages/
+  - Controls/
+  - Services/
+  - Converters/
 
 ## Current key files:
 
-Models/
+Core/Models/
 
 - TaskModel.cs
 - AppointmentModel.cs
 - BabyModel.cs
 
-Services/
+Core/Services/
 
 - TaskListService.cs
 - BabyProfileService.cs
 - BabyFilterService.cs
-- ToastService.cs
-- AlertService.cs
 - TrackerDataSeeder.cs
-- EfTrackerDbService.cs
 
-Interfaces/
+Core/Interfaces/
 
 - ITaskListService.cs
 - IBabyProfileService.cs
 - IBabyFilterService.cs
 - ITrackerDbService.cs
 
-Pages/
+Core/Persistence/
+
+- TrackerContext.cs
+- EfTrackerDbService.cs
+
+Core/Collections/
+
+- RangeObservableCollection.cs
+
+Core/Exceptions/
+
+- DbCommunicationException.cs
+
+UI/Pages/
 
 - MainPage
 - ChecklistPage
@@ -41,22 +58,20 @@ Pages/
 - AddBabyPage
 - CalendarPage
 
-Controls/
+UI/Controls/
 
 - CompanionView
 - ToastView
 
-Data/
+UI/Services/
 
-- TrackerContext.cs
+- ToastService.cs
+- AlertService.cs
 
-Collections/
+UI/Converters/
 
-- RangeObservableCollection.cs
-
-Exceptions/
-
-- DbCommunicationException.cs
+- AssociatedBabyNameConverter.cs
+- IsAppointmentModelConverter.cs
 
 See the data-flow diagram: [DataFlow.excalidraw](../../DataFlow.excalidraw)
 

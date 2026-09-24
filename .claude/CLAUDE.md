@@ -18,6 +18,7 @@ When planning or making changes, the agent MUST read these files first and follo
 - docs/ai/context/ARCHITECTURE_DESIGN.md
 - docs/ai/context/CURRENT_STATE.md
 - docs/ai/context/DECISIONS.md
+- docs/ai/context/UI_GUIDELINES.md
 - docs/ai/context/ROADMAP.md
 - docs/README.md
 - docs/FeaturesSet.md
@@ -26,8 +27,9 @@ AI tooling (Claude Code)
 ------------------------
 Runnable definitions live in `.claude/agents/` and `.claude/skills/` (gitignored, maintainer's personal tooling). Their documentation is tracked in `docs/ai/agents/` and `docs/ai/skills/`.
 
-Subagent:
+Subagents:
 - red-team — independent adversarial reviewer, read-only. Spawn it before handing over a large or risky PR, or to challenge a design. It preloads `review-guardrails`.
+- historian — pre-merge doc updater. Applies the main session's stale-docs list to docs/, checks each item against the code, reports anything beyond the list without editing it, and drafts ADRs without writing them. Never commits.
 
 Skills (applied inline, alongside the session context):
 - review-guardrails — project review checklist: ADR rules, known regression traps, severity scale
@@ -49,10 +51,12 @@ Coding and design constraints
 - Prefer small, safe changes. Avoid big architectural rewrites unless explicitly requested.
 - Avoid introducing: CQRS, MediatR, Repository pattern, heavy MVVM unless the user explicitly requests an MVVM migration.
 - Tests and builds: always run `dotnet build` after code changes; fix warnings where possible.
+- Place new files by layer: Core/ (models, services, interfaces, persistence) or UI/ (pages, controls, UI services, converters). Namespaces follow folders.
 
 Documentation rules
 -------------------
-- When a change affects public behavior or exported types, notify the engineer about updating corresponding docs in docs/ (including docs/README.md).
+- The main session keeps a running stale-docs list per PR (ID, file and location, what's stale, what it should say, evidence).
+- Right before merge, the historian subagent applies the list; the maintainer reviews its diff against the list and the implementation.
 - Keep docs consistent with reality: update implemented feature lists, architecture lists, and roadmap when features ship.
 
 Branching and commits
@@ -73,3 +77,4 @@ Change log
 ----------
 - 2026-09-17: Initial CLAUDE.md added (aligns with repo docs and subagent list).
 - 2026-09-18 (#33): Replaced the subagent list with the Claude Code tooling (red-team + three skills); retired TechLead, ProductOwner, UXDesigner, ProjectHistorian and Coordinator.
+- 2026-09-24 (#68): Added the historian subagent; documentation rules now follow the stale-docs list → historian → review flow; UI_GUIDELINES is now an authoritative document

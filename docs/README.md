@@ -11,7 +11,7 @@
 
 BabyBuddyHelper is a cross-platform parenting companion built with .NET MAUI. Today, it helps parents and caregivers organize tasks, track appointments, manage baby profiles, and visualize schedules through checklist and calendar experiences.
 
-The project is currently a functional prototype in active development. Its current focus is finishing the database layer while preserving the shipped task, appointment, baby-profile, filtering, and companion experience.
+The project is currently a functional prototype in active development. Its current focus is baby profile pages and vaccination record tracking, while preserving the shipped task, appointment, baby-profile, filtering, and companion experience.
 
 ## Vision and Experience
 
@@ -116,13 +116,8 @@ The project intentionally favors simplicity over premature optimization.
 Current structure:
 
 ```text
-Pages/
-Models/
-Services/
-Interfaces/
-Data/
-Collections/
-Exceptions/
+Core/   Models/, Services/, Interfaces/, Persistence/, Collections/, Exceptions/
+UI/     Pages/, Controls/, Services/, Converters/
 ```
 
 Business logic is centralized through services and interfaces, including:
@@ -152,45 +147,53 @@ MVVM remains deferred until the application's complexity justifies it.
 ```text
 BabyBuddyHelper/
 │
-├── Pages/
-│   ├── MainPage.xaml(.cs)
-│   ├── ChecklistPage.xaml(.cs)
-│   ├── AddTaskPage.xaml(.cs)
-│   ├── AddBabyPage.xaml(.cs)
-│   └── CalendarPage.xaml(.cs)
+├── Core/
+│   ├── Models/
+│   │   ├── TaskModel.cs
+│   │   ├── AppointmentModel.cs
+│   │   └── BabyModel.cs
+│   │
+│   ├── Services/
+│   │   ├── TaskListService.cs
+│   │   ├── BabyProfileService.cs
+│   │   ├── BabyFilterService.cs
+│   │   └── TrackerDataSeeder.cs
+│   │
+│   ├── Interfaces/
+│   │   ├── ITaskListService.cs
+│   │   ├── IBabyProfileService.cs
+│   │   ├── IBabyFilterService.cs
+│   │   └── ITrackerDbService.cs
+│   │
+│   ├── Persistence/
+│   │   ├── TrackerContext.cs
+│   │   └── EfTrackerDbService.cs
+│   │
+│   ├── Collections/
+│   │   └── RangeObservableCollection.cs
+│   │
+│   └── Exceptions/
+│       └── DbCommunicationException.cs
 │
-├── Models/
-│   ├── TaskModel.cs
-│   ├── AppointmentModel.cs
-│   └── BabyModel.cs
-│
-├── Services/
-│   ├── TaskListService.cs
-│   ├── BabyProfileService.cs
-│   ├── BabyFilterService.cs
-│   ├── EfTrackerDbService.cs
-│   ├── AlertService.cs
-│   ├── TrackerDataSeeder.cs
-│   └── ToastService.cs
-│
-├── Interfaces/
-│   ├── ITaskListService.cs
-│   ├── IBabyProfileService.cs
-│   ├── IBabyFilterService.cs
-│   └── ITrackerDbService.cs
-│
-├── Controls/
-│   ├── CompanionView.xaml(.cs)
-│   └── ToastView.xaml(.cs)
-│
-├── Data/
-│   └── TrackerContext.cs
-│
-├── Collections/
-│   └── RangeObservableCollection.cs
-│
-├── Exceptions/
-│   └── DbCommunicationException.cs
+├── UI/
+│   ├── Pages/
+│   │   ├── MainPage.xaml(.cs)
+│   │   ├── ChecklistPage.xaml(.cs)
+│   │   ├── AddTaskPage.xaml(.cs)
+│   │   ├── AddBabyPage.xaml(.cs)
+│   │   └── CalendarPage.xaml(.cs)
+│   │
+│   ├── Controls/
+│   │   ├── CompanionView.xaml(.cs)
+│   │   └── ToastView.xaml(.cs)
+│   │
+│   ├── Services/
+│   │   ├── ToastService.cs
+│   │   └── AlertService.cs
+│   │
+│   └── Converters/
+│       ├── AssociatedBabyNameConverter.cs
+│       └── IsAppointmentModelConverter.cs
 │
 ├── Platforms/
 ├── Resources/
@@ -257,7 +260,6 @@ This project follows modern software engineering practices:
 
 ### Near Term
 
-- Architecture refactoring into a layered structure
 - Expanded baby-care tracking with vaccination records tracking
 
 ### Medium Term

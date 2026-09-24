@@ -23,7 +23,7 @@ EF Core + SQLite implementation is active through `EfTrackerDbService`.
 Implementation notes:
 - Database lifecycle uses `EnsureCreated` (no EF migrations yet).
 - While the app is not live, schema changes may reset the local database.
-- Debug-only `ResetDatabaseOnStartup` in `Services/EfTrackerDbService.cs` exists for one-run schema resets.
+- Debug-only `ResetDatabaseOnStartup` in `Core/Persistence/EfTrackerDbService.cs` exists for one-run schema resets.
 - Persistence operations use one short-lived `TrackerContext` per call through `IDbContextFactory<TrackerContext>`.
 
 Status: Accepted, current.
