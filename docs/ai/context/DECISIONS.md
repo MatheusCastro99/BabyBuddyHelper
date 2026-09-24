@@ -193,3 +193,19 @@ Reason:
 Diagram: docs/DataFlow.excalidraw
 
 Status: Accepted, current.
+
+### ADR-015
+
+Source code is grouped by layer, not by feature. Namespaces follow folders.
+
+- `Core/` holds domain models, cache services, interfaces, the persistence boundary (`TrackerContext`, `EfTrackerDbService`), collections and exceptions.
+- `UI/` holds pages, controls, UI-only services (`ToastService`, `AlertService`) and value converters.
+- Namespaces match folders (e.g. `BabyBuddyHelper.Core.Services`, `BabyBuddyHelper.UI.Pages`).
+- `App`, `AppShell`, `MauiProgram`, `Platforms/`, `Properties/` and `Resources/` stay at the root, following MAUI conventions.
+
+Reason:
+- The flat root folders were slowing navigation, and Phase 4 adds several new models, services and pages.
+- Every new file has one obvious home, and its namespace tells you which layer it belongs to.
+- Feature-based folders stay deferred (ADR-005) until real feature slices exist.
+
+Status: Accepted, current.
