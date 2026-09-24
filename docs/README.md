@@ -257,17 +257,17 @@ This project follows modern software engineering practices:
 
 ### Near Term
 
-- Stabilize EF Core + SQLite behavior across pages and startup flows
-- Keep cache services stable during persistence evolution
+- Architecture refactoring into a layered structure
+- Expanded baby-care tracking with vaccination records tracking
 
 ### Medium Term
 
-- Expanded baby-care tracking
+- Dockerization for easier deployment
+- Cloud synchronization
+- Data backup and restore
 
 ### Long Term
 
-- Cloud synchronization
-- Data backup and restore
 - Shared family calendars
 - Interactive companion behavior
 - Carefully scoped AI-supported interactions

@@ -51,7 +51,7 @@ Filters Update: CONCLUDED
 
 ---
 
-## => Phase 3: 
+## Phase 3: CONCLUDED
 
 > CodeBase Refactor: CONCLUDED
 
@@ -71,6 +71,32 @@ Filters Update: CONCLUDED
 - Phase 3 is complete.
 
 ---
+
+## => Phase 3.5:
+
+> Folder Restructure:
+- Layered Structure: 
+	- Core/:
+		- Models/ 
+			- TaskModel, AppointmentModel, BabyModel
+		- Services/ 
+			- TaskListService, BabyProfileService, BabyFilterService, TrackerDataService
+		- Interfaces/ 
+			- ITrackerDbService, IBabyProfileService, ITaskListService, IBabyFilterService
+		- PersistanceBoundary/ 
+			- TrackerContext, EfTrackerDbService
+		- Collections/ 
+			- RangeObservableCollection
+		- Exceptions/ 
+			- DbCommunicationException
+	- UI/:
+		- Pages/
+			- MainPage, AddTaskPage, AddAppointmentPage, AddBabyPage, BabyProfilePage
+		- Controls/
+			- CompanionView, ToastView
+		- Services/ 
+			- ToastService, AlertService
+- Rest remain unchanged (App.xaml, AppShell.xaml, Resources/, Assets/, etc.)
 
 ## Phase 4:
 
@@ -163,6 +189,11 @@ Database Backup and Restore:
 - Implement backup and restore functionality for local data
 - Allow users to create backups of their data and restore them when needed
 - Ensure backup files are secure and easily accessible
+
+Deployment and Distribution:
+
+- Prepare the app for deployment
+- Dockerize the application for easier distribution and deployment
 
 ---
 
