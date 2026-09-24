@@ -9,30 +9,13 @@ Status:
 
 # Current Development Focus:
 
-## Phase 3.5:
+## Phase 4: Vaccination Tracker and Baby Profile Page
 
-> Folder Restructure:
-- Layered Structure: 
-	- Core/:
-		- Models/ 
-			- TaskModel, AppointmentModel, BabyModel
-		- Services/ 
-			- TaskListService, BabyProfileService, BabyFilterService, TrackerDataService
-		- Interfaces/ 
-			- ITrackerDbService, IBabyProfileService, ITaskListService, IBabyFilterService
-		- PersistanceBoundary/ 
-			- TrackerContext, EfTrackerDbService
-		- Collections/ 
-			- RangeObservableCollection
-		- Exceptions/ 
-			- DbCommunicationException
-	- UI/:
-		- Pages/
-			- MainPage, AddTaskPage, AddAppointmentPage, AddBabyPage, BabyProfilePage
-		- Controls/
-			- CompanionView, ToastView
-		- Services/ 
-			- ToastService, AlertService
-- Rest remain unchanged (App.xaml, AppShell.xaml, Resources/, Assets/, etc.)
+- Baby Profile Page: read-only profile screen with age, weight, height, last feed/sleep, and a Vaccines section.
+- Vaccine Catalog: hardcoded CDC-based vaccine list served through IVaccineCatalog.
+- Vaccination Records: per-baby vaccination progress, owned by a new IVaccineService cache service.
+- AddVaccineRecordPage: single editor for vaccination records.
+
+See ROADMAP.md for the full Phase 4 breakdown.
 
 ---

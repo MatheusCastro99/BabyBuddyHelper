@@ -72,18 +72,18 @@ Filters Update: CONCLUDED
 
 ---
 
-## => Phase 3.5:
+## Phase 3.5: CONCLUDED
 
-> Folder Restructure:
+> Folder Restructure: CONCLUDED
 - Layered Structure: 
 	- Core/:
 		- Models/ 
 			- TaskModel, AppointmentModel, BabyModel
 		- Services/ 
-			- TaskListService, BabyProfileService, BabyFilterService, TrackerDataService
+			- TaskListService, BabyProfileService, BabyFilterService, TrackerDataSeeder
 		- Interfaces/ 
 			- ITrackerDbService, IBabyProfileService, ITaskListService, IBabyFilterService
-		- PersistanceBoundary/ 
+		- Persistence/ 
 			- TrackerContext, EfTrackerDbService
 		- Collections/ 
 			- RangeObservableCollection
@@ -91,16 +91,16 @@ Filters Update: CONCLUDED
 			- DbCommunicationException
 	- UI/:
 		- Pages/
-			- MainPage, AddTaskPage, AddAppointmentPage, AddBabyPage, BabyProfilePage
+			- MainPage, ChecklistPage, AddTaskPage, AddBabyPage, CalendarPage
 		- Controls/
 			- CompanionView, ToastView
 		- Services/ 
 			- ToastService, AlertService
 		- Converters/
-			- AssociatedBabyNameConverter
-- Rest remain unchanged (App.xaml, AppShell.xaml, Resources/, Assets/, etc.)
+			- AssociatedBabyNameConverter, IsAppointmentModelConverter
+- Rest remain unchanged (App.xaml, AppShell.xaml, Resources/, etc.)
 
-## Phase 4:
+## => Phase 4:
 
 > Baby Profile Page:
 
