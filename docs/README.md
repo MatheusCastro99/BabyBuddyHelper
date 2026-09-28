@@ -52,6 +52,7 @@ The current experience already includes a lightweight companion character and su
 ### Baby Profiles & Task Association
 
 - Create, edit, and delete baby profiles
+- Read-only profile page per baby, with edit and delete from there
 - Link tasks and appointments to specific baby profiles
 - Automatically project profile names into checklist and calendar-related workflows
 
@@ -181,6 +182,7 @@ BabyBuddyHelper/
 │   │   ├── ChecklistPage.xaml(.cs)
 │   │   ├── AddTaskPage.xaml(.cs)
 │   │   ├── AddBabyPage.xaml(.cs)
+│   │   ├── BabyProfilePage.xaml(.cs)
 │   │   └── CalendarPage.xaml(.cs)
 │   │
 │   ├── Controls/

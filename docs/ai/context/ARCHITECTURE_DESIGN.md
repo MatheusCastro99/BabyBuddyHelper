@@ -56,6 +56,7 @@ UI/Pages/
 - ChecklistPage
 - AddTaskPage
 - AddBabyPage
+- BabyProfilePage
 - CalendarPage
 
 UI/Controls/

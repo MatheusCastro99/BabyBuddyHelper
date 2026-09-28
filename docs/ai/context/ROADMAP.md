@@ -102,16 +102,16 @@ Filters Update: CONCLUDED
 
 ## => Phase 4:
 
-> Baby Profile Page:
+> Baby Profile Page: CONCLUDED
 
 - Baby's name as the title
 - Age (computed from DateOfBirth), weight and height
 - Last feed and last sleep
-- An empty area reserved for the Vaccines section (sub-issue 2)
+- The Vaccines section is deferred to Vaccination Records.
 - Reads data only from IBabyProfileService (ADR-001/008).
-- Profile Navigation Plan: 
+- Profile Navigation: CONCLUDED
 	- MainPage -> Tap Baby Profile Card -> BabyProfilePage
-	- BabyProfilePage -> Tap Edit Button -> AddBabyPage (sub-issue 1)
+	- BabyProfilePage -> Tap Edit Button -> AddBabyPage
 
 > Vaccine Catalog:
 
