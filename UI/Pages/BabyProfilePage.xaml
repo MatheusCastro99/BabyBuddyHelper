@@ -70,6 +70,45 @@
                     </VerticalStackLayout>
                 </Border>
 
+                <Border BackgroundColor="{StaticResource BabyBuddySurface}" StrokeThickness="0" Padding="18">
+                    <VerticalStackLayout Spacing="16">
+                        <Label Text="Vaccines" Style="{StaticResource SectionTitle}" SemanticProperties.HeadingLevel="Level2" />
+
+                        <!--Placed above the list so it stays visible without scrolling past every vaccine-->
+                        <Label x:Name="VaccineDisclaimerLabel" Style="{StaticResource CaptionText}" />
+
+                        <VerticalStackLayout x:Name="VaccineList" Spacing="10">
+                            <BindableLayout.ItemTemplate>
+                                <DataTemplate>
+                                    <Border Padding="16" BackgroundColor="{StaticResource BabyBuddySurfaceAlt}" StrokeThickness="0" StrokeShape="RoundRectangle 22">
+                                        <Grid ColumnDefinitions="*,Auto" RowDefinitions="Auto,Auto" ColumnSpacing="12" RowSpacing="4">
+                                            <Label Text="{Binding Name}" Style="{StaticResource ItemTitle}" VerticalOptions="Center" />
+
+                                            <!--Every vaccine is "Not started" until vaccination records exist; the status is spelled out, not shown by color-->
+                                            <Border Grid.Column="1" Padding="10,4" BackgroundColor="{StaticResource BabyBuddySecondary}" StrokeThickness="0" StrokeShape="RoundRectangle 10" VerticalOptions="Center">
+                                                <Label Text="Not started" Style="{StaticResource CaptionText}" />
+                                            </Border>
+
+                                            <Label Grid.Row="1" Grid.ColumnSpan="2" Text="{Binding Description}" Style="{StaticResource BodyText}" />
+                                        </Grid>
+                                    </Border>
+                                </DataTemplate>
+                            </BindableLayout.ItemTemplate>
+                        </VerticalStackLayout>
+
+                        <!--Stacked rather than side by side, so the date doesn't squeeze into a few words per line on narrow screens-->
+                        <VerticalStackLayout Spacing="8">
+                            <Label x:Name="VaccineLastReviewedLabel" Style="{StaticResource CaptionText}" />
+
+                            <Button Text="View the CDC schedule"
+                                    Style="{StaticResource SecondaryAction}"
+                                    HorizontalOptions="Start"
+                                    SemanticProperties.Hint="Opens the CDC vaccine schedule in your browser"
+                                    Clicked="OnViewScheduleClicked" />
+                        </VerticalStackLayout>
+                    </VerticalStackLayout>
+                </Border>
+
                 <Button Text="Delete profile" Style="{StaticResource SecondaryAction}" Clicked="OnDeleteClicked" />
             </VerticalStackLayout>
         </ScrollView>

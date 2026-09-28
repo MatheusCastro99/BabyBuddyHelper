@@ -9,16 +9,19 @@ namespace BabyBuddyHelper.UI.Pages;
 public partial class BabyProfilePage : ContentPage
 {
     private readonly IBabyProfileService _babyProfileService;
+    private readonly IVaccineCatalog _vaccineCatalog;
     private readonly Guid _babyId;
 
-    public BabyProfilePage(IBabyProfileService babyProfileService, Guid babyId)
+    public BabyProfilePage(IBabyProfileService babyProfileService, IVaccineCatalog vaccineCatalog, Guid babyId)
     {
         InitializeComponent();
 
         _babyProfileService = babyProfileService;
+        _vaccineCatalog = vaccineCatalog;
         _babyId = babyId;
 
         ShowCurrentProfile();
+        ShowVaccineCatalog();
     }
 
     //Closing the editor brings this page back, so a saved edit shows here
@@ -33,6 +36,35 @@ public partial class BabyProfilePage : ContentPage
     private void ShowCurrentProfile()
     {
         BindingContext = _babyProfileService.BabyProfiles.FirstOrDefault(x => x.Id == _babyId);
+    }
+
+    //The catalog never changes, so the Vaccines section is filled once. The wording follows the disclaimer approved in #41.
+    private void ShowVaccineCatalog()
+    {
+        BindableLayout.SetItemsSource(VaccineList, _vaccineCatalog.Vaccines);
+
+        VaccineDisclaimerLabel.Text = $"This list follows the {_vaccineCatalog.SourceName} ({_vaccineCatalog.SourceVersion}). " +
+            "It's here to help you keep track, not to give medical advice. Please confirm timing and doses with your pediatrician.";
+        VaccineLastReviewedLabel.Text = $"Last reviewed: {_vaccineCatalog.LastReviewed:MMMM yyyy}";
+    }
+
+    private async void OnViewScheduleClicked(object? sender, EventArgs e)
+    {
+        bool opened;
+
+        try
+        {
+            opened = await Browser.Default.OpenAsync(_vaccineCatalog.SourceUrl, BrowserLaunchMode.SystemPreferred);
+        }
+        catch (Exception) //Platforms throw different exceptions when no browser can take the link; all of them mean it didn't open
+        {
+            opened = false;
+        }
+
+        if (!opened)
+        {
+            await AlertService.ShowLinkFailedAsync(this, _vaccineCatalog.SourceUrl);
+        }
     }
 
     private async void OnEditClicked(object? sender, EventArgs e)
