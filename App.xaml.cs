@@ -25,7 +25,16 @@ namespace BabyBuddyHelper
 
         protected override Window CreateWindow(IActivationState? activationState)
         {
-            Window window = new(new AppShell());
+            Window window = new(new AppShell())
+            {
+                //Matches the Shell nav bar so the window's top edge follows the light palette (Windows and Mac Catalyst only)
+                TitleBar = new TitleBar
+                {
+                    Title = "BabyBuddyHelper",
+                    BackgroundColor = (Color)Resources["BabyBuddyBackground"],
+                    ForegroundColor = (Color)Resources["BabyBuddyText"]
+                }
+            };
             window.Created += OnWindowCreated;
             return window;
         }
