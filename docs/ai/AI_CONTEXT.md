@@ -17,43 +17,43 @@ and baby-care activities in a warm and encouraging environment.
 
 Complete Context:
 
--   Read the full vision document here: [Project Vision] (docs/ProjectVision.md)
+-   Read the full vision document here: [Project Vision](../ProjectVision.md)
 
 ---
 
 ## Current Architecture
 
--   Refer to: [Architecture Design] (docs/ai/context/ARCHITECTURE_DESIGN.md)
+-   Refer to: [Architecture Design](context/ARCHITECTURE_DESIGN.md)
 
 ---
 
 ## Current Project State
 
--   For a focused look at the current project state, refer to: [Project State] (docs/ai/context/CURRENT_STATE.md)
+-   For a focused look at the current project state, refer to: [Project State](context/CURRENT_STATE.md)
 
 ---
 
 ## Project Roadmap
 
--   For a complete Roadmap reference, refer to: [Roadmap] (docs/ai/context/ROADMAP.md)
+-   For a complete Roadmap reference, refer to: [Roadmap](context/ROADMAP.md)
 
 ---
 
 ## Project Decisions
 
--   For a complete list of project decisions, refer to: [Project Decisions] (docs/ai/context/DECISIONS.md)
+-   For a complete list of project decisions, refer to: [Project Decisions](context/DECISIONS.md)
 
 ---
 
 ## UI Guidelines
 
--   For the visual design and UX guardrails, refer to: [UI Guidelines] (docs/ai/context/UI_GUIDELINES.md)
+-   For the visual design and UX guardrails, refer to: [UI Guidelines](context/UI_GUIDELINES.md)
 
 ---
 
 ## Current Feature Set
 
--   For a complete look on current and planned features, refer to: [Feature Set] (docs/FeaturesSet.md)
+-   For a complete look on current and planned features, refer to: [Feature Set](../FeaturesSet.md)
 
 ---
 
@@ -139,6 +139,29 @@ Includes scheduler helper properties:
 
 These computed properties exist specifically for Syncfusion Scheduler integration.
 
+## BabyModel
+
+Represents one baby profile.
+
+- Name
+- DateOfBirth (a future date is an expected baby)
+- Weight and height
+- Last feed and last sleep
+- Guid Identifier
+
+`AgeText` is computed for display and never stored, so the age can't go stale.
+
+## VaccineModel
+
+One entry of the fixed vaccine catalog (US CDC schedule, birth to 6 years).
+
+- Guid Identifier (hardcoded and never regenerated, because vaccination records will reference it)
+- CvxCode
+- Name
+- Description
+
+Served read-only by `IVaccineCatalog`. Never stored in the database (ADR-012).
+
 ---
 
 # Data Source
@@ -161,9 +184,13 @@ BabyProfileService owns:
 
 ObservableCollection<BabyModel>
 
+Reference data (not a cache service, no database):
+
+- IVaccineCatalog serves the fixed vaccine catalog (ADR-012)
+
 ### WARNINGS: 
 
--   All screens consume data through these cache services.
+-   All screens consume user data through these cache services. Fixed reference data (the vaccine catalog) is read directly from `IVaccineCatalog`.
 -   No page should become an alternate source of truth.
 -   No page should talk directly to `ITrackerDbService`.
 
@@ -250,11 +277,21 @@ AddTaskPage (Editing Task Constructor)
     ->
 AddTaskPage (Editing Appointment Constructor)
 
--   Tap Empty Scheduler Cell
+-   DoubleClick Empty Scheduler Cell
     ->
 AddTaskPage (Add New Appointment Constructor with pre-filled data)
 
 This is an intentional design decision.
+
+Baby profiles follow the same rule with AddBabyPage (ADR-004):
+
+-   Tap Baby Card on MainPage
+    ->
+BabyProfilePage (pushed, read-only; ADR-016)
+    ->
+Edit profile
+    ->
+AddBabyPage (modal)
 
 ---
 
@@ -296,6 +333,8 @@ Implemented:
 ✅ CodeQL
 
 ✅ GitHub Advanced Security
+
+✅ Claude Code pull request review (claude-code-review.yml) and @claude mentions (claude.yml)
 
 Current CI is considered stable.
 
@@ -363,8 +402,8 @@ Business Productivity Tool
 - Overly dense layouts
 - Corporate visual language
 
-For a look on the current project state, refer to: [Current State] (docs/ai/context/CURRENT_STATE.md)
-For a complete roadmap, refer to: [Roadmap] (docs/ai/context/ROADMAP.md)
+For a look on the current project state, refer to: [Current State](context/CURRENT_STATE.md)
+For a complete roadmap, refer to: [Roadmap](context/ROADMAP.md)
 
 ## Design System Status
 

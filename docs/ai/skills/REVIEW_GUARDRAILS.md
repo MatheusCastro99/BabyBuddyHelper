@@ -19,8 +19,11 @@ It is preloaded by the `red-team` agent, and can also be used directly in a sess
 | Data ownership: cache services are the only write entry points; `EfTrackerDbService` commits first and the cache mirrors the persisted result | ADR-001, ADR-008, ADR-011, ADR-014 |
 | Id-based lookup, update and remove; no reference equality | ADR-007 |
 | Single add/edit pages (`AddTaskPage`, `AddBabyPage`) | ADR-004 |
-| Syncfusion types stay in the UI layer | ADR-003 |
+| Scheduler projection: `AppointmentModel` becomes `SchedulerAppointment` inside `CalendarPage`; Syncfusion types stay in the UI layer | ADR-003, AI_CONTEXT → Calendar Architecture |
 | Reusable logic behind interfaces | ADR-006 |
+| Fixed reference data (the vaccine catalog) stays outside the database; pages read it straight from `IVaccineCatalog` | ADR-012, ADR-014 |
+| Files placed by layer (`Core/`, `UI/`); namespaces follow folders | ADR-015 |
+| Detail pages are pushed; add/edit editors open modally | ADR-016 |
 | Debug-only seeding through `TaskListService` | ADR-009 |
 | Feedback channels: toasts confirm success, alerts report failures, Cub stays out of alerts | ADR-013 |
 | No enterprise patterns without a present need | AI_CONTEXT → Technical Philosophy |

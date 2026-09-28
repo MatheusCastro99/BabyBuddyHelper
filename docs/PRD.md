@@ -1,7 +1,7 @@
 # Product Requirements Document: BabyBuddyHelper
 
 ## Purpose
-BabyBuddyHelper is an offline-first parenting companion that helps parents and caregivers manage and track essential baby care activities and preparation tasks. The app organizes tasks by priority and completion status, schedules appointments on an integrated calendar, keeps a profile for each baby (tasks and appointments can be linked to one), and offers a home dashboard with a countdown timer to the expected due date. A companion character and gentle toast feedback keep the experience warm and encouraging. Data is stored locally on the device (SQLite).
+BabyBuddyHelper is an offline-first parenting companion that helps parents and caregivers manage and track essential baby care activities and preparation tasks. The app organizes tasks by priority and completion status, schedules appointments on an integrated calendar, keeps a profile for each baby (tasks and appointments can be linked to one) with a built-in, read-only US CDC vaccine list and a disclaimer, and offers a home dashboard with a countdown timer to the expected due date. A companion character and gentle toast feedback keep the experience warm and encouraging. Data is stored locally on the device (SQLite).
 
 ## Technical Specifications
 - **Language**: C#
@@ -36,6 +36,12 @@ BabyModel
 ├── LastFeed (DateTime) - Time of the last feed
 ├── LastSleep (DateTime) - Time of the last sleep
 └── AgeText (string, computed) - Display age, never stored
+
+VaccineModel (fixed catalog entry, never stored in the database)
+├── Id (Guid) - Hardcoded, never regenerated (vaccination records will reference it)
+├── CvxCode (string) - CDC vaccine code
+├── Name (string) - Display name
+└── Description (string) - What the vaccine protects against
 ```
 
 ## Solution Structure
@@ -45,17 +51,20 @@ BabyBuddyHelper/
 │   ├── Models/
 │   │   ├── TaskModel.cs - Data model for tasks
 │   │   ├── AppointmentModel.cs - Data model for appointments (extends tasks)
-│   │   └── BabyModel.cs - Data model for baby profiles (age computed from date of birth)
+│   │   ├── BabyModel.cs - Data model for baby profiles (age computed from date of birth)
+│   │   └── VaccineModel.cs - Data model for one vaccine in the built-in catalog
 │   ├── Services/
 │   │   ├── TaskListService.cs - In-memory cache and single source of truth for tasks and appointments
 │   │   ├── BabyProfileService.cs - In-memory cache and single source of truth for baby profiles
 │   │   ├── BabyFilterService.cs - Baby selection options shared by the checklist, calendar and task entry
-│   │   └── TrackerDataSeeder.cs - Debug-only mock data seeding
+│   │   ├── TrackerDataSeeder.cs - Debug-only mock data seeding
+│   │   └── VaccineCatalog.cs - Fixed US CDC vaccine list (birth to 6 years), no database access
 │   ├── Interfaces/
 │   │   ├── ITaskListService.cs - Interface for TaskListService
 │   │   ├── IBabyProfileService.cs - Interface for BabyProfileService
 │   │   ├── IBabyFilterService.cs - Interface for BabyFilterService
-│   │   └── ITrackerDbService.cs - Persistence boundary, used only by the cache services
+│   │   ├── ITrackerDbService.cs - Persistence boundary, used only by the cache services
+│   │   └── IVaccineCatalog.cs - Interface for VaccineCatalog
 │   ├── Persistence/
 │   │   ├── TrackerContext.cs - EF Core SQLite database context
 │   │   └── EfTrackerDbService.cs - EF Core + SQLite implementation of ITrackerDbService
@@ -69,7 +78,7 @@ BabyBuddyHelper/
 │   │   ├── ChecklistPage.xaml(.cs) - Task list with filters and sorting
 │   │   ├── AddTaskPage.xaml(.cs) - Task and appointment creation / edit interface
 │   │   ├── AddBabyPage.xaml(.cs) - Baby profile creation / edit interface
-│   │   ├── BabyProfilePage.xaml(.cs) - Read-only baby profile; entry point for edit and delete
+│   │   ├── BabyProfilePage.xaml(.cs) - Read-only baby profile with the vaccine list and disclaimer; entry point for edit and delete
 │   │   └── CalendarPage.xaml(.cs) - Calendar visual of appointments
 │   ├── Controls/
 │   │   ├── CompanionView.xaml(.cs) - Companion character

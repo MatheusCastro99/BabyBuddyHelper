@@ -78,11 +78,11 @@ Filters Update: CONCLUDED
 - Layered Structure: 
 	- Core/:
 		- Models/ 
-			- TaskModel, AppointmentModel, BabyModel
+			- TaskModel, AppointmentModel, BabyModel, VaccineModel
 		- Services/ 
-			- TaskListService, BabyProfileService, BabyFilterService, TrackerDataSeeder
+			- TaskListService, BabyProfileService, BabyFilterService, TrackerDataSeeder, VaccineCatalog
 		- Interfaces/ 
-			- ITrackerDbService, IBabyProfileService, ITaskListService, IBabyFilterService
+			- ITrackerDbService, IBabyProfileService, ITaskListService, IBabyFilterService, IVaccineCatalog
 		- Persistence/ 
 			- TrackerContext, EfTrackerDbService
 		- Collections/ 
@@ -91,7 +91,7 @@ Filters Update: CONCLUDED
 			- DbCommunicationException
 	- UI/:
 		- Pages/
-			- MainPage, ChecklistPage, AddTaskPage, AddBabyPage, CalendarPage
+			- MainPage, ChecklistPage, AddTaskPage, AddBabyPage, BabyProfilePage, CalendarPage
 		- Controls/
 			- CompanionView, ToastView
 		- Services/ 
@@ -107,21 +107,23 @@ Filters Update: CONCLUDED
 - Baby's name as the title
 - Age (computed from DateOfBirth), weight and height
 - Last feed and last sleep
-- The Vaccines section is deferred to Vaccination Records.
-- Reads data only from IBabyProfileService (ADR-001/008).
+- A read-only Vaccines section (full catalog, "Not started", disclaimer) shipped with the catalog (#43); Vaccination Records adds per-baby status.
+- Reads baby data only from IBabyProfileService (ADR-001/008); the Vaccines section reads the fixed catalog from IVaccineCatalog (ADR-012).
 - Profile Navigation: CONCLUDED
 	- MainPage -> Tap Baby Profile Card -> BabyProfilePage
 	- BabyProfilePage -> Tap Edit Button -> AddBabyPage
 
-> Vaccine Catalog:
+> Vaccine Catalog: CONCLUDED
 
 - VaccineModel: 
 	- Guid Id (Not Instantiated, these will be fixed and hardcoded)
 	- string CvxCode
 	- string Name
 	- string Description
-- IVaccineCatalog
-- Catalog does not touches the database, it is a static list of vaccines
+- IVaccineCatalog: Vaccines (display order), GetById, SourceName, SourceVersion, SourceUrl, LastReviewed
+- Source: US CDC schedule 2025 (in effect under the March 2026 court stay), parent-facing CDC link, last reviewed 2026-09-28
+- 10 entries; descriptions stored with their "Protects against …" lead-in (provisional, see #48)
+- Catalog does not touch the database, it is a static list of vaccines
 - Explicit Disclaimers:
 	- Vaccine catalog is for personal tracking purposes only and not a substitute for professional medical advice
 	- Mention source of information (CDC, WHO, etc.) and provide links to official resources
@@ -158,9 +160,10 @@ Filters Update: CONCLUDED
 - Decisions ammendments:
 	- ADR-001: IVaccineService is the single owner of vaccination records.
 	- ADR-004: AddVaccineRecordPage is the single record editor; BabyProfilePage is the entry point.
-	- ADR-006: add IVaccineCatalog as an example.
+	- ADR-006: add IVaccineCatalog as an example. (done)
 	- ADR-008: add IVaccineService as a cache service.
-- Wording review (disclaimer, overdue label, empty states) against UI_GUIDELINES.md using ux-design skill.
+- Wording review (disclaimer, overdue label, empty states, vaccine descriptions) against UI_GUIDELINES.md using ux-design skill. The catalog descriptions are provisional (#41).
+- Re-verify the vaccine catalog and the disclaimer's schedule version after the First Circuit rules on the stayed January 2026 CDC schedule.
 - Backlog issues for the epic's out-of-scope items and any annotated follow-ups.
 
 ---

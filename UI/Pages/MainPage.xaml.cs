@@ -10,6 +10,7 @@ namespace BabyBuddyHelper.UI.Pages
         private readonly DateTime expectedDueDate = new(2027, 02, 02, 0, 0, 0, DateTimeKind.Local);
         private readonly ITaskListService _taskListService;
         private readonly IBabyProfileService _babyProfileService;
+        private readonly IVaccineCatalog _vaccineCatalog;
         private DateTime currentDate;
         private bool _isOpeningProfile;
 
@@ -40,12 +41,13 @@ namespace BabyBuddyHelper.UI.Pages
             var count => $"{count} done"
         };
 
-        public MainPage(ITaskListService taskListService, IBabyProfileService babyProfileService)
+        public MainPage(ITaskListService taskListService, IBabyProfileService babyProfileService, IVaccineCatalog vaccineCatalog)
         {
             InitializeComponent();
 
             _taskListService = taskListService;
             _babyProfileService = babyProfileService;
+            _vaccineCatalog = vaccineCatalog;
             BabyProfiles = babyProfileService.BabyProfiles;
 
             _taskListService.Tasks.CollectionChanged += (_, _) => RefreshDashboardState();
@@ -145,7 +147,7 @@ namespace BabyBuddyHelper.UI.Pages
 
             try
             {
-                await Navigation.PushAsync(new BabyProfilePage(_babyProfileService, babyProfile.Id));
+                await Navigation.PushAsync(new BabyProfilePage(_babyProfileService, _vaccineCatalog, babyProfile.Id));
             }
             finally
             {

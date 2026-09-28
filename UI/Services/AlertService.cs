@@ -11,6 +11,10 @@ namespace BabyBuddyHelper.UI.Services
         public static Task ShowWriteFailedAsync(Page page, string title, string message) =>
             page.DisplayAlertAsync(title, $"{message}\n\n{PersistenceHint}", "OK");
 
+        //A link couldn't open in a browser. Nothing in the app is affected, so no restart hint: just the address to visit by hand.
+        public static Task ShowLinkFailedAsync(Page page, Uri address) =>
+            page.DisplayAlertAsync("Couldn't open the link", $"You can visit it in your browser instead:\n{address}", "OK");
+
         //The startup load failed. Returns true for "Try again". No safety claim here: unlike a failed write, a failed read
         //can mean a damaged file, so the message doesn't promise the information is intact.
         public static async Task<bool> ShowStartupLoadFailedAsync(Page page)
