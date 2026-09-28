@@ -15,6 +15,10 @@ namespace BabyBuddyHelper
         {
             InitializeComponent();
 
+            //The palette is light-only. Following a dark system theme gave native controls dark-theme colors on our light
+            //surfaces, e.g. a near-white back arrow on the light nav bar.
+            UserAppTheme = AppTheme.Light;
+
             _taskListService = taskListService;
             _babyProfileService = babyProfileService;
         }
