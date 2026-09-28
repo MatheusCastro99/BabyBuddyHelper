@@ -114,7 +114,6 @@
 		<PackageReference Include="Microsoft.Maui.Controls" Version="10.0.101" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="10.0.12" />
 		<PackageReference Include="Syncfusion.Maui.Scheduler" Version="34.2.9" />
-		<PackageReference Include="Universal.Operative.Sdk.Excalidraw" Version="1.0.2" />
 	</ItemGroup>
 
 	<ItemGroup>
