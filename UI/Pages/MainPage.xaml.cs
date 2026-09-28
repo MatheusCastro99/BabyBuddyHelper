@@ -1,7 +1,5 @@
-﻿using BabyBuddyHelper.Core.Exceptions;
-using BabyBuddyHelper.Core.Interfaces;
+﻿using BabyBuddyHelper.Core.Interfaces;
 using BabyBuddyHelper.Core.Models;
-using BabyBuddyHelper.UI.Services;
 using System.Collections.ObjectModel;
 using System.Globalization;
 
@@ -123,46 +121,20 @@ namespace BabyBuddyHelper.UI.Pages
             await Navigation.PushModalAsync(new AddBabyPage(_babyProfileService));
         }
 
-        private async void OnEditBabyProfileClicked(object? sender, EventArgs e)
+        //Editing and deleting live on the profile page (ADR-004); the card only opens it
+        private async void OnBabyProfileTapped(object? sender, TappedEventArgs e)
         {
-            if (sender is not Button { BindingContext: BabyModel babyProfile })
+            if (sender is not BindableObject { BindingContext: BabyModel babyProfile })
             {
                 return;
             }
 
-            await Navigation.PushModalAsync(new AddBabyPage(_babyProfileService, babyProfile));
-        }
-
-        private async void OnDeleteBabyProfileClicked(object? sender, EventArgs e)
-        {
-            if (sender is not Button { BindingContext: BabyModel babyProfile })
+            if (Navigation.NavigationStack.Count > 1) //A double-click fires Tapped twice; the first tap already opened the profile
             {
                 return;
             }
 
-            bool shouldDelete = await DisplayAlertAsync(
-                "Delete profile?",
-                $"Remove {babyProfile.Name}'s profile? You can always add it back later.",
-                "Delete",
-                "Keep");
-
-            if (!shouldDelete)
-            {
-                return;
-            }
-
-            try
-            {
-                await _babyProfileService.RemoveAsync(babyProfile.Id);
-            }
-            catch (DbCommunicationException) //Nothing was removed, including the links from its tasks, so there's nothing to refresh
-            {
-                await AlertService.ShowWriteFailedAsync(this, $"Couldn't remove {babyProfile.Name}'s profile", "The profile and its linked tasks haven't changed. Please try again in a moment.");
-                return;
-            }
-
-            RefreshDashboardState();
-            ToastService.Show(ToastKind.BabyProfileDeleted);
+            await Navigation.PushAsync(new BabyProfilePage(_babyProfileService, babyProfile.Id));
         }
 
         private void RefreshDashboardState()
