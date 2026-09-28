@@ -11,6 +11,7 @@ namespace BabyBuddyHelper.UI.Pages
         private readonly ITaskListService _taskListService;
         private readonly IBabyProfileService _babyProfileService;
         private DateTime currentDate;
+        private bool _isOpeningProfile;
 
         public int MonthsUntilDue { get; private set; }
         public int DaysUntilDue { get; private set; }
@@ -122,19 +123,34 @@ namespace BabyBuddyHelper.UI.Pages
         }
 
         //Editing and deleting live on the profile page (ADR-004); the card only opens it
-        private async void OnBabyProfileTapped(object? sender, TappedEventArgs e)
+        private async void OnBabyProfileTapped(object? sender, TappedEventArgs e) => await OpenProfileAsync(sender);
+
+        private async void OnViewProfileClicked(object? sender, EventArgs e) => await OpenProfileAsync(sender);
+
+        //A double-click, or a click on the button that also reaches the card, can ask twice. The flag covers the
+        //push while it's in flight; the stack check covers a late second request after it landed.
+        private async Task OpenProfileAsync(object? sender)
         {
+            if (_isOpeningProfile || Navigation.NavigationStack.Count > 1)
+            {
+                return;
+            }
+
             if (sender is not BindableObject { BindingContext: BabyModel babyProfile })
             {
                 return;
             }
 
-            if (Navigation.NavigationStack.Count > 1) //A double-click fires Tapped twice; the first tap already opened the profile
-            {
-                return;
-            }
+            _isOpeningProfile = true;
 
-            await Navigation.PushAsync(new BabyProfilePage(_babyProfileService, babyProfile.Id));
+            try
+            {
+                await Navigation.PushAsync(new BabyProfilePage(_babyProfileService, babyProfile.Id));
+            }
+            finally
+            {
+                _isOpeningProfile = false;
+            }
         }
 
         private void RefreshDashboardState()

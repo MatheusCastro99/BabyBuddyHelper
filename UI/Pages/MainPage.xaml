@@ -122,7 +122,12 @@
                                                 </VerticalStackLayout>
                                             </Grid>
 
-                                            <Label Text="View profile ›" Style="{StaticResource CaptionText}" HorizontalOptions="End" />
+                                            <!--The card tap is pointer/touch only; this button keeps the profile reachable by keyboard and screen readers-->
+                                            <Button Text="View profile"
+                                                    Style="{StaticResource SecondaryAction}"
+                                                    HorizontalOptions="End"
+                                                    SemanticProperties.Description="{Binding Name, StringFormat='View profile for {0}'}"
+                                                    Clicked="OnViewProfileClicked" />
                                         </VerticalStackLayout>
                                     </Border>
                                 </DataTemplate>
