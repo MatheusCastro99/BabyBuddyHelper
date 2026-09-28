@@ -38,13 +38,13 @@
 
 ✅ Friendly recovery when saving or loading fails
 
+✅ Baby Profile Page (dedicated details and navigation flow)
+
 ## Planned Features:
 
 Cloud Synchronization
 
 Database Backup, Redundancy, and Restore
-
-Baby Profile Page (dedicated details and navigation flow)
 
 Vaccination Tracker (catalog + per-baby vaccination records)
 

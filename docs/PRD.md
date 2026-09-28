@@ -69,6 +69,7 @@ BabyBuddyHelper/
 │   │   ├── ChecklistPage.xaml(.cs) - Task list with filters and sorting
 │   │   ├── AddTaskPage.xaml(.cs) - Task and appointment creation / edit interface
 │   │   ├── AddBabyPage.xaml(.cs) - Baby profile creation / edit interface
+│   │   ├── BabyProfilePage.xaml(.cs) - Read-only baby profile; entry point for edit and delete
 │   │   └── CalendarPage.xaml(.cs) - Calendar visual of appointments
 │   ├── Controls/
 │   │   ├── CompanionView.xaml(.cs) - Companion character

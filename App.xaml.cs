@@ -15,13 +15,26 @@ namespace BabyBuddyHelper
         {
             InitializeComponent();
 
+            //The palette is light-only. Following a dark system theme gave native controls dark-theme colors on our light
+            //surfaces, e.g. a near-white back arrow on the light nav bar.
+            UserAppTheme = AppTheme.Light;
+
             _taskListService = taskListService;
             _babyProfileService = babyProfileService;
         }
 
         protected override Window CreateWindow(IActivationState? activationState)
         {
-            Window window = new(new AppShell());
+            Window window = new(new AppShell())
+            {
+                //Matches the Shell nav bar so the window's top edge follows the light palette (Windows and Mac Catalyst only)
+                TitleBar = new TitleBar
+                {
+                    Title = "BabyBuddyHelper",
+                    BackgroundColor = (Color)Resources["BabyBuddyBackground"],
+                    ForegroundColor = (Color)Resources["BabyBuddyText"]
+                }
+            };
             window.Created += OnWindowCreated;
             return window;
         }

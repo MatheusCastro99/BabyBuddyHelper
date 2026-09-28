@@ -1,7 +1,5 @@
-﻿using BabyBuddyHelper.Core.Exceptions;
-using BabyBuddyHelper.Core.Interfaces;
+﻿using BabyBuddyHelper.Core.Interfaces;
 using BabyBuddyHelper.Core.Models;
-using BabyBuddyHelper.UI.Services;
 using System.Collections.ObjectModel;
 using System.Globalization;
 
@@ -13,6 +11,7 @@ namespace BabyBuddyHelper.UI.Pages
         private readonly ITaskListService _taskListService;
         private readonly IBabyProfileService _babyProfileService;
         private DateTime currentDate;
+        private bool _isOpeningProfile;
 
         public int MonthsUntilDue { get; private set; }
         public int DaysUntilDue { get; private set; }
@@ -123,46 +122,35 @@ namespace BabyBuddyHelper.UI.Pages
             await Navigation.PushModalAsync(new AddBabyPage(_babyProfileService));
         }
 
-        private async void OnEditBabyProfileClicked(object? sender, EventArgs e)
+        //Editing and deleting live on the profile page (ADR-004); the card only opens it
+        private async void OnBabyProfileTapped(object? sender, TappedEventArgs e) => await OpenProfileAsync(sender);
+
+        private async void OnViewProfileClicked(object? sender, EventArgs e) => await OpenProfileAsync(sender);
+
+        //A double-click, or a click on the button that also reaches the card, can ask twice. The flag covers the
+        //push while it's in flight; the stack check covers a late second request after it landed.
+        private async Task OpenProfileAsync(object? sender)
         {
-            if (sender is not Button { BindingContext: BabyModel babyProfile })
+            if (_isOpeningProfile || Navigation.NavigationStack.Count > 1)
             {
                 return;
             }
 
-            await Navigation.PushModalAsync(new AddBabyPage(_babyProfileService, babyProfile));
-        }
-
-        private async void OnDeleteBabyProfileClicked(object? sender, EventArgs e)
-        {
-            if (sender is not Button { BindingContext: BabyModel babyProfile })
+            if (sender is not BindableObject { BindingContext: BabyModel babyProfile })
             {
                 return;
             }
 
-            bool shouldDelete = await DisplayAlertAsync(
-                "Delete profile?",
-                $"Remove {babyProfile.Name}'s profile? You can always add it back later.",
-                "Delete",
-                "Keep");
-
-            if (!shouldDelete)
-            {
-                return;
-            }
+            _isOpeningProfile = true;
 
             try
             {
-                await _babyProfileService.RemoveAsync(babyProfile.Id);
+                await Navigation.PushAsync(new BabyProfilePage(_babyProfileService, babyProfile.Id));
             }
-            catch (DbCommunicationException) //Nothing was removed, including the links from its tasks, so there's nothing to refresh
+            finally
             {
-                await AlertService.ShowWriteFailedAsync(this, $"Couldn't remove {babyProfile.Name}'s profile", "The profile and its linked tasks haven't changed. Please try again in a moment.");
-                return;
+                _isOpeningProfile = false;
             }
-
-            RefreshDashboardState();
-            ToastService.Show(ToastKind.BabyProfileDeleted);
         }
 
         private void RefreshDashboardState()

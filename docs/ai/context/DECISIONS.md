@@ -47,7 +47,8 @@ AddTaskPage can be accessed from:
 - CalendarPage (Add / Edit Appointment)
 
 AddBabyPage can be accessed from:
-- MainPage (Add / Edit)
+- MainPage (Add)
+- BabyProfilePage (Edit), reached from the MainPage baby card
 
 Reason:
 - Enables consistency and uniformity when creating / editing instances, specially as data persistence arrives.
@@ -85,7 +86,7 @@ Reason:
 - Guid identifiers exist precisely so a record can be found regardless of which instance a caller happens to hold.
 - Reference equality fails silently. A collection entry that has been swapped for a new instance will not match, so the operation becomes a no-op instead of an error.
 - Services already replace instances during normal operation.
-- Pages hold references across modal navigation, which is exactly when those references go stale.
+- Pages hold references across modal and push navigation, which is exactly when those references go stale.
 - Reference identity carries no meaning once records round-trip through a database. Id-based access is the pattern that survives persistence.
 
 Examples:
@@ -207,5 +208,17 @@ Reason:
 - The flat root folders were slowing navigation, and Phase 4 adds several new models, services and pages.
 - Every new file has one obvious home, and its namespace tells you which layer it belongs to.
 - Feature-based folders stay deferred (ADR-005) until real feature slices exist.
+
+Status: Accepted, current.
+
+### ADR-016
+
+Detail and read-only pages are pushed onto the navigation stack (`Navigation.PushAsync`).
+Add/edit editors open modally (`Navigation.PushModalAsync`).
+
+Reason:
+- A profile is a place the user browses and returns from, so it gets the native back arrow.
+- Editors are focused tasks that end in save or cancel, so they stay modal.
+- BabyProfilePage is the first pushed page (MainPage -> BabyProfilePage). AddBabyPage stays modal on top of it, and deleting a profile pops back to MainPage.
 
 Status: Accepted, current.

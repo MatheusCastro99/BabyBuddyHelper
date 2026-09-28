@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:controls="clr-namespace:BabyBuddyHelper.UI.Controls"
+             x:Class="BabyBuddyHelper.UI.Pages.BabyProfilePage"
+             Title="Baby Profile"
+             BackgroundColor="{StaticResource BabyBuddyBackground}">
+
+    <!--AddBabyPage shows its "updated" toast after closing, which lands here, so this page hosts its own ToastView-->
+    <Grid>
+        <ScrollView>
+            <VerticalStackLayout Padding="20" Spacing="18">
+                <Border BackgroundColor="{StaticResource BabyBuddySurface}" StrokeThickness="0" Padding="20">
+                    <Grid ColumnDefinitions="*,Auto" ColumnSpacing="12">
+                        <VerticalStackLayout Spacing="6">
+                            <Label Text="{Binding Name}" Style="{StaticResource PageTitle}" SemanticProperties.HeadingLevel="Level1" />
+                            <Label Text="{Binding AgeText}" Style="{StaticResource BodyText}" />
+                        </VerticalStackLayout>
+
+                        <Button Grid.Column="1"
+                                Text="Edit profile"
+                                Style="{StaticResource PrimaryAction}"
+                                Padding="14,10"
+                                VerticalOptions="Center"
+                                Clicked="OnEditClicked" />
+                    </Grid>
+                </Border>
+
+                <Border BackgroundColor="{StaticResource BabyBuddySurface}" StrokeThickness="0" Padding="18">
+                    <VerticalStackLayout Spacing="16">
+                        <Label Text="Growth" Style="{StaticResource SectionTitle}" SemanticProperties.HeadingLevel="Level2" />
+
+                        <Grid ColumnDefinitions="*,*" ColumnSpacing="14">
+                            <Border Grid.Column="0" Padding="16" BackgroundColor="{StaticResource BabyBuddySurfaceAlt}" StrokeThickness="0" StrokeShape="RoundRectangle 22">
+                                <VerticalStackLayout Spacing="4">
+                                    <Label Text="Weight" Style="{StaticResource CaptionText}" />
+                                    <Label Text="{Binding WeightInLbs, StringFormat='{}{0:F1} lbs'}" Style="{StaticResource SectionTitle}" />
+                                </VerticalStackLayout>
+                            </Border>
+
+                            <Border Grid.Column="1" Padding="16" BackgroundColor="{StaticResource BabyBuddySurfaceAlt}" StrokeThickness="0" StrokeShape="RoundRectangle 22">
+                                <VerticalStackLayout Spacing="4">
+                                    <Label Text="Height" Style="{StaticResource CaptionText}" />
+                                    <Label Text="{Binding HeightInFt, StringFormat='{}{0:F1} ft'}" Style="{StaticResource SectionTitle}" />
+                                </VerticalStackLayout>
+                            </Border>
+                        </Grid>
+                    </VerticalStackLayout>
+                </Border>
+
+                <Border BackgroundColor="{StaticResource BabyBuddySurface}" StrokeThickness="0" Padding="18">
+                    <VerticalStackLayout Spacing="16">
+                        <Label Text="Feeding &amp; sleep" Style="{StaticResource SectionTitle}" SemanticProperties.HeadingLevel="Level2" />
+
+                        <Grid ColumnDefinitions="*,*" ColumnSpacing="14">
+                            <Border Grid.Column="0" Padding="16" BackgroundColor="{StaticResource BabyBuddySurfaceAlt}" StrokeThickness="0" StrokeShape="RoundRectangle 22">
+                                <VerticalStackLayout Spacing="4">
+                                    <Label Text="Last feed" Style="{StaticResource CaptionText}" />
+                                    <Label Text="{Binding LastFeed, StringFormat='{}{0:MMM d, h:mm tt}'}" Style="{StaticResource SectionTitle}" />
+                                </VerticalStackLayout>
+                            </Border>
+
+                            <Border Grid.Column="1" Padding="16" BackgroundColor="{StaticResource BabyBuddySurfaceAlt}" StrokeThickness="0" StrokeShape="RoundRectangle 22">
+                                <VerticalStackLayout Spacing="4">
+                                    <Label Text="Last sleep" Style="{StaticResource CaptionText}" />
+                                    <Label Text="{Binding LastSleep, StringFormat='{}{0:MMM d, h:mm tt}'}" Style="{StaticResource SectionTitle}" />
+                                </VerticalStackLayout>
+                            </Border>
+                        </Grid>
+                    </VerticalStackLayout>
+                </Border>
+
+                <Button Text="Delete profile" Style="{StaticResource SecondaryAction}" Clicked="OnDeleteClicked" />
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <controls:ToastView />
+    </Grid>
+</ContentPage>

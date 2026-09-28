@@ -83,7 +83,11 @@
                                             Margin="0,0,0,10"
                                             BackgroundColor="{StaticResource BabyBuddySurfaceAlt}"
                                             StrokeThickness="0"
-                                            StrokeShape="RoundRectangle 22">
+                                            StrokeShape="RoundRectangle 22"
+                                            SemanticProperties.Hint="Opens this baby's profile">
+                                        <Border.GestureRecognizers>
+                                            <TapGestureRecognizer Tapped="OnBabyProfileTapped" />
+                                        </Border.GestureRecognizers>
                                         <VerticalStackLayout Spacing="12">
                                             <Grid ColumnDefinitions="*,Auto" ColumnSpacing="12">
                                                 <VerticalStackLayout Spacing="4">
@@ -118,16 +122,12 @@
                                                 </VerticalStackLayout>
                                             </Grid>
 
-                                            <Grid ColumnDefinitions="*,*" ColumnSpacing="12">
-                                                <Button Grid.Column="0"
-                                                        Text="Edit"
-                                                        Style="{StaticResource SecondaryAction}"
-                                                        Clicked="OnEditBabyProfileClicked" />
-                                                <Button Grid.Column="1"
-                                                        Text="Delete"
-                                                        Style="{StaticResource SecondaryAction}"
-                                                        Clicked="OnDeleteBabyProfileClicked" />
-                                            </Grid>
+                                            <!--The card tap is pointer/touch only; this button keeps the profile reachable by keyboard and screen readers-->
+                                            <Button Text="View profile"
+                                                    Style="{StaticResource SecondaryAction}"
+                                                    HorizontalOptions="End"
+                                                    SemanticProperties.Description="{Binding Name, StringFormat='View profile for {0}'}"
+                                                    Clicked="OnViewProfileClicked" />
                                         </VerticalStackLayout>
                                     </Border>
                                 </DataTemplate>

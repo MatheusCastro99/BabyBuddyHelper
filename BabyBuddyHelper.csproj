@@ -91,14 +91,11 @@
 
 		<!-- Guards against silently baking in a malformed value, which would look like a clean build but run unlicensed. -->
 		<!-- %40 is an escaped '@'. A license key is base64, so an '@' means the value is an unexpanded MSBuild reference. -->
-		<Error Condition="$(_SyncfusionLicense.Contains('SYNCFUSION_LICENSE')) Or $(_SyncfusionLicense.Contains('%40'))"
-		       Text="GenerateBuildSecrets could not parse the license value. Check the SYNCFUSION_LICENSE entry in .env." />
+		<Error Condition="$(_SyncfusionLicense.Contains('SYNCFUSION_LICENSE')) Or $(_SyncfusionLicense.Contains('%40'))" Text="GenerateBuildSecrets could not parse the license value. Check the SYNCFUSION_LICENSE entry in .env." />
 
-		<Message Importance="high" Condition="'$(_SyncfusionLicense)' == ''"
-		         Text="SYNCFUSION_LICENSE not found (no environment variable, no .env entry). The app will run unlicensed." />
+		<Message Importance="high" Condition="'$(_SyncfusionLicense)' == ''" Text="SYNCFUSION_LICENSE not found (no environment variable, no .env entry). The app will run unlicensed." />
 
-		<WriteLinesToFile File="$(_BuildSecretsFile)" Overwrite="true" WriteOnlyWhenDifferent="true"
-		                  Lines="// &lt;auto-generated /&gt; Written by the GenerateBuildSecrets target. Do not edit or commit.;namespace BabyBuddyHelper%3B;;internal static class BuildSecrets;{;    public const string SyncfusionLicense = &quot;$(_SyncfusionLicense)&quot;%3B;}" />
+		<WriteLinesToFile File="$(_BuildSecretsFile)" Overwrite="true" WriteOnlyWhenDifferent="true" Lines="// &lt;auto-generated /&gt; Written by the GenerateBuildSecrets target. Do not edit or commit.;namespace BabyBuddyHelper%3B;;internal static class BuildSecrets;{;    public const string SyncfusionLicense = &quot;$(_SyncfusionLicense)&quot;%3B;}" />
 
 		<ItemGroup>
 			<Compile Include="$(_BuildSecretsFile)" />

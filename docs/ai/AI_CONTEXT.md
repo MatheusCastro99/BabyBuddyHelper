@@ -2,7 +2,7 @@
 
 # BabyBuddyHelper - AI Development Context
 
-Last Updated: 2026-09-24
+Last Updated: 2026-09-28
 
 ---
 # Context References:
@@ -379,6 +379,10 @@ Future expansion candidates:
 Resources/Styles/
     Typography.xaml
     Themes.xaml
+
+Theme:
+
+The app is light-theme only (pinned in App.xaml.cs via UserAppTheme). The Windows title bar uses the nav bar colors through a MAUI TitleBar.
 
 Goal:
 
