@@ -234,6 +234,20 @@ Calendar views should prioritize readability and schedule awareness without beco
 
 ---
 
+### Baby Profile
+
+Purpose: give a calm, at-a-glance picture of one baby.
+
+Should answer:
+
+- How is my baby doing?
+- What happened last (feed, sleep), and how are they growing?
+- Which vaccines are on the schedule?
+
+The profile is read-only. Editing routes to AddBabyPage (ADR-004), and the profile is a pushed page with a back arrow (ADR-016).
+
+---
+
 ### Add and Edit Experience
 
 Purpose: enable fast, low-stress data entry.
@@ -321,15 +335,34 @@ Favor:
 
 Avoid:
 
-- Persistent, blocking messages
+- Persistent, blocking messages (failures the user must acknowledge use AlertService instead, ADR-013)
 - Repetitive or noisy implementations
 - Overly dramatic success states
 
 ---
 
+### Medical reference content
+
+Vaccine information is reference data for personal tracking, not medical advice.
+
+Favor:
+
+- A visible disclaimer that names the source and version and points to the pediatrician
+- A link to the official source
+- Plain language
+- Gentle reminders for anything due (for example "Due since May 3 · check with your pediatrician")
+
+Avoid:
+
+- Red, alarming, or urgent styling
+- Wording that diagnoses, prescribes, or implies the app knows what a specific baby needs
+- Guilt about missed or late doses
+
+---
+
 ## Design System Guidance
 
-Future implementation should centralize reusable styling definitions for visual consistency.
+Reusable styling is centralized in `Resources/Styles/Colors.xaml` (colors and brushes) and `Resources/Styles/Styles.xaml` (named styles such as PageTitle, SectionTitle, ItemTitle, BodyText, CaptionText, PrimaryAction and SecondaryAction). New tokens and styles belong there.
 
 Recommended areas:
 

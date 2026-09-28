@@ -40,13 +40,15 @@
 
 ✅ Baby Profile Page (dedicated details and navigation flow)
 
+✅ Vaccine catalog shown read-only on the profile
+
 ## Planned Features:
 
 Cloud Synchronization
 
 Database Backup, Redundancy, and Restore
 
-Vaccination Tracker (catalog + per-baby vaccination records)
+Vaccination Tracker (per-baby vaccination records)
 
 Companion comes to life with an AI-driven personality and interactions
 

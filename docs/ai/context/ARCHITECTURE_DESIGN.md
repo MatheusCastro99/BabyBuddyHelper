@@ -22,6 +22,7 @@ Core/Models/
 - TaskModel.cs
 - AppointmentModel.cs
 - BabyModel.cs
+- VaccineModel.cs
 
 Core/Services/
 
@@ -29,6 +30,7 @@ Core/Services/
 - BabyProfileService.cs
 - BabyFilterService.cs
 - TrackerDataSeeder.cs
+- VaccineCatalog.cs
 
 Core/Interfaces/
 
@@ -36,6 +38,7 @@ Core/Interfaces/
 - IBabyProfileService.cs
 - IBabyFilterService.cs
 - ITrackerDbService.cs
+- IVaccineCatalog.cs
 
 Core/Persistence/
 

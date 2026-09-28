@@ -20,7 +20,7 @@ A UX/UI lens used alongside the working session. It keeps screens, XAML styling 
 ## What it checks
 
 - **Identity:** warm, calm, encouraging, low-stress; never corporate, clinical or guilt-inducing
-- **Screen purpose:** each screen still answers its question (Dashboard: "What does my day look like?", Checklist: "What needs my attention?", Calendar: "When is everything happening?", Add/Edit: "What information do I need right now?")
+- **Screen purpose:** each screen still answers its question (Dashboard: "What does my day look like?", Checklist: "What needs my attention?", Calendar: "When is everything happening?", Baby profile: "How is my baby doing?", Add/Edit: "What information do I need right now?")
 - **Design system:** existing tokens and styles are used, and new or changed XAML has no hardcoded colors or sizes. The existing cases are tracked as known debt.
 - **Accessibility:** contrast ≥ 4.5:1, touch targets ≥ 44/48, semantic descriptions, state never conveyed by color alone
 - **Flow:** one clear primary action, and adding/editing route through `AddTaskPage` or `AddBabyPage` (ADR-004)

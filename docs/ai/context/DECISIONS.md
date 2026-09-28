@@ -75,6 +75,7 @@ Examples:
 - TaskList Management (TaskListService)
 - Baby Profile Management (BabyProfileService)
 - Database interactions (ITrackerDbService consuming EfTrackerDbService)
+- Vaccine catalog (IVaccineCatalog)
 
 Status: Accepted, current.
 
@@ -179,6 +180,7 @@ EfTrackerDbService throws DbCommunicationException -> the cache is left untouche
 
 Read path:
 Pages read from the cache services only. The database is read once, at startup, to fill the cache.
+Fixed reference data (the vaccine catalog, ADR-012) is read directly from its service; it has no cache or database path.
 
 Rules:
 - The database is the source of truth. The cache only mirrors what the database has already committed.

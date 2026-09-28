@@ -6,12 +6,12 @@
 
 [![Status](https://img.shields.io/badge/Status-Active%20Development-orange)](https://github.com/MatheusCastro99/BabyBuddyHelper)
 
-[![.NET](https://img.shields.io/badge/.NET%20MAUI-Cross--Platform-blue)](https://learn.com/dotnet/maui/)
-[![Platforms](https://img.shields.io/badge/Platforms-Windows%20%7C%20Android%20%7C%20iOS%20%7C%20macOS-success)](https://learn.com/dotnet/maui/)
+[![.NET](https://img.shields.io/badge/.NET%20MAUI-Cross--Platform-blue)](https://learn.microsoft.com/dotnet/maui/)
+[![Platforms](https://img.shields.io/badge/Platforms-Windows%20%7C%20Android%20%7C%20iOS%20%7C%20macOS-success)](https://learn.microsoft.com/dotnet/maui/)
 
 BabyBuddyHelper is a cross-platform parenting companion built with .NET MAUI. Today, it helps parents and caregivers organize tasks, track appointments, manage baby profiles, and visualize schedules through checklist and calendar experiences.
 
-The project is currently a functional prototype in active development. Its current focus is baby profile pages and vaccination record tracking, while preserving the shipped task, appointment, baby-profile, filtering, and companion experience.
+The project is currently a functional prototype in active development. Its current focus is per-baby vaccination record tracking, building on the shipped baby profile page and vaccine catalog, while preserving the shipped task, appointment, baby-profile, filtering, and companion experience.
 
 ## Vision and Experience
 
@@ -43,7 +43,7 @@ The current experience already includes a lightweight companion character and su
 ### Calendar & Scheduling
 
 - Integrated Syncfusion Scheduler
-- Week and Month calendar views
+- Week calendar view
 - Visual appointment scheduling
 - Double-click appointment editing
 - Create appointments directly from empty calendar cells
@@ -53,6 +53,7 @@ The current experience already includes a lightweight companion character and su
 
 - Create, edit, and delete baby profiles
 - Read-only profile page per baby, with edit and delete from there
+- Built-in US CDC vaccine list (birth to 6 years) on each profile, with a disclaimer
 - Link tasks and appointments to specific baby profiles
 - Automatically project profile names into checklist and calendar-related workflows
 
@@ -66,6 +67,11 @@ The current experience already includes a lightweight companion character and su
 - Completion-first ordering (pending first)
 - Upcoming-date ordering for appointments
 - Baby-specific checklist filtering
+
+### Data & Reliability
+
+- Local, offline-first storage on the device (EF Core + SQLite)
+- Friendly recovery when saving or loading fails: a failed save changes nothing and says so, and a failed startup load offers to try again
 
 ### Cross-Platform
 
@@ -96,6 +102,11 @@ These capabilities are planned and are not included in the current prototype.
 
 - Syncfusion Scheduler
 
+### Data
+
+- EF Core
+- SQLite (local, on the device)
+
 ### Architecture
 
 - Service-Oriented Design
@@ -107,6 +118,7 @@ These capabilities are planned and are not included in the current prototype.
 - GitHub Actions Build Validation
 - Dependabot Dependency Monitoring
 - CodeQL Security Analysis
+- Claude Code pull request review and @claude mentions (GitHub Actions)
 
 ---
 
@@ -128,6 +140,7 @@ ITaskListService / TaskListService
 IBabyProfileService / BabyProfileService
 IBabyFilterService / BabyFilterService
 ITrackerDbService / EfTrackerDbService
+IVaccineCatalog / VaccineCatalog
 ```
 
 `TaskListService` remains the application's single source of truth for tasks and appointments.
@@ -152,19 +165,22 @@ BabyBuddyHelper/
 │   ├── Models/
 │   │   ├── TaskModel.cs
 │   │   ├── AppointmentModel.cs
-│   │   └── BabyModel.cs
+│   │   ├── BabyModel.cs
+│   │   └── VaccineModel.cs
 │   │
 │   ├── Services/
 │   │   ├── TaskListService.cs
 │   │   ├── BabyProfileService.cs
 │   │   ├── BabyFilterService.cs
-│   │   └── TrackerDataSeeder.cs
+│   │   ├── TrackerDataSeeder.cs
+│   │   └── VaccineCatalog.cs
 │   │
 │   ├── Interfaces/
 │   │   ├── ITaskListService.cs
 │   │   ├── IBabyProfileService.cs
 │   │   ├── IBabyFilterService.cs
-│   │   └── ITrackerDbService.cs
+│   │   ├── ITrackerDbService.cs
+│   │   └── IVaccineCatalog.cs
 │   │
 │   ├── Persistence/
 │   │   ├── TrackerContext.cs
