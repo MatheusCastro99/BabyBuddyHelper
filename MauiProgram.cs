@@ -27,6 +27,7 @@ namespace BabyBuddyHelper
                 .Services.AddSingleton<ITaskListService, TaskListService>()
                 .AddSingleton<IBabyProfileService, BabyProfileService>()
                 .AddSingleton<IBabyFilterService, BabyFilterService>()
+                .AddSingleton<IVaccineCatalog, VaccineCatalog>()
                 .AddSingleton<ITrackerDbService, EfTrackerDbService>()
                 .AddDbContextFactory<TrackerContext>(options =>
                     options.UseSqlite($"Data Source={Path.Combine(FileSystem.AppDataDirectory, "babybuddy.db3")}"));
