@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="BabyBuddyHelper.UI.Pages.AddVaccineRecordPage"
+             Title="Vaccine Record"
+             BackgroundColor="{StaticResource BabyBuddyBackground}">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="18">
+            <Border BackgroundColor="{StaticResource BabyBuddySurface}" StrokeThickness="0" Padding="18">
+                <VerticalStackLayout Spacing="6">
+                    <!--Vaccine names can be long, so the title wraps instead of truncating-->
+                    <Label x:Name="VaccineNameLabel" Style="{StaticResource PageTitle}" LineBreakMode="WordWrap" HorizontalTextAlignment="Center" SemanticProperties.HeadingLevel="Level1" />
+                    <Label Text="Keep track of doses and dates." Style="{StaticResource BodyText}" HorizontalTextAlignment="Center" />
+                </VerticalStackLayout>
+            </Border>
+
+            <Border BackgroundColor="{StaticResource BabyBuddySurface}" StrokeThickness="0" Padding="18" StrokeShape="RoundRectangle 24">
+                <VerticalStackLayout Spacing="18">
+                    <VerticalStackLayout Spacing="6">
+                        <Grid ColumnDefinitions="*,Auto,Auto,Auto" ColumnSpacing="12">
+                            <Label Text="Total doses" Style="{StaticResource SectionTitle}" VerticalOptions="Center" />
+                            <Button x:Name="TotalDosesDecreaseButton" Grid.Column="1" Text="−" Style="{StaticResource CounterButton}" SemanticProperties.Description="One fewer total dose" Clicked="OnTotalDosesDecreaseClicked" />
+                            <Label x:Name="TotalDosesLabel" Grid.Column="2" Style="{StaticResource ItemTitle}" MinimumWidthRequest="24" HorizontalTextAlignment="Center" VerticalOptions="Center" />
+                            <Button x:Name="TotalDosesIncreaseButton" Grid.Column="3" Text="+" Style="{StaticResource CounterButton}" SemanticProperties.Description="One more total dose" Clicked="OnTotalDosesIncreaseClicked" />
+                        </Grid>
+                        <Label Text="This can depend on the vaccine brand. Your pediatrician can tell you." Style="{StaticResource CaptionText}" />
+                    </VerticalStackLayout>
+
+                    <Grid ColumnDefinitions="*,Auto,Auto,Auto" ColumnSpacing="12">
+                        <Label Text="Doses given" Style="{StaticResource SectionTitle}" VerticalOptions="Center" />
+                        <Button x:Name="CompletedDosesDecreaseButton" Grid.Column="1" Text="−" Style="{StaticResource CounterButton}" SemanticProperties.Description="One fewer dose given" Clicked="OnCompletedDosesDecreaseClicked" />
+                        <Label x:Name="CompletedDosesLabel" Grid.Column="2" Style="{StaticResource ItemTitle}" MinimumWidthRequest="24" HorizontalTextAlignment="Center" VerticalOptions="Center" />
+                        <Button x:Name="CompletedDosesIncreaseButton" Grid.Column="3" Text="+" Style="{StaticResource CounterButton}" SemanticProperties.Description="One more dose given" Clicked="OnCompletedDosesIncreaseClicked" />
+                    </Grid>
+
+                    <!--Only shown once a dose has been given: with no doses there is no last date-->
+                    <VerticalStackLayout x:Name="LastDoseSection" Spacing="10">
+                        <Label Text="Last dose given on" Style="{StaticResource SectionTitle}" />
+                        <Border BackgroundColor="{StaticResource BabyBuddySurfaceAlt}" Stroke="{StaticResource BabyBuddyBorder}" StrokeShape="RoundRectangle 12" Padding="10,8">
+                            <DatePicker x:Name="LastDosePicker" HeightRequest="44" HorizontalOptions="Center" TextColor="{StaticResource BabyBuddyText}" />
+                        </Border>
+                    </VerticalStackLayout>
+
+                    <!--Hidden once every dose is given: a complete record needs no next date-->
+                    <VerticalStackLayout x:Name="NextDoseSection" Spacing="10">
+                        <HorizontalStackLayout Spacing="8">
+                            <CheckBox x:Name="NextDoseCheckBox" VerticalOptions="Center" CheckedChanged="OnNextDoseCheckedChanged" SemanticProperties.Description="Add a next dose date" />
+                            <Label Text="Add a next dose date" Style="{StaticResource BodyText}" VerticalOptions="Center">
+                                <Label.GestureRecognizers>
+                                    <TapGestureRecognizer Tapped="OnNextDoseLabelTapped" />
+                                </Label.GestureRecognizers>
+                            </Label>
+                        </HorizontalStackLayout>
+                        <Border x:Name="NextDosePickerBorder" BackgroundColor="{StaticResource BabyBuddySurfaceAlt}" Stroke="{StaticResource BabyBuddyBorder}" StrokeShape="RoundRectangle 12" Padding="10,8">
+                            <DatePicker x:Name="NextDosePicker" HeightRequest="44" HorizontalOptions="Center" TextColor="{StaticResource BabyBuddyText}" />
+                        </Border>
+                    </VerticalStackLayout>
+
+                    <Label x:Name="AllDosesGivenLabel" Text="All doses given, no next date needed." Style="{StaticResource CaptionText}" />
+                </VerticalStackLayout>
+            </Border>
+
+            <Grid ColumnDefinitions="*,*" ColumnSpacing="12">
+                <Button Grid.Column="0" Text="Cancel" Style="{StaticResource SecondaryAction}" Clicked="OnCancelClicked" />
+                <Button x:Name="SaveButton" Grid.Column="1" Text="Save" Style="{StaticResource PrimaryAction}" Clicked="OnSaveClicked" />
+            </Grid>
+
+            <Button x:Name="RemoveButton" Text="Remove record" Style="{StaticResource SecondaryAction}" IsVisible="False" Clicked="OnRemoveClicked" />
+
+            <Label Text="For tracking only. Please confirm doses and timing with your pediatrician." Style="{StaticResource CaptionText}" HorizontalTextAlignment="Center" />
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

@@ -244,7 +244,7 @@ Should answer:
 - What happened last (feed, sleep), and how are they growing?
 - Which vaccines are on the schedule?
 
-The profile is read-only. Editing routes to AddBabyPage (ADR-004), and the profile is a pushed page with a back arrow (ADR-016).
+The profile is read-only. Editing routes to AddBabyPage (ADR-004), vaccine records route to AddVaccineRecordPage (row tap or the pencil icon), and the profile is a pushed page with a back arrow (ADR-016).
 
 ---
 
@@ -362,7 +362,7 @@ Avoid:
 
 ## Design System Guidance
 
-Reusable styling is centralized in `Resources/Styles/Colors.xaml` (colors and brushes) and `Resources/Styles/Styles.xaml` (named styles such as PageTitle, SectionTitle, ItemTitle, BodyText, CaptionText, PrimaryAction and SecondaryAction). New tokens and styles belong there.
+Reusable styling is centralized in `Resources/Styles/Colors.xaml` (colors and brushes) and `Resources/Styles/Styles.xaml` (named styles such as PageTitle, SectionTitle, ItemTitle, BodyText, CaptionText, PrimaryAction, SecondaryAction and CounterButton). New tokens and styles belong there.
 
 Recommended areas:
 

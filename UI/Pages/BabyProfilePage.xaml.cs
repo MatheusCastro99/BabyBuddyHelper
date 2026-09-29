@@ -10,14 +10,17 @@ public partial class BabyProfilePage : ContentPage
 {
     private readonly IBabyProfileService _babyProfileService;
     private readonly IVaccineCatalog _vaccineCatalog;
+    private readonly IVaccineService _vaccineService;
     private readonly Guid _babyId;
+    private bool _isOpeningRecord;
 
-    public BabyProfilePage(IBabyProfileService babyProfileService, IVaccineCatalog vaccineCatalog, Guid babyId)
+    public BabyProfilePage(IBabyProfileService babyProfileService, IVaccineCatalog vaccineCatalog, IVaccineService vaccineService, Guid babyId)
     {
         InitializeComponent();
 
         _babyProfileService = babyProfileService;
         _vaccineCatalog = vaccineCatalog;
+        _vaccineService = vaccineService;
         _babyId = babyId;
 
         ShowCurrentProfile();
@@ -64,6 +67,38 @@ public partial class BabyProfilePage : ContentPage
         if (!opened)
         {
             await AlertService.ShowLinkFailedAsync(this, _vaccineCatalog.SourceUrl);
+        }
+    }
+
+    private async void OnVaccineTapped(object? sender, TappedEventArgs e) => await OpenVaccineRecordAsync(sender);
+
+    private async void OnOpenRecordClicked(object? sender, EventArgs e) => await OpenVaccineRecordAsync(sender);
+
+    //Opens the record editor for the vaccine's row: a new record if this baby has none for it yet, otherwise the existing one.
+    //The record is looked up by baby and vaccine Id at tap time (ADR-007), so a record saved a moment ago is found.
+    private async Task OpenVaccineRecordAsync(object? sender)
+    {
+        if (_isOpeningRecord || Navigation.ModalStack.Count > 0)
+        {
+            return;
+        }
+
+        if (sender is not BindableObject { BindingContext: VaccineModel vaccine } || BindingContext is not BabyModel babyProfile)
+        {
+            return;
+        }
+
+        VaccinationRecordModel? record = _vaccineService.GetRecordsForBaby(_babyId).FirstOrDefault(x => x.VaccineId == vaccine.Id);
+
+        _isOpeningRecord = true;
+
+        try
+        {
+            await Navigation.PushModalAsync(new AddVaccineRecordPage(_vaccineService, vaccine, _babyId, babyProfile.Name, record));
+        }
+        finally
+        {
+            _isOpeningRecord = false;
         }
     }
 

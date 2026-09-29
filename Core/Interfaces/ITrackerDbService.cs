@@ -2,8 +2,8 @@ using BabyBuddyHelper.Core.Models;
 
 namespace BabyBuddyHelper.Core.Interfaces
 {
-    //Persistence boundary for tasks, appointments, and baby profiles. Only the cache services (TaskListService,
-    //BabyProfileService) talk to it; pages never do. Records are located by Id (ADR-007).
+    //Persistence boundary for tasks, appointments, baby profiles, and vaccination records. Only the cache services (TaskListService,
+    //BabyProfileService, VaccineService) talk to it; pages never do. Records are located by Id (ADR-007).
     //Every method throws DbCommunicationException when the database can't be reached or rejects the command.
     public interface ITrackerDbService
     {
@@ -18,5 +18,10 @@ namespace BabyBuddyHelper.Core.Interfaces
         Task AddBabyProfileAsync(BabyModel babyProfile);
         Task UpdateBabyProfileAsync(BabyModel babyProfile);
         Task RemoveBabyProfileAsync(Guid babyId);
+
+        Task<IReadOnlyList<VaccinationRecordModel>> GetVaccinationRecordsAsync();
+        Task AddVaccinationRecordAsync(VaccinationRecordModel record);
+        Task UpdateVaccinationRecordAsync(VaccinationRecordModel record);
+        Task RemoveVaccinationRecordAsync(Guid recordId);
     }
 }
