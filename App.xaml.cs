@@ -9,9 +9,10 @@ namespace BabyBuddyHelper
     {
         private readonly ITaskListService _taskListService;
         private readonly IBabyProfileService _babyProfileService;
+        private readonly IVaccineService _vaccineService;
         private Task? _startupTask;
 
-        public App(ITaskListService taskListService, IBabyProfileService babyProfileService)
+        public App(ITaskListService taskListService, IBabyProfileService babyProfileService, IVaccineService vaccineService)
         {
             InitializeComponent();
 
@@ -21,6 +22,7 @@ namespace BabyBuddyHelper
 
             _taskListService = taskListService;
             _babyProfileService = babyProfileService;
+            _vaccineService = vaccineService;
         }
 
         protected override Window CreateWindow(IActivationState? activationState)
@@ -64,10 +66,11 @@ namespace BabyBuddyHelper
             {
                 try
                 {
-                    //Profiles first, so any baby a task refers to already exists. On a retry, whichever load already
+                    //Profiles first, so any baby a task or vaccination record refers to already exists. On a retry, whichever load already
                     //succeeded returns its finished result instead of loading again, so nothing is duplicated.
                     await _babyProfileService.InitializeAsync();
                     await _taskListService.InitializeAsync();
+                    await _vaccineService.InitializeAsync();
                     break;
                 }
                 catch (DbCommunicationException)

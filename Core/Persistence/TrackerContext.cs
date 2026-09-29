@@ -9,6 +9,7 @@ namespace BabyBuddyHelper.Core.Persistence
     {
         public DbSet<TaskModel> Tasks => Set<TaskModel>();
         public DbSet<BabyModel> BabyProfiles => Set<BabyModel>();
+        public DbSet<VaccinationRecordModel> VaccinationRecords => Set<VaccinationRecordModel>();
 
         public TrackerContext(DbContextOptions<TrackerContext> options)
             : base(options)
@@ -45,6 +46,21 @@ namespace BabyBuddyHelper.Core.Persistence
             {
                 baby.HasKey(x => x.Id);
                 baby.Property(x => x.Id).ValueGeneratedNever();
+            });
+
+            modelBuilder.Entity<VaccinationRecordModel>(record =>
+            {
+                record.HasKey(x => x.Id);
+                record.Property(x => x.Id).ValueGeneratedNever();
+
+                //Deleting a baby deletes its vaccination records in the database itself. No navigation properties, same as tasks.
+                record.HasOne<BabyModel>()
+                    .WithMany()
+                    .HasForeignKey(x => x.BabyId)
+                    .OnDelete(DeleteBehavior.Cascade);
+
+                //A second record for the same baby and vaccine is rejected by the database
+                record.HasIndex(x => new { x.BabyId, x.VaccineId }).IsUnique();
             });
         }
 

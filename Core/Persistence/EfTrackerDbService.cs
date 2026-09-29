@@ -103,12 +103,45 @@ namespace BabyBuddyHelper.Core.Persistence
                 await db.SaveChangesAsync();
             });
 
-        //The foreign key's ON DELETE SET NULL clears this baby from its tasks in the same statement
+        //The foreign keys clear this baby from its tasks (ON DELETE SET NULL) and delete its vaccination records (ON DELETE CASCADE)
+        //in the same statement
         public Task RemoveBabyProfileAsync(Guid babyId) =>
             ExecuteWriteAsync(async () =>
             {
                 await using TrackerContext db = await CreateContextAsync();
                 await db.BabyProfiles.Where(x => x.Id == babyId).ExecuteDeleteAsync();
+            });
+
+        public Task<IReadOnlyList<VaccinationRecordModel>> GetVaccinationRecordsAsync() =>
+            ExecuteReadAsync<IReadOnlyList<VaccinationRecordModel>>(async () =>
+            {
+                await using TrackerContext db = await CreateContextAsync();
+                return await db.VaccinationRecords.AsNoTracking().ToListAsync();
+            });
+
+        //A duplicate baby + vaccine pair fails the unique index, so the caller gets DbCommunicationException
+        public Task AddVaccinationRecordAsync(VaccinationRecordModel record) =>
+            ExecuteWriteAsync(async () =>
+            {
+                await using TrackerContext db = await CreateContextAsync();
+                db.VaccinationRecords.Add(record);
+                await db.SaveChangesAsync();
+            });
+
+        //A missing row throws DbUpdateConcurrencyException, same as UpdateBabyProfileAsync
+        public Task UpdateVaccinationRecordAsync(VaccinationRecordModel record) =>
+            ExecuteWriteAsync(async () =>
+            {
+                await using TrackerContext db = await CreateContextAsync();
+                db.VaccinationRecords.Update(record);
+                await db.SaveChangesAsync();
+            });
+
+        public Task RemoveVaccinationRecordAsync(Guid recordId) =>
+            ExecuteWriteAsync(async () =>
+            {
+                await using TrackerContext db = await CreateContextAsync();
+                await db.VaccinationRecords.Where(x => x.Id == recordId).ExecuteDeleteAsync();
             });
 
         //Context creation runs inside the wrapped operation, so a database that can't be created or opened surfaces the same way.
