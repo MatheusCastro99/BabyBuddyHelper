@@ -13,6 +13,9 @@ namespace BabyBuddyHelper.UI.Services
         BabyProfileCreated,
         BabyProfileUpdated,
         BabyProfileDeleted,
+        VaccineRecordAdded,
+        VaccineRecordUpdated,
+        VaccineRecordRemoved,
     }
 
     /// <summary>
@@ -87,6 +90,31 @@ namespace BabyBuddyHelper.UI.Services
                 "Cub gives a soft nod, that profile has been removed.",
                 "Cub says: all set, that profile is no longer in your nest.",
                 "Cub made a little extra room by clearing that profile away.",
+            ],
+            //Vaccine lines celebrate the record-keeping, never the baby's vaccination status: that stays with the pediatrician
+            [ToastKind.VaccineRecordAdded] =
+            [
+                "Cub tucked that record safely into the profile.",
+                "Cub says: that vaccine record is saved!",
+                "Cub gives a happy nod, record saved!",
+                "Cub says: one more detail kept in one place.",
+                "Cub says: nicely noted, it's all written down now.",
+            ],
+            [ToastKind.VaccineRecordUpdated] =
+            [
+                "Cub says: that record is up to date!",
+                "Cub tidied up those dose details for you.",
+                "Cub gives a warm nod, changes saved!",
+                "Cub says: those dates are noted and ready.",
+                "Cub helps keep that record current for you.",
+            ],
+            [ToastKind.VaccineRecordRemoved] =
+            [
+                "Cub says: that record has been cleared.",
+                "Cub gently tucked that record away.",
+                "Cub gives a soft nod, record removed.",
+                "Cub says: all tidy, that record is gone.",
+                "Cub cleared that record, you can add it again anytime.",
             ],
         };
 

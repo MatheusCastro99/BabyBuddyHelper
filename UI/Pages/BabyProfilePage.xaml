@@ -6,7 +6,7 @@
              Title="Baby Profile"
              BackgroundColor="{StaticResource BabyBuddyBackground}">
 
-    <!--AddBabyPage shows its "updated" toast after closing, which lands here, so this page hosts its own ToastView-->
+    <!--AddBabyPage and AddVaccineRecordPage show their toasts after closing, which land here, so this page hosts its own ToastView-->
     <Grid>
         <ScrollView>
             <VerticalStackLayout Padding="20" Spacing="18">
@@ -80,7 +80,12 @@
                         <VerticalStackLayout x:Name="VaccineList" Spacing="10">
                             <BindableLayout.ItemTemplate>
                                 <DataTemplate>
-                                    <Border Padding="16" BackgroundColor="{StaticResource BabyBuddySurfaceAlt}" StrokeThickness="0" StrokeShape="RoundRectangle 22">
+                                    <!--Tapping a vaccine opens its record editor, same as tapping a baby card on MainPage-->
+                                    <Border Padding="16" BackgroundColor="{StaticResource BabyBuddySurfaceAlt}" StrokeThickness="0" StrokeShape="RoundRectangle 22"
+                                            SemanticProperties.Hint="Opens this vaccine's record">
+                                        <Border.GestureRecognizers>
+                                            <TapGestureRecognizer Tapped="OnVaccineTapped" />
+                                        </Border.GestureRecognizers>
                                         <Grid ColumnDefinitions="*,Auto" RowDefinitions="Auto,Auto" ColumnSpacing="12" RowSpacing="4">
                                             <Label Text="{Binding Name}" Style="{StaticResource ItemTitle}" VerticalOptions="Center" />
 
