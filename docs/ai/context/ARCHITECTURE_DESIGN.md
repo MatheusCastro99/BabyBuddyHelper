@@ -23,6 +23,7 @@ Core/Models/
 - AppointmentModel.cs
 - BabyModel.cs
 - VaccineModel.cs
+- VaccinationRecordModel.cs
 
 Core/Services/
 
@@ -31,6 +32,7 @@ Core/Services/
 - BabyFilterService.cs
 - TrackerDataSeeder.cs
 - VaccineCatalog.cs
+- VaccineService.cs
 
 Core/Interfaces/
 
@@ -39,6 +41,7 @@ Core/Interfaces/
 - IBabyFilterService.cs
 - ITrackerDbService.cs
 - IVaccineCatalog.cs
+- IVaccineService.cs
 
 Core/Persistence/
 
@@ -60,6 +63,7 @@ UI/Pages/
 - AddTaskPage
 - AddBabyPage
 - BabyProfilePage
+- AddVaccineRecordPage
 - CalendarPage
 
 UI/Controls/

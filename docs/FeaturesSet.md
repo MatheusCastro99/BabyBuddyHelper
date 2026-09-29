@@ -42,13 +42,15 @@
 
 ✅ Vaccine catalog shown read-only on the profile
 
+✅ Per-baby vaccination records (doses given, last and next dose dates), edited from the profile
+
 ## Planned Features:
 
 Cloud Synchronization
 
 Database Backup, Redundancy, and Restore
 
-Vaccination Tracker (per-baby vaccination records)
+Vaccination status display on the profile
 
 Companion comes to life with an AI-driven personality and interactions
 

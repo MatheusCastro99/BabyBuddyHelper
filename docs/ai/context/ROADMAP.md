@@ -64,7 +64,7 @@ Filters Update: CONCLUDED
 
 - BabyModel logic has been migrated from stored Age to DateOfBirth with computed age display.
 - `ITrackerDbService` defines the persistence boundary.
-- `TaskListService` and `BabyProfileService` are the cache services backed by `ITrackerDbService`.
+- `TaskListService`, `BabyProfileService` and `VaccineService` are the cache services backed by `ITrackerDbService`.
 - `EfTrackerDbService` is the active EF Core + SQLite implementation.
 - Database-first writes are complete: `EfTrackerDbService` commits first, `DbCommunicationException` reports database failures, and startup load failures alert the user so they can retry.
 - Debug-only `SimulateDbFailure` and `ResetDatabaseOnStartup` support development-time failure and schema-reset testing.
@@ -78,11 +78,11 @@ Filters Update: CONCLUDED
 - Layered Structure: 
 	- Core/:
 		- Models/ 
-			- TaskModel, AppointmentModel, BabyModel, VaccineModel
+			- TaskModel, AppointmentModel, BabyModel, VaccineModel, VaccinationRecordModel
 		- Services/ 
-			- TaskListService, BabyProfileService, BabyFilterService, TrackerDataSeeder, VaccineCatalog
+			- TaskListService, BabyProfileService, BabyFilterService, TrackerDataSeeder, VaccineCatalog, VaccineService
 		- Interfaces/ 
-			- ITrackerDbService, IBabyProfileService, ITaskListService, IBabyFilterService, IVaccineCatalog
+			- ITrackerDbService, IBabyProfileService, ITaskListService, IBabyFilterService, IVaccineCatalog, IVaccineService
 		- Persistence/ 
 			- TrackerContext, EfTrackerDbService
 		- Collections/ 
@@ -91,7 +91,7 @@ Filters Update: CONCLUDED
 			- DbCommunicationException
 	- UI/:
 		- Pages/
-			- MainPage, ChecklistPage, AddTaskPage, AddBabyPage, BabyProfilePage, CalendarPage
+			- MainPage, ChecklistPage, AddTaskPage, AddBabyPage, BabyProfilePage, AddVaccineRecordPage, CalendarPage
 		- Controls/
 			- CompanionView, ToastView
 		- Services/ 
@@ -107,8 +107,8 @@ Filters Update: CONCLUDED
 - Baby's name as the title
 - Age (computed from DateOfBirth), weight and height
 - Last feed and last sleep
-- A read-only Vaccines section (full catalog, "Not started", disclaimer) shipped with the catalog (#43); Vaccination Records adds per-baby status.
-- Reads baby data only from IBabyProfileService (ADR-001/008); the Vaccines section reads the fixed catalog from IVaccineCatalog (ADR-012).
+- A read-only Vaccines section (full catalog, "Not started", disclaimer) shipped with the catalog (#43). Vaccination records and their editor have shipped; the per-vaccine status display is #47.
+- Reads baby data only from IBabyProfileService (ADR-001/008); the Vaccines section reads the fixed catalog from IVaccineCatalog (ADR-012). The profile also reads vaccination records from IVaccineService.
 - Profile Navigation: CONCLUDED
 	- MainPage -> Tap Baby Profile Card -> BabyProfilePage
 	- BabyProfilePage -> Tap Edit Button -> AddBabyPage
@@ -128,7 +128,7 @@ Filters Update: CONCLUDED
 	- Vaccine catalog is for personal tracking purposes only and not a substitute for professional medical advice
 	- Mention source of information (CDC, WHO, etc.) and provide links to official resources
 
-> Vaccination Records:
+> Vaccination Records: CONCLUDED
 
 - VaccinationRecordModel:
 	- Guid Id
@@ -136,23 +136,27 @@ Filters Update: CONCLUDED
 	- Guid VaccineId
 	- int TotalDoses
 	- int CompletedDoses
-	- DateTime LastAdministered
-	- DateTime NextDose
-	- Bool IsOverdue => Computed property based on NextDose and current date
+	- DateTime? LastAdministered
+	- DateTime? NextDose
+	- Bool IsOverdue => Computed property: NextDose is before today and the record is not complete
 	- Bool IsCompleted => Computed property based on CompletedDoses and TotalDoses
 - IVaccineService
 - VaccineService:
 	- cache service and single source of truth for vaccination records
-	- Will handle vaccination records for each baby profile
-- At most one vaccination record per baby per vaccine
+	- Handles vaccination records for each baby profile
+- At most one vaccination record per baby per vaccine (unique (BabyId, VaccineId) index)
 - Deleting Baby Profile deletes all associated vaccination records (No orphaned records)
-- SQLite: entity mapping plus EF Core integration. Current strategy uses `EnsureCreated`; if migrations are still not adopted then schema changes require a debug reset run.
+- SQLite: entity mapping plus EF Core integration. Current strategy uses `EnsureCreated`; the new table reached existing databases through one debug reset run. Migrations are tracked in #76.
 
-> AddVaccineRecordPage:
+> AddVaccineRecordPage: CONCLUDED
 
-- Opened from a vaccine in the profile's Vaccines section.
-- Creates a record for a "Not started" vaccine, or edits an existing one; a record can also be removed.
+- Opened by tapping a vaccine row in the profile's Vaccines section.
+- Creates a record for a "Not started" vaccine, or edits an existing one; a record can also be removed, with a confirmation.
 - Fields: total doses (depends on the brand), completed doses, last applied date, next dose date.
+- Total and completed doses use -/+ counters.
+- Last dose date is required once a dose is given (pre-filled, and follows new doses).
+- Next dose date is optional, and dropped when the record is complete.
+- Footer disclaimer.
 
 > Phase 4 Cleanup:
 

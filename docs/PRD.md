@@ -1,7 +1,7 @@
 # Product Requirements Document: BabyBuddyHelper
 
 ## Purpose
-BabyBuddyHelper is an offline-first parenting companion that helps parents and caregivers manage and track essential baby care activities and preparation tasks. The app organizes tasks by priority and completion status, schedules appointments on an integrated calendar, keeps a profile for each baby (tasks and appointments can be linked to one) with a built-in, read-only US CDC vaccine list and a disclaimer, and offers a home dashboard with a countdown timer to the expected due date. A companion character and gentle toast feedback keep the experience warm and encouraging. Data is stored locally on the device (SQLite).
+BabyBuddyHelper is an offline-first parenting companion that helps parents and caregivers manage and track essential baby care activities and preparation tasks. The app organizes tasks by priority and completion status, schedules appointments on an integrated calendar, keeps a profile for each baby (tasks and appointments can be linked to one) with a built-in, read-only US CDC vaccine list, a disclaimer, and per-baby vaccination records, and offers a home dashboard with a countdown timer to the expected due date. A companion character and gentle toast feedback keep the experience warm and encouraging. Data is stored locally on the device (SQLite).
 
 ## Technical Specifications
 - **Language**: C#
@@ -38,10 +38,21 @@ BabyModel
 └── AgeText (string, computed) - Display age, never stored
 
 VaccineModel (fixed catalog entry, never stored in the database)
-├── Id (Guid) - Hardcoded, never regenerated (vaccination records will reference it)
+├── Id (Guid) - Hardcoded, never regenerated (vaccination records reference it)
 ├── CvxCode (string) - CDC vaccine code
 ├── Name (string) - Display name
 └── Description (string) - What the vaccine protects against
+
+VaccinationRecordModel (one baby's progress on one catalog vaccine, stored in the database)
+├── Id (Guid) - Unique identifier, created by the app
+├── BabyId (Guid) - The baby it belongs to, never changes
+├── VaccineId (Guid) - The catalog vaccine it tracks, never changes
+├── TotalDoses (int) - Doses in the series (depends on the brand)
+├── CompletedDoses (int) - Doses given so far
+├── LastAdministered (DateTime?) - Date of the last dose, empty until the first dose
+├── NextDose (DateTime?) - Optional date of the next dose
+├── IsCompleted (bool, computed) - All doses given, never stored
+└── IsOverdue (bool, computed) - Next dose is before today and the record is not complete, never stored
 ```
 
 ## Solution Structure
@@ -52,19 +63,22 @@ BabyBuddyHelper/
 │   │   ├── TaskModel.cs - Data model for tasks
 │   │   ├── AppointmentModel.cs - Data model for appointments (extends tasks)
 │   │   ├── BabyModel.cs - Data model for baby profiles (age computed from date of birth)
-│   │   └── VaccineModel.cs - Data model for one vaccine in the built-in catalog
+│   │   ├── VaccineModel.cs - Data model for one vaccine in the built-in catalog
+│   │   └── VaccinationRecordModel.cs - Data model for one baby's doses and dates for one vaccine
 │   ├── Services/
 │   │   ├── TaskListService.cs - In-memory cache and single source of truth for tasks and appointments
 │   │   ├── BabyProfileService.cs - In-memory cache and single source of truth for baby profiles
 │   │   ├── BabyFilterService.cs - Baby selection options shared by the checklist, calendar and task entry
 │   │   ├── TrackerDataSeeder.cs - Debug-only mock data seeding
-│   │   └── VaccineCatalog.cs - Fixed US CDC vaccine list (birth to 6 years), no database access
+│   │   ├── VaccineCatalog.cs - Fixed US CDC vaccine list (birth to 6 years), no database access
+│   │   └── VaccineService.cs - In-memory cache and single source of truth for vaccination records
 │   ├── Interfaces/
 │   │   ├── ITaskListService.cs - Interface for TaskListService
 │   │   ├── IBabyProfileService.cs - Interface for BabyProfileService
 │   │   ├── IBabyFilterService.cs - Interface for BabyFilterService
 │   │   ├── ITrackerDbService.cs - Persistence boundary, used only by the cache services
-│   │   └── IVaccineCatalog.cs - Interface for VaccineCatalog
+│   │   ├── IVaccineCatalog.cs - Interface for VaccineCatalog
+│   │   └── IVaccineService.cs - Interface for VaccineService
 │   ├── Persistence/
 │   │   ├── TrackerContext.cs - EF Core SQLite database context
 │   │   └── EfTrackerDbService.cs - EF Core + SQLite implementation of ITrackerDbService
@@ -78,7 +92,8 @@ BabyBuddyHelper/
 │   │   ├── ChecklistPage.xaml(.cs) - Task list with filters and sorting
 │   │   ├── AddTaskPage.xaml(.cs) - Task and appointment creation / edit interface
 │   │   ├── AddBabyPage.xaml(.cs) - Baby profile creation / edit interface
-│   │   ├── BabyProfilePage.xaml(.cs) - Read-only baby profile with the vaccine list and disclaimer; entry point for edit and delete
+│   │   ├── BabyProfilePage.xaml(.cs) - Read-only baby profile with the vaccine list and disclaimer; entry point for edit and delete, and for vaccine records
+│   │   ├── AddVaccineRecordPage.xaml(.cs) - Vaccination record creation / edit / remove interface
 │   │   └── CalendarPage.xaml(.cs) - Calendar visual of appointments
 │   ├── Controls/
 │   │   ├── CompanionView.xaml(.cs) - Companion character

@@ -11,7 +11,7 @@
 
 BabyBuddyHelper is a cross-platform parenting companion built with .NET MAUI. Today, it helps parents and caregivers organize tasks, track appointments, manage baby profiles, and visualize schedules through checklist and calendar experiences.
 
-The project is currently a functional prototype in active development. Its current focus is per-baby vaccination record tracking, building on the shipped baby profile page and vaccine catalog, while preserving the shipped task, appointment, baby-profile, filtering, and companion experience.
+The project is currently a functional prototype in active development. Its current focus is showing each baby's vaccine status, building on the shipped baby profile page, vaccine catalog and vaccination records, while preserving the shipped task, appointment, baby-profile, filtering, and companion experience.
 
 ## Vision and Experience
 
@@ -54,6 +54,7 @@ The current experience already includes a lightweight companion character and su
 - Create, edit, and delete baby profiles
 - Read-only profile page per baby, with edit and delete from there
 - Built-in US CDC vaccine list (birth to 6 years) on each profile, with a disclaimer
+- Per-baby vaccination records (doses given, last and next dose dates), added and edited from the profile
 - Link tasks and appointments to specific baby profiles
 - Automatically project profile names into checklist and calendar-related workflows
 
@@ -141,11 +142,12 @@ IBabyProfileService / BabyProfileService
 IBabyFilterService / BabyFilterService
 ITrackerDbService / EfTrackerDbService
 IVaccineCatalog / VaccineCatalog
+IVaccineService / VaccineService
 ```
 
 `TaskListService` remains the application's single source of truth for tasks and appointments.
 
-The app uses in-memory cache services (`TaskListService`, `BabyProfileService`) backed by `ITrackerDbService`. `EfTrackerDbService` is the active EF Core + SQLite implementation. All screens should continue to consume task and appointment state through `TaskListService`, and Syncfusion Scheduler types should remain in the UI layer.
+The app uses in-memory cache services (`TaskListService`, `BabyProfileService`, `VaccineService`) backed by `ITrackerDbService`. `EfTrackerDbService` is the active EF Core + SQLite implementation. All screens should continue to consume task and appointment state through `TaskListService`, and Syncfusion Scheduler types should remain in the UI layer.
 
 Future architectural refinements may include:
 
@@ -166,21 +168,24 @@ BabyBuddyHelper/
 │   │   ├── TaskModel.cs
 │   │   ├── AppointmentModel.cs
 │   │   ├── BabyModel.cs
-│   │   └── VaccineModel.cs
+│   │   ├── VaccineModel.cs
+│   │   └── VaccinationRecordModel.cs
 │   │
 │   ├── Services/
 │   │   ├── TaskListService.cs
 │   │   ├── BabyProfileService.cs
 │   │   ├── BabyFilterService.cs
 │   │   ├── TrackerDataSeeder.cs
-│   │   └── VaccineCatalog.cs
+│   │   ├── VaccineCatalog.cs
+│   │   └── VaccineService.cs
 │   │
 │   ├── Interfaces/
 │   │   ├── ITaskListService.cs
 │   │   ├── IBabyProfileService.cs
 │   │   ├── IBabyFilterService.cs
 │   │   ├── ITrackerDbService.cs
-│   │   └── IVaccineCatalog.cs
+│   │   ├── IVaccineCatalog.cs
+│   │   └── IVaccineService.cs
 │   │
 │   ├── Persistence/
 │   │   ├── TrackerContext.cs
@@ -199,6 +204,7 @@ BabyBuddyHelper/
 │   │   ├── AddTaskPage.xaml(.cs)
 │   │   ├── AddBabyPage.xaml(.cs)
 │   │   ├── BabyProfilePage.xaml(.cs)
+│   │   ├── AddVaccineRecordPage.xaml(.cs)
 │   │   └── CalendarPage.xaml(.cs)
 │   │
 │   ├── Controls/
@@ -278,7 +284,7 @@ This project follows modern software engineering practices:
 
 ### Near Term
 
-- Expanded baby-care tracking with vaccination records tracking
+- Vaccine status display on each baby's profile (#47)
 
 ### Medium Term
 

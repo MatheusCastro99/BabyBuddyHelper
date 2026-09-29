@@ -155,12 +155,23 @@ Represents one baby profile.
 
 One entry of the fixed vaccine catalog (US CDC schedule, birth to 6 years).
 
-- Guid Identifier (hardcoded and never regenerated, because vaccination records will reference it)
+- Guid Identifier (hardcoded and never regenerated, because vaccination records reference it)
 - CvxCode
 - Name
 - Description
 
 Served read-only by `IVaccineCatalog`. Never stored in the database (ADR-012).
+
+## VaccinationRecordModel
+
+One baby's progress on one catalog vaccine. At most one record per baby per vaccine.
+
+- Guid Identifier
+- BabyId and VaccineId (required, never change; VaccineId has no database foreign key because the catalog is not in the database)
+- TotalDoses and CompletedDoses
+- LastAdministered and NextDose (both optional)
+
+`IsCompleted` and `IsOverdue` are computed for display and never stored. A dose due today is not overdue. Deleting a baby deletes its records (database cascade).
 
 ---
 
@@ -170,6 +181,7 @@ Current cache services:
 
 - TaskListService for tasks and appointments
 - BabyProfileService for baby profiles
+- VaccineService for vaccination records
 
 Persistence boundary:
 
@@ -183,6 +195,10 @@ ObservableCollection<TaskModel>
 BabyProfileService owns:
 
 ObservableCollection<BabyModel>
+
+VaccineService owns:
+
+ObservableCollection<VaccinationRecordModel>
 
 Reference data (not a cache service, no database):
 
@@ -213,7 +229,7 @@ Current storage:
 Reason:
 
 The persistence boundary and SQLite backend are active. Writes are database-first, failed writes throw `DbCommunicationException`, and startup load failures surface alerts so the user can retry or continue.
-Schema evolution currently uses `EnsureCreated` with debug-only reset during development.
+Schema evolution currently uses `EnsureCreated` with debug-only reset during development (migrations are tracked in #76).
 
 Debug-only flags:
 - `ResetDatabaseOnStartup` for one-run schema resets after a schema change
@@ -292,6 +308,12 @@ BabyProfilePage (pushed, read-only; ADR-016)
 Edit profile
     ->
 AddBabyPage (modal)
+
+Vaccination records follow the same rule with AddVaccineRecordPage:
+
+-   Tap a vaccine row on BabyProfilePage
+    ->
+AddVaccineRecordPage (modal)
 
 ---
 
@@ -434,7 +456,7 @@ Consistent warm and soothing visual language.
 Low Priority:
 
 - No MVVM
-- No EF migration workflow yet (current schema strategy is `EnsureCreated` + debug reset)
+- No EF migration workflow yet (current schema strategy is `EnsureCreated` + debug reset; tracked in #76)
 - No INotifyPropertyChanged
 
 Accepted trade-offs.
