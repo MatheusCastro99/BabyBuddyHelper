@@ -107,7 +107,7 @@ Filters Update: CONCLUDED
 - Baby's name as the title
 - Age (computed from DateOfBirth), weight and height
 - Last feed and last sleep
-- A read-only Vaccines section (full catalog, "Not started", disclaimer) shipped with the catalog (#43). Vaccination records and their editor have shipped; the per-vaccine status display is #47.
+- A read-only Vaccines section (full catalog, "Not started", disclaimer) shipped with the catalog (#43). Vaccination records and their editor have shipped; the per-vaccine status display has shipped too (#47): a pill (Not started / X of N / Complete), the next dose date, and a gentle overdue reminder.
 - Reads baby data only from IBabyProfileService (ADR-001/008); the Vaccines section reads the fixed catalog from IVaccineCatalog (ADR-012). The profile also reads vaccination records from IVaccineService.
 - Profile Navigation: CONCLUDED
 	- MainPage -> Tap Baby Profile Card -> BabyProfilePage

@@ -1,7 +1,7 @@
 # Product Requirements Document: BabyBuddyHelper
 
 ## Purpose
-BabyBuddyHelper is an offline-first parenting companion that helps parents and caregivers manage and track essential baby care activities and preparation tasks. The app organizes tasks by priority and completion status, schedules appointments on an integrated calendar, keeps a profile for each baby (tasks and appointments can be linked to one) with a built-in, read-only US CDC vaccine list, a disclaimer, and per-baby vaccination records, and offers a home dashboard with a countdown timer to the expected due date. A companion character and gentle toast feedback keep the experience warm and encouraging. Data is stored locally on the device (SQLite).
+BabyBuddyHelper is an offline-first parenting companion that helps parents and caregivers manage and track essential baby care activities and preparation tasks. The app organizes tasks by priority and completion status, schedules appointments on an integrated calendar, keeps a profile for each baby (tasks and appointments can be linked to one) with a built-in, read-only US CDC vaccine list, a disclaimer, per-baby vaccination records, and each vaccine's status, and offers a home dashboard with a countdown timer to the expected due date. A companion character and gentle toast feedback keep the experience warm and encouraging. Data is stored locally on the device (SQLite).
 
 ## Technical Specifications
 - **Language**: C#
@@ -92,7 +92,7 @@ BabyBuddyHelper/
 │   │   ├── ChecklistPage.xaml(.cs) - Task list with filters and sorting
 │   │   ├── AddTaskPage.xaml(.cs) - Task and appointment creation / edit interface
 │   │   ├── AddBabyPage.xaml(.cs) - Baby profile creation / edit interface
-│   │   ├── BabyProfilePage.xaml(.cs) - Read-only baby profile with the vaccine list and disclaimer; entry point for edit and delete, and for vaccine records
+│   │   ├── BabyProfilePage.xaml(.cs) - Read-only baby profile with the vaccine list, each vaccine's status, and disclaimer; entry point for edit and delete, and for vaccine records
 │   │   ├── AddVaccineRecordPage.xaml(.cs) - Vaccination record creation / edit / remove interface
 │   │   └── CalendarPage.xaml(.cs) - Calendar visual of appointments
 │   ├── Controls/
