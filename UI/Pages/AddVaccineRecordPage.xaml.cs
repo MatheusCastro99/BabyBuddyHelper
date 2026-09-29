@@ -17,9 +17,10 @@ public partial class AddVaccineRecordPage : ContentPage
     private readonly string _babyName;
     private readonly VaccinationRecordModel? _recordOnEdit;
 
-    //What the record held when the page opened, so the last-dose date can follow the dose count (see OnCompletedDosesIncreaseClicked)
+    //What the record held when the page opened, so the dose dates can follow the dose count (see OnCompletedDosesIncreaseClicked)
     private readonly int _storedCompletedDoses;
     private readonly DateTime? _storedLastAdministered;
+    private readonly DateTime? _storedNextDose;
 
     private int _totalDoses = 1;
     private int _completedDoses;
@@ -43,12 +44,13 @@ public partial class AddVaccineRecordPage : ContentPage
         {
             _storedCompletedDoses = recordOnEdit.CompletedDoses;
             _storedLastAdministered = recordOnEdit.LastAdministered?.Date;
+            _storedNextDose = recordOnEdit.NextDose?.Date;
 
             _totalDoses = recordOnEdit.TotalDoses;
             _completedDoses = recordOnEdit.CompletedDoses;
             LastDosePicker.Date = _storedLastAdministered ?? DateTime.Today;
-            NextDoseCheckBox.IsChecked = recordOnEdit.NextDose.HasValue;
-            NextDosePicker.Date = recordOnEdit.NextDose?.Date ?? DateTime.Today;
+            NextDoseCheckBox.IsChecked = _storedNextDose.HasValue;
+            NextDosePicker.Date = _storedNextDose ?? DateTime.Today;
 
             SaveButton.Text = "Update";
             RemoveButton.IsVisible = true;
@@ -96,7 +98,8 @@ public partial class AddVaccineRecordPage : ContentPage
     }
 
     //Going one past the stored count means a new dose was given, so the last-dose date moves to today (the usual case: logging
-    //right after the visit). Coming back down to the stored count restores the stored date. Any date picked in between is kept.
+    //right after the visit) and the stored next date is cleared: it was for the dose just logged, and keeping it would later read
+    //as overdue. Coming back down to the stored count restores both stored dates. Any date picked in between is kept.
     private void OnCompletedDosesIncreaseClicked(object? sender, EventArgs e)
     {
         if (_completedDoses >= _totalDoses)
@@ -109,6 +112,7 @@ public partial class AddVaccineRecordPage : ContentPage
         if (_completedDoses == _storedCompletedDoses + 1)
         {
             LastDosePicker.Date = DateTime.Today;
+            NextDoseCheckBox.IsChecked = false;
         }
 
         RefreshDoseState();
@@ -123,9 +127,15 @@ public partial class AddVaccineRecordPage : ContentPage
 
         _completedDoses--;
 
-        if (_completedDoses == _storedCompletedDoses && _storedLastAdministered.HasValue)
+        if (_completedDoses == _storedCompletedDoses)
         {
-            LastDosePicker.Date = _storedLastAdministered.Value;
+            if (_storedLastAdministered.HasValue)
+            {
+                LastDosePicker.Date = _storedLastAdministered.Value;
+            }
+
+            NextDoseCheckBox.IsChecked = _storedNextDose.HasValue;
+            NextDosePicker.Date = _storedNextDose ?? DateTime.Today;
         }
 
         RefreshDoseState();

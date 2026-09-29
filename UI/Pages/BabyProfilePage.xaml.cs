@@ -70,9 +70,13 @@ public partial class BabyProfilePage : ContentPage
         }
     }
 
-    //Opens the record editor for the tapped vaccine: a new record if this baby has none for it yet, otherwise the existing one.
+    private async void OnVaccineTapped(object? sender, TappedEventArgs e) => await OpenVaccineRecordAsync(sender);
+
+    private async void OnOpenRecordClicked(object? sender, EventArgs e) => await OpenVaccineRecordAsync(sender);
+
+    //Opens the record editor for the vaccine's row: a new record if this baby has none for it yet, otherwise the existing one.
     //The record is looked up by baby and vaccine Id at tap time (ADR-007), so a record saved a moment ago is found.
-    private async void OnVaccineTapped(object? sender, TappedEventArgs e)
+    private async Task OpenVaccineRecordAsync(object? sender)
     {
         if (_isOpeningRecord || Navigation.ModalStack.Count > 0)
         {

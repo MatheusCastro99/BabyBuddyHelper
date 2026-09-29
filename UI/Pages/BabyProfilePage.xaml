@@ -86,7 +86,7 @@
                                         <Border.GestureRecognizers>
                                             <TapGestureRecognizer Tapped="OnVaccineTapped" />
                                         </Border.GestureRecognizers>
-                                        <Grid ColumnDefinitions="*,Auto" RowDefinitions="Auto,Auto" ColumnSpacing="12" RowSpacing="4">
+                                        <Grid ColumnDefinitions="*,Auto" RowDefinitions="Auto,Auto,Auto" ColumnSpacing="12" RowSpacing="4">
                                             <Label Text="{Binding Name}" Style="{StaticResource ItemTitle}" VerticalOptions="Center" />
 
                                             <!--Every vaccine is "Not started" until vaccination records exist; the status is spelled out, not shown by color-->
@@ -95,6 +95,15 @@
                                             </Border>
 
                                             <Label Grid.Row="1" Grid.ColumnSpan="2" Text="{Binding Description}" Style="{StaticResource BodyText}" />
+
+                                            <!--The row tap is pointer/touch only; this button keeps the record reachable by keyboard and screen readers (same as the MainPage baby card)-->
+                                            <Button Grid.Row="2" Grid.ColumnSpan="2"
+                                                    Text="Open record"
+                                                    Style="{StaticResource SecondaryAction}"
+                                                    HorizontalOptions="End"
+                                                    Margin="0,6,0,0"
+                                                    SemanticProperties.Description="{Binding Name, StringFormat='Open the {0} record'}"
+                                                    Clicked="OnOpenRecordClicked" />
                                         </Grid>
                                     </Border>
                                 </DataTemplate>
