@@ -86,7 +86,7 @@
                                         <Border.GestureRecognizers>
                                             <TapGestureRecognizer Tapped="OnVaccineTapped" />
                                         </Border.GestureRecognizers>
-                                        <Grid ColumnDefinitions="*,Auto,Auto,Auto" RowDefinitions="Auto,Auto,Auto" ColumnSpacing="8" RowSpacing="4">
+                                        <Grid ColumnDefinitions="*,Auto,Auto,Auto" RowDefinitions="Auto,Auto" ColumnSpacing="8" RowSpacing="4">
                                             <Label Text="{Binding Name}" Style="{StaticResource ItemTitle}" VerticalOptions="Center" Margin="0,0,4,0" />
 
                                             <!--The row tap is pointer/touch only; this button keeps the record reachable by keyboard and screen readers.
@@ -121,10 +121,13 @@
                                                 </Label>
                                             </Border>
 
-                                            <!--Next dose, due today, or a gentle overdue reminder. The wording carries the meaning, with no alarm styling-->
-                                            <Label Grid.Row="1" Grid.ColumnSpan="4" Text="{Binding StatusLine}" IsVisible="{Binding HasStatusLine}" Style="{StaticResource BodyText}" />
+                                            <!--Stacked rather than in separate grid rows: a stack skips the hidden status line, so rows without one keep the same spacing-->
+                                            <VerticalStackLayout Grid.Row="1" Grid.ColumnSpan="4" Spacing="4">
+                                                <!--Next dose, due today, or a gentle overdue reminder. The wording carries the meaning, with no alarm styling-->
+                                                <Label Text="{Binding StatusLine}" IsVisible="{Binding HasStatusLine}" Style="{StaticResource BodyText}" />
 
-                                            <Label Grid.Row="2" Grid.ColumnSpan="4" Text="{Binding Description}" Style="{StaticResource BodyText}" />
+                                                <Label Text="{Binding Description}" Style="{StaticResource BodyText}" />
+                                            </VerticalStackLayout>
                                         </Grid>
                                     </Border>
                                 </DataTemplate>
