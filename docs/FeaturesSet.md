@@ -44,13 +44,13 @@
 
 ✅ Per-baby vaccination records (doses given, last and next dose dates), edited from the profile
 
+✅ Vaccine status on the profile (doses given, next dose, gentle overdue reminder)
+
 ## Planned Features:
 
 Cloud Synchronization
 
 Database Backup, Redundancy, and Restore
-
-Vaccination status display on the profile
 
 Companion comes to life with an AI-driven personality and interactions
 

@@ -11,7 +11,7 @@
 
 BabyBuddyHelper is a cross-platform parenting companion built with .NET MAUI. Today, it helps parents and caregivers organize tasks, track appointments, manage baby profiles, and visualize schedules through checklist and calendar experiences.
 
-The project is currently a functional prototype in active development. Its current focus is showing each baby's vaccine status, building on the shipped baby profile page, vaccine catalog and vaccination records, while preserving the shipped task, appointment, baby-profile, filtering, and companion experience.
+The project is currently a functional prototype in active development. Its current focus is the Phase 4 vaccine tracker clean-up (#48), building on the shipped baby profile page, vaccine catalog, vaccination records and vaccine status display, while preserving the shipped task, appointment, baby-profile, filtering, and companion experience.
 
 ## Vision and Experience
 
@@ -55,6 +55,7 @@ The current experience already includes a lightweight companion character and su
 - Read-only profile page per baby, with edit and delete from there
 - Built-in US CDC vaccine list (birth to 6 years) on each profile, with a disclaimer
 - Per-baby vaccination records (doses given, last and next dose dates), added and edited from the profile
+- Vaccine status per vaccine (doses given, next dose, gentle overdue reminder)
 - Link tasks and appointments to specific baby profiles
 - Automatically project profile names into checklist and calendar-related workflows
 
@@ -284,7 +285,7 @@ This project follows modern software engineering practices:
 
 ### Near Term
 
-- Vaccine status display on each baby's profile (#47)
+- Phase 4 vaccine tracker clean-up (#48)
 
 ### Medium Term
 

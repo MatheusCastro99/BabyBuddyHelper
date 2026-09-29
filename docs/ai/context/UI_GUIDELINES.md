@@ -242,9 +242,11 @@ Should answer:
 
 - How is my baby doing?
 - What happened last (feed, sleep), and how are they growing?
-- Which vaccines are on the schedule?
+- Which vaccines are on the schedule, and how far along is each one?
 
 The profile is read-only. Editing routes to AddBabyPage (ADR-004), vaccine records route to AddVaccineRecordPage (row tap or the pencil icon), and the profile is a pushed page with a back arrow (ADR-016).
+
+Vaccine status is always spelled out, never shown by color alone. Overdue is a gentle reminder with no alarm styling, and Complete uses Success with PrimaryDarkText because caption text is too faint on green.
 
 ---
 
