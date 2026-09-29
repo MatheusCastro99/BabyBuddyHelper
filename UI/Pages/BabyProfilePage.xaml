@@ -86,24 +86,30 @@
                                         <Border.GestureRecognizers>
                                             <TapGestureRecognizer Tapped="OnVaccineTapped" />
                                         </Border.GestureRecognizers>
-                                        <Grid ColumnDefinitions="*,Auto" RowDefinitions="Auto,Auto,Auto" ColumnSpacing="12" RowSpacing="4">
-                                            <Label Text="{Binding Name}" Style="{StaticResource ItemTitle}" VerticalOptions="Center" />
+                                        <Grid ColumnDefinitions="*,Auto,Auto,Auto" RowDefinitions="Auto,Auto" ColumnSpacing="8" RowSpacing="4">
+                                            <Label Text="{Binding Name}" Style="{StaticResource ItemTitle}" VerticalOptions="Center" Margin="0,0,4,0" />
 
-                                            <!--Every vaccine is "Not started" until vaccination records exist; the status is spelled out, not shown by color-->
-                                            <Border Grid.Column="1" Padding="10,4" BackgroundColor="{StaticResource BabyBuddySecondary}" StrokeThickness="0" StrokeShape="RoundRectangle 10" VerticalOptions="Center">
+                                            <!--The row tap is pointer/touch only; this button keeps the record reachable by keyboard and screen readers.
+                                                Same pencil as the task cards, drawn in PrimaryDark so it keeps 3:1 against the row. 44x44 touch area around an ~18px icon-->
+                                            <ImageButton Grid.Column="1"
+                                                         Source="edit_icon.png"
+                                                         WidthRequest="44"
+                                                         HeightRequest="44"
+                                                         Padding="13"
+                                                         Aspect="AspectFit"
+                                                         BackgroundColor="Transparent"
+                                                         VerticalOptions="Center"
+                                                         SemanticProperties.Description="{Binding Name, StringFormat='Edit the {0} record'}"
+                                                         Clicked="OnOpenRecordClicked" />
+
+                                            <BoxView Grid.Column="2" WidthRequest="1" HeightRequest="20" Color="{StaticResource BabyBuddyBorder}" VerticalOptions="Center" />
+
+                                            <!--Every vaccine is "Not started" until the status display (#47); the status is spelled out, not shown by color-->
+                                            <Border Grid.Column="3" Padding="10,4" BackgroundColor="{StaticResource BabyBuddySecondary}" StrokeThickness="0" StrokeShape="RoundRectangle 10" VerticalOptions="Center">
                                                 <Label Text="Not started" Style="{StaticResource CaptionText}" />
                                             </Border>
 
-                                            <Label Grid.Row="1" Grid.ColumnSpan="2" Text="{Binding Description}" Style="{StaticResource BodyText}" />
-
-                                            <!--The row tap is pointer/touch only; this button keeps the record reachable by keyboard and screen readers (same as the MainPage baby card)-->
-                                            <Button Grid.Row="2" Grid.ColumnSpan="2"
-                                                    Text="Open record"
-                                                    Style="{StaticResource SecondaryAction}"
-                                                    HorizontalOptions="End"
-                                                    Margin="0,6,0,0"
-                                                    SemanticProperties.Description="{Binding Name, StringFormat='Open the {0} record'}"
-                                                    Clicked="OnOpenRecordClicked" />
+                                            <Label Grid.Row="1" Grid.ColumnSpan="4" Text="{Binding Description}" Style="{StaticResource BodyText}" />
                                         </Grid>
                                     </Border>
                                 </DataTemplate>
