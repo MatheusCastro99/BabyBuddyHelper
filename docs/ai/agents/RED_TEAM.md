@@ -11,6 +11,8 @@ This is the one subagent that passed the #33 cost-efficiency review. Its value i
 - Before handing a large or risky PR to the owner for review
 - When a design needs an independent challenge (e.g. the persistence schema in #25)
 
+It treats documentation as read-only reference: it reviews the implementation only. Stale docs belong to the main session's list and the historian.
+
 ## When not to
 
 - Small, mechanical changes; the context rebuild costs more than it returns
@@ -32,8 +34,9 @@ The goal (issue number and decided scope), the target (branch, commit range, PR 
 
 ## Output
 
-A verdict per dimension (goal, architecture, implementation), findings scored by `Severity + Confidence + Impact − Fix cost` with `file:line` evidence, the build result, manual edge cases, adjacent issues, and docs made stale. At most two review cycles per change. The maintainer decides; red-team only recommends.
+A verdict per dimension (goal, architecture, implementation), findings scored by `Severity + Confidence + Impact − Fix cost` with `file:line` evidence, the build result, manual edge cases, and adjacent issues (pre-existing code only). At most two review cycles per change. The maintainer decides; red-team only recommends.
 
 ## History
 
 - 2026-09-18 (#33): Rebuilt for Claude Code. The VS Code tool names had made it impossible to launch. The TechLead handoff loop and the "final validator" authority were removed, and it now preloads `review-guardrails`. Coordinator, TechLead and ProjectHistorian were deleted; ProductOwner and UXDesigner became skills.
+- 2026-09-29 (#33): Docs are read-only reference for red-team; it no longer reports stale docs (historian's job). See https://github.com/MatheusCastro99/BabyBuddyHelper/issues/33#issuecomment-5899324501.

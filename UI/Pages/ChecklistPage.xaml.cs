@@ -85,6 +85,19 @@ public partial class ChecklistPage : ContentPage
             return;
         }
 
+        //The trash icon sits right next to the edit icon, so a delete is confirmed first, same as deleting a baby profile
+        bool isAppointment = taskToDelete is AppointmentModel;
+        bool shouldDelete = await DisplayAlertAsync(
+            isAppointment ? "Delete appointment?" : "Delete task?",
+            isAppointment ? $"Remove {taskToDelete.TaskName} from your list and calendar?" : $"Remove {taskToDelete.TaskName} from your list?",
+            "Delete",
+            "Keep");
+
+        if (!shouldDelete)
+        {
+            return;
+        }
+
         try
         {
             await _taskListService.RemoveAsync(taskToDelete.Id);

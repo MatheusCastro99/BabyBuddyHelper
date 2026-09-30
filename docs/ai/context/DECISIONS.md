@@ -4,15 +4,17 @@
 
 TaskListService remains the single source of truth for Tasks and Appointments.
 BabyProfileService remains the single source of truth for Baby Profiles.
+VaccineService remains the single source of truth for Vaccination Records.
 
 Reason: 
 - Keeps domain model simple and updating the UI is easier. 
 - TaskListService is the only writer that can initiate add, update, or remove transactions for tasks and appointments.
 - BabyProfileService is the only writer that can initiate add, update, or remove transactions for baby profiles.
+- VaccineService is the only writer that can initiate add, update, or remove transactions for vaccination records.
 - This reduces the risk of inconsistencies in the application state, specially as data persistance arrives.
 
 Data Flow:
-Page -> TaskListService / BabyProfileService (in-memory cache) -> ITrackerDbService (currently implemented by EfTrackerDbService over EF Core + SQLite)
+Page -> TaskListService / BabyProfileService / VaccineService (in-memory cache) -> ITrackerDbService (currently implemented by EfTrackerDbService over EF Core + SQLite)
 
 Status: Accepted, current.
 
@@ -41,6 +43,7 @@ Status: Accepted, permanent.
 
 AddTaskPage is the single adding/editing experience for Tasks and Appointments.
 AddBabyPage is the single adding/editing experience for Baby Profiles.
+AddVaccineRecordPage is the single adding/editing experience for Vaccination Records.
 
 AddTaskPage can be accessed from:
 - ChecklistPage (Add / Edit)
@@ -49,6 +52,9 @@ AddTaskPage can be accessed from:
 AddBabyPage can be accessed from:
 - MainPage (Add)
 - BabyProfilePage (Edit), reached from the MainPage baby card
+
+AddVaccineRecordPage can be accessed from: 
+- BabyProfilePage (Vaccine row / Pencil icon; Add when the vaccine has no record, Edit or Remove when it has one)
 
 Reason:
 - Enables consistency and uniformity when creating / editing instances, specially as data persistence arrives.
@@ -99,8 +105,9 @@ Status: Accepted, permanent.
 
 ### ADR-008
 
-`TaskListService` and `BabyProfileService` are cache services for UI state.
+`TaskListService`, `BabyProfileService`, and `VaccineService` are cache services for UI state.
 `ITrackerDbService` is the persistence contract, and `EfTrackerDbService` is its current implementation.
+`IVaccineCatalog` is the fixed reference data contract, and `VaccineCatalog` is its current implementation.
 Only cache services should interact with the persistence boundary.
 
 Reason:
@@ -138,8 +145,11 @@ Database referential integrity is enforced in the database model, and cache serv
 
 Reason:
 - Deleting a baby profile must not leave orphaned task associations.
+- Deleting a baby profile must not leave orphaned vaccination records.
 - `TrackerContext` enforces `ON DELETE SET NULL` for `TaskModel.AssociatedBabyId`.
+- `TrackerContext` enforces `ON DELETE CASCADE` for `VaccinationRecordModel.BabyId`;
 - Services continue using Id-based operations while persisted constraints guarantee data consistency.
+- A unique (BabyId, VaccineId) index keeps at most one record per baby per vaccine.
 
 Status: Accepted, permanent.
 
@@ -170,7 +180,7 @@ Status: Accepted, current.
 Data flows through one fixed path. Every layer talks only to the interface of the layer below it.
 
 Write path:
-Page (UI) -> ITaskListService / IBabyProfileService (in-memory cache services) -> ITrackerDbService (EfTrackerDbService) -> TrackerContext -> babybuddy.db3 (SQLite)
+Page (UI) -> ITaskListService / IBabyProfileService / IVaccineService (in-memory cache services) -> ITrackerDbService (EfTrackerDbService) -> TrackerContext -> babybuddy.db3 (SQLite)
 
 Return path:
 The database commits -> the call returns up the same path -> the cache service updates its collection -> the UI refreshes through bindings.

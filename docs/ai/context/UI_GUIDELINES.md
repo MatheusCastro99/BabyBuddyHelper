@@ -218,6 +218,8 @@ Should answer:
 
 Checklist items should be easy to scan, easy to complete, and visually calm.
 
+Edit and delete are 44x44 icon buttons with screen-reader labels. Deleting a task or appointment asks first.
+
 ---
 
 ### Calendar
