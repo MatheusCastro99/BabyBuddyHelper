@@ -178,7 +178,7 @@ Filters Update: CONCLUDED
 
 ---
 
-## Backlog Implementations (#80)
+## Backlog Implementations (#80) CONCLUDED
 
 > Due soon tag: CONCLUDED (#81)
 
@@ -201,53 +201,57 @@ Filters Update: CONCLUDED
 
 ## Phase 5:
 
-Architecture Enhancements:
+> Mobile Focus:
 
-- Reflect on what architecture patterns are working well and what can be improved
-- Candidate patterns include:
-  - MVVM
-  - Service-based architecture
-  - Feature-based folder structure
+- CI/CD Pipeline for mobile targets (Issue #71)
+- Optimize the app for mobile devices, ensuring a responsive and user-friendly experience (Issue #72)
+
+> Database Preparation for Release:
+
+- Prepare the database for release, ensuring data integrity and consistency
+- Implement data migration strategies for future updates and changes to the database schema (Issue #76)
+
+> Deployment and Distribution:
+
+- Prepare the app for deployment
+- Consider distribution channels (e.g., app stores, direct downloads) and necessary configurations for each channel
+- Dockerize the application for easier distribution and deployment
 
 ---
 
 ## Phase 6:
 
-Cloud Synchronization:
+> Authentication and User Accounts:
+
+- Implement user authentication and account management features
+- Allow users to create accounts, log in, and manage their profiles
+- Ensure secure handling of user credentials and sensitive information
+
+> Cloud Synchronization:
 
 - Implement cloud synchronization for tasks and appointments
 - Allow users to sync data across multiple devices
 - Ensure data security and privacy during synchronization
 - Azure is the preferred cloud provider for this feature
 
-Database Backup and Restore:
+> Database Backup and Restore:
 
 - Implement backup and restore functionality for local data
 - Allow users to create backups of their data and restore them when needed
 - Ensure backup files are secure and easily accessible
-
-Deployment and Distribution:
-
-- Prepare the app for deployment
-- Dockerize the application for easier distribution and deployment
-
 ---
 
 ## Phase 7: 
 
-Companion comes to life:
+> Companion comes to life:
 
 - Implement interactive animations for the companion character (e.g., waving, clapping, dancing)
 - Allow users to customize the companion character's appearance and behavior (basic customization options)
 - Introduce an AI agent for the companion character to provide personalized tips and answer basic questions.
 - Allow user to minimaly adjust companion personality and behavior (e.g., more encouraging, more playful, more serious)
-	> Enforce well rounded and structured guidelines for AI agent, this is not a doctor or therapist
+	- Enforce well rounded and structured guidelines for AI agent, this is not a doctor or therapist
 
----
-
-## Phase 8:
-
-Advanced AI Features:
+> Advanced AI Features:
 
 - Personalized advice based on their baby's age and development stage
 - Introduce machine learning algorithms to provide insights and recommendations based on user data
