@@ -28,6 +28,9 @@ namespace BabyBuddyHelper.UI.Pages
             _ => $"{BabyProfiles.Count} little profiles"
         };
 
+        //Each baby's vaccine tag, only for babies with something due; the cards look theirs up through VaccineTagConverter
+        public IReadOnlyDictionary<Guid, string> VaccineTagsByBabyId { get; private set; } = new Dictionary<Guid, string>();
+
         public string WeeklyAppointmentText => CountAppointmentsThisWeek() switch
         {
             0 => "Nothing scheduled",
@@ -54,6 +57,7 @@ namespace BabyBuddyHelper.UI.Pages
 
             _taskListService.Tasks.CollectionChanged += (_, _) => RefreshDashboardState();
             BabyProfiles.CollectionChanged += (_, _) => RefreshDashboardState();
+            _vaccineService.VaccinationRecords.CollectionChanged += (_, _) => RefreshDashboardState(); //Saving a record replaces it, so edits land here too
 
             HandleCounter(); //Starts counter
 
@@ -157,8 +161,43 @@ namespace BabyBuddyHelper.UI.Pages
             }
         }
 
+        //Wording approved in #81. Due today wins over due soon, and overdue isn't shown here: it stays on the profile as a gentle reminder.
+        private Dictionary<Guid, string> BuildVaccineTags()
+        {
+            Dictionary<Guid, string> vaccineTagsByBabyId = [];
+
+            foreach (IGrouping<Guid, VaccinationRecordModel> babyRecords in _vaccineService.VaccinationRecords.GroupBy(x => x.BabyId))
+            {
+                List<string> dueToday = GetVaccineNames(babyRecords.Where(x => x.IsDueToday));
+                List<string> dueSoon = GetVaccineNames(babyRecords.Where(x => x.IsDueSoon));
+
+                string? vaccineTag = dueToday.Count > 0 ? FormatVaccineTag("Due today", dueToday)
+                    : dueSoon.Count > 0 ? FormatVaccineTag("Due soon", dueSoon)
+                    : null;
+
+                if (vaccineTag is not null)
+                {
+                    vaccineTagsByBabyId[babyRecords.Key] = vaccineTag;
+                }
+            }
+
+            return vaccineTagsByBabyId;
+        }
+
+        //A record whose vaccine isn't in the catalog has no name to show, so it's skipped
+        private List<string> GetVaccineNames(IEnumerable<VaccinationRecordModel> records) =>
+            records.Select(x => _vaccineCatalog.GetById(x.VaccineId)?.Name)
+                .OfType<string>()
+                .ToList();
+
+        private static string FormatVaccineTag(string label, List<string> vaccineNames) =>
+            vaccineNames.Count == 1 ? $"{label}: {vaccineNames[0]}" : $"{label}: {vaccineNames.Count} vaccines · check baby profile";
+
         private void RefreshDashboardState()
         {
+            VaccineTagsByBabyId = BuildVaccineTags();
+
+            OnPropertyChanged(nameof(VaccineTagsByBabyId));
             OnPropertyChanged(nameof(BabyProfiles));
             OnPropertyChanged(nameof(HasBabyProfiles));
             OnPropertyChanged(nameof(HasNoBabyProfiles));
