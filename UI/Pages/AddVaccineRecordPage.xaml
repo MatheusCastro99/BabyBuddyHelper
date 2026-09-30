@@ -17,7 +17,8 @@
 
             <Border BackgroundColor="{StaticResource BabyBuddySurface}" StrokeThickness="0" Padding="18" StrokeShape="RoundRectangle 24">
                 <VerticalStackLayout Spacing="18">
-                    <VerticalStackLayout Spacing="6">
+                    <!--Hidden for a seasonal vaccine: it's given again each season, so there's no total-->
+                    <VerticalStackLayout x:Name="TotalDosesSection" Spacing="6">
                         <Grid ColumnDefinitions="*,Auto,Auto,Auto" ColumnSpacing="12">
                             <Label Text="Total doses" Style="{StaticResource SectionTitle}" VerticalOptions="Center" />
                             <Button x:Name="TotalDosesDecreaseButton" Grid.Column="1" Text="−" Style="{StaticResource CounterButton}" SemanticProperties.Description="One fewer total dose" Clicked="OnTotalDosesDecreaseClicked" />

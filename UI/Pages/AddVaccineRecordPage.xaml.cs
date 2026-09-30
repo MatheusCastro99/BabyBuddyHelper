@@ -10,9 +10,11 @@ namespace BabyBuddyHelper.UI.Pages;
 public partial class AddVaccineRecordPage : ContentPage
 {
     private const int MaxTotalDoses = 10;
+    private const int MaxRecurrentDoses = 30; //A seasonal vaccine has no total, so "Doses given" gets a plain safety cap instead
 
     private readonly IVaccineService _vaccineService;
     private readonly VaccineModel _vaccine;
+    private readonly bool _isRecurrent;
     private readonly Guid _babyId;
     private readonly string _babyName;
     private readonly VaccinationRecordModel? _recordOnEdit;
@@ -31,6 +33,7 @@ public partial class AddVaccineRecordPage : ContentPage
 
         _vaccineService = vaccineService;
         _vaccine = vaccine;
+        _isRecurrent = vaccine.IsRecurrent;
         _babyId = babyId;
         _babyName = babyName;
         _recordOnEdit = recordOnEdit;
@@ -46,7 +49,7 @@ public partial class AddVaccineRecordPage : ContentPage
             _storedLastAdministered = recordOnEdit.LastAdministered?.Date;
             _storedNextDose = recordOnEdit.NextDose?.Date;
 
-            _totalDoses = recordOnEdit.TotalDoses ?? 1; //Seasonal records get their own editor behavior in P2 (#82)
+            _totalDoses = recordOnEdit.TotalDoses ?? 1; //A seasonal record has no total; its counter is hidden and the value is never saved
             _completedDoses = recordOnEdit.CompletedDoses;
             LastDosePicker.Date = _storedLastAdministered ?? DateTime.Today;
             NextDoseCheckBox.IsChecked = _storedNextDose.HasValue;
@@ -56,13 +59,21 @@ public partial class AddVaccineRecordPage : ContentPage
             RemoveButton.IsVisible = true;
         }
 
+        TotalDosesSection.IsVisible = !_isRecurrent;
+
         RefreshDoseState();
     }
+
+    //How high "Doses given" can go: the total for a routine vaccine, the safety cap for a seasonal one (#82)
+    private int CompletedDosesLimit => _isRecurrent ? MaxRecurrentDoses : _totalDoses;
+
+    //A seasonal vaccine is never complete, so its next dose date stays available
+    private bool IsCompleted => !_isRecurrent && _completedDoses >= _totalDoses;
 
     //Shows or hides the date sections to match the counts: no last date before the first dose, no next date once every dose is given
     private void RefreshDoseState()
     {
-        bool isCompleted = _completedDoses >= _totalDoses;
+        bool isCompleted = IsCompleted;
 
         TotalDosesLabel.Text = _totalDoses.ToString();
         CompletedDosesLabel.Text = _completedDoses.ToString();
@@ -71,7 +82,7 @@ public partial class AddVaccineRecordPage : ContentPage
         TotalDosesDecreaseButton.IsEnabled = _totalDoses > Math.Max(1, _completedDoses);
         TotalDosesIncreaseButton.IsEnabled = _totalDoses < MaxTotalDoses;
         CompletedDosesDecreaseButton.IsEnabled = _completedDoses > 0;
-        CompletedDosesIncreaseButton.IsEnabled = _completedDoses < _totalDoses;
+        CompletedDosesIncreaseButton.IsEnabled = _completedDoses < CompletedDosesLimit;
 
         LastDoseSection.IsVisible = _completedDoses > 0;
         NextDoseSection.IsVisible = !isCompleted;
@@ -102,7 +113,7 @@ public partial class AddVaccineRecordPage : ContentPage
     //as overdue. Coming back down to the stored count restores both stored dates. Any date picked in between is kept.
     private void OnCompletedDosesIncreaseClicked(object? sender, EventArgs e)
     {
-        if (_completedDoses >= _totalDoses)
+        if (_completedDoses >= CompletedDosesLimit)
         {
             return;
         }
@@ -201,7 +212,7 @@ public partial class AddVaccineRecordPage : ContentPage
     //The counters already keep the counts in range; the checks stay so a bad record can never be saved
     private async Task<VaccinationRecordModel?> ValidateForm()
     {
-        if (_totalDoses < 1 || _completedDoses < 0 || _completedDoses > _totalDoses)
+        if (_totalDoses < 1 || _completedDoses < 0 || _completedDoses > CompletedDosesLimit)
         {
             await DisplayAlertAsync("Check the doses", "Doses given should be between 0 and the total number of doses.", "OK");
             return null;
@@ -228,9 +239,8 @@ public partial class AddVaccineRecordPage : ContentPage
 
         //A complete record needs no next date, so a date picked before the last dose was counted is dropped
         DateTime? nextDose = null;
-        bool isCompleted = _completedDoses >= _totalDoses;
 
-        if (!isCompleted && NextDoseCheckBox.IsChecked && NextDosePicker.Date is { } nextDoseDate)
+        if (!IsCompleted && NextDoseCheckBox.IsChecked && NextDosePicker.Date is { } nextDoseDate)
         {
             nextDose = DateTime.SpecifyKind(nextDoseDate.Date, DateTimeKind.Local);
         }
@@ -241,7 +251,7 @@ public partial class AddVaccineRecordPage : ContentPage
             Id = _recordOnEdit?.Id ?? Guid.NewGuid(),
             BabyId = _babyId,
             VaccineId = _vaccine.Id,
-            TotalDoses = _totalDoses,
+            TotalDoses = _isRecurrent ? null : _totalDoses, //A seasonal vaccine has no total (#82)
             CompletedDoses = _completedDoses,
             LastAdministered = lastAdministered,
             NextDose = nextDose
