@@ -9,18 +9,15 @@ Status:
 
 # Current Development Focus:
 
-## Phase 4: Vaccination Tracker and Baby Profile Page (concluded)
+## Phase 5: Mobile, Release-Ready Database, Deployment
 
-- Baby Profile Page: shipped. Read-only profile screen with age, weight, height, and last feed/sleep. It also shows the read-only vaccine catalog with a disclaimer, and each vaccine's status (a pill plus a next-dose or gentle overdue line).
-- Vaccine Catalog: shipped. Hardcoded CDC-based vaccine list served through IVaccineCatalog.
-- Vaccination Records: shipped. Per-baby vaccination progress (doses given, last and next dose dates), owned by the IVaccineService cache service.
-- AddVaccineRecordPage: shipped. Single editor for vaccination records, opened from a vaccine on the profile.
-- Vaccine status display: shipped. Each vaccine on the profile shows a status pill and a next-dose or gentle overdue line.
-- Clean-up: done. Catalog descriptions are final, task-card edit and delete are icon buttons, and deleting a task or appointment asks first.
-- Due soon tag: shipped (#81).
-- Seasonal vaccines: shipped (#82). Flu and COVID-19 sit in a "Seasonal vaccines" section on the profile.
-- Next, in order: #71 CI mobile targets, #72 Mobile UI/UX polish, #76 EF Core migrations.
+- Mobile focus: #71 CI builds for the mobile targets (Android, iOS, Mac Catalyst); #72 mobile UI/UX polish pass.
+- Database preparation for release: #76 EF Core migrations (today: EnsureCreated + debug-only reset).
+- Deployment and distribution: prepare the release, choose channels (app stores, direct downloads), Dockerize. Not started.
+- Next, in order: #71, #72, #76, then deployment and distribution.
+- Also open: #79, re-verify the vaccine catalog after the First Circuit ruling.
+- Phase 4 (vaccine tracker) and the backlog follow-ups (#80: due soon tag #81, seasonal vaccines #82) are concluded.
 
-See ROADMAP.md for the full Phase 4 breakdown.
+See ROADMAP.md for the full Phase 5 breakdown.
 
 ---

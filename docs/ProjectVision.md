@@ -33,7 +33,7 @@ Examples:
 - Positive reinforcement
 - Gentle reminders
 
-The companion is NOT intended to be an AI chatbot.
+The companion is NOT intended to be a general-purpose AI chatbot.
 
 Think:
 
@@ -42,3 +42,5 @@ Think:
 - Calm app mascots
 
 rather than ChatGPT.
+
+A later phase may give the companion a carefully scoped AI helper for tips and basic questions, within clear guidelines. It is not a doctor or therapist and never replaces professional advice.
