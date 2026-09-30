@@ -80,6 +80,7 @@ UI/Converters/
 
 - AssociatedBabyNameConverter.cs
 - IsAppointmentModelConverter.cs
+- VaccineTagConverter.cs
 
 See the data-flow diagram: [DataFlow.excalidraw](../../DataFlow.excalidraw)
 

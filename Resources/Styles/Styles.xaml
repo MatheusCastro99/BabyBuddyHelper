@@ -64,6 +64,21 @@
         <Setter Property="Padding" Value="18,12"/>
     </Style>
 
+    <!--A gentle "due" tag for vaccines (dashboard baby card, profile vaccine row). Soft blue, never alarm styling (#81).
+        The text uses PrimaryDarkText (8.2:1 on Warm) because the muted caption color is too faint there (4.3:1)-->
+    <Style x:Key="DueTag" TargetType="Border">
+        <Setter Property="BackgroundColor" Value="{StaticResource BabyBuddyWarm}"/>
+        <Setter Property="StrokeThickness" Value="0"/>
+        <Setter Property="StrokeShape" Value="RoundRectangle 10"/>
+        <Setter Property="Padding" Value="8,2"/>
+        <Setter Property="VerticalOptions" Value="Center"/>
+    </Style>
+
+    <Style x:Key="DueTagText" TargetType="Label">
+        <Setter Property="TextColor" Value="{StaticResource PrimaryDarkText}"/>
+        <Setter Property="FontSize" Value="12"/>
+    </Style>
+
     <!--The minus and plus buttons of a number counter (e.g. dose counts). 44x44 keeps the touch target accessible; dimmed at the limit-->
     <Style x:Key="CounterButton" TargetType="Button">
         <Setter Property="BackgroundColor" Value="{StaticResource BabyBuddySurface}"/>

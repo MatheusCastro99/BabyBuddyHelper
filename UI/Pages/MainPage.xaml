@@ -2,9 +2,18 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:controls="clr-namespace:BabyBuddyHelper.UI.Controls"
+             xmlns:converters="clr-namespace:BabyBuddyHelper.UI.Converters"
              x:Class="BabyBuddyHelper.UI.Pages.MainPage"
+             x:Name="HomeRoot"
              Title="Home"
              BackgroundColor="{StaticResource BabyBuddyBackground}">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:VaccineTagConverter x:Key="VaccineTagConverter"/>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
     <Grid>
         <ScrollView>
             <VerticalStackLayout Padding="20" Spacing="18">
@@ -93,6 +102,25 @@
                                                 <VerticalStackLayout Spacing="4">
                                                     <Label Text="{Binding Name}" Style="{StaticResource SectionTitle}" />
                                                     <Label Text="{Binding AgeText}" Style="{StaticResource BodyText}" />
+
+                                                    <!--Vaccines due today or within the next two weeks (#81). Hidden when nothing is due; overdue stays on the profile.
+                                                        Tapping the card opens the profile, where each vaccine shows its own status-->
+                                                    <Border Style="{StaticResource DueTag}" HorizontalOptions="Start" Margin="0,4,0,0">
+                                                        <Border.IsVisible>
+                                                            <MultiBinding Converter="{StaticResource VaccineTagConverter}">
+                                                                <Binding Path="Id" />
+                                                                <Binding Source="{x:Reference HomeRoot}" Path="VaccineTagsByBabyId" />
+                                                            </MultiBinding>
+                                                        </Border.IsVisible>
+                                                        <Label Style="{StaticResource DueTagText}">
+                                                            <Label.Text>
+                                                                <MultiBinding Converter="{StaticResource VaccineTagConverter}">
+                                                                    <Binding Path="Id" />
+                                                                    <Binding Source="{x:Reference HomeRoot}" Path="VaccineTagsByBabyId" />
+                                                                </MultiBinding>
+                                                            </Label.Text>
+                                                        </Label>
+                                                    </Border>
                                                 </VerticalStackLayout>
 
                                                 <Border Grid.Column="1"

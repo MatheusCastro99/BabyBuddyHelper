@@ -171,7 +171,7 @@ One baby's progress on one catalog vaccine. At most one record per baby per vacc
 - TotalDoses and CompletedDoses
 - LastAdministered and NextDose (both optional)
 
-`IsCompleted` and `IsOverdue` are computed for display and never stored. A dose due today is not overdue. Deleting a baby deletes its records (database cascade).
+`IsCompleted`, `IsOverdue`, `IsDueToday` and `IsDueSoon` are computed for display and never stored. A dose due today is not overdue. `IsDueSoon` means the next dose is 1 to 14 days away and the record is not complete; a dose due today is not due soon. Deleting a baby deletes its records (database cascade).
 
 ---
 

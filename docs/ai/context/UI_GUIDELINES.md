@@ -204,6 +204,8 @@ Should answer:
 
 The dashboard should feel supportive and informative, not overloaded.
 
+Each baby card can carry one gentle vaccine tag under the age: "Due today: {vaccine}" or "Due soon: {vaccine}". Due today wins over due soon. For several vaccines the tag reads "{label}: N vaccines · check baby profile". Overdue never shows on the dashboard (it stays a gentle reminder on the profile). The tag is spelled out in words, never color alone, and uses the soft blue DueTag style with no alarm styling.
+
 ---
 
 ### Checklist
@@ -248,7 +250,7 @@ Should answer:
 
 The profile is read-only. Editing routes to AddBabyPage (ADR-004), vaccine records route to AddVaccineRecordPage (row tap or the pencil icon), and the profile is a pushed page with a back arrow (ADR-016).
 
-Vaccine status is always spelled out, never shown by color alone. Overdue is a gentle reminder with no alarm styling, and Complete uses Success with PrimaryDarkText because caption text is too faint on green.
+Vaccine status is always spelled out, never shown by color alone. Overdue is a gentle reminder with no alarm styling. A due soon vaccine shows a "Due soon" pill after the "Next dose" date; due today shows "Due today" with no pill. Complete uses Success with PrimaryDarkText because caption text is too faint on green.
 
 ---
 
@@ -366,7 +368,7 @@ Avoid:
 
 ## Design System Guidance
 
-Reusable styling is centralized in `Resources/Styles/Colors.xaml` (colors and brushes) and `Resources/Styles/Styles.xaml` (named styles such as PageTitle, SectionTitle, ItemTitle, BodyText, CaptionText, PrimaryAction, SecondaryAction and CounterButton). New tokens and styles belong there.
+Reusable styling is centralized in `Resources/Styles/Colors.xaml` (colors and brushes) and `Resources/Styles/Styles.xaml` (named styles such as PageTitle, SectionTitle, ItemTitle, BodyText, CaptionText, PrimaryAction, SecondaryAction, CounterButton, DueTag and DueTagText). New tokens and styles belong there.
 
 Recommended areas:
 

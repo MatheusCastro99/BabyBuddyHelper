@@ -46,6 +46,8 @@
 
 ✅ Vaccine status on the profile (doses given, next dose, gentle overdue reminder)
 
+✅ Due soon / due today tag on the dashboard baby cards and the profile's vaccine rows
+
 ## Planned Features:
 
 Cloud Synchronization

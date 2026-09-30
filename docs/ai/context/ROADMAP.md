@@ -97,7 +97,7 @@ Filters Update: CONCLUDED
 		- Services/ 
 			- ToastService, AlertService
 		- Converters/
-			- AssociatedBabyNameConverter, IsAppointmentModelConverter
+			- AssociatedBabyNameConverter, IsAppointmentModelConverter, VaccineTagConverter
 - Rest remain unchanged (App.xaml, AppShell.xaml, Resources/, etc.)
 
 ## Phase 4: CONCLUDED
@@ -140,6 +140,8 @@ Filters Update: CONCLUDED
 	- DateTime? NextDose
 	- Bool IsOverdue => Computed property: NextDose is before today and the record is not complete
 	- Bool IsCompleted => Computed property based on CompletedDoses and TotalDoses
+	- Bool IsDueToday => Computed property: NextDose is today and the record is not complete
+	- Bool IsDueSoon => Computed property: NextDose is 1 to 14 days away and the record is not complete (due today is not due soon)
 - IVaccineService
 - VaccineService:
 	- cache service and single source of truth for vaccination records
@@ -171,6 +173,19 @@ Filters Update: CONCLUDED
 - Backlog issues for the epic's out-of-scope items and any annotated follow-ups. Done: Backlog Implementations (#80) holds Due soon tag (#81) and Recurring vaccines: flu, COVID (#82).
 - Not planned: combination vaccines, reminders and notifications, a suggested next dose, non-US schedules.
 - Task-card icon buttons (edit and delete) and a delete confirmation for tasks and appointments.
+
+---
+
+## Backlog Implementations (#80)
+
+> Due soon tag: CONCLUDED (#81)
+
+- Dashboard baby cards show a tag under the age: "Due today: {vaccine}" or "Due soon: {vaccine}"; for several vaccines, "{label}: N vaccines · check baby profile"
+- Due today wins over due soon. Overdue never shows on the dashboard; it stays a gentle reminder on the profile
+- Profile vaccine rows: a due soon row reads "Next dose: {date}" followed by a "Due soon" pill; due today shows "Due today" with no pill
+- Due soon means the next dose is 1 to 14 days away (DueSoonWindowDays = 14) and the record is not complete; computed, never stored
+
+> Recurring vaccines: flu, COVID (#82): pending
 
 ---
 
