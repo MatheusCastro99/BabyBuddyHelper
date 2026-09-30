@@ -17,7 +17,8 @@ Status:
 - AddVaccineRecordPage: shipped. Single editor for vaccination records, opened from a vaccine on the profile.
 - Vaccine status display: shipped. Each vaccine on the profile shows a status pill and a next-dose or gentle overdue line.
 - Clean-up: done. Catalog descriptions are final, task-card edit and delete are icon buttons, and deleting a task or appointment asks first.
-- Next: Backlog Implementations (#80), starting with the Due soon tag (#81).
+- Due soon tag: shipped (#81).
+- Next, in order: #82 Recurring vaccines (closes #80), #71 CI mobile targets, #72 Mobile UI/UX polish, #76 EF Core migrations.
 
 See ROADMAP.md for the full Phase 4 breakdown.
 

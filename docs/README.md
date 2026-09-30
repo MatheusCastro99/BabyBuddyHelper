@@ -11,7 +11,7 @@
 
 BabyBuddyHelper is a cross-platform parenting companion built with .NET MAUI. Today, it helps parents and caregivers organize tasks, track appointments, manage baby profiles, and visualize schedules through checklist and calendar experiences.
 
-The project is currently a functional prototype in active development. Phase 4 (vaccine tracker) is concluded. The current focus is Backlog Implementations (#80), starting with the Due soon tag (#81), building on the shipped baby profile page, vaccine catalog, vaccination records and vaccine status display, while preserving the shipped task, appointment, baby-profile, filtering, and companion experience.
+The project is currently a functional prototype in active development. Phase 4 (vaccine tracker) is concluded. The Due soon tag (#81) has shipped. Next, in order: #82 Recurring vaccines (closes #80), #71 CI mobile targets, #72 Mobile UI/UX polish, and #76 EF Core migrations. The shipped task, appointment, baby-profile, vaccine, filtering, and companion experience stays as it is.
 
 ## Vision and Experience
 
@@ -56,6 +56,7 @@ The current experience already includes a lightweight companion character and su
 - Built-in US CDC vaccine list (birth to 6 years) on each profile, with a disclaimer
 - Per-baby vaccination records (doses given, last and next dose dates), added and edited from the profile
 - Vaccine status per vaccine (doses given, next dose, gentle overdue reminder)
+- Due soon / due today tag on the dashboard baby cards and the profile's vaccine rows
 - Link tasks and appointments to specific baby profiles
 - Automatically project profile names into checklist and calendar-related workflows
 
@@ -218,7 +219,8 @@ BabyBuddyHelper/
 │   │
 │   └── Converters/
 │       ├── AssociatedBabyNameConverter.cs
-│       └── IsAppointmentModelConverter.cs
+│       ├── IsAppointmentModelConverter.cs
+│       └── VaccineTagConverter.cs
 │
 ├── Platforms/
 ├── Resources/
@@ -285,7 +287,7 @@ This project follows modern software engineering practices:
 
 ### Near Term
 
-- Backlog Implementations (#80), starting with the Due soon tag (#81)
+- Due soon tag (#81) shipped; next, in order: #82 Recurring vaccines (closes #80), #71 CI mobile targets, #72 Mobile UI/UX polish, #76 EF Core migrations
 
 ### Medium Term
 

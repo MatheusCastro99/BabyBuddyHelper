@@ -52,7 +52,9 @@ VaccinationRecordModel (one baby's progress on one catalog vaccine, stored in th
 ├── LastAdministered (DateTime?) - Date of the last dose, empty until the first dose
 ├── NextDose (DateTime?) - Optional date of the next dose
 ├── IsCompleted (bool, computed) - All doses given, never stored
-└── IsOverdue (bool, computed) - Next dose is before today and the record is not complete, never stored
+├── IsOverdue (bool, computed) - Next dose is before today and the record is not complete, never stored
+├── IsDueToday (bool, computed) - Next dose is today and the record is not complete, never stored
+└── IsDueSoon (bool, computed) - Next dose is 1 to 14 days away and the record is not complete (due today is not due soon), never stored
 ```
 
 ## Solution Structure
@@ -103,7 +105,8 @@ BabyBuddyHelper/
 │   │   └── AlertService.cs - Alerts for failures the user must acknowledge
 │   └── Converters/
 │       ├── AssociatedBabyNameConverter.cs - Shows a task's baby name from its stored baby Id
-│       └── IsAppointmentModelConverter.cs - Tells the checklist whether an item is an appointment
+│       ├── IsAppointmentModelConverter.cs - Tells the checklist whether an item is an appointment
+│       └── VaccineTagConverter.cs - Shows a baby card's due today / due soon vaccine tag on the dashboard, looked up by baby Id
 ├── Resources/
 │   └── Styles/ - Application-wide styling (Colors.xaml, Styles.xaml)
 ├── Platforms/ - Platform-specific implementations
