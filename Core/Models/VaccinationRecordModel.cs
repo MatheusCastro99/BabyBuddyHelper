@@ -15,7 +15,16 @@ namespace BabyBuddyHelper.Core.Models
         //Computed for display only and never stored (get-only, so EF doesn't map them)
         public bool IsCompleted => CompletedDoses >= TotalDoses;
 
+        //How far ahead a next dose counts as due soon (#81)
+        public const int DueSoonWindowDays = 14;
+
         //A dose due today isn't overdue yet
         public bool IsOverdue => !IsCompleted && NextDose is { } nextDose && nextDose.Date < DateTime.Today;
+
+        public bool IsDueToday => !IsCompleted && NextDose is { } nextDose && nextDose.Date == DateTime.Today;
+
+        //Tomorrow through the window's last day. Today is "due today", not due soon
+        public bool IsDueSoon => !IsCompleted && NextDose is { } nextDose
+            && nextDose.Date > DateTime.Today && nextDose.Date <= DateTime.Today.AddDays(DueSoonWindowDays);
     }
 }

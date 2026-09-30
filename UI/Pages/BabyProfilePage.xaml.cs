@@ -29,11 +29,12 @@ public partial class BabyProfilePage : ContentPage
     }
 
     //One vaccine row in the Vaccines section: the catalog entry plus this baby's status for it, ready to display
-    public sealed record VaccineRow(VaccineModel Vaccine, string PillText, string? StatusLine, bool IsCompleted)
+    public sealed record VaccineRow(VaccineModel Vaccine, string PillText, string? StatusLine, bool IsCompleted, bool IsDueSoon)
     {
         public string Name => Vaccine.Name;
         public string Description => Vaccine.Description;
         public bool HasStatusLine => StatusLine is not null;
+        public bool HasPlainStatusLine => HasStatusLine && !IsDueSoon; //A due soon line shows with its pill instead
     }
 
     //Closing an editor brings this page back, so a saved profile or vaccine record shows here
@@ -71,17 +72,17 @@ public partial class BabyProfilePage : ContentPage
         BindableLayout.SetItemsSource(VaccineList, rows);
     }
 
-    //Status wording approved in #47. A record with no dose given yet still reads "Not started", and overdue is a gentle reminder, not an alarm.
+    //Status wording approved in #47, and the due soon pill in #81. A record with no dose given yet still reads "Not started", and overdue is a gentle reminder, not an alarm.
     private static VaccineRow CreateVaccineRow(VaccineModel vaccine, VaccinationRecordModel? record)
     {
         if (record is null)
         {
-            return new VaccineRow(vaccine, "Not started", null, false);
+            return new VaccineRow(vaccine, "Not started", null, false, false);
         }
 
         if (record.IsCompleted)
         {
-            return new VaccineRow(vaccine, "Complete", null, true);
+            return new VaccineRow(vaccine, "Complete", null, true, false);
         }
 
         string pillText = record.CompletedDoses == 0 ? "Not started" : $"{record.CompletedDoses} of {record.TotalDoses}";
@@ -90,11 +91,11 @@ public partial class BabyProfilePage : ContentPage
         {
             null => null,
             DateTime nextDose when record.IsOverdue => $"Due since {FormatDoseDate(nextDose)} · check with your pediatrician",
-            DateTime nextDose when nextDose == DateTime.Today => "Due today",
+            DateTime when record.IsDueToday => "Due today",
             DateTime nextDose => $"Next dose: {FormatDoseDate(nextDose)}"
         };
 
-        return new VaccineRow(vaccine, pillText, statusLine, false);
+        return new VaccineRow(vaccine, pillText, statusLine, false, record.IsDueSoon);
     }
 
     //The year only shows when it isn't this year

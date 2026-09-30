@@ -124,7 +124,18 @@
                                             <!--Stacked rather than in separate grid rows: a stack skips the hidden status line, so rows without one keep the same spacing-->
                                             <VerticalStackLayout Grid.Row="1" Grid.ColumnSpan="4" Spacing="4">
                                                 <!--Next dose, due today, or a gentle overdue reminder. The wording carries the meaning, with no alarm styling-->
-                                                <Label Text="{Binding StatusLine}" IsVisible="{Binding HasStatusLine}" Style="{StaticResource BodyText}" />
+                                                <!--Plain status line: a lone label, so the long overdue line can wrap-->
+                                                <Label Text="{Binding StatusLine}" IsVisible="{Binding HasPlainStatusLine}" Style="{StaticResource BodyText}" />
+
+                                                <!--Due soon: the date first, then the pill. The text here is always a short "Next dose: ..." line, so a horizontal stack is safe.
+                                                    The pill text uses PrimaryDarkText because the muted caption color is too faint on Warm-->
+                                                <HorizontalStackLayout IsVisible="{Binding IsDueSoon}" Spacing="8">
+                                                    <Label Text="{Binding StatusLine}" Style="{StaticResource BodyText}" VerticalOptions="Center" />
+
+                                                    <Border Padding="8,2" BackgroundColor="{StaticResource BabyBuddyWarm}" StrokeThickness="0" StrokeShape="RoundRectangle 10" VerticalOptions="Center">
+                                                        <Label Text="Due soon" Style="{StaticResource CaptionText}" TextColor="{StaticResource PrimaryDarkText}" />
+                                                    </Border>
+                                                </HorizontalStackLayout>
 
                                                 <Label Text="{Binding Description}" Style="{StaticResource BodyText}" />
                                             </VerticalStackLayout>
