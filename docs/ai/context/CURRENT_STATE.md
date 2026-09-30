@@ -18,7 +18,8 @@ Status:
 - Vaccine status display: shipped. Each vaccine on the profile shows a status pill and a next-dose or gentle overdue line.
 - Clean-up: done. Catalog descriptions are final, task-card edit and delete are icon buttons, and deleting a task or appointment asks first.
 - Due soon tag: shipped (#81).
-- Next, in order: #82 Recurring vaccines (closes #80), #71 CI mobile targets, #72 Mobile UI/UX polish, #76 EF Core migrations.
+- Seasonal vaccines: shipped (#82). Flu and COVID-19 sit in a "Seasonal vaccines" section on the profile.
+- Next, in order: #71 CI mobile targets, #72 Mobile UI/UX polish, #76 EF Core migrations.
 
 See ROADMAP.md for the full Phase 4 breakdown.
 

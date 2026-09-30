@@ -107,7 +107,7 @@ Filters Update: CONCLUDED
 - Baby's name as the title
 - Age (computed from DateOfBirth), weight and height
 - Last feed and last sleep
-- A read-only Vaccines section (full catalog, "Not started", disclaimer) shipped with the catalog (#43). Vaccination records and their editor have shipped; the per-vaccine status display has shipped too (#47): a pill (Not started / X of N / Complete), the next dose date, and a gentle overdue reminder.
+- A read-only Vaccines section (full catalog, "Not started", disclaimer) shipped with the catalog (#43). Vaccination records and their editor have shipped; the per-vaccine status display has shipped too (#47): a pill (Not started / X of N / Complete), the next dose date, and a gentle overdue reminder; seasonal vaccines show Not started / Current / Last: {date} (#82).
 - Reads baby data only from IBabyProfileService (ADR-001/008); the Vaccines section reads the fixed catalog from IVaccineCatalog (ADR-012). The profile also reads vaccination records from IVaccineService.
 - Profile Navigation: CONCLUDED
 	- MainPage -> Tap Baby Profile Card -> BabyProfilePage
@@ -120,9 +120,10 @@ Filters Update: CONCLUDED
 	- string CvxCode
 	- string Name
 	- string Description
-- IVaccineCatalog: Vaccines (display order), GetById, SourceName, SourceVersion, SourceUrl, LastReviewed
+	- bool IsRecurrent (seasonal vaccine: no total, never complete)
+- IVaccineCatalog: Vaccines (display order), RecurrentVaccines (seasonal, display order), GetById (looks in both lists), SourceName, SourceVersion, SourceUrl, LastReviewed
 - Source: US CDC schedule 2025 (in effect under the March 2026 court stay), parent-facing CDC link, last reviewed 2026-09-28
-- 10 entries; descriptions stored with their "Helps protect against …" lead-in (final wording); RSV is described as an antibody shot
+- 10 routine entries and 2 seasonal entries (flu, COVID-19); descriptions stored with their "Helps protect against …" lead-in (final wording); RSV is described as an antibody shot
 - Catalog does not touch the database, it is a static list of vaccines
 - Explicit Disclaimers:
 	- Vaccine catalog is for personal tracking purposes only and not a substitute for professional medical advice
@@ -134,14 +135,15 @@ Filters Update: CONCLUDED
 	- Guid Id
 	- Guid BabyId
 	- Guid VaccineId
-	- int TotalDoses
+	- int? TotalDoses (empty for a seasonal vaccine)
 	- int CompletedDoses
 	- DateTime? LastAdministered
 	- DateTime? NextDose
 	- Bool IsOverdue => Computed property: NextDose is before today and the record is not complete
-	- Bool IsCompleted => Computed property based on CompletedDoses and TotalDoses
+	- Bool IsCompleted => Computed property based on CompletedDoses and TotalDoses (false without a total)
 	- Bool IsDueToday => Computed property: NextDose is today and the record is not complete
 	- Bool IsDueSoon => Computed property: NextDose is 1 to 14 days away and the record is not complete (due today is not due soon)
+	- Bool IsCurrent => Computed property: a seasonal record (no total) with at least one shot, the last one less than 12 months ago (CurrentWindowMonths = 12), and no next dose due yet (none set, or still ahead; due today is not current). A date rule, not "up to date"
 - IVaccineService
 - VaccineService:
 	- cache service and single source of truth for vaccination records
@@ -154,7 +156,7 @@ Filters Update: CONCLUDED
 
 - Opened by tapping a vaccine row in the profile's Vaccines section.
 - Creates a record for a "Not started" vaccine, or edits an existing one; a record can also be removed, with a confirmation.
-- Fields: total doses (depends on the brand), completed doses, last applied date, next dose date.
+- Fields: total doses (depends on the brand), completed doses, last applied date, next dose date. A seasonal vaccine has no total; see #82.
 - Total and completed doses use -/+ counters.
 - Last dose date is required once a dose is given (pre-filled, and follows new doses).
 - Next dose date is optional, and dropped when the record is complete.
@@ -185,7 +187,15 @@ Filters Update: CONCLUDED
 - Profile vaccine rows: a due soon row reads "Next dose: {date}" followed by a "Due soon" pill; due today shows "Due today" with no pill
 - Due soon means the next dose is 1 to 14 days away (DueSoonWindowDays = 14) and the record is not complete; computed, never stored
 
-> Recurring vaccines: flu, COVID (#82): pending
+> Recurring vaccines: flu, COVID (#82): CONCLUDED
+
+- Second catalog list: IVaccineCatalog.RecurrentVaccines holds Flu (Influenza, CVX 88) and COVID-19 (CVX 213), flagged IsRecurrent; Vaccines stays the 10 routine entries and GetById looks in both
+- Same source as the routine list (US CDC 2025 schedule): flu is routine yearly from 6 months, COVID-19 is shared clinical decision-making from 6 months
+- TotalDoses is optional (empty for a seasonal record), so a seasonal record is never complete
+- "Current" (IsCurrent): at least one shot, the last one less than 12 months ago, and no next dose due yet. A date rule, not "up to date"; the profile says so in a caption above "Last reviewed"
+- Profile: a "Seasonal vaccines" sub-section inside the Vaccines card; pill reads "Not started", a green "Current", or "Last: {date}"
+- AddVaccineRecordPage for a seasonal vaccine: no total counter or brand note, "Doses given" capped at 30, next dose date always available, no "all doses given" state, saved with no total
+- Schema change reached existing databases through one debug reset (EnsureCreated; migrations are #76)
 
 ---
 

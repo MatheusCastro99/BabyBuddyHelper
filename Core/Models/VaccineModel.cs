@@ -7,5 +7,6 @@ namespace BabyBuddyHelper.Core.Models
         public required string CvxCode { get; init; } //Kept as text so codes like "03" keep their leading zero
         public required string Name { get; init; }
         public required string Description { get; init; }
+        public bool IsRecurrent { get; init; } //Given again each season (flu, COVID-19), so its records have no total and are never complete
     }
 }

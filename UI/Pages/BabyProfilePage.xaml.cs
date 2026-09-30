@@ -29,7 +29,7 @@ public partial class BabyProfilePage : ContentPage
     }
 
     //One vaccine row in the Vaccines section: the catalog entry plus this baby's status for it, ready to display
-    public sealed record VaccineRow(VaccineModel Vaccine, string PillText, string? StatusLine, bool IsCompleted, bool IsDueSoon)
+    public sealed record VaccineRow(VaccineModel Vaccine, string PillText, string? StatusLine, bool IsPillHighlighted, bool IsDueSoon) //Highlighted = Complete or Current (green)
     {
         public string Name => Vaccine.Name;
         public string Description => Vaccine.Description;
@@ -65,14 +65,15 @@ public partial class BabyProfilePage : ContentPage
     {
         Dictionary<Guid, VaccinationRecordModel> recordsByVaccineId = _vaccineService.GetRecordsForBaby(_babyId).ToDictionary(x => x.VaccineId);
 
-        List<VaccineRow> rows = _vaccineCatalog.Vaccines
-            .Select(vaccine => CreateVaccineRow(vaccine, recordsByVaccineId.GetValueOrDefault(vaccine.Id)))
-            .ToList();
-
-        BindableLayout.SetItemsSource(VaccineList, rows);
+        BindableLayout.SetItemsSource(VaccineList, CreateVaccineRows(_vaccineCatalog.Vaccines, recordsByVaccineId));
+        BindableLayout.SetItemsSource(SeasonalVaccineList, CreateVaccineRows(_vaccineCatalog.RecurrentVaccines, recordsByVaccineId));
     }
 
-    //Status wording approved in #47, and the due soon pill in #81. A record with no dose given yet still reads "Not started", and overdue is a gentle reminder, not an alarm.
+    private static List<VaccineRow> CreateVaccineRows(IEnumerable<VaccineModel> vaccines, Dictionary<Guid, VaccinationRecordModel> recordsByVaccineId) =>
+        vaccines.Select(vaccine => CreateVaccineRow(vaccine, recordsByVaccineId.GetValueOrDefault(vaccine.Id))).ToList();
+
+    //Status wording approved in #47, the due soon pill in #81, and the seasonal pill in #82. A record with no dose given yet still reads
+    //"Not started", and overdue is a gentle reminder, not an alarm. A seasonal vaccine is never complete: it reads "Current" or its last shot.
     private static VaccineRow CreateVaccineRow(VaccineModel vaccine, VaccinationRecordModel? record)
     {
         if (record is null)
@@ -85,7 +86,11 @@ public partial class BabyProfilePage : ContentPage
             return new VaccineRow(vaccine, "Complete", null, true, false);
         }
 
-        string pillText = record.CompletedDoses == 0 ? "Not started" : $"{record.CompletedDoses} of {record.TotalDoses}";
+        string pillText = record.CompletedDoses == 0 ? "Not started"
+            : record.IsCurrent ? "Current"
+            : !vaccine.IsRecurrent ? $"{record.CompletedDoses} of {record.TotalDoses}"
+            : record.LastAdministered is { } lastAdministered ? $"Last: {FormatDoseDate(lastAdministered.Date)}"
+            : "Not started";
 
         string? statusLine = record.NextDose?.Date switch
         {
@@ -95,7 +100,7 @@ public partial class BabyProfilePage : ContentPage
             DateTime nextDose => $"Next dose: {FormatDoseDate(nextDose)}"
         };
 
-        return new VaccineRow(vaccine, pillText, statusLine, false, record.IsDueSoon);
+        return new VaccineRow(vaccine, pillText, statusLine, record.IsCurrent, record.IsDueSoon);
     }
 
     //The year only shows when it isn't this year

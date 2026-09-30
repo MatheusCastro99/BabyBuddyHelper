@@ -4,7 +4,7 @@ using System.Collections.ObjectModel;
 
 namespace BabyBuddyHelper.Core.Services
 {
-    //Routine birth-to-6-years immunizations as approved in #41, excluding flu, COVID-19 and combination products.
+    //Routine birth-to-6-years immunizations as approved in #41, excluding combination products. Flu and COVID-19 are in the seasonal list (#82).
     //Ordered by age of first dose. CVX codes are CDC's "unspecified formulation" codes, so one entry covers every brand.
     //Ids must never change: vaccination records point at them.
     public class VaccineCatalog : IVaccineCatalog
@@ -83,7 +83,31 @@ namespace BabyBuddyHelper.Core.Services
             }
         }.AsReadOnly(); //Callers can't cast the list back to an array and swap entries
 
+        //Seasonal vaccines as approved in #82: given again each season, so their records have no total and are never complete.
+        //Same schedule as above: flu is routine yearly from 6 months, COVID-19 is shared clinical decision-making from 6 months.
+        //CVX codes are CDC's "unspecified" codes, as for the routine list. Ids must never change: vaccination records point at them.
+        private static readonly ReadOnlyCollection<VaccineModel> _recurrentVaccines = new VaccineModel[]
+        {
+            new()
+            {
+                Id = new Guid("bec0158b-0878-4d56-ae12-a07bca20d5ac"),
+                CvxCode = "88",
+                Name = "Flu (Influenza)",
+                Description = "Helps protect against the flu, which can be serious for young children. A new shot is offered each flu season.",
+                IsRecurrent = true
+            },
+            new()
+            {
+                Id = new Guid("56e52510-6a53-4383-9152-d847ebd2487e"),
+                CvxCode = "213",
+                Name = "COVID-19",
+                Description = "Helps protect against COVID-19. Updated shots are usually offered each year.",
+                IsRecurrent = true
+            }
+        }.AsReadOnly();
+
         public IReadOnlyList<VaccineModel> Vaccines => _vaccines;
+        public IReadOnlyList<VaccineModel> RecurrentVaccines => _recurrentVaccines;
 
         //The schedule in effect under the March 2026 court stay; re-check after the First Circuit ruling (#79)
         public string SourceName => "US CDC childhood immunization schedule";
@@ -91,6 +115,6 @@ namespace BabyBuddyHelper.Core.Services
         public Uri SourceUrl { get; } = new("https://www.cdc.gov/vaccines/imz-schedules/child-easyread.html");
         public DateOnly LastReviewed => new(2026, 9, 28);
 
-        public VaccineModel? GetById(Guid vaccineId) => _vaccines.FirstOrDefault(x => x.Id == vaccineId);
+        public VaccineModel? GetById(Guid vaccineId) => _vaccines.Concat(_recurrentVaccines).FirstOrDefault(x => x.Id == vaccineId);
     }
 }
