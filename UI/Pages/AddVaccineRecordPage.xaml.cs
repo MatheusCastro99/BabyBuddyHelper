@@ -46,7 +46,7 @@ public partial class AddVaccineRecordPage : ContentPage
             _storedLastAdministered = recordOnEdit.LastAdministered?.Date;
             _storedNextDose = recordOnEdit.NextDose?.Date;
 
-            _totalDoses = recordOnEdit.TotalDoses;
+            _totalDoses = recordOnEdit.TotalDoses ?? 1; //Seasonal records get their own editor behavior in P2 (#82)
             _completedDoses = recordOnEdit.CompletedDoses;
             LastDosePicker.Date = _storedLastAdministered ?? DateTime.Today;
             NextDoseCheckBox.IsChecked = _storedNextDose.HasValue;
