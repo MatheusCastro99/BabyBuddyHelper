@@ -11,13 +11,13 @@
 
 BabyBuddyHelper is a cross-platform parenting companion built with .NET MAUI. Today, it helps parents and caregivers organize tasks, track appointments, manage baby profiles, and visualize schedules through checklist and calendar experiences.
 
-The project is currently a functional prototype in active development. Phase 4 (vaccine tracker) is concluded. The Due soon tag (#81) and seasonal vaccines (#82) have shipped. Next, in order: #71 CI mobile targets, #72 Mobile UI/UX polish, and #76 EF Core migrations. The shipped task, appointment, baby-profile, vaccine, filtering, and companion experience stays as it is.
+The project is currently a functional prototype in active development. Phase 4 (vaccine tracker) and its follow-ups (#81, #82) are concluded. Phase 5 prepares the first release: mobile targets in CI (#71), a mobile UI/UX polish pass (#72), EF Core migrations (#76), then deployment and distribution. The shipped task, appointment, baby-profile, vaccine, filtering, and companion experience stays as it is.
 
 ## Vision and Experience
 
 BabyBuddyHelper is evolving from a task and appointment manager into a warm, friendly, and supportive companion for everyday family life. It is intended to feel low-stress and encouraging, helping caregivers keep track of routines and baby-care activities without becoming another productivity application.
 
-The current experience already includes a lightweight companion character and supportive toast feedback. The companion is intended to be welcoming and supportive, not an AI chatbot. Advanced companion behavior, cloud synchronization, and AI-driven interactions remain planned direction.
+The current experience already includes a lightweight companion character and supportive toast feedback. The companion is intended to be welcoming and supportive, not a general-purpose AI chatbot. Planned direction includes user accounts and cloud synchronization, a livelier companion, and later a carefully scoped AI helper for tips and basic questions (not a doctor or therapist).
 
 ---
 
@@ -86,9 +86,9 @@ The current experience already includes a lightweight companion character and su
 
 ## Planned Direction
 
-- Backup and restore
-- Cloud synchronization and shared family experiences
-- Later, carefully scoped AI-supported interactions
+- A first release: mobile polish, release-ready data migrations, and distribution (app stores or direct downloads)
+- User accounts, cloud synchronization, and backup and restore; later, sharing with family
+- A livelier companion and, later, carefully scoped AI support (tips and basic questions, not medical advice)
 
 These capabilities are planned and are not included in the current prototype.
 
@@ -286,21 +286,25 @@ This project follows modern software engineering practices:
 
 ## Roadmap
 
-### Near Term
+### Near Term (Phase 5)
 
-- Due soon tag (#81) and seasonal vaccines (#82) shipped; next, in order: #71 CI mobile targets, #72 Mobile UI/UX polish, #76 EF Core migrations
+- Mobile targets in CI (#71)
+- Mobile UI/UX polish (#72)
+- EF Core migrations (#76)
+- Deployment and distribution (app stores or direct downloads, Dockerization)
 
-### Medium Term
+### Medium Term (Phase 6)
 
-- Dockerization for easier deployment
-- Cloud synchronization
+- User authentication and accounts
+- Cloud synchronization (Azure)
 - Data backup and restore
+- Later, shared family experiences such as shared calendars
 
-### Long Term
+### Long Term (Phase 7)
 
-- Shared family calendars
-- Interactive companion behavior
-- Carefully scoped AI-supported interactions
+- Interactive companion (animations, basic customization)
+- A carefully scoped AI helper for tips and basic questions (not a doctor or therapist)
+- Personalized, age-based advice
 
 The roadmap is directional; planned items should not be read as currently available features.
 
