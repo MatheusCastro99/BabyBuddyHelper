@@ -159,6 +159,7 @@ One entry of the fixed vaccine catalog (US CDC schedule, birth to 6 years).
 - CvxCode
 - Name
 - Description
+- IsRecurrent (seasonal vaccine: no total, never complete)
 
 Served read-only by `IVaccineCatalog`. Never stored in the database (ADR-012).
 
@@ -168,10 +169,10 @@ One baby's progress on one catalog vaccine. At most one record per baby per vacc
 
 - Guid Identifier
 - BabyId and VaccineId (required, never change; VaccineId has no database foreign key because the catalog is not in the database)
-- TotalDoses and CompletedDoses
+- TotalDoses (optional, empty for a seasonal vaccine) and CompletedDoses
 - LastAdministered and NextDose (both optional)
 
-`IsCompleted`, `IsOverdue`, `IsDueToday` and `IsDueSoon` are computed for display and never stored. A dose due today is not overdue. `IsDueSoon` means the next dose is 1 to 14 days away and the record is not complete; a dose due today is not due soon. Deleting a baby deletes its records (database cascade).
+`IsCompleted`, `IsCurrent`, `IsOverdue`, `IsDueToday` and `IsDueSoon` are computed for display and never stored. `IsCompleted` is false without a total, so a seasonal record is never complete. `IsCurrent` (seasonal only) means at least one shot, the last one less than 12 months ago, and no next dose due yet; it is a date rule, not "up to date". A dose due today is not overdue. `IsDueSoon` means the next dose is 1 to 14 days away and the record is not complete; a dose due today is not due soon. Deleting a baby deletes its records (database cascade).
 
 ---
 

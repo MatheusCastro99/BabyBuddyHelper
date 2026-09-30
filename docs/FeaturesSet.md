@@ -48,6 +48,8 @@
 
 ✅ Due soon / due today tag on the dashboard baby cards and the profile's vaccine rows
 
+✅ Seasonal vaccines (flu, COVID-19) tracked on the profile
+
 ## Planned Features:
 
 Cloud Synchronization

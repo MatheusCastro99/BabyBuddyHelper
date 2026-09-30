@@ -41,17 +41,19 @@ VaccineModel (fixed catalog entry, never stored in the database)
 ├── Id (Guid) - Hardcoded, never regenerated (vaccination records reference it)
 ├── CvxCode (string) - CDC vaccine code
 ├── Name (string) - Display name
-└── Description (string) - A plain-language description of the vaccine (RSV is an antibody shot)
+├── Description (string) - A plain-language description of the vaccine (RSV is an antibody shot)
+└── IsRecurrent (bool) - Seasonal vaccine (flu, COVID-19): no total, never complete
 
 VaccinationRecordModel (one baby's progress on one catalog vaccine, stored in the database)
 ├── Id (Guid) - Unique identifier, created by the app
 ├── BabyId (Guid) - The baby it belongs to, never changes
 ├── VaccineId (Guid) - The catalog vaccine it tracks, never changes
-├── TotalDoses (int) - Doses in the series (depends on the brand)
+├── TotalDoses (int?) - Doses in the series (depends on the brand), empty for a seasonal vaccine
 ├── CompletedDoses (int) - Doses given so far
 ├── LastAdministered (DateTime?) - Date of the last dose, empty until the first dose
 ├── NextDose (DateTime?) - Optional date of the next dose
-├── IsCompleted (bool, computed) - All doses given, never stored
+├── IsCompleted (bool, computed) - All doses given (false without a total), never stored
+├── IsCurrent (bool, computed) - Seasonal only: a shot in the last 12 months and no next dose due yet (a date rule, not "up to date"), never stored
 ├── IsOverdue (bool, computed) - Next dose is before today and the record is not complete, never stored
 ├── IsDueToday (bool, computed) - Next dose is today and the record is not complete, never stored
 └── IsDueSoon (bool, computed) - Next dose is 1 to 14 days away and the record is not complete (due today is not due soon), never stored
