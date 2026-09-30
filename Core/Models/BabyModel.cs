@@ -23,7 +23,7 @@ namespace BabyBuddyHelper.Core.Models
                     return "Born today";
 
                 return dateOfBirth > today
-                    ? $"Due in {FormatSpan(today, dateOfBirth)}"
+                    ? $"Baby due in {FormatSpan(today, dateOfBirth)}"
                     : $"{FormatSpan(dateOfBirth, today)} old";
             }
         }
