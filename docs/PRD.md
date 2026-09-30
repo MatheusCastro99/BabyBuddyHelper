@@ -41,7 +41,7 @@ VaccineModel (fixed catalog entry, never stored in the database)
 ├── Id (Guid) - Hardcoded, never regenerated (vaccination records reference it)
 ├── CvxCode (string) - CDC vaccine code
 ├── Name (string) - Display name
-└── Description (string) - What the vaccine protects against
+└── Description (string) - A plain-language description of the vaccine (RSV is an antibody shot)
 
 VaccinationRecordModel (one baby's progress on one catalog vaccine, stored in the database)
 ├── Id (Guid) - Unique identifier, created by the app

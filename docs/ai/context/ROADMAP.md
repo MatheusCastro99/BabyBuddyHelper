@@ -100,7 +100,7 @@ Filters Update: CONCLUDED
 			- AssociatedBabyNameConverter, IsAppointmentModelConverter
 - Rest remain unchanged (App.xaml, AppShell.xaml, Resources/, etc.)
 
-## => Phase 4:
+## Phase 4: CONCLUDED
 
 > Baby Profile Page: CONCLUDED
 
@@ -122,7 +122,7 @@ Filters Update: CONCLUDED
 	- string Description
 - IVaccineCatalog: Vaccines (display order), GetById, SourceName, SourceVersion, SourceUrl, LastReviewed
 - Source: US CDC schedule 2025 (in effect under the March 2026 court stay), parent-facing CDC link, last reviewed 2026-09-28
-- 10 entries; descriptions stored with their "Protects against …" lead-in (provisional, see #48)
+- 10 entries; descriptions stored with their "Helps protect against …" lead-in (final wording); RSV is described as an antibody shot
 - Catalog does not touch the database, it is a static list of vaccines
 - Explicit Disclaimers:
 	- Vaccine catalog is for personal tracking purposes only and not a substitute for professional medical advice
@@ -158,17 +158,19 @@ Filters Update: CONCLUDED
 - Next dose date is optional, and dropped when the record is complete.
 - Footer disclaimer.
 
-> Phase 4 Cleanup:
+> Phase 4 Cleanup: CONCLUDED
 
-- Documentation updates: ROADMAP, FeaturesSet, ARCHITECTURE_DESIGN, CURRENT_STATE, AI_CONTEXT
-- Decisions ammendments:
+- Documentation updates: ROADMAP, FeaturesSet, ARCHITECTURE_DESIGN, CURRENT_STATE, AI_CONTEXT (done)
+- Decisions ammendments (done):
 	- ADR-001: IVaccineService is the single owner of vaccination records.
 	- ADR-004: AddVaccineRecordPage is the single record editor; BabyProfilePage is the entry point.
 	- ADR-006: add IVaccineCatalog as an example. (done)
 	- ADR-008: add IVaccineService as a cache service.
-- Wording review (disclaimer, overdue label, empty states, vaccine descriptions) against UI_GUIDELINES.md using ux-design skill. The catalog descriptions are provisional (#41).
-- Re-verify the vaccine catalog and the disclaimer's schedule version after the First Circuit rules on the stayed January 2026 CDC schedule.
-- Backlog issues for the epic's out-of-scope items and any annotated follow-ups.
+- Wording review (disclaimer, overdue label, empty states, vaccine descriptions) against UI_GUIDELINES.md using ux-design skill. Done; the catalog descriptions are final.
+- Re-verify the vaccine catalog and the disclaimer's schedule version after the First Circuit rules on the stayed January 2026 CDC schedule. Moved to #79.
+- Backlog issues for the epic's out-of-scope items and any annotated follow-ups. Done: Backlog Implementations (#80) holds Due soon tag (#81) and Recurring vaccines: flu, COVID (#82).
+- Not planned: combination vaccines, reminders and notifications, a suggested next dose, non-US schedules.
+- Task-card icon buttons (edit and delete) and a delete confirmation for tasks and appointments.
 
 ---
 
