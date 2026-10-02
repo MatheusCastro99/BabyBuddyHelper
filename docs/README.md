@@ -11,7 +11,7 @@
 
 BabyBuddyHelper is a cross-platform parenting companion built with .NET MAUI. Today, it helps parents and caregivers organize tasks, track appointments, manage baby profiles, and visualize schedules through checklist and calendar experiences.
 
-The project is currently a functional prototype in active development. Phase 4 (vaccine tracker) is concluded. The Due soon tag (#81) and seasonal vaccines (#82) have shipped. Next, in order: #71 CI mobile targets, #72 Mobile UI/UX polish, and #76 EF Core migrations. The shipped task, appointment, baby-profile, vaccine, filtering, and companion experience stays as it is.
+The project is currently a functional prototype in active development. Phase 4 (vaccine tracker) and its follow-ups are concluded. Phase 5 prepares the first release: mobile targets in CI, a mobile UI/UX polish pass, EF Core migrations, then deployment and distribution. The shipped task, appointment, baby-profile, vaccine, filtering, and companion experience stays as it is.
 
 ## Vision and Experience
 
@@ -288,7 +288,10 @@ This project follows modern software engineering practices:
 
 ### Near Term
 
-- Due soon tag (#81) and seasonal vaccines (#82) shipped; next, in order: #71 CI mobile targets, #72 Mobile UI/UX polish, #76 EF Core migrations
+- Mobile targets in CI
+- Mobile UI/UX polish
+- EF Core migrations
+- Deployment and distribution (app stores or direct downloads, Dockerization)
 
 ### Medium Term
 
