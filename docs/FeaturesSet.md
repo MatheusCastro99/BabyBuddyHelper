@@ -52,6 +52,10 @@
 
 ## Planned Features:
 
+App store release for mobile and desktop
+
+User accounts and sign-in
+
 Cloud Synchronization
 
 Database Backup, Redundancy, and Restore
@@ -59,3 +63,5 @@ Database Backup, Redundancy, and Restore
 Companion comes to life with an AI-driven personality and interactions
 
 Evolve companion into a helpful and supportive AI agent for parenting guidance (not a doctor or therapist)
+
+Personalized advice based on the baby's age and development stage
