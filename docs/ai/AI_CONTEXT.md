@@ -2,7 +2,7 @@
 
 # BabyBuddyHelper - AI Development Context
 
-Last Updated: 2026-09-30
+Last Updated: 2026-10-06
 
 ---
 # Context References:
@@ -237,7 +237,7 @@ Debug-only flags:
 - `SimulateDbFailure` for exercising write-failure and startup-retry paths
 
 Future persistence plan includes:
-    Azure for cloud synchronization and redundancy (Phase 6, alongside user accounts and backup/restore).
+    Azure for cloud synchronization and redundancy (Phase 7, alongside user accounts and backup/restore).
 
 ---
 
@@ -457,7 +457,7 @@ Consistent warm and soothing visual language.
 Low Priority:
 
 - No MVVM
-- No EF migration workflow yet (current schema strategy is `EnsureCreated` + debug reset; tracked in #76, scheduled in Phase 5 before the first release)
+- No EF migration workflow yet (current schema strategy is `EnsureCreated` + debug reset; tracked in #76, scheduled in Phase 6 before the first release)
 - No INotifyPropertyChanged
 
 Accepted trade-offs.

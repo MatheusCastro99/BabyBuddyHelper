@@ -11,13 +11,13 @@
 
 BabyBuddyHelper is a cross-platform parenting companion built with .NET MAUI. Today, it helps parents and caregivers organize tasks, track appointments, manage baby profiles, and visualize schedules through checklist and calendar experiences.
 
-The project is currently a functional prototype in active development. Phase 4 (vaccine tracker) and its follow-ups are concluded. Phase 5 prepares the first release: mobile targets in CI, a mobile UI/UX polish pass, EF Core migrations, then deployment and distribution. The shipped task, appointment, baby-profile, vaccine, filtering, and companion experience stays as it is.
+The project is currently a functional prototype in active development. Phase 4 (vaccine tracker) and its follow-ups are concluded. Phase 5 brings the companion to life: interactive animations, basic customization, and a carefully scoped AI helper. It also adds a dual UI mode: a boy / girl palette in place of a light / dark mode. Phase 6 then prepares the first release: mobile targets in CI, a mobile UI/UX polish pass, EF Core migrations, then deployment and distribution. The shipped task, appointment, baby-profile, vaccine, and filtering experience stays as it is.
 
 ## Vision and Experience
 
 BabyBuddyHelper is evolving from a task and appointment manager into a warm, friendly, and supportive companion for everyday family life. It is intended to feel low-stress and encouraging, helping caregivers keep track of routines and baby-care activities without becoming another productivity application.
 
-The current experience already includes a lightweight companion character and supportive toast feedback. The companion is intended to be welcoming and supportive, not a general-purpose AI chatbot. Planned direction includes user accounts and cloud synchronization, a livelier companion, and later a carefully scoped AI helper for tips and basic questions (not a doctor or therapist).
+The current experience already includes a lightweight companion character and supportive toast feedback. The companion is intended to be welcoming and supportive, not a general-purpose AI chatbot. Planned direction starts with a livelier companion and a carefully scoped AI helper for tips and basic questions (not a doctor or therapist), followed by a first release, then user accounts and cloud synchronization.
 
 ---
 
@@ -86,9 +86,11 @@ The current experience already includes a lightweight companion character and su
 
 ## Planned Direction
 
+- A livelier companion with carefully scoped AI support (tips and basic questions, not medical advice)
+- A dual UI mode: a boy / girl palette the user can switch between
 - A first release: mobile polish, release-ready data migrations, and distribution (app stores or direct downloads)
 - User accounts, cloud synchronization, and backup and restore; later, sharing with family
-- A livelier companion and, later, carefully scoped AI support (tips and basic questions, not medical advice)
+- Later, personalized advice based on the baby's age and development stage
 
 These capabilities are planned and are not included in the current prototype.
 
@@ -288,23 +290,25 @@ This project follows modern software engineering practices:
 
 ### Near Term (Phase 5)
 
+- Interactive companion (animations, basic customization)
+- A carefully scoped AI helper for tips and basic questions (not a doctor or therapist)
+- Light personality adjustment for the companion
+- Dual UI mode: a switchable boy / girl palette in place of light / dark mode
+
+### Medium Term (Phase 6)
+
 - Mobile targets in CI
 - Mobile UI/UX polish
 - EF Core migrations
 - Deployment and distribution (app stores or direct downloads, Dockerization)
 
-### Medium Term (Phase 6)
+### Long Term (Phases 7 and 8)
 
 - User authentication and accounts
 - Cloud synchronization (Azure)
 - Data backup and restore
 - Later, shared family experiences such as shared calendars
-
-### Long Term (Phase 7)
-
-- Interactive companion (animations, basic customization)
-- A carefully scoped AI helper for tips and basic questions (not a doctor or therapist)
-- Personalized, age-based advice
+- Advanced AI features: personalized, age-based advice
 
 The roadmap is directional; planned items should not be read as currently available features.
 

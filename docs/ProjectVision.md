@@ -43,4 +43,4 @@ Think:
 
 rather than ChatGPT.
 
-A later phase may give the companion a carefully scoped AI helper for tips and basic questions, within clear guidelines. It is not a doctor or therapist and never replaces professional advice.
+The next phase (Phase 5) gives the companion a carefully scoped AI helper for tips and basic questions, within clear guidelines. It is not a doctor or therapist and never replaces professional advice.

@@ -201,6 +201,24 @@ Filters Update: CONCLUDED
 
 ## Phase 5:
 
+> Companion comes to life:
+
+- Implement interactive animations for the companion character (e.g., waving, clapping, dancing)
+- Allow users to customize the companion character's appearance and behavior (basic customization options)
+- Introduce an AI agent for the companion character to provide personalized tips and answer basic questions.
+- Allow user to minimaly adjust companion personality and behavior (e.g., more encouraging, more playful, more serious)
+	- Enforce well rounded and structured guidelines for AI agent, this is not a doctor or therapist
+
+> Dual UI mode:
+
+- Instead of regular light / dark mode, this project will feature a boy / girl palette
+- Create two separate styles. Style currently implemented can be kept for the boy option
+- Girl option will consist of light shades of pink, red, and purple, following all UI Guidelines
+- Mode can be changed dynamically by a switch (Off = Boy / On = Girl) or an Enum check (PaletteStyle.Boy | PaletteStyle.Girl). The standard symbols for boy and girl in a firmer tone of blue and pink will be used.
+---
+
+## Phase 6:
+
 > Mobile Focus:
 
 - CI/CD Pipeline for mobile targets (Issue #71)
@@ -219,7 +237,7 @@ Filters Update: CONCLUDED
 
 ---
 
-## Phase 6:
+## Phase 7:
 
 > Authentication and User Accounts:
 
@@ -241,15 +259,7 @@ Filters Update: CONCLUDED
 - Ensure backup files are secure and easily accessible
 ---
 
-## Phase 7: 
-
-> Companion comes to life:
-
-- Implement interactive animations for the companion character (e.g., waving, clapping, dancing)
-- Allow users to customize the companion character's appearance and behavior (basic customization options)
-- Introduce an AI agent for the companion character to provide personalized tips and answer basic questions.
-- Allow user to minimaly adjust companion personality and behavior (e.g., more encouraging, more playful, more serious)
-	- Enforce well rounded and structured guidelines for AI agent, this is not a doctor or therapist
+## Phase 8:
 
 > Advanced AI Features:
 
