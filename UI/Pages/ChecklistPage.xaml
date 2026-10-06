@@ -142,10 +142,10 @@
                                     <Grid Grid.Column="1" ColumnDefinitions="Auto, Auto, Auto" ColumnSpacing="0" VerticalOptions="Center">
                                         <CheckBox IsChecked="{Binding IsCompleted, Mode=OneWay}" CheckedChanged="OnTaskCompletedChanged" HorizontalOptions="End" VerticalOptions="Center" Grid.Column="0" />
 
-                                        <!--Same icon buttons as the vaccine rows on BabyProfilePage: keyboard and screen-reader reachable, drawn in PrimaryDark so they keep 3:1 against the card.
+                                        <!--Same icon buttons as the vaccine rows on BabyProfilePage: keyboard and screen-reader reachable, drawn in a mid-tone of the current palette so they keep 3:1 against the card.
                                             44x44 touch area around an ~18px icon-->
                                         <ImageButton Grid.Column="1"
-                                                     Source="edit_icon.png"
+                                                     Source="{DynamicResource EditIcon}"
                                                      WidthRequest="44"
                                                      HeightRequest="44"
                                                      Padding="13"
@@ -157,7 +157,7 @@
                                                      CommandParameter="{Binding .}" />
 
                                         <ImageButton Grid.Column="2"
-                                                     Source="trash_icon.png"
+                                                     Source="{DynamicResource TrashIcon}"
                                                      WidthRequest="44"
                                                      HeightRequest="44"
                                                      Padding="13"

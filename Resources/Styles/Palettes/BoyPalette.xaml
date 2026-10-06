@@ -25,4 +25,9 @@
     <Color x:Key="BabyBuddyMuted">#516B7F</Color>
     <Color x:Key="BabyBuddyBorder">#D6E4EE</Color>
     <Color x:Key="BabyBuddyShadow">#C8DDEA</Color>
+
+    <!--The edit and trash icons are SVGs with their color drawn in, so each palette names its own files.
+        Both tones keep 3:1 against a card or row-->
+    <FileImageSource x:Key="EditIcon" File="edit_icon.png" />
+    <FileImageSource x:Key="TrashIcon" File="trash_icon.png" />
 </ResourceDictionary>

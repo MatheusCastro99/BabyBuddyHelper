@@ -20,9 +20,9 @@
                         <Label Text="{Binding Name}" Style="{StaticResource ItemTitle}" VerticalOptions="Center" Margin="0,0,4,0" />
     
                         <!--The row tap is pointer/touch only; this button keeps the record reachable by keyboard and screen readers.
-                            Same pencil as the task cards, drawn in PrimaryDark so it keeps 3:1 against the row. 44x44 touch area around an ~18px icon-->
+                            Same pencil as the task cards, drawn in a mid-tone of the current palette so it keeps 3:1 against the row. 44x44 touch area around an ~18px icon-->
                         <ImageButton Grid.Column="1"
-                                     Source="edit_icon.png"
+                                     Source="{DynamicResource EditIcon}"
                                      WidthRequest="44"
                                      HeightRequest="44"
                                      Padding="13"
