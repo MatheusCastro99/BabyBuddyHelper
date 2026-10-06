@@ -201,20 +201,32 @@ Filters Update: CONCLUDED
 
 ## Phase 5:
 
-> Companion comes to life:
+Sub-phases run in order, one issue and one PR each. Epic and sub-issues are not created yet.
 
-- Implement interactive animations for the companion character (e.g., waving, clapping, dancing)
-- Allow users to customize the companion character's appearance and behavior (basic customization options)
-- Introduce an AI agent for the companion character to provide personalized tips and answer basic questions.
-- Allow user to minimaly adjust companion personality and behavior (e.g., more encouraging, more playful, more serious)
-	- Enforce well rounded and structured guidelines for AI agent, this is not a doctor or therapist
-
-> Dual UI mode:
+> 5.1 Dual UI mode:
 
 - Instead of regular light / dark mode, this project will feature a boy / girl palette
 - Create two separate styles. Style currently implemented can be kept for the boy option
 - Girl option will consist of light shades of pink, red, and purple, following all UI Guidelines
 - Mode can be changed dynamically by a switch (Off = Boy / On = Girl) or an Enum check (PaletteStyle.Boy | PaletteStyle.Girl). The standard symbols for boy and girl in a firmer tone of blue and pink will be used.
+
+> 5.2 Companion animations:
+
+- Implement interactive animations for the companion character (e.g., waving, clapping, dancing)
+
+> 5.3 Companion customization:
+
+- Allow users to customize the companion character's appearance and behavior (basic customization options)
+
+> 5.4 Companion AI agent:
+
+- Introduce an AI agent for the companion character to provide personalized tips and answer basic questions.
+- Enforce well rounded and structured guidelines for AI agent, this is not a doctor or therapist
+
+> 5.5 Companion personality:
+
+- Allow user to minimaly adjust companion personality and behavior (e.g., more encouraging, more playful, more serious)
+
 ---
 
 ## Phase 6:
@@ -234,6 +246,7 @@ Filters Update: CONCLUDED
 - Prepare the app for deployment
 - Consider distribution channels (e.g., app stores, direct downloads) and necessary configurations for each channel
 - Dockerize the application for easier distribution and deployment
+- Re-verify the vaccine catalog and the disclaimer's schedule version before the first release (Issue #79)
 
 ---
 

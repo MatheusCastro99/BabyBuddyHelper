@@ -9,25 +9,25 @@ Status:
 
 # Current Development Focus:
 
-## Phase 5: Companion Comes to Life, Dual UI Mode
+## Phase 5: Dual UI Mode, Companion Comes to Life
 
-Companion comes to life:
+Sub-phases, in order (one issue and one PR each):
 
-- Interactive companion animations (e.g., waving, clapping, dancing).
-- Basic customization of the companion's appearance and behavior.
-- A scoped AI agent for personalized tips and basic questions, under clear guidelines (not a doctor or therapist).
-- Light personality adjustment (e.g., more encouraging, more playful, more serious).
+- 5.1 Dual UI mode: a boy / girl palette in place of a regular light / dark mode, switched at runtime (switch or `PaletteStyle` enum). The current style can stay as the boy option; the girl option uses light shades of pink, red and purple, following the UI guidelines. Today the app is light-theme only, with one palette.
+- 5.2 Companion animations: interactive animations (e.g., waving, clapping, dancing).
+- 5.3 Companion customization: basic customization of the companion's appearance and behavior.
+- 5.4 Companion AI agent: personalized tips and basic questions, under clear guidelines (not a doctor or therapist).
+- 5.5 Companion personality: light adjustment (e.g., more encouraging, more playful, more serious).
 
-Dual UI mode:
+Not started; the epic and its sub-issues are not created yet. Next: 5.1.
 
-- A boy / girl palette in place of a regular light / dark mode. Today the app is light-theme only, with one palette.
-- Two styles: the current one can stay as the boy option; the girl option uses light shades of pink, red and purple, following the UI guidelines.
-- Switched at runtime by a switch (Off = Boy / On = Girl) or a `PaletteStyle` enum, marked with the standard boy and girl symbols in firmer blue and pink.
+Open issues, all in Phase 6 (release preparation):
 
-Not started; no issues yet.
+- Mobile Focus: #71 CI builds for the mobile targets, #72 mobile UI/UX polish pass.
+- Database Preparation for Release: #76 EF Core migrations.
+- Deployment and Distribution: #79 re-verify the vaccine catalog after the First Circuit ruling, before the first release.
 
-- After this phase: Phase 6 (release preparation: #71, #72, #76, then deployment and distribution), Phase 7 (accounts, cloud sync, backup), Phase 8 (advanced AI features).
-- Also open: #79, re-verify the vaccine catalog after the First Circuit ruling.
+After Phase 6: Phase 7 (accounts, cloud sync, backup), Phase 8 (advanced AI features).
 
 See ROADMAP.md for the full Phase 5 breakdown.
 

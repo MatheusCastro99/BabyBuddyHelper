@@ -290,10 +290,10 @@ This project follows modern software engineering practices:
 
 ### Near Term (Phase 5)
 
+- Dual UI mode: a switchable boy / girl palette in place of light / dark mode
 - Interactive companion (animations, basic customization)
 - A carefully scoped AI helper for tips and basic questions (not a doctor or therapist)
 - Light personality adjustment for the companion
-- Dual UI mode: a switchable boy / girl palette in place of light / dark mode
 
 ### Medium Term (Phase 6)
 
