@@ -29,6 +29,19 @@
                     HorizontalOptions="Center"
                     VerticalOptions="Center" />
 
+            <!--The invisible Switch can't show its own focus ring, so this one appears when it gets keyboard focus-->
+            <Border x:Name="FocusRing"
+                    InputTransparent="True"
+                    IsVisible="False"
+                    WidthRequest="44"
+                    HeightRequest="28"
+                    StrokeThickness="2"
+                    Stroke="{DynamicResource BabyBuddyText}"
+                    StrokeShape="RoundRectangle 14"
+                    BackgroundColor="Transparent"
+                    HorizontalOptions="Center"
+                    VerticalOptions="Center" />
+
             <Ellipse InputTransparent="True"
                      WidthRequest="14"
                      HeightRequest="14"

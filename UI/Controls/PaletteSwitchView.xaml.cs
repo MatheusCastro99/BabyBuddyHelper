@@ -16,6 +16,20 @@ namespace BabyBuddyHelper.UI.Controls
             PaletteToggle.IsToggled = PaletteService.Current == PaletteStyle.Girl;
             UpdateDescription();
             PaletteToggle.Toggled += OnPaletteToggled;
+
+            PaletteToggle.Focused += (_, _) => FocusRing.IsVisible = HasKeyboardFocus();
+            PaletteToggle.Unfocused += (_, _) => FocusRing.IsVisible = false;
+        }
+
+        //A click also focuses the switch, and a ring left behind after every click would be noise. Windows tells
+        //the two apart; elsewhere any focus shows the ring.
+        private bool HasKeyboardFocus()
+        {
+#if WINDOWS
+            return PaletteToggle.Handler?.PlatformView is Microsoft.UI.Xaml.Controls.Control { FocusState: Microsoft.UI.Xaml.FocusState.Keyboard };
+#else
+            return true;
+#endif
         }
 
         private void OnPaletteToggled(object? sender, ToggledEventArgs e)
