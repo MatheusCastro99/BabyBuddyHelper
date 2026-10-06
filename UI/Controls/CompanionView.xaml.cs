@@ -1,5 +1,3 @@
-using Microsoft.Maui.Dispatching;
-
 namespace BabyBuddyHelper.UI.Controls
 {
     /// <summary>
@@ -9,8 +7,6 @@ namespace BabyBuddyHelper.UI.Controls
     /// </summary>
     public partial class CompanionView : ContentView
     {
-        readonly TimeSpan RefreshInterval = TimeSpan.FromMinutes(5);
-
         static readonly string[] DefaultMessages =
         [
             "A calm rhythm keeps things manageable. Keep the next task small and steady.",
@@ -45,27 +41,10 @@ namespace BabyBuddyHelper.UI.Controls
             "Keep going with kindness for yourself and the people you care for.",
         ];
 
-        enum CompanionAnimation
-        {
-            Scale,
-            Rotate,
-            Bounce,
-            Sway,
-            CircleAround,
-        }
+        //Lets the page settle before Cub waves, so the greeting is seen rather than lost in the page load
+        static readonly TimeSpan GreetingDelay = TimeSpan.FromMilliseconds(600);
 
-        static readonly CompanionAnimation[] AnimationPool =
-        [
-            CompanionAnimation.Scale,
-            CompanionAnimation.Rotate,
-            CompanionAnimation.Bounce,
-            CompanionAnimation.Sway,
-            CompanionAnimation.CircleAround,
-        ];
-
-        IDispatcherTimer? _refreshTimer;
-        bool _hasPlayedInitialGreeting;
-        bool _isAnimationRunning;
+        CancellationTokenSource? _greetingCts;
 
         public static readonly BindableProperty MessageProperty =
             BindableProperty.Create(
@@ -92,17 +71,25 @@ namespace BabyBuddyHelper.UI.Controls
         }
 
         /// <summary>
-        /// Updates the companion's message with a brief, gentle animation
-        /// so feedback feels lightweight rather than chat-like.
+        /// Cub waves hello. MainPage calls this every time it appears, and a
+        /// newer call replaces one that is still waiting out its short delay.
         /// </summary>
-        public async Task ShowTipAsync(string message)
+        public async Task GreetAsync()
         {
-            Message = message;
-            await PlayRandomAnimationAsync();
-        }
+            var cts = new CancellationTokenSource();
+            ReplaceGreetingCts(cts);
 
-        Task ShowRandomTipAsync() =>
-            ShowTipAsync(PickRandomMessage(Message));
+            try
+            {
+                await Task.Delay(GreetingDelay, cts.Token);
+            }
+            catch (TaskCanceledException)
+            {
+                return; // a newer greeting took over, or the view went away
+            }
+
+            await Cub.PlayAsync(CubAnimation.Wave);
+        }
 
         static string PickRandomMessage(string? currentMessage = null)
         {
@@ -122,143 +109,34 @@ namespace BabyBuddyHelper.UI.Controls
             return nextMessage;
         }
 
-        async Task PlayRandomAnimationAsync()
-        {
-            // IDispatcherTimer.Tick is not await-aware. Without this guard, a timer
-            // tick can start another animation while the previous one is still running.
-            if (_isAnimationRunning)
-            {
-                return;
-            }
-
-            _isAnimationRunning = true;
-
-            try
-            {
-                // Play exactly one lightweight animation for each new tip.
-                switch (AnimationPool[Random.Shared.Next(AnimationPool.Length)])
-                {
-                    case CompanionAnimation.Scale:
-                        await PlayScaleAnimationAsync();
-                        break;
-                    case CompanionAnimation.Rotate:
-                        await PlayRotateAnimationAsync();
-                        break;
-                    case CompanionAnimation.Bounce:
-                        await PlayBounceAnimationAsync();
-                        break;
-                    case CompanionAnimation.Sway:
-                        await PlaySwayAnimationAsync();
-                        break;
-                    case CompanionAnimation.CircleAround:
-                        await PlayCircleAroundAnimationAsync();
-                        break;
-                }
-            }
-            finally
-            {
-                // A detached view may cancel an animation while it is awaiting.
-                // Restore the baseline for the next handler attachment.
-                CubBadge.CancelAnimations();
-                CubBadge.Scale = 1.0;
-                CubBadge.Rotation = 0;
-                CubBadge.TranslationX = 0;
-                CubBadge.TranslationY = 0;
-                _isAnimationRunning = false;
-            }
-        }
-
-        async Task PlayScaleAnimationAsync()
-        {
-            await CubBadge.ScaleToAsync(1.12, 120, Easing.CubicOut);
-            await CubBadge.ScaleToAsync(1.0, 120, Easing.CubicIn);
-        }
-
-        async Task PlayRotateAnimationAsync()
-        {
-            await CubBadge.RotateToAsync(-25, 140, Easing.CubicOut);
-            await CubBadge.RotateToAsync(25, 220, Easing.SinInOut);
-            await CubBadge.RotateToAsync(0, 140, Easing.CubicIn);
-        }
-
-        async Task PlayBounceAnimationAsync()
-        {
-            await CubBadge.TranslateToAsync(0, -10, 110, Easing.CubicOut);
-            await CubBadge.TranslateToAsync(0, 0, 110, Easing.CubicIn);
-            await CubBadge.TranslateToAsync(0, 5, 80, Easing.CubicOut);
-            await CubBadge.TranslateToAsync(0, 0, 80, Easing.CubicIn);
-        }
-
-        async Task PlaySwayAnimationAsync()
-        {
-            await CubBadge.TranslateToAsync(-6, 0, 120, Easing.CubicOut);
-            await CubBadge.TranslateToAsync(6, 0, 240, Easing.SinInOut);
-            await CubBadge.TranslateToAsync(0, 0, 120, Easing.CubicIn);
-        }
-
-        async Task PlayCircleAroundAnimationAsync()
-        {
-            // Approximate a small circle with short translation segments. Keeping
-            // the offsets small makes this feel like a playful flip, not a jump.
-            await CubBadge.TranslateToAsync(4, -4, 80, Easing.SinInOut);
-            await CubBadge.TranslateToAsync(6, 0, 80, Easing.SinInOut);
-            await CubBadge.TranslateToAsync(4, 4, 80, Easing.SinInOut);
-            await CubBadge.TranslateToAsync(0, 6, 80, Easing.SinInOut);
-            await CubBadge.TranslateToAsync(-4, 4, 80, Easing.SinInOut);
-            await CubBadge.TranslateToAsync(-6, 0, 80, Easing.SinInOut);
-            await CubBadge.TranslateToAsync(-4, -4, 80, Easing.SinInOut);
-            await CubBadge.TranslateToAsync(0, 0, 80, Easing.SinInOut);
-        }
-
         protected override void OnHandlerChanged()
         {
             base.OnHandlerChanged();
 
             if (Handler is null)
             {
-                StopRefreshTimer();
-                CubBadge.CancelAnimations();
-                return;
-            }
-
-            StartRefreshTimer();
-
-            if (!_hasPlayedInitialGreeting)
-            {
-                _hasPlayedInitialGreeting = true;
-                _ = ShowTipAsync(Message);
+                ReplaceGreetingCts(null);
             }
         }
 
-        void StartRefreshTimer()
+        void ReplaceGreetingCts(CancellationTokenSource? newCts)
         {
-            if (_refreshTimer is not null || Dispatcher is null)
-            {
-                return;
-            }
+            var previousCts = _greetingCts;
+            _greetingCts = newCts;
 
-            _refreshTimer = Dispatcher.CreateTimer();
-            _refreshTimer.Interval = RefreshInterval;
-            _refreshTimer.Tick += OnRefreshTimerTick;
-            _refreshTimer.Start();
+            previousCts?.Cancel();
+            previousCts?.Dispose();
         }
 
-        void StopRefreshTimer()
+        //A new tip comes with a little dance, so asking Cub for one feels playful
+        async void OnTellMeSomethingClicked(object? sender, EventArgs e)
         {
-            if (_refreshTimer is null)
-            {
-                return;
-            }
-
-            _refreshTimer.Stop();
-            _refreshTimer.Tick -= OnRefreshTimerTick;
-            _refreshTimer = null;
+            Message = PickRandomMessage(Message);
+            await Cub.PlayAsync(CubAnimation.Dance);
         }
 
-        async void OnRefreshTimerTick(object? sender, EventArgs e) =>
-            await ShowRandomTipAsync();
-
-        async void OnTellMeSomethingClicked(object? sender, EventArgs e) =>
-            await ShowRandomTipAsync();
+        //Tapping Cub is a small extra with no function behind it: Cub just waves back
+        async void OnCubTapped(object? sender, TappedEventArgs e) =>
+            await Cub.PlayAsync(CubAnimation.Wave);
     }
 }

@@ -57,7 +57,7 @@
                     </Border>
                 </Grid>
 
-                <controls:CompanionView />
+                <controls:CompanionView x:Name="Companion" />
 
                 <Border BackgroundColor="{DynamicResource BabyBuddySurface}" StrokeThickness="0" Padding="18">
                     <VerticalStackLayout Spacing="16">
