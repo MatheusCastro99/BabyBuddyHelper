@@ -28,6 +28,8 @@
 
 ✅ Companion Character
 
+✅ Companion animations: Cub waves, dances, claps and nods (Lottie)
+
 ✅ Toast Messages confirming user actions
 
 ✅ Linking tasks and appointments to baby profiles

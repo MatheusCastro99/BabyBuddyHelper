@@ -3,6 +3,7 @@ using BabyBuddyHelper.Core.Persistence;
 using BabyBuddyHelper.Core.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using SkiaSharp.Views.Maui.Controls.Hosting;
 using Syncfusion.Maui.Core.Hosting;
 using System.Diagnostics;
 
@@ -18,6 +19,7 @@ namespace BabyBuddyHelper
 
             builder
                 .UseMauiApp<App>()
+                .UseSkiaSharp()
                 .ConfigureFonts(fonts =>
                 {
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");

@@ -195,17 +195,20 @@ public partial class AddVaccineRecordPage : ContentPage
             return;
         }
 
+        //The last dose being counted is the moment to celebrate; saving an already complete record again is a plain update
+        bool justCompleted = validatedRecord.IsCompleted && _recordOnEdit?.IsCompleted != true;
+
         if (_recordOnEdit is null)
         {
             await _vaccineService.AddAsync(validatedRecord);
             await Navigation.PopModalAsync();
-            ToastService.Show(ToastKind.VaccineRecordAdded);
+            ToastService.Show(justCompleted ? ToastKind.VaccineRecordCompleted : ToastKind.VaccineRecordAdded);
         }
         else
         {
             await _vaccineService.UpdateAsync(validatedRecord);
             await Navigation.PopModalAsync();
-            ToastService.Show(ToastKind.VaccineRecordUpdated);
+            ToastService.Show(justCompleted ? ToastKind.VaccineRecordCompleted : ToastKind.VaccineRecordUpdated);
         }
     }
 

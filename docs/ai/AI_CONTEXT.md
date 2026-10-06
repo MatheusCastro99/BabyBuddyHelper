@@ -448,6 +448,10 @@ Theme:
 
 The app is pinned to the light theme (App.xaml.cs via UserAppTheme); there is no dark mode. In its place the app has two light palettes, boy (default) and girl, with identical keys in `Palettes/BoyPalette.xaml` and `Palettes/GirlPalette.xaml`. Palette colors are read with `DynamicResource`, so a swap restyles the live pages. `PaletteService` applies the palette and saves the choice in Preferences (a device UI setting, not database data). The Windows title bar uses the nav bar colors through a MAUI TitleBar.
 
+Companion (Cub):
+
+Cub is one generated Lottie file, `Resources/Raw/cub.json`, played through the shared `UI/Controls/CubView.cs`. `tools/cub/generate_cub.py` writes the file (run by hand, never by the build). The frame table in `CubView` mirrors `SEGMENTS` in the script, so the two must change together. `SkiaSharp.Extended.UI.Maui` targets .NET 9, so the csproj pins `Microsoft.Maui.Controls.Compatibility` 10.0.110 explicitly; without it the Windows build breaks. Drop the pin once the Lottie package ships a .NET 10 build.
+
 Goal:
 
 Consistent warm and soothing visual language.

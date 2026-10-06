@@ -71,6 +71,7 @@ UI/Controls/
 - CompanionView
 - ToastView
 - PaletteSwitchView
+- CubView.cs
 - KeyboardFocusRing.cs
 
 UI/Services/
@@ -85,6 +86,15 @@ Resources/Styles/
 - Palettes/BoyPalette.xaml
 - Palettes/GirlPalette.xaml
 - Styles.xaml
+
+Resources/Raw/
+
+- cub.json (Cub's Lottie animations)
+
+tools/cub/ (run by hand, not part of the build)
+
+- generate_cub.py
+- preview.html
 
 Platforms/Windows/
 

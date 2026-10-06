@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:controls="clr-namespace:BabyBuddyHelper.UI.Controls"
              x:Class="BabyBuddyHelper.UI.Controls.CompanionView"
              x:Name="CompanionRoot">
 
     <Border BackgroundColor="{DynamicResource BabyBuddySurface}" StrokeThickness="0" Padding="18">
         <Grid ColumnDefinitions="Auto,*" ColumnSpacing="14" VerticalOptions="Center">
             <Border Grid.Column="0"
-                    x:Name="CubBadge"
                     BackgroundColor="{DynamicResource BabyBuddySecondary}"
                     StrokeThickness="0"
                     Padding="8"
@@ -16,11 +16,14 @@
                     HorizontalOptions="Center"
                     VerticalOptions="Center"
                     StrokeShape="RoundRectangle 28">
-                <Image Source="companion_cub.png"
-                       Aspect="AspectFit"
-                       WidthRequest="80"
-                       HeightRequest="80"
-                       SemanticProperties.Description="Cub, your companion" />
+                <controls:CubView x:Name="Cub"
+                                  WidthRequest="80"
+                                  HeightRequest="80"
+                                  SemanticProperties.Description="Cub, your companion">
+                    <controls:CubView.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnCubTapped" />
+                    </controls:CubView.GestureRecognizers>
+                </controls:CubView>
             </Border>
 
             <VerticalStackLayout Grid.Column="1" Spacing="10" VerticalOptions="Center">

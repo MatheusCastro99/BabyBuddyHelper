@@ -71,6 +71,15 @@ namespace BabyBuddyHelper.UI.Pages
             //TaskListService.SetCompletionAsync updates the cached task in place without raising CollectionChanged,
             //so returning to this tab is what brings the completion count back in sync.
             RefreshDashboardState();
+
+            _ = Companion.GreetAsync();
+        }
+
+        protected override void OnDisappearing()
+        {
+            base.OnDisappearing();
+
+            Companion.StopGreeting();
         }
 
         private int CountAppointmentsThisWeek()

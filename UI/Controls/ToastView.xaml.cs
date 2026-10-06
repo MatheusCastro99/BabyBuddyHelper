@@ -54,9 +54,9 @@ namespace BabyBuddyHelper.UI.Controls
         }
 
         void OnToastRequested(object? sender, ToastRequestedEventArgs e) =>
-            _ = ShowAsync(e.Message);
+            _ = ShowAsync(e.Kind, e.Message);
 
-        async Task ShowAsync(string message)
+        async Task ShowAsync(ToastKind kind, string message)
         {
             // A newer toast should replace whatever is currently showing
             // instead of queueing behind it.
@@ -73,7 +73,14 @@ namespace BabyBuddyHelper.UI.Controls
                 this.FadeToAsync(1, 160, Easing.CubicOut),
                 this.TranslateToAsync(0, 0, 160, Easing.CubicOut));
 
-            await PlayGreetingBounceAsync();
+            if (GetCubAnimation(kind) is CubAnimation animation)
+            {
+                _ = Cub.PlayAsync(animation);
+            }
+            else
+            {
+                Cub.Stop(); //A removal toast can replace one whose animation is still running
+            }
 
             try
             {
@@ -102,17 +109,18 @@ namespace BabyBuddyHelper.UI.Controls
             ReplaceHideCts(null);
         }
 
-        async Task PlayGreetingBounceAsync()
+        //Cub claps for a finished task or vaccine series, nods when something is saved,
+        //and stays still when something is removed.
+        static CubAnimation? GetCubAnimation(ToastKind kind) => kind switch
         {
-            await ToastBadge.ScaleToAsync(1.15, 110, Easing.CubicOut);
-            await ToastBadge.ScaleToAsync(1.0, 110, Easing.CubicIn);
-        }
+            ToastKind.TaskCompleted or ToastKind.VaccineRecordCompleted => CubAnimation.Clap,
+            ToastKind.TaskDeleted or ToastKind.BabyProfileDeleted or ToastKind.VaccineRecordRemoved => null,
+            _ => CubAnimation.Nod,
+        };
 
         void ResetVisualState()
         {
             this.CancelAnimations();
-            ToastBadge.CancelAnimations();
-            ToastBadge.Scale = 1.0;
             IsVisible = false;
             Opacity = 0;
             TranslationY = HiddenTranslationY;

@@ -1,0 +1,27 @@
+<!doctype html>
+<!-- Preview for Resources/Raw/cub.json. Serve the repo root (python -m http.server 8766) and open this page. -->
+<html>
+<body style="margin:16px;font-family:sans-serif;background:#EAF4FD">
+  <div style="display:flex;gap:24px;align-items:flex-end">
+    <div id="large" style="width:320px;height:320px;background:#D9E8F5;border-radius:28px"></div>
+    <div id="card" style="width:80px;height:80px;background:#D9E8F5;border-radius:20px"></div>
+    <div id="toast" style="width:32px;height:32px;background:#D9E8F5;border-radius:10px"></div>
+  </div>
+  <p id="buttons"></p>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.12.2/lottie.min.js"></script>
+  <script>
+    fetch('../../Resources/Raw/cub.json').then(r => r.json()).then(data => {
+      window.cubs = ['large', 'card', 'toast'].map(id => lottie.loadAnimation({
+        container: document.getElementById(id), renderer: 'svg', loop: false, autoplay: false, animationData: data }));
+      window.show = frame => window.cubs.forEach(c => c.goToAndStop(frame, true));
+      for (const m of data.markers) {
+        const b = document.createElement('button');
+        b.textContent = m.cm;
+        b.onclick = () => window.cubs.forEach(c => c.playSegments([m.tm, m.tm + m.dr], true));
+        document.getElementById('buttons').append(b, ' ');
+      }
+      window.show(0);
+    });
+  </script>
+</body>
+</html>
