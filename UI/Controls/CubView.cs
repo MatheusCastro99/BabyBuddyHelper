@@ -85,15 +85,23 @@ namespace BabyBuddyHelper.UI.Controls
             return completion.Task;
         }
 
+        /// <summary>
+        /// Stops whatever is playing and puts Cub back on the rest pose.
+        /// </summary>
+        public void Stop()
+        {
+            this.AbortAnimation(PlaybackHandle);
+            _playing = null;
+            _lottie.Progress = TimeSpan.Zero;
+        }
+
         protected override void OnHandlerChanged()
         {
             base.OnHandlerChanged();
 
             if (Handler is null)
             {
-                this.AbortAnimation(PlaybackHandle);
-                _playing = null;
-                _lottie.Progress = TimeSpan.Zero;
+                Stop();
             }
         }
     }

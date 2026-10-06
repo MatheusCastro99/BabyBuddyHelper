@@ -75,6 +75,13 @@ namespace BabyBuddyHelper.UI.Pages
             _ = Companion.GreetAsync();
         }
 
+        protected override void OnDisappearing()
+        {
+            base.OnDisappearing();
+
+            Companion.StopGreeting();
+        }
+
         private int CountAppointmentsThisWeek()
         {
             DayOfWeek firstDayOfWeek = CultureInfo.CurrentCulture.DateTimeFormat.FirstDayOfWeek;

@@ -91,6 +91,16 @@ namespace BabyBuddyHelper.UI.Controls
             await Cub.PlayAsync(CubAnimation.Wave);
         }
 
+        /// <summary>
+        /// Drops a greeting that is still waiting and settles Cub. MainPage calls
+        /// this when it disappears, so the next appearance gets a full wave.
+        /// </summary>
+        public void StopGreeting()
+        {
+            ReplaceGreetingCts(null);
+            Cub.Stop();
+        }
+
         static string PickRandomMessage(string? currentMessage = null)
         {
             if (DefaultMessages.Length == 1)

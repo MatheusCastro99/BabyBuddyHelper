@@ -77,6 +77,10 @@ namespace BabyBuddyHelper.UI.Controls
             {
                 _ = Cub.PlayAsync(animation);
             }
+            else
+            {
+                Cub.Stop(); //A removal toast can replace one whose animation is still running
+            }
 
             try
             {
