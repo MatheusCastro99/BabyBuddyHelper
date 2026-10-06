@@ -1,6 +1,7 @@
 using BabyBuddyHelper.Core.Exceptions;
 using BabyBuddyHelper.Core.Interfaces;
 using BabyBuddyHelper.Core.Models;
+using BabyBuddyHelper.UI.Controls;
 using BabyBuddyHelper.UI.Services;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
@@ -38,6 +39,9 @@ public partial class ChecklistPage : ContentPage
         EditTaskCommand = new Command<TaskModel>(EditTask);
         _taskListService.Tasks.CollectionChanged += (_, _) => RefreshTaskList();
         _babyProfileService.BabyProfiles.CollectionChanged += (_, _) => RefreshTaskList();
+
+        KeyboardFocusRing.Attach(PendingFirstSwitch, PendingFirstFocusRing);
+        KeyboardFocusRing.Attach(DateOrderSwitch, DateOrderFocusRing);
 
         BindingContext = this;
         RefreshTaskList();

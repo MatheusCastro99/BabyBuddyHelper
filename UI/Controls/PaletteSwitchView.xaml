@@ -29,7 +29,7 @@
                     HorizontalOptions="Center"
                     VerticalOptions="Center" />
 
-            <!--The invisible Switch can't show its own focus ring, so this one appears when it gets keyboard focus-->
+            <!--Appears on keyboard focus (KeyboardFocusRing)-->
             <Border x:Name="FocusRing"
                     InputTransparent="True"
                     IsVisible="False"

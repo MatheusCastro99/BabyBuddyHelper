@@ -26,7 +26,7 @@
             <Grid ColumnDefinitions="*,Auto,*">
                 <HorizontalStackLayout Grid.Column="0" HorizontalOptions="Start" Spacing="8" VerticalOptions="Center">
                     <Label Text="Pending first" VerticalOptions="Center" Style="{StaticResource BodyText}" />
-                    <Grid WidthRequest="44" HeightRequest="24">
+                    <Grid WidthRequest="44" HeightRequest="28">
                         <Switch x:Name="PendingFirstSwitch"
                                 IsToggled="{Binding isPendingFirst}"
                                 Toggled="IsPendingFirstHandler"
@@ -34,6 +34,8 @@
                                 HorizontalOptions="Fill"
                                 VerticalOptions="Fill" />
 
+                        <!--The off and on tracks are two borders, not one border with a trigger: a trigger that sets a
+                            DynamicResource drops the base one when it turns off, and the track then misses palette swaps (#93)-->
                         <Border InputTransparent="True"
                                 WidthRequest="36"
                                 HeightRequest="20"
@@ -41,13 +43,30 @@
                                 StrokeShape="RoundRectangle 10"
                                 BackgroundColor="{DynamicResource BabyBuddyBorder}"
                                 HorizontalOptions="Center"
-                                VerticalOptions="Center">
-                            <Border.Triggers>
-                                <DataTrigger TargetType="Border" Binding="{Binding Source={x:Reference PendingFirstSwitch}, Path=IsToggled}" Value="True">
-                                    <Setter Property="BackgroundColor" Value="{DynamicResource BabyBuddyPrimary}" />
-                                </DataTrigger>
-                            </Border.Triggers>
-                        </Border>
+                                VerticalOptions="Center" />
+
+                        <Border InputTransparent="True"
+                                WidthRequest="36"
+                                HeightRequest="20"
+                                StrokeThickness="0"
+                                StrokeShape="RoundRectangle 10"
+                                BackgroundColor="{DynamicResource BabyBuddyPrimary}"
+                                IsVisible="{Binding Source={x:Reference PendingFirstSwitch}, Path=IsToggled}"
+                                HorizontalOptions="Center"
+                                VerticalOptions="Center" />
+
+                        <!--Appears on keyboard focus (KeyboardFocusRing)-->
+                        <Border x:Name="PendingFirstFocusRing"
+                                InputTransparent="True"
+                                IsVisible="False"
+                                WidthRequest="44"
+                                HeightRequest="28"
+                                StrokeThickness="2"
+                                Stroke="{DynamicResource BabyBuddyText}"
+                                StrokeShape="RoundRectangle 14"
+                                BackgroundColor="Transparent"
+                                HorizontalOptions="Center"
+                                VerticalOptions="Center" />
 
                         <Ellipse InputTransparent="True"
                                  WidthRequest="14"
@@ -68,13 +87,15 @@
 
                 <HorizontalStackLayout Grid.Column="1" HorizontalOptions="Start" Spacing="8" VerticalOptions="Center">
                     <Label Text="Upcoming first" VerticalOptions="Center" Style="{StaticResource BodyText}" />
-                    <Grid WidthRequest="44" HeightRequest="24">
+                    <Grid WidthRequest="44" HeightRequest="28">
                         <Switch x:Name="DateOrderSwitch"
                                 Toggled="IsDateOrderHandler"
                                 Opacity="0"
                                 HorizontalOptions="Fill"
                                 VerticalOptions="Fill" />
 
+                        <!--The off and on tracks are two borders, not one border with a trigger: a trigger that sets a
+                            DynamicResource drops the base one when it turns off, and the track then misses palette swaps (#93)-->
                         <Border InputTransparent="True"
                                 WidthRequest="36"
                                 HeightRequest="20"
@@ -82,13 +103,30 @@
                                 StrokeShape="RoundRectangle 10"
                                 BackgroundColor="{DynamicResource BabyBuddyBorder}"
                                 HorizontalOptions="Center"
-                                VerticalOptions="Center">
-                            <Border.Triggers>
-                                <DataTrigger TargetType="Border" Binding="{Binding Source={x:Reference DateOrderSwitch}, Path=IsToggled}" Value="True">
-                                    <Setter Property="BackgroundColor" Value="{DynamicResource BabyBuddyPrimary}" />
-                                </DataTrigger>
-                            </Border.Triggers>
-                        </Border>
+                                VerticalOptions="Center" />
+
+                        <Border InputTransparent="True"
+                                WidthRequest="36"
+                                HeightRequest="20"
+                                StrokeThickness="0"
+                                StrokeShape="RoundRectangle 10"
+                                BackgroundColor="{DynamicResource BabyBuddyPrimary}"
+                                IsVisible="{Binding Source={x:Reference DateOrderSwitch}, Path=IsToggled}"
+                                HorizontalOptions="Center"
+                                VerticalOptions="Center" />
+
+                        <!--Appears on keyboard focus (KeyboardFocusRing)-->
+                        <Border x:Name="DateOrderFocusRing"
+                                InputTransparent="True"
+                                IsVisible="False"
+                                WidthRequest="44"
+                                HeightRequest="28"
+                                StrokeThickness="2"
+                                Stroke="{DynamicResource BabyBuddyText}"
+                                StrokeShape="RoundRectangle 14"
+                                BackgroundColor="Transparent"
+                                HorizontalOptions="Center"
+                                VerticalOptions="Center" />
 
                         <Ellipse InputTransparent="True"
                                  WidthRequest="14"

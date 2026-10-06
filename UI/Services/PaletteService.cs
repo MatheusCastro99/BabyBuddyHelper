@@ -21,8 +21,6 @@ namespace BabyBuddyHelper.UI.Services
 
         public static PaletteStyle Current { get; private set; } = PaletteStyle.Boy;
 
-        public static event EventHandler<PaletteStyle>? PaletteChanged;
-
         /// <summary>
         /// Applies the palette saved on this device. Called once at startup, before any page exists.
         /// </summary>
@@ -42,7 +40,6 @@ namespace BabyBuddyHelper.UI.Services
 
             Swap(style);
             Preferences.Default.Set(PreferenceKey, style.ToString());
-            PaletteChanged?.Invoke(null, style);
         }
 
         //Adds the new palette before removing the old one, so no color key is ever missing while pages are on screen.
