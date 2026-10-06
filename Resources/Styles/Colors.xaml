@@ -6,7 +6,7 @@
     <!-- Note: For Android please see also Platforms\Android\Resources\values\colors.xml -->
 
     <Color x:Key="Primary">#7EAAC5</Color>
-    <Color x:Key="PrimaryDark">#5D89AE</Color>
+    <Color x:Key="PrimaryDark">#467392</Color>
     <Color x:Key="PrimaryDarkText">#23415D</Color>
     <Color x:Key="Secondary">#DDECF9</Color>
     <Color x:Key="SecondaryDarkText">#456785</Color>
@@ -40,17 +40,8 @@
     <Color x:Key="Gray900">#2B2827</Color>
     <Color x:Key="Gray950">#1A1818</Color>
 
-    <SolidColorBrush x:Key="PrimaryBrush" Color="{StaticResource Primary}"/>
-    <SolidColorBrush x:Key="SecondaryBrush" Color="{StaticResource Secondary}"/>
-    <SolidColorBrush x:Key="TertiaryBrush" Color="{StaticResource Tertiary}"/>
     <SolidColorBrush x:Key="WhiteBrush" Color="{StaticResource White}"/>
     <SolidColorBrush x:Key="BlackBrush" Color="{StaticResource Black}"/>
-    <SolidColorBrush x:Key="BabyBuddyBackgroundBrush" Color="{StaticResource BabyBuddyBackground}"/>
-    <SolidColorBrush x:Key="BabyBuddySurfaceBrush" Color="{StaticResource BabyBuddySurface}"/>
-    <SolidColorBrush x:Key="BabyBuddySurfaceAltBrush" Color="{StaticResource BabyBuddySurfaceAlt}"/>
-    <SolidColorBrush x:Key="BabyBuddyPrimaryBrush" Color="{StaticResource BabyBuddyPrimary}"/>
-    <SolidColorBrush x:Key="BabyBuddyAccentBrush" Color="{StaticResource BabyBuddyAccent}"/>
-    <SolidColorBrush x:Key="BabyBuddySuccessBrush" Color="{StaticResource BabyBuddySuccess}"/>
 
     <SolidColorBrush x:Key="Gray100Brush" Color="{StaticResource Gray100}"/>
     <SolidColorBrush x:Key="Gray200Brush" Color="{StaticResource Gray200}"/>
