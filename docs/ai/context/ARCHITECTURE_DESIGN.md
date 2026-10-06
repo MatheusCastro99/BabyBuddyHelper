@@ -70,11 +70,25 @@ UI/Controls/
 
 - CompanionView
 - ToastView
+- PaletteSwitchView
+- KeyboardFocusRing.cs
 
 UI/Services/
 
 - ToastService.cs
 - AlertService.cs
+- PaletteService.cs
+
+Resources/Styles/
+
+- Colors.xaml (shared neutrals)
+- Palettes/BoyPalette.xaml
+- Palettes/GirlPalette.xaml
+- Styles.xaml
+
+Platforms/Windows/
+
+- ShellTabBarFooter.cs
 
 UI/Converters/
 

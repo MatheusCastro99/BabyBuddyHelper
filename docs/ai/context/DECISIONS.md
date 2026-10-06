@@ -212,7 +212,7 @@ Status: Accepted, current.
 Source code is grouped by layer, not by feature. Namespaces follow folders.
 
 - `Core/` holds domain models, cache services, interfaces, the persistence boundary (`TrackerContext`, `EfTrackerDbService`), collections and exceptions.
-- `UI/` holds pages, controls, UI-only services (`ToastService`, `AlertService`) and value converters.
+- `UI/` holds pages, controls, UI-only services (`ToastService`, `AlertService`, `PaletteService`) and value converters.
 - Namespaces match folders (e.g. `BabyBuddyHelper.Core.Services`, `BabyBuddyHelper.UI.Pages`).
 - `App`, `AppShell`, `MauiProgram`, `Platforms/`, `Properties/` and `Resources/` stay at the root, following MAUI conventions.
 
