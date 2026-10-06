@@ -201,6 +201,36 @@ Filters Update: CONCLUDED
 
 ## Phase 5:
 
+Epic: Issue #92. Sub-phases run in order, one issue and one PR each.
+
+> 5.1 Dual UI mode (Issue #93):
+
+- Instead of regular light / dark mode, this project will feature a boy / girl palette
+- Create two separate styles. Style currently implemented can be kept for the boy option
+- Girl option will consist of light shades of pink, red, and purple, following all UI Guidelines
+- Mode can be changed dynamically by a switch (Off = Boy / On = Girl) or an Enum check (PaletteStyle.Boy | PaletteStyle.Girl). The standard symbols for boy and girl in a firmer tone of blue and pink will be used.
+
+> 5.2 Companion animations (Issue #94):
+
+- Implement interactive animations for the companion character (e.g., waving, clapping, dancing)
+
+> 5.3 Companion customization (Issue #95):
+
+- Allow users to customize the companion character's appearance and behavior (basic customization options)
+
+> 5.4 Companion AI agent (Issue #96):
+
+- Introduce an AI agent for the companion character to provide personalized tips and answer basic questions.
+- Enforce well rounded and structured guidelines for AI agent, this is not a doctor or therapist
+
+> 5.5 Companion personality (Issue #97):
+
+- Allow user to minimally adjust companion personality and behavior (e.g., more encouraging, more playful, more serious)
+
+---
+
+## Phase 6:
+
 > Mobile Focus:
 
 - CI/CD Pipeline for mobile targets (Issue #71)
@@ -216,10 +246,11 @@ Filters Update: CONCLUDED
 - Prepare the app for deployment
 - Consider distribution channels (e.g., app stores, direct downloads) and necessary configurations for each channel
 - Dockerize the application for easier distribution and deployment
+- Re-verify the vaccine catalog and the disclaimer's schedule version before the first release (Issue #79)
 
 ---
 
-## Phase 6:
+## Phase 7:
 
 > Authentication and User Accounts:
 
@@ -241,15 +272,7 @@ Filters Update: CONCLUDED
 - Ensure backup files are secure and easily accessible
 ---
 
-## Phase 7: 
-
-> Companion comes to life:
-
-- Implement interactive animations for the companion character (e.g., waving, clapping, dancing)
-- Allow users to customize the companion character's appearance and behavior (basic customization options)
-- Introduce an AI agent for the companion character to provide personalized tips and answer basic questions.
-- Allow user to minimaly adjust companion personality and behavior (e.g., more encouraging, more playful, more serious)
-	- Enforce well rounded and structured guidelines for AI agent, this is not a doctor or therapist
+## Phase 8:
 
 > Advanced AI Features:
 
