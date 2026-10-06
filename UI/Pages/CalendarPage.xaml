@@ -5,7 +5,7 @@
              xmlns:controls="clr-namespace:BabyBuddyHelper.UI.Controls"
              x:Class="BabyBuddyHelper.UI.Pages.CalendarPage"
              Title="Calendar"
-             BackgroundColor="{StaticResource BabyBuddyBackground}">
+             BackgroundColor="{DynamicResource BabyBuddyBackground}">
     <Grid RowDefinitions="Auto, Auto, *" Padding="20" RowSpacing="16">
         <VerticalStackLayout Grid.Row="0" Spacing="6" Margin="0,8,0,0">
             <Label Text="Your week" Style="{StaticResource PageTitle}" HorizontalTextAlignment="Center" />
@@ -19,14 +19,14 @@
                 HorizontalOptions="Start"
                 Clicked="OnCalendarBabyFilterClicked" />
 
-        <Border Grid.Row="2" Padding="12" BackgroundColor="{StaticResource BabyBuddySurface}" StrokeThickness="0" StrokeShape="RoundRectangle 28">
+        <Border Grid.Row="2" Padding="12" BackgroundColor="{DynamicResource BabyBuddySurface}" StrokeThickness="0" StrokeShape="RoundRectangle 28">
             <scheduler:SfScheduler
                 x:Name="Calendar"
                 View="Week"
                 IsAppointmentToolTipEnabled="True"
                 DoubleTapped="OnCalendarDoubleTapped"
                 SelectedDate="{Binding SelectedDate, Mode=TwoWay}"
-                BackgroundColor="{StaticResource BabyBuddySurface}"
+                BackgroundColor="{DynamicResource BabyBuddySurface}"
                 MinimumHeightRequest="420">
             </scheduler:SfScheduler>
         </Border>

@@ -7,7 +7,7 @@
              x:Class="BabyBuddyHelper.UI.Pages.ChecklistPage"
              x:Name="ChecklistRoot"
              Title="Checklist"
-             BackgroundColor="{StaticResource BabyBuddyBackground}">
+             BackgroundColor="{DynamicResource BabyBuddyBackground}">
 
     <ContentPage.Resources>
         <ResourceDictionary>
@@ -22,7 +22,7 @@
             <Label Text="Small steps, steady care." Style="{StaticResource BodyText}" HorizontalTextAlignment="Center" />
         </VerticalStackLayout>
 
-        <Border Grid.Row="1" Padding="14,10" StrokeThickness="0" BackgroundColor="{StaticResource BabyBuddySurface}" MaximumWidthRequest="650">
+        <Border Grid.Row="1" Padding="14,10" StrokeThickness="0" BackgroundColor="{DynamicResource BabyBuddySurface}" MaximumWidthRequest="650">
             <Grid ColumnDefinitions="*,Auto,*">
                 <HorizontalStackLayout Grid.Column="0" HorizontalOptions="Start" Spacing="8" VerticalOptions="Center">
                     <Label Text="Pending first" VerticalOptions="Center" Style="{StaticResource BodyText}" />
@@ -39,12 +39,12 @@
                                 HeightRequest="20"
                                 StrokeThickness="0"
                                 StrokeShape="RoundRectangle 10"
-                                BackgroundColor="{StaticResource BabyBuddyBorder}"
+                                BackgroundColor="{DynamicResource BabyBuddyBorder}"
                                 HorizontalOptions="Center"
                                 VerticalOptions="Center">
                             <Border.Triggers>
                                 <DataTrigger TargetType="Border" Binding="{Binding Source={x:Reference PendingFirstSwitch}, Path=IsToggled}" Value="True">
-                                    <Setter Property="BackgroundColor" Value="{StaticResource BabyBuddyPrimary}" />
+                                    <Setter Property="BackgroundColor" Value="{DynamicResource BabyBuddyPrimary}" />
                                 </DataTrigger>
                             </Border.Triggers>
                         </Border>
@@ -52,7 +52,7 @@
                         <Ellipse InputTransparent="True"
                                  WidthRequest="14"
                                  HeightRequest="14"
-                                 Fill="{StaticResource BabyBuddyText}"
+                                 Fill="{DynamicResource BabyBuddyText}"
                                  HorizontalOptions="Center"
                                  VerticalOptions="Center"
                                  TranslationX="-8">
@@ -80,12 +80,12 @@
                                 HeightRequest="20"
                                 StrokeThickness="0"
                                 StrokeShape="RoundRectangle 10"
-                                BackgroundColor="{StaticResource BabyBuddyBorder}"
+                                BackgroundColor="{DynamicResource BabyBuddyBorder}"
                                 HorizontalOptions="Center"
                                 VerticalOptions="Center">
                             <Border.Triggers>
                                 <DataTrigger TargetType="Border" Binding="{Binding Source={x:Reference DateOrderSwitch}, Path=IsToggled}" Value="True">
-                                    <Setter Property="BackgroundColor" Value="{StaticResource BabyBuddyPrimary}" />
+                                    <Setter Property="BackgroundColor" Value="{DynamicResource BabyBuddyPrimary}" />
                                 </DataTrigger>
                             </Border.Triggers>
                         </Border>
@@ -93,7 +93,7 @@
                         <Ellipse InputTransparent="True"
                                  WidthRequest="14"
                                  HeightRequest="14"
-                                 Fill="{StaticResource BabyBuddyText}"
+                                 Fill="{DynamicResource BabyBuddyText}"
                                  HorizontalOptions="Center"
                                  VerticalOptions="Center"
                                  TranslationX="-8">
@@ -120,7 +120,7 @@
             <CollectionView.ItemTemplate>
                 <DataTemplate>
                     <Grid>
-                        <Border Padding="16" Margin="0,5" BackgroundColor="{StaticResource BabyBuddySurface}" StrokeThickness="0" StrokeShape="RoundRectangle 22">
+                        <Border Padding="16" Margin="0,5" BackgroundColor="{DynamicResource BabyBuddySurface}" StrokeThickness="0" StrokeShape="RoundRectangle 22">
                             <StackLayout Spacing="10">
                                 <Grid ColumnDefinitions="*, Auto" ColumnSpacing="12" VerticalOptions="Center">
                                     <VerticalStackLayout Grid.Column="0" Spacing="2">
@@ -170,15 +170,15 @@
                                     </Grid>
                                 </Grid>
 
-                                <Border Padding="8,6" StrokeThickness="0" BackgroundColor="{StaticResource BabyBuddySecondary}" HorizontalOptions="Start">
+                                <Border Padding="8,6" StrokeThickness="0" BackgroundColor="{DynamicResource BabyBuddySecondary}" HorizontalOptions="Start">
                                     <Label Text="{Binding TaskPriority, StringFormat='Priority {0}'}" Style="{StaticResource CaptionText}" />
                                 </Border>
 
                                 <HorizontalStackLayout Spacing="8" Margin="0,2,0,0">
                                     <Label Text="{Binding AppointmentDate, StringFormat='{0:d}'}" Style="{StaticResource CaptionText}" />
-                                    <BoxView WidthRequest="1" HeightRequest="12" BackgroundColor="{StaticResource BabyBuddyBorder}" />
+                                    <BoxView WidthRequest="1" HeightRequest="12" BackgroundColor="{DynamicResource BabyBuddyBorder}" />
                                     <Label Text="{Binding AppointmentStartTime, StringFormat='{0:hh\:mm}'}" Style="{StaticResource CaptionText}" />
-                                    <BoxView WidthRequest="1" HeightRequest="12" BackgroundColor="{StaticResource BabyBuddyBorder}" />
+                                    <BoxView WidthRequest="1" HeightRequest="12" BackgroundColor="{DynamicResource BabyBuddyBorder}" />
                                     <Label Text="{Binding AppointmentLocation}" Style="{StaticResource CaptionText}" LineBreakMode="TailTruncation" />
                                 </HorizontalStackLayout>
                             </StackLayout>

@@ -5,12 +5,12 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:pages="clr-namespace:BabyBuddyHelper.UI.Pages"
     Title="BabyBuddyHelper"
-    Shell.BackgroundColor="{StaticResource BabyBuddyBackground}"
-    Shell.ForegroundColor="{StaticResource BabyBuddyText}"
-    Shell.TitleColor="{StaticResource BabyBuddyText}"
-    Shell.TabBarBackgroundColor="{StaticResource BabyBuddySurface}"
-    Shell.TabBarForegroundColor="{StaticResource BabyBuddyText}"
-    Shell.TabBarTitleColor="{StaticResource BabyBuddyText}"
+    Shell.BackgroundColor="{DynamicResource BabyBuddyBackground}"
+    Shell.ForegroundColor="{DynamicResource BabyBuddyText}"
+    Shell.TitleColor="{DynamicResource BabyBuddyText}"
+    Shell.TabBarBackgroundColor="{DynamicResource BabyBuddySurface}"
+    Shell.TabBarForegroundColor="{DynamicResource BabyBuddyText}"
+    Shell.TabBarTitleColor="{DynamicResource BabyBuddyText}"
     Shell.TabBarUnselectedColor="{StaticResource Gray400}">
     
     <TabBar >

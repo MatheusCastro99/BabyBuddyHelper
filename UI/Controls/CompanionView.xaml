@@ -4,11 +4,11 @@
              x:Class="BabyBuddyHelper.UI.Controls.CompanionView"
              x:Name="CompanionRoot">
 
-    <Border BackgroundColor="{StaticResource BabyBuddySurface}" StrokeThickness="0" Padding="18">
+    <Border BackgroundColor="{DynamicResource BabyBuddySurface}" StrokeThickness="0" Padding="18">
         <Grid ColumnDefinitions="Auto,*" ColumnSpacing="14" VerticalOptions="Center">
             <Border Grid.Column="0"
                     x:Name="CubBadge"
-                    BackgroundColor="{StaticResource BabyBuddySecondary}"
+                    BackgroundColor="{DynamicResource BabyBuddySecondary}"
                     StrokeThickness="0"
                     Padding="8"
                     WidthRequest="96"
