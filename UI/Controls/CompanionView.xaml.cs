@@ -131,6 +131,7 @@ namespace BabyBuddyHelper.UI.Controls
         //A new tip comes with a little dance, so asking Cub for one feels playful
         async void OnTellMeSomethingClicked(object? sender, EventArgs e)
         {
+            ReplaceGreetingCts(null); //A greeting still waiting out its delay would cut the dance short
             Message = PickRandomMessage(Message);
             await Cub.PlayAsync(CubAnimation.Dance);
         }
