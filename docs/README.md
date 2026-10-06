@@ -11,13 +11,13 @@
 
 BabyBuddyHelper is a cross-platform parenting companion built with .NET MAUI. Today, it helps parents and caregivers organize tasks, track appointments, manage baby profiles, and visualize schedules through checklist and calendar experiences.
 
-The project is currently a functional prototype in active development. Phase 4 (vaccine tracker) and its follow-ups are concluded. Phase 5 started with a dual UI mode: a boy / girl palette in place of a light / dark mode. It continues by bringing the companion to life: interactive animations, basic customization, and a carefully scoped AI helper. Phase 6 then prepares the first release: mobile targets in CI, a mobile UI/UX polish pass, EF Core migrations, then deployment and distribution. The shipped task, appointment, baby-profile, vaccine, and filtering experience stays as it is.
+The project is currently a functional prototype in active development. Phase 4 (vaccine tracker) and its follow-ups are concluded. Phase 5 started with a dual UI mode: a boy / girl palette in place of a light / dark mode. It continues by bringing the companion to life: interactive animations (shipped), then basic customization and a carefully scoped AI helper. Phase 6 then prepares the first release: mobile targets in CI, a mobile UI/UX polish pass, EF Core migrations, then deployment and distribution. The shipped task, appointment, baby-profile, vaccine, and filtering experience stays as it is.
 
 ## Vision and Experience
 
 BabyBuddyHelper is evolving from a task and appointment manager into a warm, friendly, and supportive companion for everyday family life. It is intended to feel low-stress and encouraging, helping caregivers keep track of routines and baby-care activities without becoming another productivity application.
 
-The current experience already includes a lightweight companion character and supportive toast feedback. The companion is intended to be welcoming and supportive, not a general-purpose AI chatbot. Planned direction starts with a livelier companion and a carefully scoped AI helper for tips and basic questions (not a doctor or therapist), followed by a first release, then user accounts and cloud synchronization.
+The current experience already includes an animated companion character (Cub waves, claps, dances and nods) and supportive toast feedback. The companion is intended to be welcoming and supportive, not a general-purpose AI chatbot. Planned direction starts with a customizable companion and a carefully scoped AI helper for tips and basic questions (not a doctor or therapist), followed by a first release, then user accounts and cloud synchronization.
 
 ---
 
@@ -64,7 +64,8 @@ The current experience already includes a lightweight companion character and su
 ### Companion & Feedback
 
 - Companion character on MainPage
-- Companion-themed toast feedback for key user actions
+- Cub is animated (Lottie): waves on MainPage and when tapped, dances on "Tell me something"
+- Companion-themed toast feedback for key user actions, with Cub clapping for a completion, nodding for an add or update, and staying still for a removal
 
 ### Filtering & Ordering
 
@@ -92,7 +93,7 @@ The current experience already includes a lightweight companion character and su
 
 ## Planned Direction
 
-- A livelier companion with carefully scoped AI support (tips and basic questions, not medical advice)
+- A customizable companion with carefully scoped AI support (tips and basic questions, not medical advice)
 - A first release: mobile polish, release-ready data migrations, and distribution (app stores or direct downloads)
 - User accounts, cloud synchronization, and backup and restore; later, sharing with family
 - Later, personalized advice based on the baby's age and development stage
@@ -112,6 +113,7 @@ These capabilities are planned and are not included in the current prototype.
 ### UI Components
 
 - Syncfusion Scheduler
+- SkiaSharp.Extended.UI.Maui (Lottie animation for Cub)
 
 ### Data
 
@@ -221,6 +223,7 @@ BabyBuddyHelper/
 │   │   ├── CompanionView.xaml(.cs)
 │   │   ├── ToastView.xaml(.cs)
 │   │   ├── PaletteSwitchView.xaml(.cs)
+│   │   ├── CubView.cs
 │   │   └── KeyboardFocusRing.cs
 │   │
 │   ├── Services/
@@ -237,12 +240,19 @@ BabyBuddyHelper/
 │   └── Windows/
 │       └── ShellTabBarFooter.cs
 ├── Resources/
+│   ├── Raw/
+│   │   └── cub.json
 │   └── Styles/
 │       ├── Colors.xaml
 │       ├── Palettes/
 │       │   ├── BoyPalette.xaml(.cs)
 │       │   └── GirlPalette.xaml(.cs)
 │       └── Styles.xaml
+│
+├── tools/
+│   └── cub/
+│       ├── generate_cub.py
+│       └── preview.html
 │
 ├── MauiProgram.cs
 ├── App.xaml
@@ -303,7 +313,7 @@ This project follows modern software engineering practices:
 
 ### Near Term (Phase 5)
 
-- Interactive companion (animations, basic customization)
+- Interactive companion (animations shipped; basic customization still planned)
 - A carefully scoped AI helper for tips and basic questions (not a doctor or therapist)
 - Light personality adjustment for the companion
 

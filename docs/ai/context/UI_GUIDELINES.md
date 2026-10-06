@@ -335,6 +335,14 @@ Avoid:
 
 The mascot or companion should support the experience, not dominate it.
 
+Cub has four short animations: wave, clap, dance and nod. Each plays once and never loops.
+
+- Wave: when MainPage appears and when Cub is tapped
+- Dance: when the user asks for a tip ("Tell me something")
+- Clap: in the toast for a completed task or a vaccination record that just became complete
+- Nod: in the toast for an add or an update
+- Cub stays still in removal toasts
+
 ---
 
 ### Toasts and feedback
@@ -347,6 +355,7 @@ Favor:
 - Friendly completion language
 - Non-intrusive design
 - Companion-themed reinforcement where relevant
+- Cub claps for a completion, nods for an add or update, and stays still for a removal
 
 Avoid:
 

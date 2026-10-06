@@ -100,8 +100,11 @@ BabyBuddyHelper/
 │   │   ├── AddVaccineRecordPage.xaml(.cs) - Vaccination record creation / edit / remove interface
 │   │   └── CalendarPage.xaml(.cs) - Calendar visual of appointments
 │   ├── Controls/
-│   │   ├── CompanionView.xaml(.cs) - Companion character
-│   │   └── ToastView.xaml(.cs) - Companion-themed toast feedback
+│   │   ├── CompanionView.xaml(.cs) - Companion character card
+│   │   ├── CubView.cs - Cub, the animated companion, shared by the card and the toasts
+│   │   ├── ToastView.xaml(.cs) - Companion-themed toast feedback
+│   │   ├── PaletteSwitchView.xaml(.cs) - Boy / girl palette switch
+│   │   └── KeyboardFocusRing.cs - Focus ring for keyboard users
 │   ├── Services/
 │   │   ├── ToastService.cs - Toast feedback for successful actions
 │   │   └── AlertService.cs - Alerts for failures the user must acknowledge
