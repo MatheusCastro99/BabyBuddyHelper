@@ -3,11 +3,11 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="BabyBuddyHelper.UI.Pages.AddVaccineRecordPage"
              Title="Vaccine Record"
-             BackgroundColor="{StaticResource BabyBuddyBackground}">
+             BackgroundColor="{DynamicResource BabyBuddyBackground}">
 
     <ScrollView>
         <VerticalStackLayout Padding="20" Spacing="18">
-            <Border BackgroundColor="{StaticResource BabyBuddySurface}" StrokeThickness="0" Padding="18">
+            <Border BackgroundColor="{DynamicResource BabyBuddySurface}" StrokeThickness="0" Padding="18">
                 <VerticalStackLayout Spacing="6">
                     <!--Vaccine names can be long, so the title wraps instead of truncating-->
                     <Label x:Name="VaccineNameLabel" Style="{StaticResource PageTitle}" LineBreakMode="WordWrap" HorizontalTextAlignment="Center" SemanticProperties.HeadingLevel="Level1" />
@@ -15,7 +15,7 @@
                 </VerticalStackLayout>
             </Border>
 
-            <Border BackgroundColor="{StaticResource BabyBuddySurface}" StrokeThickness="0" Padding="18" StrokeShape="RoundRectangle 24">
+            <Border BackgroundColor="{DynamicResource BabyBuddySurface}" StrokeThickness="0" Padding="18" StrokeShape="RoundRectangle 24">
                 <VerticalStackLayout Spacing="18">
                     <!--Hidden for a seasonal vaccine: it's given again each season, so there's no total-->
                     <VerticalStackLayout x:Name="TotalDosesSection" Spacing="6">
@@ -38,8 +38,8 @@
                     <!--Only shown once a dose has been given: with no doses there is no last date-->
                     <VerticalStackLayout x:Name="LastDoseSection" Spacing="10">
                         <Label Text="Last dose given on" Style="{StaticResource SectionTitle}" />
-                        <Border BackgroundColor="{StaticResource BabyBuddySurfaceAlt}" Stroke="{StaticResource BabyBuddyBorder}" StrokeShape="RoundRectangle 12" Padding="10,8">
-                            <DatePicker x:Name="LastDosePicker" HeightRequest="44" HorizontalOptions="Center" TextColor="{StaticResource BabyBuddyText}" />
+                        <Border BackgroundColor="{DynamicResource BabyBuddySurfaceAlt}" Stroke="{DynamicResource BabyBuddyBorder}" StrokeShape="RoundRectangle 12" Padding="10,8">
+                            <DatePicker x:Name="LastDosePicker" HeightRequest="44" HorizontalOptions="Center" TextColor="{DynamicResource BabyBuddyText}" />
                         </Border>
                     </VerticalStackLayout>
 
@@ -53,8 +53,8 @@
                                 </Label.GestureRecognizers>
                             </Label>
                         </HorizontalStackLayout>
-                        <Border x:Name="NextDosePickerBorder" BackgroundColor="{StaticResource BabyBuddySurfaceAlt}" Stroke="{StaticResource BabyBuddyBorder}" StrokeShape="RoundRectangle 12" Padding="10,8">
-                            <DatePicker x:Name="NextDosePicker" HeightRequest="44" HorizontalOptions="Center" TextColor="{StaticResource BabyBuddyText}" />
+                        <Border x:Name="NextDosePickerBorder" BackgroundColor="{DynamicResource BabyBuddySurfaceAlt}" Stroke="{DynamicResource BabyBuddyBorder}" StrokeShape="RoundRectangle 12" Padding="10,8">
+                            <DatePicker x:Name="NextDosePicker" HeightRequest="44" HorizontalOptions="Center" TextColor="{DynamicResource BabyBuddyText}" />
                         </Border>
                     </VerticalStackLayout>
 

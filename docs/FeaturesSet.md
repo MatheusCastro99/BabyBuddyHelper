@@ -50,13 +50,13 @@
 
 ✅ Seasonal vaccines (flu, COVID-19) tracked on the profile
 
+✅ Dual UI mode: a boy / girl palette in place of light / dark mode, switched on the tab row (Windows) and saved on the device
+
 ## Planned Features:
 
 Companion comes to life with an AI-driven personality and interactions
 
 Evolve companion into a helpful and supportive AI agent for parenting guidance (not a doctor or therapist)
-
-Dual UI mode: a switchable boy / girl palette in place of light / dark mode
 
 App store release for mobile and desktop
 

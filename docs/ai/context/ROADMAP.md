@@ -203,12 +203,13 @@ Filters Update: CONCLUDED
 
 Epic: Issue #92. Sub-phases run in order, one issue and one PR each.
 
-> 5.1 Dual UI mode (Issue #93):
+> 5.1 Dual UI mode (Issue #93): CONCLUDED
 
-- Instead of regular light / dark mode, this project will feature a boy / girl palette
-- Create two separate styles. Style currently implemented can be kept for the boy option
-- Girl option will consist of light shades of pink, red, and purple, following all UI Guidelines
-- Mode can be changed dynamically by a switch (Off = Boy / On = Girl) or an Enum check (PaletteStyle.Boy | PaletteStyle.Girl). The standard symbols for boy and girl in a firmer tone of blue and pink will be used.
+- Instead of regular light / dark mode, the app features a boy / girl palette; the app stays pinned to the light theme
+- Two palette dictionaries with identical keys: `BoyPalette` (the previous look, the default) and `GirlPalette` (soft pink, rose and plum); `Colors.xaml` keeps the shared neutrals
+- `PaletteStyle` enum (Boy, Girl) and `PaletteService` swap the palette at runtime; the choice is saved in Preferences, with no database change
+- A switch on the tab row (Off = Boy / On = Girl) with a boy and a girl symbol icon, on Windows. Mobile placement is part of Issue #72; the saved palette applies on every platform
+- Buttons use the firmer `PrimaryDark` fill so white text reaches 4.5:1; the edit and trash icons have one SVG per palette
 
 > 5.2 Companion animations (Issue #94):
 

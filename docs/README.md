@@ -11,7 +11,7 @@
 
 BabyBuddyHelper is a cross-platform parenting companion built with .NET MAUI. Today, it helps parents and caregivers organize tasks, track appointments, manage baby profiles, and visualize schedules through checklist and calendar experiences.
 
-The project is currently a functional prototype in active development. Phase 4 (vaccine tracker) and its follow-ups are concluded. Phase 5 brings the companion to life: interactive animations, basic customization, and a carefully scoped AI helper. It also adds a dual UI mode: a boy / girl palette in place of a light / dark mode. Phase 6 then prepares the first release: mobile targets in CI, a mobile UI/UX polish pass, EF Core migrations, then deployment and distribution. The shipped task, appointment, baby-profile, vaccine, and filtering experience stays as it is.
+The project is currently a functional prototype in active development. Phase 4 (vaccine tracker) and its follow-ups are concluded. Phase 5 started with a dual UI mode: a boy / girl palette in place of a light / dark mode. It continues by bringing the companion to life: interactive animations, basic customization, and a carefully scoped AI helper. Phase 6 then prepares the first release: mobile targets in CI, a mobile UI/UX polish pass, EF Core migrations, then deployment and distribution. The shipped task, appointment, baby-profile, vaccine, and filtering experience stays as it is.
 
 ## Vision and Experience
 
@@ -72,6 +72,12 @@ The current experience already includes a lightweight companion character and su
 - Upcoming-date ordering for appointments
 - Baby-specific checklist filtering
 
+### Dual UI Mode
+
+- Boy and girl color palettes in place of a light / dark mode
+- Palette switch on the tab row (Windows; mobile placement is planned in the Phase 6 polish pass)
+- The choice is saved on the device and applied at startup
+
 ### Data & Reliability
 
 - Local, offline-first storage on the device (EF Core + SQLite)
@@ -87,7 +93,6 @@ The current experience already includes a lightweight companion character and su
 ## Planned Direction
 
 - A livelier companion with carefully scoped AI support (tips and basic questions, not medical advice)
-- A dual UI mode: a boy / girl palette the user can switch between
 - A first release: mobile polish, release-ready data migrations, and distribution (app stores or direct downloads)
 - User accounts, cloud synchronization, and backup and restore; later, sharing with family
 - Later, personalized advice based on the baby's age and development stage
@@ -214,11 +219,14 @@ BabyBuddyHelper/
 │   │
 │   ├── Controls/
 │   │   ├── CompanionView.xaml(.cs)
-│   │   └── ToastView.xaml(.cs)
+│   │   ├── ToastView.xaml(.cs)
+│   │   ├── PaletteSwitchView.xaml(.cs)
+│   │   └── KeyboardFocusRing.cs
 │   │
 │   ├── Services/
 │   │   ├── ToastService.cs
-│   │   └── AlertService.cs
+│   │   ├── AlertService.cs
+│   │   └── PaletteService.cs
 │   │
 │   └── Converters/
 │       ├── AssociatedBabyNameConverter.cs
@@ -226,9 +234,14 @@ BabyBuddyHelper/
 │       └── VaccineTagConverter.cs
 │
 ├── Platforms/
+│   └── Windows/
+│       └── ShellTabBarFooter.cs
 ├── Resources/
 │   └── Styles/
 │       ├── Colors.xaml
+│       ├── Palettes/
+│       │   ├── BoyPalette.xaml(.cs)
+│       │   └── GirlPalette.xaml(.cs)
 │       └── Styles.xaml
 │
 ├── MauiProgram.cs
@@ -290,7 +303,6 @@ This project follows modern software engineering practices:
 
 ### Near Term (Phase 5)
 
-- Dual UI mode: a switchable boy / girl palette in place of light / dark mode
 - Interactive companion (animations, basic customization)
 - A carefully scoped AI helper for tips and basic questions (not a doctor or therapist)
 - Light personality adjustment for the companion

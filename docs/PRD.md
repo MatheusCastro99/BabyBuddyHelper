@@ -110,7 +110,7 @@ BabyBuddyHelper/
 │       ├── IsAppointmentModelConverter.cs - Tells the checklist whether an item is an appointment
 │       └── VaccineTagConverter.cs - Shows a baby card's due today / due soon vaccine tag on the dashboard, looked up by baby Id
 ├── Resources/
-│   └── Styles/ - Application-wide styling (Colors.xaml, Styles.xaml)
+│   └── Styles/ - Application-wide styling (Colors.xaml, Styles.xaml, Palettes/BoyPalette.xaml and GirlPalette.xaml)
 ├── Platforms/ - Platform-specific implementations
 ├── Properties/ - Launch settings
 ├── App.xaml(.cs) - Application entry and startup data loading

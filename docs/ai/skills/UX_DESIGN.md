@@ -14,7 +14,7 @@ A UX/UI lens used alongside the working session. It keeps screens, XAML styling 
 ## Context it loads
 
 - [UI_GUIDELINES.md](../context/UI_GUIDELINES.md) is the authority for identity, principles, palette, typography and screen purposes.
-- `Resources/Styles/Colors.xaml` and `Resources/Styles/Styles.xaml` hold the shared tokens, which pages use via `StaticResource`.
+- `Resources/Styles/Palettes/BoyPalette.xaml` and `GirlPalette.xaml` hold the palette colors (identical keys), which pages read via `DynamicResource`. `Resources/Styles/Colors.xaml` holds the shared neutrals and `Resources/Styles/Styles.xaml` the named styles, which pages use via `StaticResource`.
 - The page or control being changed.
 
 ## What it checks

@@ -4,14 +4,14 @@
              xmlns:controls="clr-namespace:BabyBuddyHelper.UI.Controls"
              x:Class="BabyBuddyHelper.UI.Pages.BabyProfilePage"
              Title="Baby Profile"
-             BackgroundColor="{StaticResource BabyBuddyBackground}">
+             BackgroundColor="{DynamicResource BabyBuddyBackground}">
 
     <ContentPage.Resources>
         <ResourceDictionary>
             <!--One vaccine row, shared by the routine and seasonal lists-->
             <DataTemplate x:Key="VaccineRowTemplate">
                 <!--Tapping a vaccine opens its record editor, same as tapping a baby card on MainPage-->
-                <Border Padding="16" BackgroundColor="{StaticResource BabyBuddySurfaceAlt}" StrokeThickness="0" StrokeShape="RoundRectangle 22"
+                <Border Padding="16" BackgroundColor="{DynamicResource BabyBuddySurfaceAlt}" StrokeThickness="0" StrokeShape="RoundRectangle 22"
                         SemanticProperties.Hint="Opens this vaccine's record">
                     <Border.GestureRecognizers>
                         <TapGestureRecognizer Tapped="OnVaccineTapped" />
@@ -20,9 +20,9 @@
                         <Label Text="{Binding Name}" Style="{StaticResource ItemTitle}" VerticalOptions="Center" Margin="0,0,4,0" />
     
                         <!--The row tap is pointer/touch only; this button keeps the record reachable by keyboard and screen readers.
-                            Same pencil as the task cards, drawn in PrimaryDark so it keeps 3:1 against the row. 44x44 touch area around an ~18px icon-->
+                            Same pencil as the task cards, drawn in a mid-tone of the current palette so it keeps 3:1 against the row. 44x44 touch area around an ~18px icon-->
                         <ImageButton Grid.Column="1"
-                                     Source="edit_icon.png"
+                                     Source="{DynamicResource EditIcon}"
                                      WidthRequest="44"
                                      HeightRequest="44"
                                      Padding="13"
@@ -32,20 +32,20 @@
                                      SemanticProperties.Description="{Binding Name, StringFormat='Edit the {0} record'}"
                                      Clicked="OnOpenRecordClicked" />
     
-                        <BoxView Grid.Column="2" WidthRequest="1" HeightRequest="20" Color="{StaticResource BabyBuddyBorder}" VerticalOptions="Center" />
+                        <BoxView Grid.Column="2" WidthRequest="1" HeightRequest="20" Color="{DynamicResource BabyBuddyBorder}" VerticalOptions="Center" />
     
                         <!--The status is spelled out ("Not started", "1 of 3", "Complete", "Last: Oct 3", "Current"), never shown by color alone.
                             Complete and Current turn soft green; the text switches to PrimaryDarkText because the muted caption color is too faint on green-->
-                        <Border Grid.Column="3" Padding="10,4" BackgroundColor="{StaticResource BabyBuddySecondary}" StrokeThickness="0" StrokeShape="RoundRectangle 10" VerticalOptions="Center">
+                        <Border Grid.Column="3" Padding="10,4" BackgroundColor="{DynamicResource BabyBuddySecondary}" StrokeThickness="0" StrokeShape="RoundRectangle 10" VerticalOptions="Center">
                             <Border.Triggers>
                                 <DataTrigger TargetType="Border" Binding="{Binding IsPillHighlighted}" Value="True">
-                                    <Setter Property="BackgroundColor" Value="{StaticResource BabyBuddySuccess}" />
+                                    <Setter Property="BackgroundColor" Value="{DynamicResource BabyBuddySuccess}" />
                                 </DataTrigger>
                             </Border.Triggers>
                             <Label Text="{Binding PillText}" Style="{StaticResource CaptionText}">
                                 <Label.Triggers>
                                     <DataTrigger TargetType="Label" Binding="{Binding IsPillHighlighted}" Value="True">
-                                        <Setter Property="TextColor" Value="{StaticResource PrimaryDarkText}" />
+                                        <Setter Property="TextColor" Value="{DynamicResource PrimaryDarkText}" />
                                     </DataTrigger>
                                 </Label.Triggers>
                             </Label>
@@ -78,7 +78,7 @@
     <Grid>
         <ScrollView>
             <VerticalStackLayout Padding="20" Spacing="18">
-                <Border BackgroundColor="{StaticResource BabyBuddySurface}" StrokeThickness="0" Padding="20">
+                <Border BackgroundColor="{DynamicResource BabyBuddySurface}" StrokeThickness="0" Padding="20">
                     <Grid ColumnDefinitions="*,Auto" ColumnSpacing="12">
                         <VerticalStackLayout Spacing="6">
                             <Label Text="{Binding Name}" Style="{StaticResource PageTitle}" SemanticProperties.HeadingLevel="Level1" />
@@ -94,19 +94,19 @@
                     </Grid>
                 </Border>
 
-                <Border BackgroundColor="{StaticResource BabyBuddySurface}" StrokeThickness="0" Padding="18">
+                <Border BackgroundColor="{DynamicResource BabyBuddySurface}" StrokeThickness="0" Padding="18">
                     <VerticalStackLayout Spacing="16">
                         <Label Text="Growth" Style="{StaticResource SectionTitle}" SemanticProperties.HeadingLevel="Level2" />
 
                         <Grid ColumnDefinitions="*,*" ColumnSpacing="14">
-                            <Border Grid.Column="0" Padding="16" BackgroundColor="{StaticResource BabyBuddySurfaceAlt}" StrokeThickness="0" StrokeShape="RoundRectangle 22">
+                            <Border Grid.Column="0" Padding="16" BackgroundColor="{DynamicResource BabyBuddySurfaceAlt}" StrokeThickness="0" StrokeShape="RoundRectangle 22">
                                 <VerticalStackLayout Spacing="4">
                                     <Label Text="Weight" Style="{StaticResource CaptionText}" />
                                     <Label Text="{Binding WeightInLbs, StringFormat='{}{0:F1} lbs'}" Style="{StaticResource SectionTitle}" />
                                 </VerticalStackLayout>
                             </Border>
 
-                            <Border Grid.Column="1" Padding="16" BackgroundColor="{StaticResource BabyBuddySurfaceAlt}" StrokeThickness="0" StrokeShape="RoundRectangle 22">
+                            <Border Grid.Column="1" Padding="16" BackgroundColor="{DynamicResource BabyBuddySurfaceAlt}" StrokeThickness="0" StrokeShape="RoundRectangle 22">
                                 <VerticalStackLayout Spacing="4">
                                     <Label Text="Height" Style="{StaticResource CaptionText}" />
                                     <Label Text="{Binding HeightInFt, StringFormat='{}{0:F1} ft'}" Style="{StaticResource SectionTitle}" />
@@ -116,19 +116,19 @@
                     </VerticalStackLayout>
                 </Border>
 
-                <Border BackgroundColor="{StaticResource BabyBuddySurface}" StrokeThickness="0" Padding="18">
+                <Border BackgroundColor="{DynamicResource BabyBuddySurface}" StrokeThickness="0" Padding="18">
                     <VerticalStackLayout Spacing="16">
                         <Label Text="Feeding &amp; sleep" Style="{StaticResource SectionTitle}" SemanticProperties.HeadingLevel="Level2" />
 
                         <Grid ColumnDefinitions="*,*" ColumnSpacing="14">
-                            <Border Grid.Column="0" Padding="16" BackgroundColor="{StaticResource BabyBuddySurfaceAlt}" StrokeThickness="0" StrokeShape="RoundRectangle 22">
+                            <Border Grid.Column="0" Padding="16" BackgroundColor="{DynamicResource BabyBuddySurfaceAlt}" StrokeThickness="0" StrokeShape="RoundRectangle 22">
                                 <VerticalStackLayout Spacing="4">
                                     <Label Text="Last feed" Style="{StaticResource CaptionText}" />
                                     <Label Text="{Binding LastFeed, StringFormat='{}{0:MMM d, h:mm tt}'}" Style="{StaticResource SectionTitle}" />
                                 </VerticalStackLayout>
                             </Border>
 
-                            <Border Grid.Column="1" Padding="16" BackgroundColor="{StaticResource BabyBuddySurfaceAlt}" StrokeThickness="0" StrokeShape="RoundRectangle 22">
+                            <Border Grid.Column="1" Padding="16" BackgroundColor="{DynamicResource BabyBuddySurfaceAlt}" StrokeThickness="0" StrokeShape="RoundRectangle 22">
                                 <VerticalStackLayout Spacing="4">
                                     <Label Text="Last sleep" Style="{StaticResource CaptionText}" />
                                     <Label Text="{Binding LastSleep, StringFormat='{}{0:MMM d, h:mm tt}'}" Style="{StaticResource SectionTitle}" />
@@ -138,7 +138,7 @@
                     </VerticalStackLayout>
                 </Border>
 
-                <Border BackgroundColor="{StaticResource BabyBuddySurface}" StrokeThickness="0" Padding="18">
+                <Border BackgroundColor="{DynamicResource BabyBuddySurface}" StrokeThickness="0" Padding="18">
                     <VerticalStackLayout Spacing="16">
                         <Label Text="Vaccines" Style="{StaticResource SectionTitle}" SemanticProperties.HeadingLevel="Level2" />
 

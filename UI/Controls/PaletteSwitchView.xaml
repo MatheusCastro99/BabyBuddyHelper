@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="BabyBuddyHelper.UI.Controls.PaletteSwitchView"
+             HeightRequest="44"
+             Padding="0,0,16,0"
+             VerticalOptions="Center">
+
+    <!--Boy symbol, switch, girl symbol. The symbols keep a firmer blue and pink in both palettes (4.5:1 or better on the
+        tab row), and the track stays neutral in both positions so neither palette looks like the "off" state-->
+    <HorizontalStackLayout Spacing="8" VerticalOptions="Center">
+        <Image Source="boy_symbol.png" WidthRequest="20" HeightRequest="20" VerticalOptions="Center" />
+
+        <!--Same drawn switch as the checklist filters: the real Switch is invisible and takes the input, focus and
+            screen-reader label, with a 44x44 touch area-->
+        <Grid WidthRequest="44" HeightRequest="44">
+            <Switch x:Name="PaletteToggle"
+                    Opacity="0"
+                    HorizontalOptions="Fill"
+                    VerticalOptions="Fill"
+                    SemanticProperties.Hint="Switches the app's colors between the boy and girl palettes" />
+
+            <Border InputTransparent="True"
+                    WidthRequest="36"
+                    HeightRequest="20"
+                    StrokeThickness="0"
+                    StrokeShape="RoundRectangle 10"
+                    BackgroundColor="{DynamicResource BabyBuddyBorder}"
+                    HorizontalOptions="Center"
+                    VerticalOptions="Center" />
+
+            <!--Appears on keyboard focus (KeyboardFocusRing)-->
+            <Border x:Name="FocusRing"
+                    InputTransparent="True"
+                    IsVisible="False"
+                    WidthRequest="44"
+                    HeightRequest="28"
+                    StrokeThickness="2"
+                    Stroke="{DynamicResource BabyBuddyText}"
+                    StrokeShape="RoundRectangle 14"
+                    BackgroundColor="Transparent"
+                    HorizontalOptions="Center"
+                    VerticalOptions="Center" />
+
+            <Ellipse InputTransparent="True"
+                     WidthRequest="14"
+                     HeightRequest="14"
+                     Fill="{DynamicResource BabyBuddyText}"
+                     HorizontalOptions="Center"
+                     VerticalOptions="Center"
+                     TranslationX="-8">
+                <Ellipse.Triggers>
+                    <DataTrigger TargetType="Ellipse" Binding="{Binding Source={x:Reference PaletteToggle}, Path=IsToggled}" Value="True">
+                        <Setter Property="TranslationX" Value="8" />
+                    </DataTrigger>
+                </Ellipse.Triggers>
+            </Ellipse>
+        </Grid>
+
+        <Image Source="girl_symbol.png" WidthRequest="20" HeightRequest="20" VerticalOptions="Center" />
+    </HorizontalStackLayout>
+</ContentView>

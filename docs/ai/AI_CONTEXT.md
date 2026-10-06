@@ -433,7 +433,9 @@ For a complete roadmap, refer to: [Roadmap](context/ROADMAP.md)
 Current shared resources include:
 
 Resources/Styles/
-    Colors.xaml
+    Colors.xaml (shared neutrals)
+    Palettes/BoyPalette.xaml
+    Palettes/GirlPalette.xaml
     Styles.xaml
 
 Future expansion candidates:
@@ -444,7 +446,7 @@ Resources/Styles/
 
 Theme:
 
-The app is light-theme only (pinned in App.xaml.cs via UserAppTheme). The Windows title bar uses the nav bar colors through a MAUI TitleBar.
+The app is pinned to the light theme (App.xaml.cs via UserAppTheme); there is no dark mode. In its place the app has two light palettes, boy (default) and girl, with identical keys in `Palettes/BoyPalette.xaml` and `Palettes/GirlPalette.xaml`. Palette colors are read with `DynamicResource`, so a swap restyles the live pages. `PaletteService` applies the palette and saves the choice in Preferences (a device UI setting, not database data). The Windows title bar uses the nav bar colors through a MAUI TitleBar.
 
 Goal:
 

@@ -137,6 +137,13 @@ Preferred directions:
 - Gentle accent tones
 - Light neutrals with comfortable contrast
 
+The app has two palettes in place of a light / dark mode, and both follow these directions:
+
+- Boy (default): the soft blues, greens and creams above
+- Girl: soft pink, rose and plum, with rose standing in for red
+- Success stays green in both palettes
+- Buttons fill with the firmer `PrimaryDark` so white button text reaches 4.5:1 contrast; the soft primary stays elsewhere
+
 Avoid:
 
 - Harsh reds used as primary colors
@@ -370,7 +377,12 @@ Avoid:
 
 ## Design System Guidance
 
-Reusable styling is centralized in `Resources/Styles/Colors.xaml` (colors and brushes) and `Resources/Styles/Styles.xaml` (named styles such as PageTitle, SectionTitle, ItemTitle, BodyText, CaptionText, PrimaryAction, SecondaryAction, CounterButton, DueTag and DueTagText). New tokens and styles belong there.
+Reusable styling is centralized in `Resources/Styles/Palettes/BoyPalette.xaml` and `GirlPalette.xaml` (palette colors and the per-palette icons), `Resources/Styles/Colors.xaml` (shared neutrals) and `Resources/Styles/Styles.xaml` (named styles such as PageTitle, SectionTitle, ItemTitle, BodyText, CaptionText, PrimaryAction, SecondaryAction, CounterButton, DueTag and DueTagText). New tokens and styles belong there.
+
+- The two palette files hold identical keys. A new palette color goes into both.
+- Read palette colors with `DynamicResource`, so a palette swap restyles the live pages. Styles are still consumed with `StaticResource`.
+- Do not use `AppThemeBinding`; the app is pinned to the light theme and the palette is the only variation.
+- A property must not get a `DynamicResource` from both its base value and a trigger setter.
 
 Recommended areas:
 

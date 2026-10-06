@@ -10,7 +10,7 @@
              VerticalOptions="End"
              Margin="12,0,12,18">
 
-    <Border BackgroundColor="{StaticResource BabyBuddySurface}"
+    <Border BackgroundColor="{DynamicResource BabyBuddySurface}"
             StrokeThickness="0"
             Padding="12,10"
             StrokeShape="RoundRectangle 20"
@@ -18,7 +18,7 @@
         <Grid ColumnDefinitions="Auto,*" ColumnSpacing="10" VerticalOptions="Center">
             <Border Grid.Column="0"
                     x:Name="ToastBadge"
-                    BackgroundColor="{StaticResource BabyBuddySecondary}"
+                    BackgroundColor="{DynamicResource BabyBuddySecondary}"
                     StrokeThickness="0"
                     Padding="4"
                     WidthRequest="40"

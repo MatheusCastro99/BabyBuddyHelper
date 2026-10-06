@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ResourceDictionary xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                    x:Class="BabyBuddyHelper.Resources.Styles.Palettes.BoyPalette">
+
+    <!--The boy palette: soft blues. This is the default, and the look the app had before the dual UI mode (#93).
+        Both palettes define the same keys, and XAML reads them through DynamicResource so a swap reaches loaded pages.
+        PrimaryDark is the button fill: white text needs it to reach 4.5:1. Success stays green in both palettes-->
+    <Color x:Key="Primary">#7EAAC5</Color>
+    <Color x:Key="PrimaryDark">#467392</Color>
+    <Color x:Key="PrimaryDarkText">#23415D</Color>
+    <Color x:Key="Secondary">#DDECF9</Color>
+    <Color x:Key="SecondaryDarkText">#456785</Color>
+    <Color x:Key="Tertiary">#EEF7FF</Color>
+
+    <Color x:Key="BabyBuddyBackground">#EAF5FF</Color>
+    <Color x:Key="BabyBuddySurface">#FFFFFF</Color>
+    <Color x:Key="BabyBuddySurfaceAlt">#F2FAFF</Color>
+    <Color x:Key="BabyBuddyPrimary">#7EAAC5</Color>
+    <Color x:Key="BabyBuddySecondary">#DDECF9</Color>
+    <Color x:Key="BabyBuddyAccent">#B7D6EB</Color>
+    <Color x:Key="BabyBuddySuccess">#B9DCC9</Color>
+    <Color x:Key="BabyBuddyWarm">#CFE6F4</Color>
+    <Color x:Key="BabyBuddyText">#1F3650</Color>
+    <Color x:Key="BabyBuddyMuted">#516B7F</Color>
+    <Color x:Key="BabyBuddyBorder">#D6E4EE</Color>
+    <Color x:Key="BabyBuddyShadow">#C8DDEA</Color>
+
+    <!--The edit and trash icons are SVGs with their color drawn in, so each palette names its own files.
+        Both tones keep 3:1 against a card or row-->
+    <FileImageSource x:Key="EditIcon" File="edit_icon.png" />
+    <FileImageSource x:Key="TrashIcon" File="trash_icon.png" />
+</ResourceDictionary>

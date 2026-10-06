@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ResourceDictionary xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                    x:Class="BabyBuddyHelper.Resources.Styles.Palettes.GirlPalette">
+
+    <!--The girl palette: soft pinks, rose and plum. Rose stands in for red, which the UI guidelines keep out of primary colors (#93).
+        Both palettes define the same keys, and XAML reads them through DynamicResource so a swap reaches loaded pages.
+        PrimaryDark is the button fill: white text needs it to reach 4.5:1. Success stays green in both palettes-->
+    <Color x:Key="Primary">#C98AA8</Color>
+    <Color x:Key="PrimaryDark">#9C5078</Color>
+    <Color x:Key="PrimaryDarkText">#5D2347</Color>
+    <Color x:Key="Secondary">#F9DDEA</Color>
+    <Color x:Key="SecondaryDarkText">#854567</Color>
+    <Color x:Key="Tertiary">#FFF5F9</Color>
+
+    <Color x:Key="BabyBuddyBackground">#FFF0F5</Color>
+    <Color x:Key="BabyBuddySurface">#FFFFFF</Color>
+    <Color x:Key="BabyBuddySurfaceAlt">#FFF7FA</Color>
+    <Color x:Key="BabyBuddyPrimary">#C98AA8</Color>
+    <Color x:Key="BabyBuddySecondary">#F9DDEA</Color>
+    <Color x:Key="BabyBuddyAccent">#EBB7D0</Color>
+    <Color x:Key="BabyBuddySuccess">#B9DCC9</Color>
+    <Color x:Key="BabyBuddyWarm">#F4D3E2</Color>
+    <Color x:Key="BabyBuddyText">#4A2340</Color>
+    <Color x:Key="BabyBuddyMuted">#7A5670</Color>
+    <Color x:Key="BabyBuddyBorder">#EED6E2</Color>
+    <Color x:Key="BabyBuddyShadow">#EAC8D8</Color>
+
+    <!--The edit and trash icons are SVGs with their color drawn in, so each palette names its own files.
+        Both tones keep 3:1 against a card or row-->
+    <FileImageSource x:Key="EditIcon" File="edit_icon_girl.png" />
+    <FileImageSource x:Key="TrashIcon" File="trash_icon_girl.png" />
+</ResourceDictionary>
