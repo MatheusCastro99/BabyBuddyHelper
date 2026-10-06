@@ -33,6 +33,10 @@ namespace BabyBuddyHelper
                 .AddDbContextFactory<TrackerContext>(options =>
                     options.UseSqlite($"Data Source={Path.Combine(FileSystem.AppDataDirectory, "babybuddy.db3")}"));
 
+#if WINDOWS
+            WinUI.ShellTabBarFooter.Register();
+#endif
+
 #if DEBUG
             builder.Logging.AddDebug();
 #endif
