@@ -11,15 +11,15 @@ Status:
 
 ## Phase 5: Dual UI Mode, Companion Comes to Life
 
-Sub-phases, in order (one issue and one PR each):
+Epic: #92. Sub-phases, in order (one issue and one PR each):
 
-- 5.1 Dual UI mode: a boy / girl palette in place of a regular light / dark mode, switched at runtime (switch or `PaletteStyle` enum). The current style can stay as the boy option; the girl option uses light shades of pink, red and purple, following the UI guidelines. Today the app is light-theme only, with one palette.
-- 5.2 Companion animations: interactive animations (e.g., waving, clapping, dancing).
-- 5.3 Companion customization: basic customization of the companion's appearance and behavior.
-- 5.4 Companion AI agent: personalized tips and basic questions, under clear guidelines (not a doctor or therapist).
-- 5.5 Companion personality: light adjustment (e.g., more encouraging, more playful, more serious).
+- 5.1 Dual UI mode (#93): a boy / girl palette in place of a regular light / dark mode, switched at runtime (switch or `PaletteStyle` enum). The current style can stay as the boy option; the girl option uses light shades of pink, red and purple, following the UI guidelines. Today the app is light-theme only, with one palette.
+- 5.2 Companion animations (#94): interactive animations (e.g., waving, clapping, dancing).
+- 5.3 Companion customization (#95): basic customization of the companion's appearance and behavior.
+- 5.4 Companion AI agent (#96): personalized tips and basic questions, under clear guidelines (not a doctor or therapist).
+- 5.5 Companion personality (#97): light adjustment (e.g., more encouraging, more playful, more serious).
 
-Not started; the epic and its sub-issues are not created yet. Next: 5.1.
+Not started. Next: 5.1 (#93).
 
 Open issues, all in Phase 6 (release preparation):
 
