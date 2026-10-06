@@ -225,7 +225,7 @@ Sub-phases run in order, one issue and one PR each. Epic and sub-issues are not 
 
 > 5.5 Companion personality:
 
-- Allow user to minimaly adjust companion personality and behavior (e.g., more encouraging, more playful, more serious)
+- Allow user to minimally adjust companion personality and behavior (e.g., more encouraging, more playful, more serious)
 
 ---
 
