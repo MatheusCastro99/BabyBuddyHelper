@@ -13,12 +13,18 @@ namespace BabyBuddyHelper.WinUI
     {
         public static void Register()
         {
-            ShellItemHandler.Mapper.AppendToMapping(nameof(PaletteSwitchView), (handler, _) =>
+            ShellItemHandler.Mapper.AppendToMapping(nameof(PaletteSwitchView), (handler, item) =>
             {
                 //The mapping can run again for the same native view, so the footer is only filled once
                 if (handler.PlatformView is NavigationView { PaneFooter: null } tabRow && handler.MauiContext is { } context)
                 {
-                    tabRow.PaneFooter = new PaletteSwitchView().ToPlatform(context);
+                    PaletteSwitchView paletteSwitch = new();
+
+                    //The footer sits outside the page tree. As a logical child of the Shell, the switch still gets
+                    //resource changes, so its own colors follow a palette swap
+                    item.Parent?.AddLogicalChild(paletteSwitch);
+
+                    tabRow.PaneFooter = paletteSwitch.ToPlatform(context);
                 }
             });
         }

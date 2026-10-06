@@ -4,7 +4,8 @@
              x:Class="BabyBuddyHelper.UI.Controls.PaletteSwitchView"
              WidthRequest="96"
              HeightRequest="44"
-             VerticalOptions="Center">
+             VerticalOptions="Center"
+             BackgroundColor="{DynamicResource BabyBuddySecondary}">
 
     <!--Placeholder for the tab-row spike (#93). The real switch replaces it once the palettes exist-->
     <Label Text="♂  ♀"

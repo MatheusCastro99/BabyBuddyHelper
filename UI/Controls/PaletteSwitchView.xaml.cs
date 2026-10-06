@@ -1,3 +1,5 @@
+using BabyBuddyHelper.UI.Services;
+
 namespace BabyBuddyHelper.UI.Controls
 {
     /// <summary>
@@ -9,6 +11,11 @@ namespace BabyBuddyHelper.UI.Controls
         public PaletteSwitchView()
         {
             InitializeComponent();
+
+            //Temporary test hook until the real switch lands: a tap flips the palette
+            TapGestureRecognizer tap = new();
+            tap.Tapped += (_, _) => PaletteService.Apply(PaletteService.Current == PaletteStyle.Boy ? PaletteStyle.Girl : PaletteStyle.Boy);
+            GestureRecognizers.Add(tap);
         }
     }
 }

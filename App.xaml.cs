@@ -16,9 +16,11 @@ namespace BabyBuddyHelper
         {
             InitializeComponent();
 
-            //The palette is light-only. Following a dark system theme gave native controls dark-theme colors on our light
-            //surfaces, e.g. a near-white back arrow on the light nav bar.
+            //Both palettes (boy and girl) are light. Following a dark system theme gave native controls dark-theme colors
+            //on our light surfaces, e.g. a near-white back arrow on the light nav bar, so the theme stays pinned.
             UserAppTheme = AppTheme.Light;
+
+            PaletteService.ApplySaved();
 
             _taskListService = taskListService;
             _babyProfileService = babyProfileService;
@@ -27,16 +29,13 @@ namespace BabyBuddyHelper
 
         protected override Window CreateWindow(IActivationState? activationState)
         {
-            Window window = new(new AppShell())
-            {
-                //Matches the Shell nav bar so the window's top edge follows the light palette (Windows and Mac Catalyst only)
-                TitleBar = new TitleBar
-                {
-                    Title = "BabyBuddyHelper",
-                    BackgroundColor = (Color)Resources["BabyBuddyBackground"],
-                    ForegroundColor = (Color)Resources["BabyBuddyText"]
-                }
-            };
+            //Matches the Shell nav bar so the window's top edge follows the current palette, including after a switch
+            //(Windows and Mac Catalyst only)
+            TitleBar titleBar = new() { Title = "BabyBuddyHelper" };
+            titleBar.SetDynamicResource(TitleBar.BackgroundColorProperty, "BabyBuddyBackground");
+            titleBar.SetDynamicResource(TitleBar.ForegroundColorProperty, "BabyBuddyText");
+
+            Window window = new(new AppShell()) { TitleBar = titleBar };
             window.Created += OnWindowCreated;
             return window;
         }
