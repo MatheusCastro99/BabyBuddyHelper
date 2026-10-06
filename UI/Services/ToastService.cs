@@ -15,6 +15,7 @@ namespace BabyBuddyHelper.UI.Services
         BabyProfileDeleted,
         VaccineRecordAdded,
         VaccineRecordUpdated,
+        VaccineRecordCompleted,
         VaccineRecordRemoved,
     }
 
@@ -107,6 +108,14 @@ namespace BabyBuddyHelper.UI.Services
                 "Cub gives a warm nod, changes saved!",
                 "Cub says: those dates are noted and ready.",
                 "Cub helps keep that record current for you.",
+            ],
+            [ToastKind.VaccineRecordCompleted] =
+            [
+                "Cub claps: every dose on that record is checked off!",
+                "Cub cheers, that vaccine record is complete!",
+                "Cub says: all doses noted, nicely done!",
+                "Cub claps along, that record is all filled in!",
+                "Cub celebrates that completed record with you!",
             ],
             [ToastKind.VaccineRecordRemoved] =
             [
