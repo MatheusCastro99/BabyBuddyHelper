@@ -20,7 +20,7 @@ Epic: #92. Sub-phases, in order (one issue and one PR each):
 - 5.5 Companion AI agent (#96): Cub answers basic questions through Claude, under clear guidelines (not a doctor or therapist).
 - 5.6 Companion personality (#97): conversational style (supportive, neutral, direct) and verbosity.
 
-5.1 and 5.2 are done. Next: 5.3 (#95).
+5.1 and 5.2 are done. Next: 5.3 (#95). Its scope, acceptance criteria, plan and ADR drafts are settled in the issue and its "Scope decisions" and "Kickoff decisions and plan" comments.
 
 Open issues, all in Phase 6 (release preparation):
 

@@ -222,10 +222,10 @@ Epic: Issue #92. Sub-phases run in order, one issue and one PR each.
 
 > 5.3 AI groundwork (Issue #95):
 
-- Groundwork for the companion AI agent, the way Phase 3 prepared the app for data persistence. No AI call, no key handling and no visible change
+- Groundwork for the companion AI agent, the way Phase 3 prepared the app for data persistence. No AI call and no key handling
 - ADRs for the off-device data path, the user-supplied key and the root-level `Remote/` folder (off-device implementations only; contracts stay in `Core/Interfaces`)
 - CommunityToolkit.Maui and the official `Anthropic` C# SDK are added, and the app is built for Windows and Android
-- A baby's weight and height each get a "last updated" date, stamped when that value changes and shown on the baby profile, so the agent can later tell how fresh they are
+- A baby's weight and height each get a "last updated" date, stamped when that value changes and shown on the baby profile, so the agent can later tell how fresh they are. A new profile gets a date only for a value that was entered; profiles that already exist get none
 - Replaces "Companion customization", which was dropped (appearance options cost more than they give caregivers)
 
 > 5.4 Chat page and Cub settings (Issue #100):
@@ -233,13 +233,16 @@ Epic: Issue #92. Sub-phases run in order, one issue and one PR each.
 - A "Talk to Cub" button on the companion card opens the chat
 - A gear on the chat opens a small settings popup where the user enters, changes or removes their own API key (Claude only for now; there is no backend holding a key)
 - A gentle setup state when no key is saved. No AI call yet
+- The "Tell me something" tip button stays. It and the chat are completely separate
 
 > 5.5 Companion AI agent (Issue #96):
 
 - Introduce an AI agent for the companion character to provide personalized tips and answer basic questions. Cub is the agent
 - The Claude client lives in `Remote/`, behind a contract in `Core/Interfaces`
 - Enforce well rounded and structured guidelines for AI agent, this is not a doctor or therapist
-- The conversation is not kept after the chat closes
+- The conversation is not kept after the chat closes, and Cub replies in the language the user writes in
+- The AI is optional: the app stays fully usable offline and without a key
+- Planned, to confirm at kickoff: the user picks a baby profile for the chat ("General advice" by default) to share that baby's details with Cub. Cub may then use the baby's name; otherwise it says "your baby" or "the little one". Last feed and last sleep are never shared
 
 > 5.6 Companion personality (Issue #97):
 

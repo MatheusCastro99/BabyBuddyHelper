@@ -314,8 +314,8 @@ This project follows modern software engineering practices:
 ### Near Term (Phase 5)
 
 - Interactive companion (animations shipped)
-- A carefully scoped AI helper for tips and basic questions (not a doctor or therapist)
-- Light personality adjustment for the companion
+- A carefully scoped AI helper: an optional chat with Cub for tips and basic questions, using the caregiver's own API key (not a doctor or therapist)
+- Light personality adjustment for the companion (conversational style and verbosity)
 
 ### Medium Term (Phase 6)
 
