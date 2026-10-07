@@ -15,7 +15,7 @@ Epic: #92. Sub-phases, in order (one issue and one PR each):
 
 - 5.1 Dual UI mode (#93): shipped. A boy / girl palette in place of a regular light / dark mode, with a switch on the tab row (Windows; mobile placement is in #72). The choice is saved in Preferences. The app stays pinned to the light theme, with two light palettes.
 - 5.2 Companion animations (#94): shipped. Cub is a Lottie animation (wave, clap, dance, nod) played through a shared `CubView`; it waves on the companion card, dances on "Tell me something", and claps or nods in toasts.
-- 5.3 Companion customization (#95): basic customization of the companion's appearance and behavior.
+- 5.3 Remote services preparation (#95): readies the architecture for the AI agent and other off-device calls (a root-level `Remote/` folder, contracts in `Core/Interfaces`, a user-supplied API key). It replaces "Companion customization", which was dropped.
 - 5.4 Companion AI agent (#96): personalized tips and basic questions, under clear guidelines (not a doctor or therapist).
 - 5.5 Companion personality (#97): light adjustment (e.g., more encouraging, more playful, more serious).
 

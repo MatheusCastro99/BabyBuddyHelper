@@ -220,9 +220,12 @@ Epic: Issue #92. Sub-phases run in order, one issue and one PR each.
 - Toasts: Cub claps for a completed task and for a vaccination record that just became complete (new `ToastKind.VaccineRecordCompleted`), nods for adds and updates, and stays still for removals. The toast badge grew from 40 to 64
 - Reduced-motion handling was left out on purpose (owner decision)
 
-> 5.3 Companion customization (Issue #95):
+> 5.3 Remote services preparation (Issue #95):
 
-- Allow users to customize the companion character's appearance and behavior (basic customization options)
+- Prepare the app to host the companion AI agent (5.4) and other off-device calls, the way Phase 3 prepared it for data persistence. No AI call ships in this sub-phase
+- A root-level `Remote/` folder holds the off-device implementations (HTTP clients, provider DTOs, mapping); contracts stay in `Core/Interfaces`
+- The AI provider key is supplied by the user; there is no backend holding a key
+- Replaces "Companion customization", which was dropped (appearance options cost more than they give caregivers)
 
 > 5.4 Companion AI agent (Issue #96):
 
