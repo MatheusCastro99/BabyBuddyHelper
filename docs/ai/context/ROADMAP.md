@@ -220,21 +220,29 @@ Epic: Issue #92. Sub-phases run in order, one issue and one PR each.
 - Toasts: Cub claps for a completed task and for a vaccination record that just became complete (new `ToastKind.VaccineRecordCompleted`), nods for adds and updates, and stays still for removals. The toast badge grew from 40 to 64
 - Reduced-motion handling was left out on purpose (owner decision)
 
-> 5.3 Remote services preparation (Issue #95):
+> 5.3 AI groundwork (Issue #95):
 
-- Prepare the app to host the companion AI agent (5.4) and other off-device calls, the way Phase 3 prepared it for data persistence. No AI call ships in this sub-phase
-- A root-level `Remote/` folder holds the off-device implementations (HTTP clients, provider DTOs, mapping); contracts stay in `Core/Interfaces`
-- The AI provider key is supplied by the user; there is no backend holding a key
+- Groundwork for the companion AI agent, the way Phase 3 prepared the app for data persistence. No AI call, no key handling and no visible change
+- ADRs for the off-device data path, the user-supplied key and the root-level `Remote/` folder (off-device implementations only; contracts stay in `Core/Interfaces`)
+- CommunityToolkit.Maui and the official `Anthropic` C# SDK are added and built on every target
 - Replaces "Companion customization", which was dropped (appearance options cost more than they give caregivers)
 
-> 5.4 Companion AI agent (Issue #96):
+> 5.4 Chat page and Cub settings (Issue #100):
 
-- Introduce an AI agent for the companion character to provide personalized tips and answer basic questions.
+- A "Talk to Cub" button on the companion card opens the chat
+- A gear on the chat opens a small settings popup where the user enters, changes or removes their own API key (Claude only for now; there is no backend holding a key)
+- A gentle setup state when no key is saved. No AI call yet
+
+> 5.5 Companion AI agent (Issue #96):
+
+- Introduce an AI agent for the companion character to provide personalized tips and answer basic questions. Cub is the agent
+- The Claude client lives in `Remote/`, behind a contract in `Core/Interfaces`
 - Enforce well rounded and structured guidelines for AI agent, this is not a doctor or therapist
+- The conversation is not kept after the chat closes
 
-> 5.5 Companion personality (Issue #97):
+> 5.6 Companion personality (Issue #97):
 
-- Allow user to minimally adjust companion personality and behavior (e.g., more encouraging, more playful, more serious)
+- Allow user to minimally adjust how Cub talks: conversational style (supportive, neutral, direct) and verbosity, in the settings popup
 
 ---
 
