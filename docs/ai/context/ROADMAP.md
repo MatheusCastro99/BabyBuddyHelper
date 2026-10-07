@@ -224,7 +224,7 @@ Epic: Issue #92. Sub-phases run in order, one issue and one PR each.
 
 - Groundwork for the companion AI agent, the way Phase 3 prepared the app for data persistence. No AI call, no key handling and no visible change
 - ADRs for the off-device data path, the user-supplied key and the root-level `Remote/` folder (off-device implementations only; contracts stay in `Core/Interfaces`)
-- CommunityToolkit.Maui and the official `Anthropic` C# SDK are added and built on every target
+- CommunityToolkit.Maui and the official `Anthropic` C# SDK are added, and the app is built for Windows and Android
 - Replaces "Companion customization", which was dropped (appearance options cost more than they give caregivers)
 
 > 5.4 Chat page and Cub settings (Issue #100):
