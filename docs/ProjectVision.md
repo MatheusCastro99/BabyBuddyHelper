@@ -43,4 +43,4 @@ Think:
 
 rather than ChatGPT.
 
-The next phase (Phase 5) gives the companion a carefully scoped AI helper for tips and basic questions, within clear guidelines. It is not a doctor or therapist and never replaces professional advice.
+The next phase (Phase 5) gives the companion a carefully scoped AI helper for tips and basic questions, within clear guidelines. It is not a doctor or therapist and never replaces professional advice. The helper is opt-in: the caregiver opens a chat with Cub and supplies their own API key, and the rest of the app keeps working offline without it.
