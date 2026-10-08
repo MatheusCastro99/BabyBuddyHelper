@@ -82,14 +82,18 @@ BabyBuddyHelper/
 │   │   ├── IBabyFilterService.cs - Interface for BabyFilterService
 │   │   ├── ITrackerDbService.cs - Persistence boundary, used only by the cache services
 │   │   ├── IVaccineCatalog.cs - Interface for VaccineCatalog
-│   │   └── IVaccineService.cs - Interface for VaccineService
+│   │   ├── IVaccineService.cs - Interface for VaccineService
+│   │   └── IApiKeyStore.cs - Contract for keeping the user's own AI provider key in the device's secure storage
 │   ├── Persistence/
 │   │   ├── TrackerContext.cs - EF Core SQLite database context
 │   │   └── EfTrackerDbService.cs - EF Core + SQLite implementation of ITrackerDbService
 │   ├── Collections/
 │   │   └── RangeObservableCollection.cs - ObservableCollection that adds many items with one notification
-│   └── Exceptions/
-│       └── DbCommunicationException.cs - Raised when the local database can't be read or written
+│   ├── Exceptions/
+│   │   ├── DbCommunicationException.cs - Raised when the local database can't be read or written
+│   │   └── KeyStorageException.cs - Raised when the device's secure storage can't save or remove the user's key
+│   └── Storage/
+│       └── SecureApiKeyStore.cs - Secure-storage implementation of IApiKeyStore (the user's Claude API key)
 ├── UI/
 │   ├── Pages/
 │   │   ├── MainPage.xaml(.cs) - Due date countdown and home dashboard
@@ -98,16 +102,19 @@ BabyBuddyHelper/
 │   │   ├── AddBabyPage.xaml(.cs) - Baby profile creation / edit interface
 │   │   ├── BabyProfilePage.xaml(.cs) - Read-only baby profile with the vaccine list, each vaccine's status, and disclaimer; entry point for edit and delete, and for vaccine records
 │   │   ├── AddVaccineRecordPage.xaml(.cs) - Vaccination record creation / edit / remove interface
-│   │   └── CalendarPage.xaml(.cs) - Calendar visual of appointments
+│   │   ├── CalendarPage.xaml(.cs) - Calendar visual of appointments
+│   │   └── ChatPage.xaml(.cs) - Chat with Cub: setup state without a key, conversation and message box with one (Cub does not answer yet)
 │   ├── Controls/
 │   │   ├── CompanionView.xaml(.cs) - Companion character card
 │   │   ├── CubView.cs - Cub, the animated companion, shared by the card and the toasts
 │   │   ├── ToastView.xaml(.cs) - Companion-themed toast feedback
 │   │   ├── PaletteSwitchView.xaml(.cs) - Boy / girl palette switch
+│   │   ├── CubSettingsPopup.xaml(.cs) - Cub's settings popup: enter, replace or remove the user's API key
 │   │   └── KeyboardFocusRing.cs - Focus ring for keyboard users
 │   ├── Services/
 │   │   ├── ToastService.cs - Toast feedback for successful actions
-│   │   └── AlertService.cs - Alerts for failures the user must acknowledge
+│   │   ├── AlertService.cs - Alerts for failures the user must acknowledge
+│   │   └── PaletteService.cs - Applies the boy or girl palette and remembers the choice
 │   └── Converters/
 │       ├── AssociatedBabyNameConverter.cs - Shows a task's baby name from its stored baby Id
 │       ├── IsAppointmentModelConverter.cs - Tells the checklist whether an item is an appointment

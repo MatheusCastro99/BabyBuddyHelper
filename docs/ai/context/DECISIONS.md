@@ -142,6 +142,7 @@ User-supplied keys:
 - It is stored only in the device's secure storage. It is never written to Preferences, the database, logs or source control.
 - It is sent only to the provider it belongs to.
 - The user can change or remove it at any time.
+- A stored key the device cannot read is treated as "no key" and is never deleted by the app; the user removes or replaces it. A read can fail for a passing reason, and deleting a good key would cost the user a new one.
 
 Status: Accepted, permanent.
 
@@ -217,7 +218,7 @@ Status: Accepted, current.
 
 Source code is grouped by layer, not by feature. Namespaces follow folders.
 
-- `Core/` holds domain models, cache services, interfaces, the persistence boundary (`TrackerContext`, `EfTrackerDbService`), collections and exceptions.
+- `Core/` holds domain models, cache services, interfaces, the persistence boundary (`TrackerContext`, `EfTrackerDbService`), device storage outside the database (`Core/Storage`: `SecureApiKeyStore`, the user's key in secure storage), collections and exceptions.
 - `UI/` holds pages, controls, UI-only services (`ToastService`, `AlertService`, `PaletteService`) and value converters.
 - `Remote/` holds off-device implementations only: clients for external services, their DTOs and mapping (namespace `BabyBuddyHelper.Remote`). Their contracts stay in `Core/Interfaces`. Only `MauiProgram` references `Remote/`, for DI registration.
 - Namespaces match folders (e.g. `BabyBuddyHelper.Core.Services`, `BabyBuddyHelper.UI.Pages`).
@@ -239,6 +240,7 @@ Reason:
 - A profile is a place the user browses and returns from, so it gets the native back arrow.
 - Editors are focused tasks that end in save or cancel, so they stay modal.
 - BabyProfilePage is the first pushed page (MainPage -> BabyProfilePage). AddBabyPage stays modal on top of it, and deleting a profile pops back to MainPage.
+- ChatPage is the second pushed page (MainPage -> ChatPage). Its settings open in a popup (`CubSettingsPopup`), not as a page.
 
 Status: Accepted, current.
 

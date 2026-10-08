@@ -26,8 +26,9 @@
     <Color x:Key="BabyBuddyBorder">#EED6E2</Color>
     <Color x:Key="BabyBuddyShadow">#EAC8D8</Color>
 
-    <!--The edit and trash icons are SVGs with their color drawn in, so each palette names its own files.
+    <!--The edit, trash and gear icons are SVGs with their color drawn in, so each palette names its own files.
         Both tones keep 3:1 against a card or row-->
     <FileImageSource x:Key="EditIcon" File="edit_icon_girl.png" />
     <FileImageSource x:Key="TrashIcon" File="trash_icon_girl.png" />
+    <FileImageSource x:Key="GearIcon" File="gear_icon_girl.png" />
 </ResourceDictionary>

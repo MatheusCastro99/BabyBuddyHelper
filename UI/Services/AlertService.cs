@@ -11,6 +11,11 @@ namespace BabyBuddyHelper.UI.Services
         public static Task ShowWriteFailedAsync(Page page, string title, string message) =>
             page.DisplayAlertAsync(title, $"{message}\n\n{PersistenceHint}", "OK");
 
+        //The device's secure storage refused to save or remove the user's API key. Nothing changed, and the message says so.
+        //No restart hint: the usual cause is the device itself (a locked or unavailable keystore), which a restart won't fix.
+        public static Task ShowKeyStorageFailedAsync(Page page, string title) =>
+            page.DisplayAlertAsync(title, "Your device's secure storage didn't accept the change, so nothing was changed. Please try again in a moment.", "OK");
+
         //A link couldn't open in a browser. Nothing in the app is affected, so no restart hint: just the address to visit by hand.
         public static Task ShowLinkFailedAsync(Page page, Uri address) =>
             page.DisplayAlertAsync("Couldn't open the link", $"You can visit it in your browser instead:\n{address}", "OK");

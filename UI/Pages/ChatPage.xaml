@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:controls="clr-namespace:BabyBuddyHelper.UI.Controls"
+             x:Class="BabyBuddyHelper.UI.Pages.ChatPage"
+             Title="Talk to Cub"
+             BackgroundColor="{DynamicResource BabyBuddyBackground}">
+
+    <Grid>
+        <!--SafeAreaEdges="All" keeps the page clear of the system bars and above the on-screen keyboard (pages are edge-to-edge
+            by default in .NET 10). The width cap keeps the chat readable on a very wide desktop window-->
+        <Grid RowDefinitions="Auto,*" RowSpacing="18" Padding="20" SafeAreaEdges="All" MaximumWidthRequest="760">
+
+            <!--Cub and the settings gear. Cub stays still here: the chat is a calm place, and the wave belongs to MainPage-->
+            <Border BackgroundColor="{DynamicResource BabyBuddySurface}" StrokeThickness="0" Padding="14">
+                <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="14">
+                    <Border BackgroundColor="{DynamicResource BabyBuddySecondary}"
+                            StrokeThickness="0"
+                            Padding="4"
+                            WidthRequest="64"
+                            HeightRequest="64"
+                            VerticalOptions="Center"
+                            StrokeShape="RoundRectangle 20">
+                        <controls:CubView SemanticProperties.Description="Cub, your companion" />
+                    </Border>
+
+                    <VerticalStackLayout Grid.Column="1" Spacing="4" VerticalOptions="Center">
+                        <Label Text="Cub" Style="{StaticResource SectionTitle}" />
+                        <Label Text="Here for everyday tips and a kind word." Style="{StaticResource BodyText}" />
+                    </VerticalStackLayout>
+
+                    <!--48x48 touch area (the Android minimum) around a ~22px icon, drawn in a mid-tone of the current palette like the edit and trash icons-->
+                    <ImageButton Grid.Column="2"
+                                 Source="{DynamicResource GearIcon}"
+                                 WidthRequest="48"
+                                 HeightRequest="48"
+                                 Padding="13"
+                                 Aspect="AspectFit"
+                                 BackgroundColor="Transparent"
+                                 VerticalOptions="Center"
+                                 SemanticProperties.Description="Cub's settings"
+                                 SemanticProperties.Hint="Opens the settings for your Claude API key"
+                                 Clicked="OnOpenSettingsClicked" />
+                </Grid>
+            </Border>
+
+            <!--No key saved yet. This is an invitation, not an error: the rest of the app works without a key (ADR-017).
+                Both states start hidden and one is shown once the key store has answered, so neither flashes by-->
+            <Border x:Name="SetupState"
+                    Grid.Row="1"
+                    IsVisible="False"
+                    VerticalOptions="Start"
+                    BackgroundColor="{DynamicResource BabyBuddySurface}"
+                    StrokeThickness="0"
+                    Padding="20">
+                <VerticalStackLayout Spacing="12">
+                    <Label Text="Cub needs a key to chat" Style="{StaticResource SectionTitle}" />
+                    <Label Text="Cub's answers come from Claude, an AI service. Add your own Claude API key to start talking."
+                           Style="{StaticResource BodyText}" />
+                    <Button Text="Add my key"
+                            Style="{StaticResource PrimaryAction}"
+                            HorizontalOptions="Start"
+                            Clicked="OnOpenSettingsClicked" />
+                </VerticalStackLayout>
+            </Border>
+
+            <!--A key is saved: the conversation, the message box, and the fixed "not medical advice" line under it-->
+            <Grid x:Name="ChatState" Grid.Row="1" IsVisible="False" RowDefinitions="*,Auto,Auto" RowSpacing="10">
+                <!--The user's messages, newest at the bottom. Nothing replies until the agent arrives in #96-->
+                <CollectionView x:Name="ConversationView" SelectionMode="None">
+                    <CollectionView.EmptyView>
+                        <Grid>
+                            <Label Text="Ask Cub about everyday baby care."
+                                   Style="{StaticResource BodyText}"
+                                   HorizontalOptions="Center"
+                                   VerticalOptions="Center"
+                                   HorizontalTextAlignment="Center" />
+                        </Grid>
+                    </CollectionView.EmptyView>
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <!--Right-aligned and capped in width, so a long message wraps into a bubble instead of a full-width block.
+                                PrimaryDarkText keeps the text well above 4.5:1 on the soft bubble in both palettes-->
+                            <Grid Padding="0,0,0,10">
+                                <Border HorizontalOptions="End"
+                                        MaximumWidthRequest="520"
+                                        Margin="48,0,0,0"
+                                        Padding="14,10"
+                                        BackgroundColor="{DynamicResource BabyBuddySecondary}"
+                                        StrokeThickness="0"
+                                        StrokeShape="RoundRectangle 18,18,18,6">
+                                    <Label Text="{Binding Text}"
+                                           TextColor="{DynamicResource PrimaryDarkText}"
+                                           LineBreakMode="WordWrap"
+                                           SemanticProperties.Description="{Binding Text, StringFormat='You said: {0}'}" />
+                                </Border>
+                            </Grid>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+
+                <!--The message box grows with the text up to a few lines, then scrolls inside itself-->
+                <Border Grid.Row="1" BackgroundColor="{DynamicResource BabyBuddySurface}" StrokeShape="RoundRectangle 22" Padding="12,6,6,6">
+                    <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                        <Editor x:Name="MessageEditor"
+                                Placeholder="Write to Cub"
+                                BackgroundColor="Transparent"
+                                AutoSize="TextChanges"
+                                MaximumHeightRequest="120"
+                                MaxLength="2000"
+                                VerticalOptions="Center"
+                                SemanticProperties.Description="Message to Cub"
+                                TextChanged="OnMessageTextChanged" />
+                        <Button x:Name="SendButton"
+                                Grid.Column="1"
+                                Text="Send"
+                                Style="{StaticResource PrimaryAction}"
+                                VerticalOptions="End"
+                                IsEnabled="False"
+                                Clicked="OnSendClicked" />
+                    </Grid>
+                </Border>
+
+                <Label Grid.Row="2"
+                       Text="Cub offers general tips, not medical advice. For anything about your baby's health, check with your pediatrician."
+                       Style="{StaticResource CaptionText}"
+                       HorizontalTextAlignment="Center" />
+            </Grid>
+        </Grid>
+
+        <controls:ToastView />
+    </Grid>
+</ContentPage>

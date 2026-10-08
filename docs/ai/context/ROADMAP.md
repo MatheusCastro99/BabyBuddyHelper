@@ -230,11 +230,14 @@ Epic: Issue #92. Sub-phases run in order, one issue and one PR each.
 - Schema change reached existing databases through one debug reset (EnsureCreated; migrations are #76)
 - Replaces "Companion customization", which was dropped (appearance options cost more than they give caregivers)
 
-> 5.4 Chat page and Cub settings (Issue #100):
+> 5.4 Chat page and Cub settings (Issue #100): CONCLUDED
 
-- A "Talk to Cub" button on the companion card opens the chat
-- A gear on the chat opens a small settings popup where the user enters, changes or removes their own API key (Claude only for now; there is no backend holding a key)
-- A gentle setup state when no key is saved. No AI call yet
+- A "Talk to Cub" button on the companion card, beside "Tell me something", opens the chat
+- `ChatPage` is a pushed page (ADR-016) with Cub (still, no animation) and a settings gear in its header. With no key it shows a gentle setup state ("Cub needs a key to chat" and "Add my key"). With a key it shows the conversation (the user's messages as right-aligned bubbles), a message box with Send, and a fixed "not medical advice" line under it. The conversation lives in the page and is never stored
+- The gear opens a small settings popup (the app's first CommunityToolkit.Maui popup) where the user enters, replaces or removes their own API key (Claude only for now; there is no backend holding a key). The key is typed in plain text and only its format is checked (no network call); a bad format shows an inline hint. After saving, only a read-only "Key safely stored" line shows, and the key is never shown again. Replace and Remove ask for a confirmation; Replace keeps the old key until a new one is saved
+- `IApiKeyStore` / `SecureApiKeyStore` (`Core/Storage`) keep the key in the device's secure storage only. A save is read back and a failure throws `KeyStorageException`; a key the device cannot read right now is treated as "no key" and is not removed
+- On Android, the secure storage file is kept out of Auto Backup and device transfers (the database is still backed up)
+- Nothing replies and there is no AI call yet; the reply arrives with 5.5
 - The "Tell me something" tip button stays. It and the chat are completely separate
 
 > 5.5 Companion AI agent (Issue #96):

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--Auto Backup rules for Android 11 and lower (android:fullBackupContent). Android 12+ reads data_extraction_rules.xml.
+    Only the secure storage file is left out: its encryption key stays on the device, so a restored copy can't be read (#100).
+    There is no <include> on purpose: adding one would stop everything else, the database included, from being backed up.
+    The file name starts with the application id, which isn't expanded in a resource file. Update it if ApplicationId changes-->
+<full-backup-content>
+	<exclude domain="sharedpref" path="com.companyname.BabyBuddyHelper.microsoft.maui.essentials.preferences.xml" />
+</full-backup-content>
