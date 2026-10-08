@@ -134,7 +134,7 @@ Status: Accepted, permanent.
 
 Secret Rules:
 - Secrets are NEVER committed to source control.
-- Secrets will always be compiled in at build time, file is a build input only.
+- The project's own secrets are compiled in at build time, file is a build input only. The one exception is a user-supplied key (below).
 - No Server-side credentials in the client app.
 
 User-supplied keys:
