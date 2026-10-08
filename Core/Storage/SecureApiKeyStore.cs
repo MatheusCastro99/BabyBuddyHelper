@@ -22,8 +22,9 @@ namespace BabyBuddyHelper.Core.Storage
 
         public async Task<bool> HasKeyAsync() => !string.IsNullOrEmpty(await GetKeyAsync());
 
-        //A stored value the device can no longer read (for example after a restore onto another device) is cleared
-        //and treated as "no key", so the user is asked for the key again instead of seeing an error.
+        //A stored value the device can't read right now is treated as "no key", so the user is asked for the key again
+        //instead of seeing an error. It is deliberately not removed: a read can fail for a passing reason, and deleting
+        //a good key would cost the user a new one. A value that really is unreadable is overwritten by the next save.
         public async Task<string?> GetKeyAsync()
         {
             try
@@ -32,15 +33,6 @@ namespace BabyBuddyHelper.Core.Storage
             }
             catch (Exception) //Platforms throw different exceptions for an unreadable value; all of them mean there is no usable key
             {
-                try
-                {
-                    SecureStorage.Default.Remove(StorageName);
-                }
-                catch (Exception)
-                {
-                    //Nothing more to do here: the key stays unusable and the next save reports the problem
-                }
-
                 return null;
             }
         }

@@ -76,7 +76,7 @@ namespace BabyBuddyHelper.UI.Controls
             }
 
             KeyEntry.Text = string.Empty; //The key leaves the screen the moment it is stored
-            await CloseAsync();
+            await CloseQuietlyAsync();
             ToastService.Show(ToastKind.ApiKeySaved);
         }
 
@@ -121,7 +121,7 @@ namespace BabyBuddyHelper.UI.Controls
                 _isBusy = false;
             }
 
-            await CloseAsync();
+            await CloseQuietlyAsync();
             ToastService.Show(ToastKind.ApiKeyRemoved);
         }
 
@@ -164,6 +164,20 @@ namespace BabyBuddyHelper.UI.Controls
             }
         }
 
-        async void OnCloseClicked(object? sender, EventArgs e) => await CloseAsync();
+        async void OnCloseClicked(object? sender, EventArgs e) => await CloseQuietlyAsync();
+
+        //Tapping outside or the Android back button can close the popup while a save or remove is still running.
+        //Closing it a second time throws, and from an event handler that would take the app down
+        async Task CloseQuietlyAsync()
+        {
+            try
+            {
+                await CloseAsync();
+            }
+            catch (InvalidPopupOperationException)
+            {
+                //Already closed: there is nothing left to do
+            }
+        }
     }
 }
