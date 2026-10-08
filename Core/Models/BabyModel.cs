@@ -7,6 +7,11 @@ namespace BabyBuddyHelper.Core.Models
         public DateTime DateOfBirth { get; set; }
         public double WeightInLbs { get; set; }
         public double HeightInFt { get; set; }
+
+        //The day each measurement last changed. Set only by BabyProfileService; empty while the value is 0 (not measured)
+        //and for values saved before the dates existed.
+        public DateTime? WeightUpdatedOn { get; set; }
+        public DateTime? HeightUpdatedOn { get; set; }
         public DateTime LastFeed { get; set; }
         public DateTime LastSleep { get; set; }
 
