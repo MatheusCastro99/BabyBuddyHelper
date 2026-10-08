@@ -217,7 +217,7 @@ Status: Accepted, current.
 
 Source code is grouped by layer, not by feature. Namespaces follow folders.
 
-- `Core/` holds domain models, cache services, interfaces, the persistence boundary (`TrackerContext`, `EfTrackerDbService`), collections and exceptions.
+- `Core/` holds domain models, cache services, interfaces, the persistence boundary (`TrackerContext`, `EfTrackerDbService`), device storage outside the database (`Core/Storage`: `SecureApiKeyStore`, the user's key in secure storage), collections and exceptions.
 - `UI/` holds pages, controls, UI-only services (`ToastService`, `AlertService`, `PaletteService`) and value converters.
 - `Remote/` holds off-device implementations only: clients for external services, their DTOs and mapping (namespace `BabyBuddyHelper.Remote`). Their contracts stay in `Core/Interfaces`. Only `MauiProgram` references `Remote/`, for DI registration.
 - Namespaces match folders (e.g. `BabyBuddyHelper.Core.Services`, `BabyBuddyHelper.UI.Pages`).
