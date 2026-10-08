@@ -110,6 +110,10 @@
 	</Target>
 
 	<ItemGroup>
+		<!-- Added ahead of use (#95) so a build problem on a mobile target shows before the chat UI (#100) and the
+		     Claude client (#96) depend on them. Nothing references the Anthropic SDK yet. -->
+		<PackageReference Include="Anthropic" Version="12.54.1" />
+		<PackageReference Include="CommunityToolkit.Maui" Version="15.0.1" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="10.0.12" />
 		<PackageReference Include="Microsoft.Maui.Controls" Version="10.0.110" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="10.0.12" />
