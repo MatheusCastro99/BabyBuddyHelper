@@ -7,7 +7,8 @@
                Padding="20">
 
     <!--Cub's settings: the user's own Claude API key (ADR-010). Personality options join it in #97-->
-    <VerticalStackLayout Spacing="14" WidthRequest="360">
+    <!--A width cap, not a fixed width: on a phone or a narrow window the popup shrinks with the page and the text wraps-->
+    <VerticalStackLayout Spacing="14" MaximumWidthRequest="360">
         <Grid ColumnDefinitions="*,Auto" ColumnSpacing="12">
             <Label Text="Cub's settings" Style="{StaticResource SectionTitle}" VerticalOptions="Center" />
 

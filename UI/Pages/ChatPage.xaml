@@ -66,6 +66,61 @@
 
             <!--A key is saved: the conversation, the message box, and the fixed "not medical advice" line under it-->
             <Grid x:Name="ChatState" Grid.Row="1" IsVisible="False" RowDefinitions="*,Auto,Auto" RowSpacing="10">
+                <!--The user's messages, newest at the bottom. Nothing replies until the agent arrives in #96-->
+                <CollectionView x:Name="ConversationView" SelectionMode="None">
+                    <CollectionView.EmptyView>
+                        <Grid>
+                            <Label Text="Ask Cub about everyday baby care."
+                                   Style="{StaticResource BodyText}"
+                                   HorizontalOptions="Center"
+                                   VerticalOptions="Center"
+                                   HorizontalTextAlignment="Center" />
+                        </Grid>
+                    </CollectionView.EmptyView>
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <!--Right-aligned and capped in width, so a long message wraps into a bubble instead of a full-width block.
+                                PrimaryDarkText keeps the text well above 4.5:1 on the soft bubble in both palettes-->
+                            <Grid Padding="0,0,0,10">
+                                <Border HorizontalOptions="End"
+                                        MaximumWidthRequest="520"
+                                        Margin="48,0,0,0"
+                                        Padding="14,10"
+                                        BackgroundColor="{DynamicResource BabyBuddySecondary}"
+                                        StrokeThickness="0"
+                                        StrokeShape="RoundRectangle 18,18,18,6">
+                                    <Label Text="{Binding Text}"
+                                           TextColor="{DynamicResource PrimaryDarkText}"
+                                           LineBreakMode="WordWrap"
+                                           SemanticProperties.Description="{Binding Text, StringFormat='You said: {0}'}" />
+                                </Border>
+                            </Grid>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+
+                <!--The message box grows with the text up to a few lines, then scrolls inside itself-->
+                <Border Grid.Row="1" BackgroundColor="{DynamicResource BabyBuddySurface}" StrokeShape="RoundRectangle 22" Padding="12,6,6,6">
+                    <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                        <Editor x:Name="MessageEditor"
+                                Placeholder="Write to Cub"
+                                BackgroundColor="Transparent"
+                                AutoSize="TextChanges"
+                                MaximumHeightRequest="120"
+                                MaxLength="2000"
+                                VerticalOptions="Center"
+                                SemanticProperties.Description="Message to Cub"
+                                TextChanged="OnMessageTextChanged" />
+                        <Button x:Name="SendButton"
+                                Grid.Column="1"
+                                Text="Send"
+                                Style="{StaticResource PrimaryAction}"
+                                VerticalOptions="End"
+                                IsEnabled="False"
+                                Clicked="OnSendClicked" />
+                    </Grid>
+                </Border>
+
                 <Label Grid.Row="2"
                        Text="Cub offers general tips, not medical advice. For anything about your baby's health, check with your pediatrician."
                        Style="{StaticResource CaptionText}"
