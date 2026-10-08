@@ -49,7 +49,18 @@ public partial class BabyProfilePage : ContentPage
     //Found by Id every time (ADR-007): saving an edit replaces the cached instance, so a held reference would go stale
     private void ShowCurrentProfile()
     {
-        BindingContext = _babyProfileService.BabyProfiles.FirstOrDefault(x => x.Id == _babyId);
+        BabyModel? babyProfile = _babyProfileService.BabyProfiles.FirstOrDefault(x => x.Id == _babyId);
+
+        BindingContext = babyProfile;
+        ShowUpdatedCaption(WeightUpdatedLabel, babyProfile?.WeightUpdatedOn);
+        ShowUpdatedCaption(HeightUpdatedLabel, babyProfile?.HeightUpdatedOn);
+    }
+
+    //A measurement without a date shows no caption at all, rather than an empty line
+    private static void ShowUpdatedCaption(Label caption, DateTime? updatedOn)
+    {
+        caption.IsVisible = updatedOn is not null;
+        caption.Text = updatedOn is { } date ? $"Updated {FormatShortDate(date)}" : null;
     }
 
     //The catalog never changes, so its disclaimer is set once. The wording follows the disclaimer approved in #41.
@@ -89,22 +100,22 @@ public partial class BabyProfilePage : ContentPage
         string pillText = record.CompletedDoses == 0 ? "Not started"
             : record.IsCurrent ? "Current"
             : !vaccine.IsRecurrent ? $"{record.CompletedDoses} of {record.TotalDoses}"
-            : record.LastAdministered is { } lastAdministered ? $"Last: {FormatDoseDate(lastAdministered.Date)}"
+            : record.LastAdministered is { } lastAdministered ? $"Last: {FormatShortDate(lastAdministered.Date)}"
             : "Not started";
 
         string? statusLine = record.NextDose?.Date switch
         {
             null => null,
-            DateTime nextDose when record.IsOverdue => $"Due since {FormatDoseDate(nextDose)} · check with your pediatrician",
+            DateTime nextDose when record.IsOverdue => $"Due since {FormatShortDate(nextDose)} · check with your pediatrician",
             DateTime when record.IsDueToday => "Due today",
-            DateTime nextDose => $"Next dose: {FormatDoseDate(nextDose)}"
+            DateTime nextDose => $"Next dose: {FormatShortDate(nextDose)}"
         };
 
         return new VaccineRow(vaccine, pillText, statusLine, record.IsCurrent, record.IsDueSoon);
     }
 
     //The year only shows when it isn't this year
-    private static string FormatDoseDate(DateTime date) =>
+    private static string FormatShortDate(DateTime date) =>
         date.Year == DateTime.Today.Year ? date.ToString("MMM d") : date.ToString("MMM d, yyyy");
 
     private async void OnViewScheduleClicked(object? sender, EventArgs e)
