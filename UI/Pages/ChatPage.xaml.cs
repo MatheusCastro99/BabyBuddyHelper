@@ -2,6 +2,7 @@ using BabyBuddyHelper.Core.Interfaces;
 using BabyBuddyHelper.UI.Controls;
 using CommunityToolkit.Maui;
 using CommunityToolkit.Maui.Extensions;
+using Microsoft.Maui.Controls.PlatformConfiguration.AndroidSpecific;
 using Microsoft.Maui.Controls.Shapes;
 using System.Collections.ObjectModel;
 
@@ -32,8 +33,22 @@ public partial class ChatPage : ContentPage
     {
         base.OnAppearing();
 
+        SetSoftInputMode(WindowSoftInputModeAdjust.Resize);
         await ShowCurrentStateAsync();
     }
+
+    protected override void OnDisappearing()
+    {
+        base.OnDisappearing();
+
+        SetSoftInputMode(WindowSoftInputModeAdjust.Pan);
+    }
+
+    //Android only (the call does nothing elsewhere). The app's default slides the whole window up for the keyboard, which
+    //cuts off the chat's header and hides the line under the message box. While the chat is showing, the page resizes
+    //above the keyboard instead; the other pages get the default back when it goes away.
+    private static void SetSoftInputMode(WindowSoftInputModeAdjust mode) =>
+        Microsoft.Maui.Controls.Application.Current?.On<Microsoft.Maui.Controls.PlatformConfiguration.Android>().UseWindowSoftInputModeAdjust(mode);
 
     private async Task ShowCurrentStateAsync()
     {

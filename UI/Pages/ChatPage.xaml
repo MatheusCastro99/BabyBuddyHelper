@@ -29,12 +29,12 @@
                         <Label Text="Here for everyday tips and a kind word." Style="{StaticResource BodyText}" />
                     </VerticalStackLayout>
 
-                    <!--44x44 touch area around a ~22px icon, drawn in a mid-tone of the current palette like the edit and trash icons-->
+                    <!--48x48 touch area (the Android minimum) around a ~22px icon, drawn in a mid-tone of the current palette like the edit and trash icons-->
                     <ImageButton Grid.Column="2"
                                  Source="{DynamicResource GearIcon}"
-                                 WidthRequest="44"
-                                 HeightRequest="44"
-                                 Padding="11"
+                                 WidthRequest="48"
+                                 HeightRequest="48"
+                                 Padding="13"
                                  Aspect="AspectFit"
                                  BackgroundColor="Transparent"
                                  VerticalOptions="Center"
