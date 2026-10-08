@@ -47,13 +47,24 @@ namespace BabyBuddyHelper.Core.Storage
 
         public async Task SaveKeyAsync(string key)
         {
+            string trimmed = key.Trim();
+            string? stored;
+
             try
             {
-                await SecureStorage.Default.SetAsync(StorageName, key.Trim());
+                await SecureStorage.Default.SetAsync(StorageName, trimmed);
+                stored = await SecureStorage.Default.GetAsync(StorageName);
             }
             catch (Exception ex)
             {
                 throw new KeyStorageException("The device's secure storage couldn't save the key.", ex);
+            }
+
+            //On Android a write is skipped without an error when the encrypted storage can't be opened,
+            //so the key is read back: the user is only told it was saved when it really is there
+            if (stored != trimmed)
+            {
+                throw new KeyStorageException("The device's secure storage didn't keep the key.");
             }
         }
 

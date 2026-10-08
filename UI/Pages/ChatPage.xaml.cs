@@ -14,7 +14,6 @@ public partial class ChatPage : ContentPage
 {
     private readonly IApiKeyStore _apiKeyStore;
     private readonly ObservableCollection<ChatMessage> _messages = []; //Never stored: a new ChatPage starts with an empty conversation
-    private bool _hasKey;
     private bool _isSettingsOpen;
 
     public ChatPage(IApiKeyStore apiKeyStore)
@@ -52,10 +51,10 @@ public partial class ChatPage : ContentPage
 
     private async Task ShowCurrentStateAsync()
     {
-        _hasKey = await _apiKeyStore.HasKeyAsync();
+        bool hasKey = await _apiKeyStore.HasKeyAsync();
 
-        SetupState.IsVisible = !_hasKey;
-        ChatState.IsVisible = _hasKey;
+        SetupState.IsVisible = !hasKey;
+        ChatState.IsVisible = hasKey;
     }
 
     private void OnMessageTextChanged(object? sender, TextChangedEventArgs e) =>
@@ -99,7 +98,10 @@ public partial class ChatPage : ContentPage
 
         try
         {
-            await this.ShowPopupAsync(new CubSettingsPopup(_apiKeyStore, this, _hasKey), new PopupOptions
+            //Asked here, not remembered from the page: the popup must open on what is stored right now
+            bool hasKey = await _apiKeyStore.HasKeyAsync();
+
+            await this.ShowPopupAsync(new CubSettingsPopup(_apiKeyStore, this, hasKey), new PopupOptions
             {
                 Shape = new RoundRectangle { CornerRadius = 24, StrokeThickness = 0 },
                 Shadow = new Shadow { Brush = Colors.Black, Opacity = 0.18f, Radius = 24, Offset = new Point(0, 6) }, //Softer than the toolkit's default
