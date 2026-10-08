@@ -98,11 +98,14 @@
                     <VerticalStackLayout Spacing="16">
                         <Label Text="Growth" Style="{StaticResource SectionTitle}" SemanticProperties.HeadingLevel="Level2" />
 
+                        <!--Each value shows the day it last changed, so a reader can tell how fresh it is. Hidden while there is no date:
+                            a value of 0 (not measured), or one saved before the dates existed-->
                         <Grid ColumnDefinitions="*,*" ColumnSpacing="14">
                             <Border Grid.Column="0" Padding="16" BackgroundColor="{DynamicResource BabyBuddySurfaceAlt}" StrokeThickness="0" StrokeShape="RoundRectangle 22">
                                 <VerticalStackLayout Spacing="4">
                                     <Label Text="Weight" Style="{StaticResource CaptionText}" />
                                     <Label Text="{Binding WeightInLbs, StringFormat='{}{0:F1} lbs'}" Style="{StaticResource SectionTitle}" />
+                                    <Label x:Name="WeightUpdatedLabel" Style="{StaticResource CaptionText}" IsVisible="False" />
                                 </VerticalStackLayout>
                             </Border>
 
@@ -110,6 +113,7 @@
                                 <VerticalStackLayout Spacing="4">
                                     <Label Text="Height" Style="{StaticResource CaptionText}" />
                                     <Label Text="{Binding HeightInFt, StringFormat='{}{0:F1} ft'}" Style="{StaticResource SectionTitle}" />
+                                    <Label x:Name="HeightUpdatedLabel" Style="{StaticResource CaptionText}" IsVisible="False" />
                                 </VerticalStackLayout>
                             </Border>
                         </Grid>

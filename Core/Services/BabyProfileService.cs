@@ -40,6 +40,10 @@ namespace BabyBuddyHelper.Core.Services
 
         public async Task AddAsync(BabyModel babyProfile)
         {
+            RoundMeasurements(babyProfile);
+            babyProfile.WeightUpdatedOn = StampMeasurement(babyProfile.WeightInLbs, 0, null);
+            babyProfile.HeightUpdatedOn = StampMeasurement(babyProfile.HeightInFt, 0, null);
+
             await _trackerDbService.AddBabyProfileAsync(babyProfile);
             BabyProfiles.Add(babyProfile);
         }
@@ -63,8 +67,15 @@ namespace BabyBuddyHelper.Core.Services
 
         public async Task UpdateAsync(BabyModel babyProfile)
         {
-            if (!BabyProfiles.Any(x => x.Id == babyProfile.Id))
+            var storedProfile = BabyProfiles.FirstOrDefault(x => x.Id == babyProfile.Id);
+
+            if (storedProfile is null)
                 return;
+
+            //The dates are worked out here, against what is stored, so whatever dates the caller passed are ignored
+            RoundMeasurements(babyProfile);
+            babyProfile.WeightUpdatedOn = StampMeasurement(babyProfile.WeightInLbs, storedProfile.WeightInLbs, storedProfile.WeightUpdatedOn);
+            babyProfile.HeightUpdatedOn = StampMeasurement(babyProfile.HeightInFt, storedProfile.HeightInFt, storedProfile.HeightUpdatedOn);
 
             await _trackerDbService.UpdateBabyProfileAsync(babyProfile);
 
@@ -74,6 +85,23 @@ namespace BabyBuddyHelper.Core.Services
             {
                 BabyProfiles[BabyProfiles.IndexOf(existingProfile)] = babyProfile;
             }
+        }
+
+        //Two decimals is what AddBabyPage shows when a profile is edited. Storing the same precision means saving an untouched
+        //profile writes the same numbers back, so it never counts as a change.
+        private static void RoundMeasurements(BabyModel babyProfile)
+        {
+            babyProfile.WeightInLbs = Math.Round(babyProfile.WeightInLbs, 2, MidpointRounding.AwayFromZero);
+            babyProfile.HeightInFt = Math.Round(babyProfile.HeightInFt, 2, MidpointRounding.AwayFromZero);
+        }
+
+        //0 means not measured, so it has no date. A changed value is dated today; an unchanged one keeps the date it had.
+        private static DateTime? StampMeasurement(double value, double storedValue, DateTime? storedDate)
+        {
+            if (value == 0)
+                return null;
+
+            return value == storedValue ? storedDate : DateTime.Today;
         }
     }
 }

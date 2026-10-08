@@ -2,7 +2,7 @@
 
 # BabyBuddyHelper - AI Development Context
 
-Last Updated: 2026-10-06
+Last Updated: 2026-10-08
 
 ---
 # Context References:
@@ -146,10 +146,13 @@ Represents one baby profile.
 - Name
 - DateOfBirth (a future date is an expected baby)
 - Weight and height
+- WeightUpdatedOn and HeightUpdatedOn (date only, optional)
 - Last feed and last sleep
 - Guid Identifier
 
 `AgeText` is computed for display and never stored, so the age can't go stale.
+
+Only `BabyProfileService` sets the two measurement dates, on add and update: today when that value changed, unchanged otherwise, and none while the value is 0 (0 means "not measured"). It also rounds weight and height to two decimals. Profiles saved before the dates existed have none. AddBabyPage rejects a weight above 300 lbs or a height above 10 ft; the ceilings only catch typos.
 
 ## VaccineModel
 
@@ -397,6 +400,8 @@ GitHub Secrets
 -   Do NOT commit secrets to source control, NEVER.
 -   Server-side credentials never go into the client app
 
+A user-supplied key (ADR-010) is the one secret that is not compiled in. No key handling exists yet; it arrives with #100.
+
 ---
 
 # UI Guidelines
@@ -451,6 +456,8 @@ The app is pinned to the light theme (App.xaml.cs via UserAppTheme); there is no
 Companion (Cub):
 
 Cub is one generated Lottie file, `Resources/Raw/cub.json`, played through the shared `UI/Controls/CubView.cs`. `tools/cub/generate_cub.py` writes the file (run by hand, never by the build). The frame table in `CubView` mirrors `SEGMENTS` in the script, so the two must change together. `SkiaSharp.Extended.UI.Maui` targets .NET 9, so the csproj pins `Microsoft.Maui.Controls.Compatibility` 10.0.110 explicitly; without it the Windows build breaks. Drop the pin once the Lottie package ships a .NET 10 build.
+
+Packages for Phase 5: `CommunityToolkit.Maui` is wired in `MauiProgram` with `UseMauiCommunityToolkit()`. `Anthropic` (the official C# SDK) is referenced but nothing calls it until the Claude client in #96.
 
 Goal:
 

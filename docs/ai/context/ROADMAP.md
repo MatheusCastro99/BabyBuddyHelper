@@ -220,12 +220,14 @@ Epic: Issue #92. Sub-phases run in order, one issue and one PR each.
 - Toasts: Cub claps for a completed task and for a vaccination record that just became complete (new `ToastKind.VaccineRecordCompleted`), nods for adds and updates, and stays still for removals. The toast badge grew from 40 to 64
 - Reduced-motion handling was left out on purpose (owner decision)
 
-> 5.3 AI groundwork (Issue #95):
+> 5.3 AI groundwork (Issue #95): CONCLUDED
 
 - Groundwork for the companion AI agent, the way Phase 3 prepared the app for data persistence. No AI call and no key handling
 - ADRs for the off-device data path, the user-supplied key and the root-level `Remote/` folder (off-device implementations only; contracts stay in `Core/Interfaces`)
 - CommunityToolkit.Maui and the official `Anthropic` C# SDK are added, and the app is built for Windows and Android
 - A baby's weight and height each get a "last updated" date, stamped when that value changes and shown on the baby profile, so the agent can later tell how fresh they are. A new profile gets a date only for a value that was entered; profiles that already exist get none
+- 0 means "not measured" and has no date; weight and height are rounded to two decimals; AddBabyPage rejects a weight above 300 lbs or a height above 10 ft (typo ceilings only)
+- Schema change reached existing databases through one debug reset (EnsureCreated; migrations are #76)
 - Replaces "Companion customization", which was dropped (appearance options cost more than they give caregivers)
 
 > 5.4 Chat page and Cub settings (Issue #100):

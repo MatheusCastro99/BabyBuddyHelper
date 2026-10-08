@@ -1,6 +1,7 @@
 ﻿using BabyBuddyHelper.Core.Interfaces;
 using BabyBuddyHelper.Core.Persistence;
 using BabyBuddyHelper.Core.Services;
+using CommunityToolkit.Maui;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using SkiaSharp.Views.Maui.Controls.Hosting;
@@ -19,6 +20,7 @@ namespace BabyBuddyHelper
 
             builder
                 .UseMauiApp<App>()
+                .UseMauiCommunityToolkit()
                 .UseSkiaSharp()
                 .ConfigureFonts(fonts =>
                 {
