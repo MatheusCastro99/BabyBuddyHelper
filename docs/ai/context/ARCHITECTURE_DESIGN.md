@@ -9,6 +9,7 @@
   - Persistence/
   - Collections/
   - Exceptions/
+  - Storage/
 - UI/
   - Pages/
   - Controls/
@@ -42,6 +43,7 @@ Core/Interfaces/
 - ITrackerDbService.cs
 - IVaccineCatalog.cs
 - IVaccineService.cs
+- IApiKeyStore.cs
 
 Core/Persistence/
 
@@ -55,6 +57,11 @@ Core/Collections/
 Core/Exceptions/
 
 - DbCommunicationException.cs
+- KeyStorageException.cs
+
+Core/Storage/
+
+- SecureApiKeyStore.cs
 
 UI/Pages/
 
@@ -65,10 +72,12 @@ UI/Pages/
 - BabyProfilePage
 - AddVaccineRecordPage
 - CalendarPage
+- ChatPage
 
 UI/Controls/
 
 - CompanionView
+- CubSettingsPopup
 - ToastView
 - PaletteSwitchView
 - CubView.cs

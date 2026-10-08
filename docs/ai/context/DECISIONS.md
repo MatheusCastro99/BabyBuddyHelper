@@ -142,6 +142,7 @@ User-supplied keys:
 - It is stored only in the device's secure storage. It is never written to Preferences, the database, logs or source control.
 - It is sent only to the provider it belongs to.
 - The user can change or remove it at any time.
+- A stored key the device cannot read is treated as "no key" and is never deleted by the app; the user removes or replaces it. A read can fail for a passing reason, and deleting a good key would cost the user a new one.
 
 Status: Accepted, permanent.
 
@@ -239,6 +240,7 @@ Reason:
 - A profile is a place the user browses and returns from, so it gets the native back arrow.
 - Editors are focused tasks that end in save or cancel, so they stay modal.
 - BabyProfilePage is the first pushed page (MainPage -> BabyProfilePage). AddBabyPage stays modal on top of it, and deleting a profile pops back to MainPage.
+- ChatPage is the second pushed page (MainPage -> ChatPage). Its settings open in a popup (`CubSettingsPopup`), not as a page.
 
 Status: Accepted, current.
 

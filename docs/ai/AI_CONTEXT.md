@@ -400,7 +400,7 @@ GitHub Secrets
 -   Do NOT commit secrets to source control, NEVER.
 -   Server-side credentials never go into the client app
 
-A user-supplied key (ADR-010) is the one secret that is not compiled in. No key handling exists yet; it arrives with #100.
+A user-supplied key (ADR-010) is the one secret that is not compiled in. It is handled by `IApiKeyStore` (`SecureApiKeyStore` in `Core/Storage`): secure storage only, a format check only, never read back into the UI, never logged. A key the device cannot read is treated as "no key" and never deletes the stored value. Android keeps the secure storage file out of backups (`auto_backup_rules.xml` and `data_extraction_rules.xml`).
 
 ---
 
@@ -457,7 +457,9 @@ Companion (Cub):
 
 Cub is one generated Lottie file, `Resources/Raw/cub.json`, played through the shared `UI/Controls/CubView.cs`. `tools/cub/generate_cub.py` writes the file (run by hand, never by the build). The frame table in `CubView` mirrors `SEGMENTS` in the script, so the two must change together. `SkiaSharp.Extended.UI.Maui` targets .NET 9, so the csproj pins `Microsoft.Maui.Controls.Compatibility` 10.0.110 explicitly; without it the Windows build breaks. Drop the pin once the Lottie package ships a .NET 10 build.
 
-Packages for Phase 5: `CommunityToolkit.Maui` is wired in `MauiProgram` with `UseMauiCommunityToolkit()`. `Anthropic` (the official C# SDK) is referenced but nothing calls it until the Claude client in #96.
+Chat (Cub): `ChatPage` is pushed from the companion card (ADR-016). It only asks the key store whether a key exists and never reads the key. The conversation is never stored. The settings popup (`CubSettingsPopup`) is shown as a modal page, so `ChatPage.OnAppearing` runs again when it closes; keep that, because it is how the page picks up a key saved or removed there. On Android the page switches the window to resize above the keyboard while it shows and back to the default when it goes away. On Windows, focus returns to the message box after Send through the native control, because MAUI's `IsFocused` is stale there and `Focus()` does nothing.
+
+Packages for Phase 5: `CommunityToolkit.Maui` is wired in `MauiProgram` with `UseMauiCommunityToolkit()`, and `CubSettingsPopup` is its first popup. `Anthropic` (the official C# SDK) is referenced but nothing calls it until the Claude client in #96.
 
 Goal:
 

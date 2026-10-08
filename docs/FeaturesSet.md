@@ -32,6 +32,8 @@
 
 ✅ Toast Messages confirming user actions
 
+✅ "Talk to Cub" chat page and Cub's settings (the caregiver's own Claude API key, kept in the device's secure storage; Cub does not answer yet)
+
 ✅ Linking tasks and appointments to baby profiles
 
 ✅ Filtering based upon upcoming date, priority, or specific baby profiles

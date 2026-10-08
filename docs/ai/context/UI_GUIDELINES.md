@@ -265,6 +265,22 @@ Seasonal vaccines (flu, COVID-19) sit in their own sub-section inside the Vaccin
 
 ---
 
+### Chat with Cub
+
+Purpose: an optional place to ask Cub about everyday baby care.
+
+Should answer:
+
+- Can I ask Cub something right now?
+- What do I need to set up first?
+- Is this medical advice? (No: a fixed line under the message box says so and points to the pediatrician.)
+
+With no key saved, the page shows a gentle setup state, never an error. The chat looks like the rest of the app (cards, Cub, warm copy), not an AI console.
+
+Settings live behind the gear in a small popup. A saved key is never shown again: only a "Key safely stored" line remains. A mistyped key gets a calm inline hint, not an alert. Replace and Remove ask first.
+
+---
+
 ### Add and Edit Experience
 
 Purpose: enable fast, low-stress data entry.
@@ -319,7 +335,7 @@ Avoid:
 
 Future companion features should feel helpful, gentle, and supportive.
 
-The companion should act as a guide or cheerleader, not a distraction or a chatbot-like burden.
+The companion acts as a guide or cheerleader. The chat is opt-in: Cub never opens it, prompts for it, or interrupts with it.
 
 Characteristics to favor:
 
@@ -341,9 +357,10 @@ Cub has four short animations: wave, clap, dance and nod. Each plays once and ne
 
 - Wave: when MainPage appears and when Cub is tapped
 - Dance: when the user asks for a tip ("Tell me something")
-- Clap: in the toast for a completed task or a vaccination record that just became complete
-- Nod: in the toast for an add or an update
-- Cub stays still in removal toasts
+- Clap: in the toast for a completed task or a vaccination record that just became complete, and when the API key is saved
+- Nod: in the toast for an add or an update, and when the API key is removed
+- Cub stays still in removal toasts (the API key is the exception: its removal toast nods)
+- Cub stays still in the chat page header
 
 ---
 
@@ -357,7 +374,7 @@ Favor:
 - Friendly completion language
 - Non-intrusive design
 - Companion-themed reinforcement where relevant
-- Cub claps for a completion, nods for an add or update, and stays still for a removal
+- Cub claps for a completion, nods for an add or update, and stays still for a removal (the API key is the exception: Cub claps when it is saved and nods when it is removed)
 
 Avoid:
 
