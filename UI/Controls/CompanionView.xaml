@@ -32,10 +32,19 @@
                        Text="{Binding Message, Source={x:Reference CompanionRoot}}"
                        Style="{StaticResource BodyText}"
                        LineBreakMode="WordWrap" />
-                <Button Text="Tell me something"
-                        Style="{StaticResource SecondaryAction}"
-                        HorizontalOptions="Start"
-                        Clicked="OnTellMeSomethingClicked" />
+                <!--Two separate features side by side: a canned tip that needs nothing, and the chat (#100).
+                    The row wraps, so on a narrow phone the second button drops under the first-->
+                <FlexLayout Wrap="Wrap" Direction="Row" AlignItems="Start">
+                    <Button Text="Tell me something"
+                            Style="{StaticResource SecondaryAction}"
+                            Margin="0,0,10,8"
+                            Clicked="OnTellMeSomethingClicked" />
+                    <Button Text="Talk to Cub"
+                            Style="{StaticResource SecondaryAction}"
+                            Margin="0,0,10,8"
+                            SemanticProperties.Hint="Opens a chat with Cub"
+                            Clicked="OnTalkToCubClicked" />
+                </FlexLayout>
             </VerticalStackLayout>
         </Grid>
     </Border>

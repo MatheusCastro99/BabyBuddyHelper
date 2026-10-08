@@ -12,8 +12,9 @@ namespace BabyBuddyHelper.UI.Pages
         private readonly IBabyProfileService _babyProfileService;
         private readonly IVaccineCatalog _vaccineCatalog;
         private readonly IVaccineService _vaccineService;
+        private readonly IApiKeyStore _apiKeyStore;
         private DateTime currentDate;
-        private bool _isOpeningProfile;
+        private bool _isNavigating;
 
         public int MonthsUntilDue { get; private set; }
         public int DaysUntilDue { get; private set; }
@@ -45,7 +46,7 @@ namespace BabyBuddyHelper.UI.Pages
             var count => $"{count} done"
         };
 
-        public MainPage(ITaskListService taskListService, IBabyProfileService babyProfileService, IVaccineCatalog vaccineCatalog, IVaccineService vaccineService)
+        public MainPage(ITaskListService taskListService, IBabyProfileService babyProfileService, IVaccineCatalog vaccineCatalog, IVaccineService vaccineService, IApiKeyStore apiKeyStore)
         {
             InitializeComponent();
 
@@ -53,6 +54,7 @@ namespace BabyBuddyHelper.UI.Pages
             _babyProfileService = babyProfileService;
             _vaccineCatalog = vaccineCatalog;
             _vaccineService = vaccineService;
+            _apiKeyStore = apiKeyStore;
             BabyProfiles = babyProfileService.BabyProfiles;
 
             _taskListService.Tasks.CollectionChanged += (_, _) => RefreshDashboardState();
@@ -144,29 +146,37 @@ namespace BabyBuddyHelper.UI.Pages
 
         private async void OnViewProfileClicked(object? sender, EventArgs e) => await OpenProfileAsync(sender);
 
-        //A double-click, or a click on the button that also reaches the card, can ask twice. The flag covers the
-        //push while it's in flight; the stack check covers a late second request after it landed.
         private async Task OpenProfileAsync(object? sender)
         {
-            if (_isOpeningProfile || Navigation.NavigationStack.Count > 1)
-            {
-                return;
-            }
-
             if (sender is not BindableObject { BindingContext: BabyModel babyProfile })
             {
                 return;
             }
 
-            _isOpeningProfile = true;
+            await PushOnceAsync(() => new BabyProfilePage(_babyProfileService, _vaccineCatalog, _vaccineService, babyProfile.Id));
+        }
+
+        //The chat is a pushed page like the profile (ADR-016). It starts empty every time: the conversation isn't kept
+        private async void OnTalkToCubRequested(object? sender, EventArgs e) => await PushOnceAsync(() => new ChatPage(_apiKeyStore));
+
+        //A double-click, or a click on the button that also reaches the card, can ask twice. The flag covers the
+        //push while it's in flight; the stack check covers a late second request after it landed.
+        private async Task PushOnceAsync(Func<Page> createPage)
+        {
+            if (_isNavigating || Navigation.NavigationStack.Count > 1)
+            {
+                return;
+            }
+
+            _isNavigating = true;
 
             try
             {
-                await Navigation.PushAsync(new BabyProfilePage(_babyProfileService, _vaccineCatalog, _vaccineService, babyProfile.Id));
+                await Navigation.PushAsync(createPage());
             }
             finally
             {
-                _isOpeningProfile = false;
+                _isNavigating = false;
             }
         }
 

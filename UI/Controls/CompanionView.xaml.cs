@@ -46,6 +46,11 @@ namespace BabyBuddyHelper.UI.Controls
 
         CancellationTokenSource? _greetingCts;
 
+        /// <summary>
+        /// Raised when the user asks to talk to Cub.
+        /// </summary>
+        public event EventHandler? TalkToCubRequested;
+
         public static readonly BindableProperty MessageProperty =
             BindableProperty.Create(
                 nameof(Message),
@@ -145,6 +150,9 @@ namespace BabyBuddyHelper.UI.Controls
             Message = PickRandomMessage(Message);
             await Cub.PlayAsync(CubAnimation.Dance);
         }
+
+        //The card doesn't navigate by itself: MainPage owns the navigation stack and opens the chat
+        void OnTalkToCubClicked(object? sender, EventArgs e) => TalkToCubRequested?.Invoke(this, EventArgs.Empty);
 
         //Tapping Cub is a small extra with no function behind it: Cub just waves back
         async void OnCubTapped(object? sender, TappedEventArgs e) =>
