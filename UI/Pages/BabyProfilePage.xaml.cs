@@ -12,7 +12,7 @@ public partial class BabyProfilePage : ContentPage
     private readonly IVaccineCatalog _vaccineCatalog;
     private readonly IVaccineService _vaccineService;
     private readonly Guid _babyId;
-    private bool _isOpeningRecord;
+    private bool _isOpeningEditor;
 
     public BabyProfilePage(IBabyProfileService babyProfileService, IVaccineCatalog vaccineCatalog, IVaccineService vaccineService, Guid babyId)
     {
@@ -145,7 +145,7 @@ public partial class BabyProfilePage : ContentPage
     //The record is looked up by baby and vaccine Id at tap time (ADR-007), so a record saved a moment ago is found.
     private async Task OpenVaccineRecordAsync(object? sender)
     {
-        if (_isOpeningRecord || Navigation.ModalStack.Count > 0)
+        if (_isOpeningEditor || Navigation.ModalStack.Count > 0)
         {
             return;
         }
@@ -157,7 +157,7 @@ public partial class BabyProfilePage : ContentPage
 
         VaccinationRecordModel? record = _vaccineService.GetRecordsForBaby(_babyId).FirstOrDefault(x => x.VaccineId == vaccine.Id);
 
-        _isOpeningRecord = true;
+        _isOpeningEditor = true;
 
         try
         {
@@ -165,18 +165,34 @@ public partial class BabyProfilePage : ContentPage
         }
         finally
         {
-            _isOpeningRecord = false;
+            _isOpeningEditor = false;
         }
     }
 
+    //Same guard as the vaccine rows: a second tap while an editor is opening or open would stack another one on top,
+    //and the later save would undo the earlier one
     private async void OnEditClicked(object? sender, EventArgs e)
     {
+        if (_isOpeningEditor || Navigation.ModalStack.Count > 0)
+        {
+            return;
+        }
+
         if (BindingContext is not BabyModel babyProfile)
         {
             return;
         }
 
-        await Navigation.PushModalAsync(new AddBabyPage(_babyProfileService, babyProfile));
+        _isOpeningEditor = true;
+
+        try
+        {
+            await Navigation.PushModalAsync(new AddBabyPage(_babyProfileService, babyProfile));
+        }
+        finally
+        {
+            _isOpeningEditor = false;
+        }
     }
 
     private async void OnDeleteClicked(object? sender, EventArgs e)

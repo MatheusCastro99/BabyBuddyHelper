@@ -11,6 +11,10 @@ public partial class AddBabyPage : ContentPage
     private readonly IBabyProfileService _babyProfileService;
     private readonly BabyModel? _babyProfileOnEdit;
 
+    //Far above any baby on purpose: the ceilings only catch typos (an extra digit, a missing decimal point)
+    private const double MaxWeightInLbs = 300;
+    private const double MaxHeightInFt = 10;
+
     public AddBabyPage(IBabyProfileService babyProfileService)
     {
         InitializeComponent();
@@ -116,13 +120,13 @@ public partial class AddBabyPage : ContentPage
             return null;
         }
 
-        if (!TryParsePositiveDouble(WeightEntry.Text, out var weightInLbs))
+        if (!TryParsePositiveDouble(WeightEntry.Text, out var weightInLbs) || weightInLbs > MaxWeightInLbs)
         {
             await DisplayAlertAsync("Invalid Weight", "Please enter a valid weight in pounds.", "OK");
             return null;
         }
 
-        if (!TryParsePositiveDouble(HeightEntry.Text, out var heightInFt))
+        if (!TryParsePositiveDouble(HeightEntry.Text, out var heightInFt) || heightInFt > MaxHeightInFt)
         {
             await DisplayAlertAsync("Invalid Height", "Please enter a valid height in feet.", "OK");
             return null;
