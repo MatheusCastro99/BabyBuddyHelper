@@ -122,13 +122,13 @@ public partial class AddBabyPage : ContentPage
 
         if (!TryParsePositiveDouble(WeightEntry.Text, out var weightInLbs) || weightInLbs > MaxWeightInLbs)
         {
-            await DisplayAlertAsync("Invalid Weight", "Please enter a valid weight in pounds.", "OK");
+            await DisplayAlertAsync("Invalid Weight", $"Please enter a valid weight in pounds. (Max: {MaxWeightInLbs})", "OK");
             return null;
         }
 
         if (!TryParsePositiveDouble(HeightEntry.Text, out var heightInFt) || heightInFt > MaxHeightInFt)
         {
-            await DisplayAlertAsync("Invalid Height", "Please enter a valid height in feet.", "OK");
+            await DisplayAlertAsync("Invalid Height", $"Please enter a valid height in feet. (Max: {MaxHeightInFt})", "OK");
             return null;
         }
 
