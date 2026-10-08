@@ -112,4 +112,4 @@ See the data-flow diagram: [DataFlow.excalidraw](../../DataFlow.excalidraw)
 
 The layered Core/UI layout is current (ADR-015). When further redesign becomes necessary, Service-based, Feature-based, and Modular organization are candidates (ADR-005); none is scheduled on the roadmap.
 
-Planned in Phase 5 (#95, #96): a root-level `Remote/` folder for off-device implementations (clients for external services, their DTOs and mapping). Contracts stay in `Core/Interfaces`, and only `MauiProgram` references `Remote/`. The folder does not exist yet; its first file arrives with the Claude client in #96, and the rule is recorded as ADRs in #95.
+Planned in Phase 5: a root-level `Remote/` folder for off-device implementations (clients for external services, their DTOs and mapping). Contracts stay in `Core/Interfaces`, and only `MauiProgram` references `Remote/`. The rule is recorded in ADR-015 and ADR-017. The folder does not exist yet; its first file arrives with the Claude client in #96.

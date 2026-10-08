@@ -51,7 +51,7 @@ Coding and design constraints
 - Prefer small, safe changes. Avoid big architectural rewrites unless explicitly requested.
 - Avoid introducing: CQRS, MediatR, Repository pattern, heavy MVVM unless the user explicitly requests an MVVM migration.
 - Tests and builds: always run `dotnet build` after code changes; fix warnings where possible.
-- Place new files by layer: Core/ (models, services, interfaces, persistence, collections, exceptions) or UI/ (pages, controls, UI services, converters). Namespaces follow folders.
+- Place new files by layer: Core/ (models, services, interfaces, persistence, collections, exceptions), UI/ (pages, controls, UI services, converters) or Remote/ (off-device implementations only: clients for external services, their DTOs and mapping). Contracts stay in Core/Interfaces, and only MauiProgram references Remote/. Namespaces follow folders.
 
 Documentation rules
 -------------------
@@ -78,3 +78,4 @@ Change log
 - 2026-09-17: Initial CLAUDE.md added (aligns with repo docs and subagent list).
 - 2026-09-18 (#33): Replaced the subagent list with the Claude Code tooling (red-team + three skills); retired TechLead, ProductOwner, UXDesigner, ProjectHistorian and Coordinator.
 - 2026-09-24 (#68): Added the historian subagent; documentation rules now follow the stale-docs list → historian → review flow; UI_GUIDELINES is now an authoritative document
+- 2026-10-08 (#95): Added the Remote/ placement rule (ADR-015, ADR-017).

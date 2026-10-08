@@ -54,6 +54,8 @@
 
 ✅ Dual UI mode: a boy / girl palette in place of light / dark mode, switched on the tab row (Windows) and saved on the device
 
+✅ "Last updated" date on a baby's weight and height, shown on the baby profile
+
 ## Planned Features:
 
 Companion comes to life with an AI-driven personality and interactions

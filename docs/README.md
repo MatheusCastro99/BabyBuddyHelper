@@ -11,7 +11,7 @@
 
 BabyBuddyHelper is a cross-platform parenting companion built with .NET MAUI. Today, it helps parents and caregivers organize tasks, track appointments, manage baby profiles, and visualize schedules through checklist and calendar experiences.
 
-The project is currently a functional prototype in active development. Phase 4 (vaccine tracker) and its follow-ups are concluded. Phase 5 started with a dual UI mode: a boy / girl palette in place of a light / dark mode. It continues by bringing the companion to life: interactive animations (shipped), then a carefully scoped AI helper and a light personality adjustment. Phase 6 then prepares the first release: mobile targets in CI, a mobile UI/UX polish pass, EF Core migrations, then deployment and distribution. The shipped task, appointment, baby-profile, vaccine, and filtering experience stays as it is.
+The project is currently a functional prototype in active development. Phase 4 (vaccine tracker) and its follow-ups are concluded. Phase 5 started with a dual UI mode: a boy / girl palette in place of a light / dark mode. It continues by bringing the companion to life: interactive animations and the groundwork for the AI helper (shipped), then a carefully scoped AI helper and a light personality adjustment. Phase 6 then prepares the first release: mobile targets in CI, a mobile UI/UX polish pass, EF Core migrations, then deployment and distribution. The shipped task, appointment, baby-profile, vaccine, and filtering experience stays as it is.
 
 ## Vision and Experience
 
@@ -53,6 +53,7 @@ The current experience already includes an animated companion character (Cub wav
 
 - Create, edit, and delete baby profiles
 - Read-only profile page per baby, with edit and delete from there
+- "Last updated" date under a baby's weight and height on the profile
 - Built-in US CDC vaccine list (birth to 6 years) on each profile, with a disclaimer
 - Per-baby vaccination records (doses given, last and next dose dates), added and edited from the profile
 - Vaccine status per vaccine (doses given, next dose, gentle overdue reminder)
@@ -114,6 +115,8 @@ These capabilities are planned and are not included in the current prototype.
 
 - Syncfusion Scheduler
 - SkiaSharp.Extended.UI.Maui (Lottie animation for Cub)
+- CommunityToolkit.Maui
+- Anthropic C# SDK (referenced, not used yet)
 
 ### Data
 
@@ -313,7 +316,7 @@ This project follows modern software engineering practices:
 
 ### Near Term (Phase 5)
 
-- Interactive companion (animations shipped)
+- Interactive companion (animations shipped) and AI groundwork (shipped)
 - A carefully scoped AI helper: an optional chat with Cub for tips and basic questions, using the caregiver's own API key (not a doctor or therapist)
 - Light personality adjustment for the companion (conversational style and verbosity)
 

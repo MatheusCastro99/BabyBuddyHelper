@@ -257,6 +257,8 @@ Should answer:
 
 The profile is read-only. Editing routes to AddBabyPage (ADR-004), vaccine records route to AddVaccineRecordPage (row tap or the pencil icon), and the profile is a pushed page with a back arrow (ADR-016).
 
+Under each Growth value that has a date, a CaptionText line reads "Updated {date}" (the year shows only when it isn't this year). A value with no date shows nothing. The wording is neutral, with no staleness styling.
+
 Vaccine status is always spelled out, never shown by color alone. Overdue is a gentle reminder with no alarm styling. A due soon vaccine shows a "Due soon" pill after the "Next dose" date; due today shows "Due today" with no pill. Complete uses Success with PrimaryDarkText because caption text is too faint on green.
 
 Seasonal vaccines (flu, COVID-19) sit in their own sub-section inside the Vaccines card, below the routine list, with the same row layout. They are never complete, so their pill reads "Not started", a green "Current" (same Success styling as Complete), or "Last: {date}". "Current" is a date rule (a shot in the last 12 months, next dose not due yet), so a caption above "Last reviewed" says it doesn't mean the baby is up to date and points to the pediatrician.
