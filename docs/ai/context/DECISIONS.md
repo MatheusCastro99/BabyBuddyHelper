@@ -137,6 +137,12 @@ Secret Rules:
 - Secrets will always be compiled in at build time, file is a build input only.
 - No Server-side credentials in the client app.
 
+User-supplied keys:
+- A key the user enters in the app (for example their AI provider key) belongs to the user, not to the project. It is the one secret that is not compiled in at build time.
+- It is stored only in the device's secure storage. It is never written to Preferences, the database, logs or source control.
+- It is sent only to the provider it belongs to.
+- The user can change or remove it at any time.
+
 Status: Accepted, permanent.
 
 ### ADR-011
@@ -213,6 +219,7 @@ Source code is grouped by layer, not by feature. Namespaces follow folders.
 
 - `Core/` holds domain models, cache services, interfaces, the persistence boundary (`TrackerContext`, `EfTrackerDbService`), collections and exceptions.
 - `UI/` holds pages, controls, UI-only services (`ToastService`, `AlertService`, `PaletteService`) and value converters.
+- `Remote/` holds off-device implementations only: clients for external services, their DTOs and mapping (namespace `BabyBuddyHelper.Remote`). Their contracts stay in `Core/Interfaces`. Only `MauiProgram` references `Remote/`, for DI registration.
 - Namespaces match folders (e.g. `BabyBuddyHelper.Core.Services`, `BabyBuddyHelper.UI.Pages`).
 - `App`, `AppShell`, `MauiProgram`, `Platforms/`, `Properties/` and `Resources/` stay at the root, following MAUI conventions.
 
@@ -232,5 +239,28 @@ Reason:
 - A profile is a place the user browses and returns from, so it gets the native back arrow.
 - Editors are focused tasks that end in save or cancel, so they stay modal.
 - BabyProfilePage is the first pushed page (MainPage -> BabyProfilePage). AddBabyPage stays modal on top of it, and deleting a profile pops back to MainPage.
+
+Status: Accepted, current.
+
+### ADR-017
+
+Off-device calls go through one fixed path, separate from the data path (ADR-014).
+
+Path:
+Page (UI) -> contract in `Core/Interfaces` -> implementation in `Remote/` -> external provider
+
+Rules:
+- The app stays offline-first. Everything that works without a remote call keeps working with no network and no key.
+- Nothing leaves the device without a user action, and the user is told what is sent before it is sent.
+- Only what the user chose to share for that request is sent.
+- Pages never reference `Remote/` or a provider SDK. They talk to the contract.
+- Remote implementations never write to the database or the cache services (ADR-001, ADR-008). What comes back is shown, not stored, unless a later ADR says otherwise.
+- A failed call throws one exception type and leaves local data untouched. The app says so gently and carries on.
+- Keys follow ADR-010.
+
+Reason:
+- The app was fully local until Phase 5. A single path keeps it obvious which code can send data off the device.
+- A provider can be swapped or added behind the contract without touching the pages.
+- Caregivers' data is personal. Explicit, per-request sharing keeps the user in control.
 
 Status: Accepted, current.
