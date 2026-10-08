@@ -17,6 +17,8 @@ namespace BabyBuddyHelper.UI.Services
         VaccineRecordUpdated,
         VaccineRecordCompleted,
         VaccineRecordRemoved,
+        ApiKeySaved,
+        ApiKeyRemoved,
     }
 
     /// <summary>
@@ -124,6 +126,19 @@ namespace BabyBuddyHelper.UI.Services
                 "Cub gives a soft nod, record removed.",
                 "Cub says: all tidy, that record is gone.",
                 "Cub cleared that record, you can add it again anytime.",
+            ],
+            //The key lines say where the key is and nothing about the key itself
+            [ToastKind.ApiKeySaved] =
+            [
+                "Cub claps: your key is tucked away safely!",
+                "Cub cheers, your key is saved on this device!",
+                "Cub says: all set, your key is stored safely!",
+            ],
+            [ToastKind.ApiKeyRemoved] =
+            [
+                "Cub nods: your key has been removed from this device.",
+                "Cub says: done, your key is no longer stored here.",
+                "Cub gives a nod, your key is cleared. You can add one again anytime.",
             ],
         };
 

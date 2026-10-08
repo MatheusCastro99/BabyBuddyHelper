@@ -110,10 +110,11 @@ namespace BabyBuddyHelper.UI.Controls
         }
 
         //Cub claps for a finished task or vaccine series, nods when something is saved,
-        //and stays still when something is removed.
+        //and stays still when something is removed. The API key is the exception (#100):
+        //Cub claps when it is saved and nods when it is removed.
         static CubAnimation? GetCubAnimation(ToastKind kind) => kind switch
         {
-            ToastKind.TaskCompleted or ToastKind.VaccineRecordCompleted => CubAnimation.Clap,
+            ToastKind.TaskCompleted or ToastKind.VaccineRecordCompleted or ToastKind.ApiKeySaved => CubAnimation.Clap,
             ToastKind.TaskDeleted or ToastKind.BabyProfileDeleted or ToastKind.VaccineRecordRemoved => null,
             _ => CubAnimation.Nod,
         };

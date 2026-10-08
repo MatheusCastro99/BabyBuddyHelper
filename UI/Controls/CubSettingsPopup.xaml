@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<toolkit:Popup xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+               xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+               xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+               x:Class="BabyBuddyHelper.UI.Controls.CubSettingsPopup"
+               BackgroundColor="{DynamicResource BabyBuddySurface}"
+               Padding="20">
+
+    <!--Cub's settings: the user's own Claude API key (ADR-010). Personality options join it in #97-->
+    <VerticalStackLayout Spacing="14" WidthRequest="360">
+        <Grid ColumnDefinitions="*,Auto" ColumnSpacing="12">
+            <Label Text="Cub's settings" Style="{StaticResource SectionTitle}" VerticalOptions="Center" />
+
+            <!--Tapping outside closes the popup too; the button keeps closing reachable by keyboard and screen readers-->
+            <Button Grid.Column="1"
+                    Text="Close"
+                    Style="{StaticResource SecondaryAction}"
+                    Padding="14,8"
+                    SemanticProperties.Description="Close Cub's settings"
+                    Clicked="OnCloseClicked" />
+        </Grid>
+
+        <Label Text="Your Claude API key" Style="{StaticResource ItemTitle}" />
+
+        <!--No key yet, or the saved one is being replaced. The key shows as plain text while it is typed (accepted for now, #100);
+            spell check and text prediction stay off so the keyboard doesn't learn it-->
+        <VerticalStackLayout x:Name="EntryState" Spacing="10">
+            <Border BackgroundColor="{DynamicResource BabyBuddySurfaceAlt}" StrokeShape="RoundRectangle 14" Padding="8,2">
+                <Entry x:Name="KeyEntry"
+                       Placeholder="sk-ant-..."
+                       BackgroundColor="Transparent"
+                       IsSpellCheckEnabled="False"
+                       IsTextPredictionEnabled="False"
+                       ClearButtonVisibility="WhileEditing"
+                       ReturnType="Done"
+                       SemanticProperties.Description="Your Claude API key"
+                       TextChanged="OnKeyTextChanged"
+                       Completed="OnSaveClicked" />
+            </Border>
+
+            <!--Said calmly and in words, with no alarm styling. The hyphens in the prefix are non-breaking (&#x2011;),
+                so the line never wraps in the middle of it-->
+            <Label x:Name="FormatMessage"
+                   IsVisible="False"
+                   Text="That doesn't look like a Claude API key. It starts with sk&#x2011;ant&#x2011; and has no spaces."
+                   Style="{StaticResource BodyText}" />
+
+            <FlexLayout Wrap="Wrap" Direction="Row" AlignItems="Start">
+                <Button x:Name="SaveButton"
+                        Text="Save"
+                        Style="{StaticResource PrimaryAction}"
+                        Margin="0,0,10,0"
+                        IsEnabled="False"
+                        Clicked="OnSaveClicked" />
+                <Button x:Name="CancelReplaceButton"
+                        Text="Cancel"
+                        Style="{StaticResource SecondaryAction}"
+                        IsVisible="False"
+                        SemanticProperties.Hint="Keeps the key that is already saved"
+                        Clicked="OnCancelReplaceClicked" />
+            </FlexLayout>
+        </VerticalStackLayout>
+
+        <!--A key is saved. It is never shown again: only this read-only line says it is there-->
+        <VerticalStackLayout x:Name="StoredState" Spacing="10" IsVisible="False">
+            <Border BackgroundColor="{DynamicResource BabyBuddySuccess}" StrokeThickness="0" StrokeShape="RoundRectangle 14" Padding="14,12">
+                <Label Text="Key safely stored" TextColor="{DynamicResource PrimaryDarkText}" />
+            </Border>
+
+            <FlexLayout Wrap="Wrap" Direction="Row" AlignItems="Start">
+                <Button Text="Replace"
+                        Style="{StaticResource SecondaryAction}"
+                        Margin="0,0,10,0"
+                        SemanticProperties.Description="Replace your key"
+                        Clicked="OnReplaceClicked" />
+                <Button Text="Remove"
+                        Style="{StaticResource SecondaryAction}"
+                        SemanticProperties.Description="Remove your key"
+                        Clicked="OnRemoveClicked" />
+            </FlexLayout>
+        </VerticalStackLayout>
+
+        <BoxView HeightRequest="1" Color="{DynamicResource BabyBuddyBorder}" />
+
+        <Label Text="Your key stays on this device and is only sent to Anthropic. Anthropic bills you for what Cub uses."
+               Style="{StaticResource CaptionText}" />
+
+        <Button Text="How to get a key"
+                Style="{StaticResource SecondaryAction}"
+                HorizontalOptions="Start"
+                SemanticProperties.Hint="Opens the Claude console in your browser"
+                Clicked="OnHowToGetKeyClicked" />
+    </VerticalStackLayout>
+</toolkit:Popup>
