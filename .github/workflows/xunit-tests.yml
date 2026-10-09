@@ -1,0 +1,43 @@
+name: xUnit Test Validation
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+  pull_request:
+
+permissions:
+  contents: read
+
+# A newer push to the same branch or pull request replaces the run still in progress
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    name: test (${{ matrix.configuration }})
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    strategy:
+      # Both configurations always finish, so a failure that shows in only one of them is visible as such
+      fail-fast: false
+      matrix:
+        # Debug compiles the #if DEBUG paths (failure simulation, seeding); Release is the code that ships
+        configuration: [Debug, Release]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
+        with:
+          dotnet-version: '10.0.x'
+
+      # The test project is plain net10.0 and compiles the Core/ sources directly, so no MAUI workload and no secrets
+      # are needed. global.json selects Microsoft.Testing.Platform, which is why the project is passed with --project.
+      - name: Test
+        run: dotnet test --project test/BabyBuddyHelper.Tests/BabyBuddyHelper.Tests.csproj -c ${{ matrix.configuration }}
