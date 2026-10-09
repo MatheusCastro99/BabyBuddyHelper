@@ -1,3 +1,6 @@
 <Solution>
   <Project Path="BabyBuddyHelper.csproj" />
+  <Folder Name="/test/">
+    <Project Path="test/BabyBuddyHelper.Tests/BabyBuddyHelper.Tests.csproj" />
+  </Folder>
 </Solution>

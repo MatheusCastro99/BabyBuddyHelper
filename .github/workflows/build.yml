@@ -37,6 +37,7 @@ jobs:
           # Pull request builds deliberately get no secret: a PR can change the MSBuild targets, which would
           # otherwise let it read the key. Only push, workflow_dispatch and release builds are licensed.
           SYNCFUSION_LICENSE: ${{ github.event_name != 'pull_request' && secrets.SYNCFUSION_LICENSE || '' }}
-        run: dotnet build `
+        # The project is named because the solution also holds the test project, which has no Windows target (#104)
+        run: dotnet build BabyBuddyHelper.csproj `
                 -f net10.0-windows10.0.19041.0 `
                 -c Release

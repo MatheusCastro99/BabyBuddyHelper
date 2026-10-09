@@ -1,0 +1,32 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net10.0</TargetFramework>
+		<!-- xUnit v3 test projects are executables -->
+		<OutputType>Exe</OutputType>
+		<RootNamespace>BabyBuddyHelper.Tests</RootNamespace>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<IsPackable>false</IsPackable>
+	</PropertyGroup>
+
+	<!-- The app project targets platform frameworks only, so a plain net10.0 project can't reference it (#104).
+	     The Core/ source files are compiled into this project instead: a file added to Core/ is picked up with no edit here.
+	     SecureApiKeyStore is left out because it needs MAUI's SecureStorage. -->
+	<ItemGroup>
+		<Compile Include="../../Core/**/*.cs" Exclude="../../Core/Storage/SecureApiKeyStore.cs" LinkBase="Core" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Using Include="Xunit" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<!-- Keep in step with the app project: the linked Core/ code is compiled against this version here -->
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="10.0.12" />
+		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.10.1" />
+		<PackageReference Include="xunit.v3" Version="4.0.2" />
+		<PackageReference Include="xunit.runner.visualstudio" Version="4.0.1" />
+	</ItemGroup>
+
+</Project>
