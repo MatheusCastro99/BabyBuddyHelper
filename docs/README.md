@@ -1,6 +1,7 @@
 # BabyBuddyHelper
 
 [![Build Validation](https://github.com/MatheusCastro99/BabyBuddyHelper/actions/workflows/build.yml/badge.svg)](https://github.com/MatheusCastro99/BabyBuddyHelper/actions/workflows/build.yml)
+[![xUnit Test Validation](https://github.com/MatheusCastro99/BabyBuddyHelper/actions/workflows/xunit-tests.yml/badge.svg)](https://github.com/MatheusCastro99/BabyBuddyHelper/actions/workflows/xunit-tests.yml)
 [![CodeQL](https://github.com/MatheusCastro99/BabyBuddyHelper/actions/workflows/github-code-scanning/codeql/badge.svg)](https://github.com/MatheusCastro99/BabyBuddyHelper/security/code-scanning)
 ![Dependabot](https://img.shields.io/badge/Dependabot-Enabled-brightgreen)
 
@@ -134,6 +135,8 @@ These capabilities are planned and are not included in the current prototype.
 ### Development Tooling
 
 - GitHub Actions Build Validation
+- GitHub Actions xUnit Test Validation
+- xUnit (v3) unit tests for `Core/`, on a SQLite in-memory database
 - Dependabot Dependency Monitoring
 - CodeQL Security Analysis
 - Claude Code pull request review and @claude mentions (GitHub Actions)
@@ -262,6 +265,12 @@ BabyBuddyHelper/
 │       │   └── GirlPalette.xaml(.cs)
 │       └── Styles.xaml
 │
+├── test/
+│   └── BabyBuddyHelper.Tests/
+│       ├── Infrastructure/
+│       ├── Services/
+│       └── Models/
+│
 ├── tools/
 │   └── cub/
 │       ├── generate_cub.py
@@ -307,6 +316,14 @@ dotnet restore
 dotnet build
 ```
 
+### Test
+
+```bash
+dotnet test --project test/BabyBuddyHelper.Tests/BabyBuddyHelper.Tests.csproj
+```
+
+The tests cover `Core/` and run on a SQLite in-memory database, never on the app's own database. New tests go in `test/BabyBuddyHelper.Tests/`: `Services/` for tests through the cache services, `Models/` for model logic, `Infrastructure/` for the test host. A change to `Core/` behaviour comes with tests.
+
 ---
 
 ## Development Practices
@@ -314,6 +331,7 @@ dotnet build
 This project follows modern software engineering practices:
 
 - Automated Build Validation
+- Automated Unit Tests (xUnit) for `Core/`
 - Continuous Integration with GitHub Actions
 - Security Scanning with CodeQL
 - Automated Dependency Updates via Dependabot

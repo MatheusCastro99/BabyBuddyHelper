@@ -223,6 +223,7 @@ Source code is grouped by layer, not by feature. Namespaces follow folders.
 - `Remote/` holds off-device implementations only: clients for external services, their DTOs and mapping (namespace `BabyBuddyHelper.Remote`). Their contracts stay in `Core/Interfaces`. Only `MauiProgram` references `Remote/`, for DI registration.
 - Namespaces match folders (e.g. `BabyBuddyHelper.Core.Services`, `BabyBuddyHelper.UI.Pages`).
 - `App`, `AppShell`, `MauiProgram`, `Platforms/`, `Properties/` and `Resources/` stay at the root, following MAUI conventions.
+- `test/` holds the automated tests, outside the app project (ADR-018).
 
 Reason:
 - The flat root folders were slowing navigation, and Phase 4 adds several new models, services and pages.
@@ -264,5 +265,29 @@ Reason:
 - The app was fully local until Phase 5. A single path keeps it obvious which code can send data off the device.
 - A provider can be swapped or added behind the contract without touching the pages.
 - Caregivers' data is personal. Explicit, per-request sharing keeps the user in control.
+
+Status: Accepted, current.
+
+### ADR-018
+
+Core is covered by automated unit tests. The tests compile the Core/ source files directly and run against a real SQLite database held in memory.
+
+Rules:
+- Tests live in `test/BabyBuddyHelper.Tests` (xUnit, plain `net10.0`). The project links `Core/**/*.cs`; it does not reference the app project.
+- Tests go through the cache services (`TaskListService`, `BabyProfileService`, `VaccineService`) on top of the real `EfTrackerDbService`, the same path the pages use (ADR-014). The persistence boundary is not mocked.
+- Each test owns its database. Tests do not depend on each other or on run order, and never touch `babybuddy.db3`.
+- A stored-data test checks the cache and then checks again after a simulated restart.
+- Core code that needs a MAUI API is left out of the test project and named there (today: `SecureApiKeyStore`).
+- A change to Core/ behaviour comes with tests, and a bug fix in Core/ comes with a test that reproduces the bug. An exception is stated in the PR.
+- `Remote/` is covered the same way once it has code (#96): its sources are linked, and the network is replaced by a fake. No automated test calls a real provider or uses a real key (ADR-010). `UI/` is not covered.
+- CI runs the tests in Debug and in Release on every pull request ("xUnit Test Validation").
+- The tests add to the maintainer's manual pass; they do not replace it.
+
+Reason:
+- The app project targets platform frameworks only, so a plain test project cannot reference it. Linking the sources adds tests without changing the app's structure (ADR-015).
+- Testing through the real database exercises the constraints the cache mirrors (ADR-011) instead of a prediction of them.
+- Debug and Release differ (`#if DEBUG` paths), so both are run.
+- Tests written with the change keep the suite in step with the app; a test for each fixed bug keeps that bug from returning.
+- A real provider call costs money, needs the user's key and answers differently each time, so it stays in the manual pass.
 
 Status: Accepted, current.

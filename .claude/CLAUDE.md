@@ -50,8 +50,10 @@ Coding and design constraints
 - Follow ADRs in docs/ai/context/DECISIONS.md (especially ADR-007: id-based CRUD). Do not change GUID migration.
 - Prefer small, safe changes. Avoid big architectural rewrites unless explicitly requested.
 - Avoid introducing: CQRS, MediatR, Repository pattern, heavy MVVM unless the user explicitly requests an MVVM migration.
-- Tests and builds: always run `dotnet build` after code changes; fix warnings where possible.
+- Tests and builds: always run `dotnet build` and `dotnet test --project test/BabyBuddyHelper.Tests/BabyBuddyHelper.Tests.csproj` after code changes; fix warnings where possible. With a target framework, name the project: `dotnet build BabyBuddyHelper.csproj -f net10.0-windows10.0.19041.0`.
+- A change to Core/ behaviour comes with tests, and a bug fix in Core/ comes with a test that reproduces the bug; state any exception in the PR (ADR-018).
 - Place new files by layer: Core/ (models, services, interfaces, persistence, storage, collections, exceptions), UI/ (pages, controls, UI services, converters) or Remote/ (off-device implementations only: clients for external services, their DTOs and mapping). Contracts stay in Core/Interfaces, and only MauiProgram references Remote/. Namespaces follow folders.
+- Place tests in test/BabyBuddyHelper.Tests: Services/ (through the cache services, on the in-memory database), Models/ (model logic) or Infrastructure/ (the test host).
 
 Documentation rules
 -------------------
@@ -80,3 +82,4 @@ Change log
 - 2026-09-24 (#68): Added the historian subagent; documentation rules now follow the stale-docs list → historian → review flow; UI_GUIDELINES is now an authoritative document
 - 2026-10-08 (#95): Added the Remote/ placement rule (ADR-015, ADR-017).
 - 2026-10-08 (#100): Core/Storage added to the layer list.
+- 2026-10-09 (#104): Added the test command, the tests-with-Core-changes rule and the test placement rule (ADR-018).

@@ -47,8 +47,10 @@ It also carries the project's **known regression traps**:
 
 ## Verification limits
 
-- Build validation: `dotnet build -f net10.0-windows10.0.19041.0`.
-- There is no automated test project. The maintainer runs a full manual create/read/update/delete pass on every entity, so the skill lists only edge cases that pass would miss: colliding data, culture and date parsing, unusual window sizes, and async ordering.
+- Build validation: `dotnet build BabyBuddyHelper.csproj -f net10.0-windows10.0.19041.0`. Name the project: the solution also holds the test project, which has no Windows target.
+- Tests: `dotnet test --project test/BabyBuddyHelper.Tests/BabyBuddyHelper.Tests.csproj`.
+- A test project exists (`test/BabyBuddyHelper.Tests`, ADR-018). Through the cache services on a SQLite in-memory database it covers create/read/update/delete by id for tasks, babies and vaccination records, colliding data, task/appointment conversion, baby removal, date flags and measurement dates, sorting and filtering. A change to `Core/` should come with tests, and a `Core/` bug fix with a test that reproduces it; flag a change that has none.
+- The maintainer's full manual create/read/update/delete pass still owns everything in `UI/`. The skill lists only the edge cases the tests and that pass would miss: culture and date parsing, unusual window sizes, and async ordering.
 
 ## Output
 

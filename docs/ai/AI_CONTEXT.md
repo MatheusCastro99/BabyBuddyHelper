@@ -354,6 +354,8 @@ Implemented:
 
 ✅ Build Validation
 
+✅ xUnit Test Validation (Debug and Release)
+
 ✅ Dependabot
 
 ✅ CodeQL
@@ -363,6 +365,13 @@ Implemented:
 ✅ Claude Code pull request review (claude-code-review.yml) and @claude mentions (claude.yml)
 
 Current CI is considered stable.
+
+Automated tests (ADR-018):
+
+- Run: `dotnet test --project test/BabyBuddyHelper.Tests/BabyBuddyHelper.Tests.csproj`
+- The `xunit-tests.yml` workflow runs the same command in Debug and Release on every pull request and push to main. No secrets and no MAUI workload are needed.
+- New tests go in `test/BabyBuddyHelper.Tests/`: `Services/` for tests through the cache services, `Models/` for model logic, `Infrastructure/` for the test host.
+- A change to `Core/` behaviour comes with tests, and a `Core/` bug fix comes with a test that reproduces it. `UI/` is not covered; the tests add to the maintainer's manual pass and do not replace it.
 
 ---
 
