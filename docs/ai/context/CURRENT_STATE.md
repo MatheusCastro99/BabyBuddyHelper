@@ -22,6 +22,8 @@ Epic: #92. Sub-phases, in order (one issue and one PR each):
 
 5.1 to 5.4 are done. Next: 5.5 (#96).
 
+Outside the epic, ahead of 5.5: #104 added an xUnit test project for `Core/` and a CI workflow that runs it (PR #105).
+
 Open issues, all in Phase 6 (release preparation):
 
 - Mobile Focus: #71 CI builds for the mobile targets, #72 mobile UI/UX polish pass.

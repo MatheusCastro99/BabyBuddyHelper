@@ -15,6 +15,10 @@
   - Controls/
   - Services/
   - Converters/
+- test/BabyBuddyHelper.Tests/
+  - Infrastructure/
+  - Services/
+  - Models/
 
 ## Current key files:
 
@@ -114,6 +118,12 @@ UI/Converters/
 - AssociatedBabyNameConverter.cs
 - IsAppointmentModelConverter.cs
 - VaccineTagConverter.cs
+
+test/BabyBuddyHelper.Tests/ (a separate plain `net10.0` xUnit project; it links the `Core/` sources instead of referencing the app, leaving out `SecureApiKeyStore.cs`; ADR-018)
+
+- Infrastructure/: TestDatabase.cs, TestServices.cs, DatabaseTest.cs, TestData.cs, TestHostTests.cs
+- Services/: TaskCrudTests.cs, TaskConversionTests.cs, TaskSortingTests.cs, TaskFilteringTests.cs, BabyProfileCrudTests.cs, BabyRemovalTests.cs, BabyMeasurementDateTests.cs, BabyFilterServiceTests.cs, VaccinationRecordCrudTests.cs, CollidingDataTests.cs
+- Models/: TaskModelTests.cs, VaccinationRecordFlagTests.cs
 
 See the data-flow diagram: [DataFlow.excalidraw](../../DataFlow.excalidraw)
 

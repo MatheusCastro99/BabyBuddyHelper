@@ -22,7 +22,7 @@ It treats documentation as read-only reference: it reviews the implementation on
 
 | Field | Value | Why |
 |---|---|---|
-| `tools` | Read, Grep, Glob, Bash | No Edit/Write. Bash is for `git`/`gh` inspection and `dotnet build`. "Read-only" for Bash is enforced by the prompt, not by permissions. |
+| `tools` | Read, Grep, Glob, Bash | No Edit/Write. Bash is for `git`/`gh` inspection, `dotnet build` and `dotnet test`. "Read-only" for Bash is enforced by the prompt, not by permissions. |
 | `model` | opus | Adversarial review is where depth matters most; the trade-off is cost per run |
 | `effort` | high | Same reason |
 | `skills` | review-guardrails | Reviews against the project's ADRs and known traps, not generic taste |

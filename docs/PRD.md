@@ -123,6 +123,8 @@ BabyBuddyHelper/
 │   └── Styles/ - Application-wide styling (Colors.xaml, Styles.xaml, Palettes/BoyPalette.xaml and GirlPalette.xaml)
 ├── Platforms/ - Platform-specific implementations
 ├── Properties/ - Launch settings
+├── test/
+│   └── BabyBuddyHelper.Tests/ - xUnit tests for Core/ (a separate project that links the Core sources)
 ├── App.xaml(.cs) - Application entry and startup data loading
 ├── AppShell.xaml(.cs) - Tab navigation (Home, Checklist, Calendar)
 ├── MauiProgram.cs - Application configuration and dependency injection

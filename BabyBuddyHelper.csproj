@@ -19,6 +19,9 @@
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
 
+		<!-- This project sits at the repo root, so its default globs would pull in the test project's files (#104) -->
+		<DefaultItemExcludes>$(DefaultItemExcludes);test/**</DefaultItemExcludes>
+
 		<!-- Enable XAML source generation for faster build times and improved performance.
 		     This generates C# code from XAML at compile time instead of runtime inflation.
 		     To disable, remove this line.
