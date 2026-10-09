@@ -153,6 +153,33 @@ namespace BabyBuddyHelper.Tests.Services
             Assert.True(Assert.Single(restarted.Tasks.Tasks).IsCompleted);
         }
 
+        //Completion is saved through a copy of the cached entry (TaskModel.Clone). If the copy lost its type, the database
+        //would store the appointment as a plain task and drop its date, times and location.
+        [Fact]
+        public async Task SetCompletionAsync_Appointment_KeepsTypeAndDetailsAfterRestart()
+        {
+            AppointmentModel appointment = TestData.Appointment("Pediatrician visit");
+
+            using (TestServices services = await StartServicesAsync())
+            {
+                await services.Tasks.AddAsync(appointment);
+
+                await services.Tasks.SetCompletionAsync(appointment.Id, true);
+
+                Assert.Same(appointment, Assert.Single(services.Tasks.Tasks));
+            }
+
+            using TestServices restarted = await StartServicesAsync();
+            AppointmentModel stored = Assert.IsType<AppointmentModel>(Assert.Single(restarted.Tasks.Tasks));
+
+            Assert.Equal(appointment.Id, stored.Id);
+            Assert.True(stored.IsCompleted);
+            Assert.Equal("Riverside Clinic", stored.AppointmentLocation);
+            Assert.Equal(DateTime.Today.AddDays(7), stored.AppointmentDate);
+            Assert.Equal(new TimeSpan(9, 30, 0), stored.AppointmentStartTime);
+            Assert.Equal(new TimeSpan(10, 15, 0), stored.AppointmentEndTime);
+        }
+
         [Fact]
         public async Task SetCompletionAsync_BackToPending_IsStored()
         {

@@ -24,6 +24,11 @@ namespace BabyBuddyHelper.Tests.Services
 
                 Assert.Equal(2, services.Tasks.Tasks.Count);
                 Assert.All(services.Tasks.Tasks, x => Assert.Null(x.AssociatedBabyId));
+
+                //The cache swaps each entry for a copy without the link; the copy of the appointment must still be one
+                AppointmentModel cachedAppointment = Assert.IsType<AppointmentModel>(Assert.Single(services.Tasks.Tasks, x => x.Id == appointment.Id));
+                Assert.Equal(appointment.AppointmentDate, cachedAppointment.AppointmentDate);
+                Assert.Equal(appointment.AppointmentLocation, cachedAppointment.AppointmentLocation);
             }
 
             using TestServices restarted = await StartServicesAsync();
