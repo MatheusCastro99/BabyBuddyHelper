@@ -4,19 +4,12 @@ using BabyBuddyHelper.Core.Models;
 namespace BabyBuddyHelper.Tests.Infrastructure
 {
     //Checks on the test host itself. If one of these fails, the other test classes can't be trusted.
-    public class TestHostTests : IDisposable
+    public class TestHostTests : DatabaseTest
     {
-        private readonly TestDatabase _database = new();
-
-        public void Dispose()
-        {
-            _database.Dispose();
-        }
-
         [Fact]
         public async Task StartAsync_NewDatabase_StartsEmpty()
         {
-            using TestServices services = await TestServices.StartAsync(_database);
+            using TestServices services = await StartServicesAsync();
 
             Assert.Empty(services.BabyProfiles.BabyProfiles);
             Assert.Empty(services.Tasks.Tasks);
@@ -28,12 +21,12 @@ namespace BabyBuddyHelper.Tests.Infrastructure
         {
             var task = new TaskModel(1, "Buy crib", "Check the safety rating");
 
-            using (TestServices services = await TestServices.StartAsync(_database))
+            using (TestServices services = await StartServicesAsync())
             {
                 await services.Tasks.AddAsync(task);
             }
 
-            using TestServices restarted = await TestServices.StartAsync(_database);
+            using TestServices restarted = await StartServicesAsync();
 
             TaskModel stored = Assert.Single(restarted.Tasks.Tasks);
             Assert.Equal(task.Id, stored.Id);
@@ -44,7 +37,7 @@ namespace BabyBuddyHelper.Tests.Infrastructure
         public async Task StartAsync_SeparateDatabases_ShareNothing()
         {
             using var otherDatabase = new TestDatabase();
-            using TestServices services = await TestServices.StartAsync(_database);
+            using TestServices services = await StartServicesAsync();
             using TestServices otherServices = await TestServices.StartAsync(otherDatabase);
 
             await services.Tasks.AddAsync(new TaskModel(1, "Buy crib", "Check the safety rating"));
@@ -58,7 +51,7 @@ namespace BabyBuddyHelper.Tests.Infrastructure
         [Fact]
         public async Task Database_RecordForMissingBaby_IsRejected()
         {
-            using TestServices services = await TestServices.StartAsync(_database);
+            using TestServices services = await StartServicesAsync();
             var record = new VaccinationRecordModel { BabyId = Guid.NewGuid(), VaccineId = Guid.NewGuid() };
 
             await Assert.ThrowsAsync<DbCommunicationException>(() => services.Vaccines.AddAsync(record));
