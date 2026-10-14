@@ -64,6 +64,7 @@ Documentation rules
 Branching and commits
 ---------------------
 - Use a short feature branch for multi-file edits.
+- Branch names describe the change: `<type>/<short-topic>`, e.g. `deps/anthropic-12.56.0`, `fix/scheduler-timezone`, `docs/branch-naming-rule`. Never use auto-generated names (e.g. `claude/nifty-thompson-xxxx`); if a session or tool assigns one, rename before pushing or ask the maintainer.
 - Provide a clear commit message summarizing intent and files changed.
 
 Safety and secrets
@@ -83,3 +84,4 @@ Change log
 - 2026-10-08 (#95): Added the Remote/ placement rule (ADR-015, ADR-017).
 - 2026-10-08 (#100): Core/Storage added to the layer list.
 - 2026-10-09 (#104): Added the test command, the tests-with-Core-changes rule and the test placement rule (ADR-018).
+- 2026-10-14: Added the branch naming rule (descriptive names, no auto-generated ones).
