@@ -117,7 +117,7 @@
 		     Claude client (#96) depend on them. Nothing references the Anthropic SDK yet. -->
 		<PackageReference Include="Anthropic" Version="12.55.0" />
 		<PackageReference Include="CommunityToolkit.Maui" Version="15.0.1" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="10.0.12" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="10.0.13" />
 		<PackageReference Include="Microsoft.Maui.Controls" Version="10.0.110" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="10.0.13" />
 		<!-- SkiaSharp.Extended.UI.Maui 3.0.0 targets .NET 9 and pulls in the 9.x Compatibility package, which breaks the Windows build.
