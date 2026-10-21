@@ -65,7 +65,14 @@ namespace BabyBuddyHelper
                 Syncfusion.Licensing.SyncfusionLicenseProvider
                 .RegisterLicense(BuildSecrets.SyncfusionLicense);
 
-                Debug.WriteLine("Syncfusion license registered.");
+                //RegisterLicense only stores the key; Syncfusion checks it when the first control loads.
+                //Keys are valid for one major version, so a package upgrade can silently invalidate it (#118).
+                bool isValid = Syncfusion.Licensing.SyncfusionLicenseProvider
+                .ValidateLicense([Syncfusion.Licensing.Platform.MAUI], out string message);
+
+                Debug.WriteLine(isValid
+                    ? "Syncfusion license registered and valid."
+                    : $"Syncfusion license rejected: {message}");
             }
             catch (Exception ex)
             {

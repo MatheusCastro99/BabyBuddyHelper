@@ -394,6 +394,12 @@ Do NOT copy .env to output directory.
 
 These approaches were removed due to security concerns.
 
+## Syncfusion license key:
+
+A Syncfusion key is valid for one major version only. A major upgrade (Dependabot included) needs a new key in `.env` and in the `SYNCFUSION_LICENSE` GitHub secret, or the calendar page shows a license alert (#118).
+
+At startup, `MauiProgram` validates the registered key and writes the result to the debug output (Syncfusion's message when it is rejected, never the key).
+
 ## Preferred pattern:
 
 Development
