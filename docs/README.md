@@ -316,6 +316,8 @@ dotnet restore
 dotnet build
 ```
 
+The build compiles the Syncfusion license from `SYNCFUSION_LICENSE` in `.env` (or the environment variable in CI). A key is valid for one Syncfusion major version only, so a major package upgrade needs a new key.
+
 ### Test
 
 ```bash
