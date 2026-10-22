@@ -92,6 +92,7 @@ UI/Controls/
 
 - CompanionView
 - CubSettingsPopup
+- ChatItemTemplateSelector.cs
 - ToastView
 - PaletteSwitchView
 - CubView.cs
@@ -169,6 +170,10 @@ Details that the code doesn't explain on its own. Moved from the retired `AI_CON
 ### Chat page
 
 - `ChatPage` only asks the key store whether a key exists and never reads the key. The conversation is never stored.
+- Replies come through `ICubChatClient` only (ADR-017). `MainPage` passes the chat client and the baby, filter, vaccine and catalog services to the page; the page never references `Remote/`.
+- The "Chatting about" picker is read when a message is sent, so a change applies from the next message. "General advice" sends no baby data; a picked baby is turned into a `BabyChatContext` at that moment.
+- The page keeps two lists: the items it shows (parent, Cub, thinking, failure) and the turns it sends (answered messages and their replies only). A message that failed is never sent again.
+- Leaving the page (a pop) cancels a reply still on its way, and a late reply is dropped. Opening the settings popup is a modal push, so it doesn't.
 - The settings popup (`CubSettingsPopup`) is shown as a modal page, so `ChatPage.OnAppearing` runs again when it closes. Keep that: it is how the page picks up a key saved or removed there.
 - On Android the page switches the window to resize above the keyboard while it shows, and back to the default when it goes away.
 - On Windows, focus returns to the message box after Send through the native control, because MAUI's `IsFocused` is stale there and `Focus()` does nothing.

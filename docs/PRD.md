@@ -110,13 +110,14 @@ BabyBuddyHelper/
 │   │   ├── BabyProfilePage.xaml(.cs) - Read-only baby profile with the vaccine list, each vaccine's status, and disclaimer; entry point for edit and delete, and for vaccine records
 │   │   ├── AddVaccineRecordPage.xaml(.cs) - Vaccination record creation / edit / remove interface
 │   │   ├── CalendarPage.xaml(.cs) - Calendar visual of appointments
-│   │   └── ChatPage.xaml(.cs) - Chat with Cub: setup state without a key, conversation and message box with one (Cub does not answer yet)
+│   │   └── ChatPage.xaml(.cs) - Chat with Cub: setup state without a key; with one, the "Chatting about" baby picker, the conversation with Cub's replies, and the message box
 │   ├── Controls/
 │   │   ├── CompanionView.xaml(.cs) - Companion character card
 │   │   ├── CubView.cs - Cub, the animated companion, shared by the card and the toasts
 │   │   ├── ToastView.xaml(.cs) - Companion-themed toast feedback
 │   │   ├── PaletteSwitchView.xaml(.cs) - Boy / girl palette switch
 │   │   ├── CubSettingsPopup.xaml(.cs) - Cub's settings popup: enter, replace or remove the user's API key
+│   │   ├── ChatItemTemplateSelector.cs - Picks the chat's parent bubble, Cub bubble, thinking line or failure line
 │   │   └── KeyboardFocusRing.cs - Focus ring for keyboard users
 │   ├── Services/
 │   │   ├── ToastService.cs - Toast feedback for successful actions
@@ -141,7 +142,7 @@ BabyBuddyHelper/
 ## External Resources
 - **Database**: SQLite via EF Core (local persistence active); cloud synchronization remains deferred
 - **Cloud Services**: None currently; candidate for Azure migration
-- **APIs**: None currently
+- **APIs**: the Anthropic Messages API (Claude Haiku 5.5), only when the caregiver writes to Cub, on the caregiver's own key (ADR-017)
 
 ## Original Estimate (Phase 1 prototype)
 Kept as a historical record. It covers the original prototype only, not later phases.

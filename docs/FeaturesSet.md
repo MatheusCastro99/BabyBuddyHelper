@@ -32,7 +32,9 @@
 
 ✅ Toast Messages confirming user actions
 
-✅ "Talk to Cub" chat page and Cub's settings (the caregiver's own Claude API key, kept in the device's secure storage; Cub does not answer yet)
+✅ "Talk to Cub" chat page and Cub's settings (the caregiver's own Claude API key, kept in the device's secure storage)
+
+✅ Cub answers in the chat (Claude Haiku 5.5, on the caregiver's own key) within fixed guidelines: general tips, never a diagnosis or dosage, a firm "contact emergency services now" for emergencies. Cub knows about one baby only when the caregiver picks it; the chat is never stored
 
 ✅ Linking tasks and appointments to baby profiles
 
@@ -61,8 +63,6 @@
 ## Planned Features:
 
 Companion comes to life with an AI-driven personality and interactions
-
-Evolve companion into a helpful and supportive AI agent for parenting guidance (not a doctor or therapist)
 
 App store release for mobile and desktop
 
