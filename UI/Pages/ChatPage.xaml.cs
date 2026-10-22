@@ -89,8 +89,34 @@ public partial class ChatPage : ContentPage
 
         SetupState.IsVisible = !hasKey;
         ChatState.IsVisible = hasKey;
-        CubTagline.IsVisible = !hasKey;
-        BabyPickerRow.IsVisible = hasKey;
+        TalkingAboutLabel.IsVisible = hasKey;
+        BabyPicker.IsVisible = hasKey;
+        LayOutCubHeading();
+    }
+
+    private void OnCubHeadingSizeChanged(object? sender, EventArgs e) => LayOutCubHeading();
+
+    private void OnBabyPickerSelectedIndexChanged(object? sender, EventArgs e) => LayOutCubHeading(); //A longer name may no longer fit
+
+    //"Cub – is talking about: [picker]" stays on one line while it fits. On a narrow card (a phone) the picker moves onto its
+    //own line under it, instead of being squeezed out of sight, and the tagline moves down one row
+    private void LayOutCubHeading()
+    {
+        if (!BabyPicker.IsVisible || CubHeading.Width <= 0)
+        {
+            return;
+        }
+
+        double lineWidth = CubName.Measure(double.PositiveInfinity, double.PositiveInfinity).Width
+            + TalkingAboutLabel.Measure(double.PositiveInfinity, double.PositiveInfinity).Width
+            + BabyPicker.Measure(double.PositiveInfinity, double.PositiveInfinity).Width
+            + 2 * CubHeading.ColumnSpacing;
+        bool fits = lineWidth <= CubHeading.Width;
+
+        Grid.SetRow(BabyPicker, fits ? 0 : 1);
+        Grid.SetColumn(BabyPicker, fits ? 2 : 0);
+        Grid.SetColumnSpan(BabyPicker, fits ? 1 : 3);
+        Grid.SetRow(CubTagline, fits ? 1 : 2);
     }
 
     private void OnMessageTextChanged(object? sender, TextChangedEventArgs e) => UpdateSendButton();

@@ -86,22 +86,35 @@
                         <controls:CubView SemanticProperties.Description="Cub, your companion" />
                     </Border>
 
-                    <VerticalStackLayout Grid.Column="1" Spacing="4" VerticalOptions="Center">
-                        <Label Text="Cub" Style="{StaticResource SectionTitle}" />
-                        <Label x:Name="CubTagline" IsVisible="False" Text="Here for everyday tips and a kind word." Style="{StaticResource BodyText}" />
+                    <!--Reads "Cub – is talking about: [picker]" over the tagline. Without a key there is nothing to pick, so the first line is just "Cub".
+                        When that line doesn't fit (a phone), the picker drops onto its own line under it (LayOutCubHeading).
+                        What Cub may know about: nothing ("General advice", the default) or one baby. A change applies from the next message.
+                        The page reads the choice when a message is sent, so nothing about the baby leaves the device until then (ADR-017)-->
+                    <Grid x:Name="CubHeading"
+                          Grid.Column="1"
+                          RowDefinitions="Auto,Auto,Auto"
+                          ColumnDefinitions="Auto,Auto,*"
+                          ColumnSpacing="8"
+                          RowSpacing="4"
+                          VerticalOptions="Center"
+                          SizeChanged="OnCubHeadingSizeChanged">
+                        <Label x:Name="CubName" Text="Cub" Style="{StaticResource SectionTitle}" VerticalOptions="Center" />
+                        <Label x:Name="TalkingAboutLabel"
+                               Grid.Column="1"
+                               IsVisible="False"
+                               Text="– is talking about:"
+                               Style="{StaticResource BodyText}"
+                               VerticalOptions="Center" />
+                        <Picker x:Name="BabyPicker"
+                                Grid.Column="2"
+                                IsVisible="False"
+                                HorizontalOptions="Start"
+                                VerticalOptions="Center"
+                                SemanticProperties.Description="Which baby Cub can know about"
+                                SelectedIndexChanged="OnBabyPickerSelectedIndexChanged" />
 
-                        <!--With a key, the picker takes the tagline's place and the card reads "Cub / is talking about: …".
-                            What Cub may know about: nothing ("General advice", the default) or one baby. A change applies from the next message.
-                            The page reads the choice when a message is sent, so nothing about the baby leaves the device until then (ADR-017).
-                            It wraps under its label when the card is narrow-->
-                        <FlexLayout x:Name="BabyPickerRow" IsVisible="False" Wrap="Wrap" AlignItems="Center">
-                            <Label Text="is talking about:" Style="{StaticResource BodyText}" Margin="0,0,8,0" FlexLayout.Shrink="0" />
-                            <Picker x:Name="BabyPicker"
-                                    MinimumWidthRequest="170"
-                                    VerticalOptions="Center"
-                                    SemanticProperties.Description="Which baby Cub can know about" />
-                        </FlexLayout>
-                    </VerticalStackLayout>
+                        <Label x:Name="CubTagline" Grid.Row="1" Grid.ColumnSpan="3" Text="Here for everyday tips and a kind word." Style="{StaticResource BodyText}" />
+                    </Grid>
 
                     <!--48x48 touch area (the Android minimum) around a ~22px icon, drawn in a mid-tone of the current palette like the edit and trash icons-->
                     <ImageButton Grid.Column="2"
