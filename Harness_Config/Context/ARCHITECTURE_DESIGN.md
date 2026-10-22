@@ -29,6 +29,8 @@ Core/Models/
 - BabyModel.cs
 - VaccineModel.cs
 - VaccinationRecordModel.cs
+- ChatTurn.cs
+- BabyChatContext.cs
 
 Core/Services/
 
@@ -38,6 +40,7 @@ Core/Services/
 - TrackerDataSeeder.cs
 - VaccineCatalog.cs
 - VaccineService.cs
+- CubGuidelines.cs
 
 Core/Interfaces/
 
@@ -48,6 +51,7 @@ Core/Interfaces/
 - IVaccineCatalog.cs
 - IVaccineService.cs
 - IApiKeyStore.cs
+- ICubChatClient.cs
 
 Core/Persistence/
 
@@ -62,6 +66,7 @@ Core/Exceptions/
 
 - DbCommunicationException.cs
 - KeyStorageException.cs
+- CubUnavailableException.cs
 
 Core/Storage/
 
