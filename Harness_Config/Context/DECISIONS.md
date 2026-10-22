@@ -311,4 +311,4 @@ Reason:
 - Rules in `Core` keep ADR-017's path thin: the provider client holds no product decisions.
 - Caregivers' data is personal. Sharing only the picked baby, only after consent, and never fast-changing routine data keeps the caregiver in control and the context accurate.
 
-Status: Proposed (draft for the owner's decision at G2).
+Status: Accepted, current.

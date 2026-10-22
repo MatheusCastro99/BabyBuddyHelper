@@ -21,6 +21,7 @@ Docs are read when the work needs them, never all up front.
 - `Harness_Config/Context/ARCHITECTURE_DESIGN.md` — layers, data flow, persistence
 - `Harness_Config/Context/UI_GUIDELINES.md` — the UI authority (essentials in `.claude/rules/ui.md`)
 - `Harness_Config/Context/ROADMAP.md` — phases and what comes next
+- `Harness_Config/Context/CUB_GUIDELINES_CHECKLIST.md` — the questions Cub's rules are checked against by hand, with a real key (ADR-019)
 - `docs/README.md`, `docs/FeaturesSet.md`, `docs/PRD.md`, `docs/ProjectVision.md` — the public project docs
 
 ## Commands
