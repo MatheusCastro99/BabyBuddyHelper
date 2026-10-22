@@ -10,6 +10,7 @@
   - Collections/
   - Exceptions/
   - Storage/
+- Remote/
 - UI/
   - Pages/
   - Controls/
@@ -29,6 +30,8 @@ Core/Models/
 - BabyModel.cs
 - VaccineModel.cs
 - VaccinationRecordModel.cs
+- ChatTurn.cs
+- BabyChatContext.cs
 
 Core/Services/
 
@@ -38,6 +41,7 @@ Core/Services/
 - TrackerDataSeeder.cs
 - VaccineCatalog.cs
 - VaccineService.cs
+- CubGuidelines.cs
 
 Core/Interfaces/
 
@@ -48,6 +52,7 @@ Core/Interfaces/
 - IVaccineCatalog.cs
 - IVaccineService.cs
 - IApiKeyStore.cs
+- ICubChatClient.cs
 
 Core/Persistence/
 
@@ -62,10 +67,15 @@ Core/Exceptions/
 
 - DbCommunicationException.cs
 - KeyStorageException.cs
+- CubUnavailableException.cs
 
 Core/Storage/
 
 - SecureApiKeyStore.cs
+
+Remote/ (off-device implementations only; only `MauiProgram` references it, ADR-015 and ADR-017)
+
+- ClaudeCubChatClient.cs
 
 UI/Pages/
 
@@ -82,6 +92,7 @@ UI/Controls/
 
 - CompanionView
 - CubSettingsPopup
+- ChatItemTemplateSelector.cs
 - ToastView
 - PaletteSwitchView
 - CubView.cs
@@ -119,11 +130,11 @@ UI/Converters/
 - IsAppointmentModelConverter.cs
 - VaccineTagConverter.cs
 
-test/BabyBuddyHelper.Tests/ (a separate plain `net10.0` xUnit project; it links the `Core/` sources instead of referencing the app, leaving out `SecureApiKeyStore.cs`; ADR-018)
+test/BabyBuddyHelper.Tests/ (a separate plain `net10.0` xUnit project; it links the `Core/` and `Remote/` sources instead of referencing the app, leaving out `SecureApiKeyStore.cs`; ADR-018)
 
-- Infrastructure/: TestDatabase.cs, TestServices.cs, DatabaseTest.cs, TestData.cs, TestHostTests.cs
-- Services/: TaskCrudTests.cs, TaskConversionTests.cs, TaskSortingTests.cs, TaskFilteringTests.cs, BabyProfileCrudTests.cs, BabyRemovalTests.cs, BabyMeasurementDateTests.cs, BabyFilterServiceTests.cs, VaccinationRecordCrudTests.cs, CollidingDataTests.cs
-- Models/: TaskModelTests.cs, VaccinationRecordFlagTests.cs
+- Infrastructure/: TestDatabase.cs, TestServices.cs, DatabaseTest.cs, TestData.cs, TestHostTests.cs, FakeAnthropicHandler.cs, FakeApiKeyStore.cs
+- Services/: TaskCrudTests.cs, TaskConversionTests.cs, TaskSortingTests.cs, TaskFilteringTests.cs, BabyProfileCrudTests.cs, BabyRemovalTests.cs, BabyMeasurementDateTests.cs, BabyFilterServiceTests.cs, VaccinationRecordCrudTests.cs, CollidingDataTests.cs, CubGuidelinesTests.cs, ClaudeCubChatClientTests.cs
+- Models/: TaskModelTests.cs, VaccinationRecordFlagTests.cs, BabyChatContextTests.cs
 
 See the data-flow diagram: [DataFlow.excalidraw](../../docs/DataFlow.excalidraw)
 
@@ -131,7 +142,7 @@ See the data-flow diagram: [DataFlow.excalidraw](../../docs/DataFlow.excalidraw)
 
 The layered Core/UI layout is current (ADR-015). When further redesign becomes necessary, Service-based, Feature-based, and Modular organization are candidates (ADR-005); none is scheduled on the roadmap.
 
-Planned in Phase 5: a root-level `Remote/` folder for off-device implementations (clients for external services, their DTOs and mapping). Contracts stay in `Core/Interfaces`, and only `MauiProgram` references `Remote/`. The rule is recorded in ADR-015 and ADR-017. The folder does not exist yet; its first file arrives with the Claude client in #96.
+The root-level `Remote/` folder holds off-device implementations (clients for external services, their DTOs and mapping). Contracts stay in `Core/Interfaces`, and only `MauiProgram` references `Remote/`. The rule is recorded in ADR-015 and ADR-017. Its first file is the Claude client for Cub's chat (`ClaudeCubChatClient`, #96).
 
 ## Platform notes
 
@@ -159,7 +170,12 @@ Details that the code doesn't explain on its own. Moved from the retired `AI_CON
 ### Chat page
 
 - `ChatPage` only asks the key store whether a key exists and never reads the key. The conversation is never stored.
+- Replies come through `ICubChatClient` only (ADR-017). `MainPage` passes the chat client and the baby, filter, vaccine and catalog services to the page; the page never references `Remote/`.
+- The baby picker in Cub's card ("is talking about:") is read when a message is sent, so a change applies from the next message. "General advice" sends no baby data; a picked baby is turned into a `BabyChatContext` at that moment.
+- The page keeps two lists: the items it shows (parent, Cub, thinking, failure) and the turns it sends (answered messages and their replies only). A message that failed is never sent again.
+- Leaving the page (a pop, a pop to the tab's root, or a removal) cancels a reply still on its way, and a late reply is dropped. Opening the settings popup is a modal push and switching tabs is a replace, so neither does: the chat is still there when the parent comes back.
 - The settings popup (`CubSettingsPopup`) is shown as a modal page, so `ChatPage.OnAppearing` runs again when it closes. Keep that: it is how the page picks up a key saved or removed there.
+- `CubSettingsPopup` shows the consent confirm before every `SaveKeyAsync`, a replace included. "Not now" returns before anything is stored. Keys saved before #96 never saw it.
 - On Android the page switches the window to resize above the keyboard while it shows, and back to the default when it goes away.
 - On Windows, focus returns to the message box after Send through the native control, because MAUI's `IsFocused` is stale there and `Focus()` does nothing.
 

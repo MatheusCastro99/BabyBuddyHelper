@@ -13,6 +13,8 @@ namespace BabyBuddyHelper.UI.Pages
         private readonly IVaccineCatalog _vaccineCatalog;
         private readonly IVaccineService _vaccineService;
         private readonly IApiKeyStore _apiKeyStore;
+        private readonly ICubChatClient _cubChatClient;
+        private readonly IBabyFilterService _babyFilterService;
         private DateTime currentDate;
         private bool _isNavigating;
 
@@ -46,7 +48,8 @@ namespace BabyBuddyHelper.UI.Pages
             var count => $"{count} done"
         };
 
-        public MainPage(ITaskListService taskListService, IBabyProfileService babyProfileService, IVaccineCatalog vaccineCatalog, IVaccineService vaccineService, IApiKeyStore apiKeyStore)
+        public MainPage(ITaskListService taskListService, IBabyProfileService babyProfileService, IVaccineCatalog vaccineCatalog, IVaccineService vaccineService, IApiKeyStore apiKeyStore,
+            ICubChatClient cubChatClient, IBabyFilterService babyFilterService)
         {
             InitializeComponent();
 
@@ -55,6 +58,8 @@ namespace BabyBuddyHelper.UI.Pages
             _vaccineCatalog = vaccineCatalog;
             _vaccineService = vaccineService;
             _apiKeyStore = apiKeyStore;
+            _cubChatClient = cubChatClient;
+            _babyFilterService = babyFilterService;
             BabyProfiles = babyProfileService.BabyProfiles;
 
             _taskListService.Tasks.CollectionChanged += (_, _) => RefreshDashboardState();
@@ -157,7 +162,8 @@ namespace BabyBuddyHelper.UI.Pages
         }
 
         //The chat is a pushed page like the profile (ADR-016). It starts empty every time: the conversation isn't kept
-        private async void OnTalkToCubRequested(object? sender, EventArgs e) => await PushOnceAsync(() => new ChatPage(_apiKeyStore));
+        private async void OnTalkToCubRequested(object? sender, EventArgs e) => await PushOnceAsync(() =>
+            new ChatPage(_apiKeyStore, _cubChatClient, _babyProfileService, _babyFilterService, _vaccineService, _vaccineCatalog));
 
         //A double-click, or a click on the button that also reaches the card, can ask twice. The flag covers the
         //push while it's in flight; the stack check covers a late second request after it landed.

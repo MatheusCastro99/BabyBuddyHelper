@@ -13,6 +13,14 @@ namespace BabyBuddyHelper.UI.Controls
     {
         static readonly Uri HowToGetKeyUrl = new("https://platform.claude.com/settings/keys");
 
+        //Neutral and in the app's voice, not Cub's (ADR-013). It lists exactly what BabyChatContext and the chat send (#96)
+        const string ConsentTitle = "Before Cub can chat";
+        const string ConsentMessage =
+            "When you write to Cub, this goes to Anthropic, the company behind Claude, using your key:\n"
+            + "• your messages in this chat\n"
+            + "• if you pick a baby: their name, age, height, weight and vaccines\n"
+            + "Feeds and sleeps are never sent. Anthropic bills your key for each reply. This app doesn't keep the chat once you close it.";
+
         readonly IApiKeyStore _apiKeyStore;
         readonly Page _hostPage; //Alerts and confirmations are raised from the page the popup sits on
         readonly bool _hasKey;
@@ -63,6 +71,13 @@ namespace BabyBuddyHelper.UI.Controls
 
             try
             {
+                //Every save asks first, a replace included: the user is told what is sent before anything can be (ADR-017).
+                //"Not now" stores nothing and leaves the popup as it was
+                if (!await _hostPage.DisplayAlertAsync(ConsentTitle, ConsentMessage, "Save key", "Not now"))
+                {
+                    return;
+                }
+
                 await _apiKeyStore.SaveKeyAsync(key);
             }
             catch (KeyStorageException) //Nothing was stored, so a key saved earlier is still the one in place

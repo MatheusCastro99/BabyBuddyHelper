@@ -68,14 +68,17 @@ BabyBuddyHelper/
 │   │   ├── AppointmentModel.cs - Data model for appointments (extends tasks)
 │   │   ├── BabyModel.cs - Data model for baby profiles (age computed from date of birth)
 │   │   ├── VaccineModel.cs - Data model for one vaccine in the built-in catalog
-│   │   └── VaccinationRecordModel.cs - Data model for one baby's doses and dates for one vaccine
+│   │   ├── VaccinationRecordModel.cs - Data model for one baby's doses and dates for one vaccine
+│   │   ├── ChatTurn.cs - One message of the chat with Cub, kept in memory only
+│   │   └── BabyChatContext.cs - What Cub may know about the baby picked in the chat (never the birth date, feeds or sleeps)
 │   ├── Services/
 │   │   ├── TaskListService.cs - In-memory cache and single source of truth for tasks and appointments
 │   │   ├── BabyProfileService.cs - In-memory cache and single source of truth for baby profiles
 │   │   ├── BabyFilterService.cs - Baby selection options shared by the checklist, calendar and task entry
 │   │   ├── TrackerDataSeeder.cs - Debug-only mock data seeding
 │   │   ├── VaccineCatalog.cs - Fixed US CDC vaccine list (birth to 6 years), no database access
-│   │   └── VaccineService.cs - In-memory cache and single source of truth for vaccination records
+│   │   ├── VaccineService.cs - In-memory cache and single source of truth for vaccination records
+│   │   └── CubGuidelines.cs - Cub's fixed chat rules, the baby block, and the reply and history caps
 │   ├── Interfaces/
 │   │   ├── ITaskListService.cs - Interface for TaskListService
 │   │   ├── IBabyProfileService.cs - Interface for BabyProfileService
@@ -83,7 +86,8 @@ BabyBuddyHelper/
 │   │   ├── ITrackerDbService.cs - Persistence boundary, used only by the cache services
 │   │   ├── IVaccineCatalog.cs - Interface for VaccineCatalog
 │   │   ├── IVaccineService.cs - Interface for VaccineService
-│   │   └── IApiKeyStore.cs - Contract for keeping the user's own AI provider key in the device's secure storage
+│   │   ├── IApiKeyStore.cs - Contract for keeping the user's own AI provider key in the device's secure storage
+│   │   └── ICubChatClient.cs - Contract for Cub's chat replies (the off-device path, ADR-017)
 │   ├── Persistence/
 │   │   ├── TrackerContext.cs - EF Core SQLite database context
 │   │   └── EfTrackerDbService.cs - EF Core + SQLite implementation of ITrackerDbService
@@ -91,9 +95,12 @@ BabyBuddyHelper/
 │   │   └── RangeObservableCollection.cs - ObservableCollection that adds many items with one notification
 │   ├── Exceptions/
 │   │   ├── DbCommunicationException.cs - Raised when the local database can't be read or written
-│   │   └── KeyStorageException.cs - Raised when the device's secure storage can't save or remove the user's key
+│   │   ├── KeyStorageException.cs - Raised when the device's secure storage can't save or remove the user's key
+│   │   └── CubUnavailableException.cs - Raised when Cub can't answer (no key, no network, or the provider refusing)
 │   └── Storage/
 │       └── SecureApiKeyStore.cs - Secure-storage implementation of IApiKeyStore (the user's Claude API key)
+├── Remote/
+│   └── ClaudeCubChatClient.cs - Cub's chat replies from Claude (Haiku 5.5) on the user's own key
 ├── UI/
 │   ├── Pages/
 │   │   ├── MainPage.xaml(.cs) - Due date countdown and home dashboard
@@ -103,13 +110,14 @@ BabyBuddyHelper/
 │   │   ├── BabyProfilePage.xaml(.cs) - Read-only baby profile with the vaccine list, each vaccine's status, and disclaimer; entry point for edit and delete, and for vaccine records
 │   │   ├── AddVaccineRecordPage.xaml(.cs) - Vaccination record creation / edit / remove interface
 │   │   ├── CalendarPage.xaml(.cs) - Calendar visual of appointments
-│   │   └── ChatPage.xaml(.cs) - Chat with Cub: setup state without a key, conversation and message box with one (Cub does not answer yet)
+│   │   └── ChatPage.xaml(.cs) - Chat with Cub: setup state without a key; with one, the baby picker in Cub's card ("is talking about:"), the conversation with Cub's replies, and the message box
 │   ├── Controls/
 │   │   ├── CompanionView.xaml(.cs) - Companion character card
 │   │   ├── CubView.cs - Cub, the animated companion, shared by the card and the toasts
 │   │   ├── ToastView.xaml(.cs) - Companion-themed toast feedback
 │   │   ├── PaletteSwitchView.xaml(.cs) - Boy / girl palette switch
 │   │   ├── CubSettingsPopup.xaml(.cs) - Cub's settings popup: enter, replace or remove the user's API key
+│   │   ├── ChatItemTemplateSelector.cs - Picks the chat's parent bubble, Cub bubble, thinking line or failure line
 │   │   └── KeyboardFocusRing.cs - Focus ring for keyboard users
 │   ├── Services/
 │   │   ├── ToastService.cs - Toast feedback for successful actions
@@ -124,7 +132,7 @@ BabyBuddyHelper/
 ├── Platforms/ - Platform-specific implementations
 ├── Properties/ - Launch settings
 ├── test/
-│   └── BabyBuddyHelper.Tests/ - xUnit tests for Core/ (a separate project that links the Core sources)
+│   └── BabyBuddyHelper.Tests/ - xUnit tests for Core/ and Remote/ (a separate project that links their sources; the network is a fake)
 ├── App.xaml(.cs) - Application entry and startup data loading
 ├── AppShell.xaml(.cs) - Tab navigation (Home, Checklist, Calendar)
 ├── MauiProgram.cs - Application configuration and dependency injection
@@ -134,7 +142,7 @@ BabyBuddyHelper/
 ## External Resources
 - **Database**: SQLite via EF Core (local persistence active); cloud synchronization remains deferred
 - **Cloud Services**: None currently; candidate for Azure migration
-- **APIs**: None currently
+- **APIs**: the Anthropic Messages API (Claude Haiku 5.5), only when the caregiver writes to Cub, on the caregiver's own key (ADR-017)
 
 ## Original Estimate (Phase 1 prototype)
 Kept as a historical record. It covers the original prototype only, not later phases.

@@ -277,7 +277,13 @@ Should answer:
 
 With no key saved, the page shows a gentle setup state, never an error. The chat looks like the rest of the app (cards, Cub, warm copy), not an AI console.
 
+Cub's card reads "Cub – is talking about: [picker]" over its tagline, "Here for everyday tips and a kind word." The picker offers "General advice" (the default) or one baby by name, and its screen-reader text is "Which baby Cub can know about". When that first line doesn't fit (a phone), the picker moves onto its own line under it. Without a key there is nothing to pick, so the first line is just "Cub". The parent's messages are on the right (BabyBuddySecondary, RoundRectangle 18,18,18,6) and Cub's replies on the left (BabyBuddySurface, RoundRectangle 18,18,6,18), both in PrimaryDarkText, with 16 of space between messages; screen readers hear "You said: …" and "Cub said: …". While a reply is on its way, "Cub is thinking…" shows on the left and Send waits.
+
+When Cub can't answer, one neutral line takes the thinking line's place: "Cub couldn't answer just now. Check your connection and key, then try again." It is not an alert and not in Cub's voice (ADR-013), and the rest of the app keeps working.
+
 Settings live behind the gear in a small popup. A saved key is never shown again: only a "Key safely stored" line remains. A mistyped key gets a calm inline hint, not an alert. Replace and Remove ask first.
+
+Every key save, a replace included, first shows a neutral confirm, "Before Cub can chat", that lists what goes to Anthropic: the messages in the chat and, if a baby is picked, their name, age, height, weight and vaccines. It also says feeds and sleeps are never sent, that Anthropic bills the key for each reply, and that the chat isn't kept. "Save key" stores the key; "Not now" stores nothing and leaves the popup as it was. Like the failure line, it is in the app's voice, not Cub's (ADR-013).
 
 ---
 

@@ -12,7 +12,7 @@
 
 BabyBuddyHelper is a cross-platform parenting companion built with .NET MAUI. Today, it helps parents and caregivers organize tasks, track appointments, manage baby profiles, and visualize schedules through checklist and calendar experiences.
 
-The project is currently a functional prototype in active development. Phase 4 (vaccine tracker) and its follow-ups are concluded. Phase 5 started with a dual UI mode: a boy / girl palette in place of a light / dark mode. It continues by bringing the companion to life: interactive animations and the groundwork for the AI helper (shipped), the chat page and the settings for the caregiver's own API key (shipped; Cub does not answer yet), then a carefully scoped AI helper and a light personality adjustment. Phase 6 then prepares the first release: mobile targets in CI, a mobile UI/UX polish pass, EF Core migrations, then deployment and distribution. The shipped task, appointment, baby-profile, vaccine, and filtering experience stays as it is.
+The project is currently a functional prototype in active development. Phase 4 (vaccine tracker) and its follow-ups are concluded. Phase 5 started with a dual UI mode: a boy / girl palette in place of a light / dark mode. It continues by bringing the companion to life: interactive animations and the groundwork for the AI helper (shipped), the chat page and the settings for the caregiver's own API key (shipped), a carefully scoped AI helper: Cub answers in the chat through Claude, on the caregiver's own key (shipped), then a light personality adjustment. Phase 6 then prepares the first release: mobile targets in CI, a mobile UI/UX polish pass, EF Core migrations, then deployment and distribution. The shipped task, appointment, baby-profile, vaccine, and filtering experience stays as it is.
 
 ## Vision and Experience
 
@@ -68,7 +68,7 @@ The current experience already includes an animated companion character (Cub wav
 - Companion character on MainPage
 - Cub is animated (Lottie): waves on MainPage and when tapped, dances on "Tell me something"
 - Companion-themed toast feedback for key user actions, with Cub clapping for a completion, nodding for an add or update, and staying still for a removal
-- "Talk to Cub" chat page, opened from the companion card (Cub does not answer yet)
+- "Talk to Cub" chat page, opened from the companion card: Cub answers everyday baby-care questions through Claude, on the caregiver's own key. A picker in Cub's card ("Cub is talking about: …") keeps it to general advice (the default) or shares one baby's name, age, height, weight and vaccines; feeds, sleeps and the birth date are never sent, and the chat is gone when the page closes
 - Cub's settings: the caregiver's own Claude API key, kept in the device's secure storage
 
 ### Filtering & Ordering
@@ -119,7 +119,7 @@ These capabilities are planned and are not included in the current prototype.
 - Syncfusion Scheduler
 - SkiaSharp.Extended.UI.Maui (Lottie animation for Cub)
 - CommunityToolkit.Maui
-- Anthropic C# SDK (referenced, not used yet)
+- Anthropic C# SDK (Cub's chat replies, in `Remote/`)
 
 ### Data
 
@@ -190,7 +190,9 @@ BabyBuddyHelper/
 │   │   ├── AppointmentModel.cs
 │   │   ├── BabyModel.cs
 │   │   ├── VaccineModel.cs
-│   │   └── VaccinationRecordModel.cs
+│   │   ├── VaccinationRecordModel.cs
+│   │   ├── ChatTurn.cs
+│   │   └── BabyChatContext.cs
 │   │
 │   ├── Services/
 │   │   ├── TaskListService.cs
@@ -198,7 +200,8 @@ BabyBuddyHelper/
 │   │   ├── BabyFilterService.cs
 │   │   ├── TrackerDataSeeder.cs
 │   │   ├── VaccineCatalog.cs
-│   │   └── VaccineService.cs
+│   │   ├── VaccineService.cs
+│   │   └── CubGuidelines.cs
 │   │
 │   ├── Interfaces/
 │   │   ├── ITaskListService.cs
@@ -207,7 +210,8 @@ BabyBuddyHelper/
 │   │   ├── ITrackerDbService.cs
 │   │   ├── IVaccineCatalog.cs
 │   │   ├── IVaccineService.cs
-│   │   └── IApiKeyStore.cs
+│   │   ├── IApiKeyStore.cs
+│   │   └── ICubChatClient.cs
 │   │
 │   ├── Persistence/
 │   │   ├── TrackerContext.cs
@@ -218,10 +222,14 @@ BabyBuddyHelper/
 │   │
 │   ├── Exceptions/
 │   │   ├── DbCommunicationException.cs
-│   │   └── KeyStorageException.cs
+│   │   ├── KeyStorageException.cs
+│   │   └── CubUnavailableException.cs
 │   │
 │   └── Storage/
 │       └── SecureApiKeyStore.cs
+│
+├── Remote/
+│   └── ClaudeCubChatClient.cs
 │
 ├── UI/
 │   ├── Pages/
@@ -237,6 +245,7 @@ BabyBuddyHelper/
 │   ├── Controls/
 │   │   ├── CompanionView.xaml(.cs)
 │   │   ├── CubSettingsPopup.xaml(.cs)
+│   │   ├── ChatItemTemplateSelector.cs
 │   │   ├── ToastView.xaml(.cs)
 │   │   ├── PaletteSwitchView.xaml(.cs)
 │   │   ├── CubView.cs
@@ -347,8 +356,8 @@ This project follows modern software engineering practices:
 ### Near Term (Phase 5)
 
 - Interactive companion (animations shipped) and AI groundwork (shipped)
-- Chat page and settings for the caregiver's own API key (shipped; Cub does not answer yet)
-- A carefully scoped AI helper: an optional chat with Cub for tips and basic questions, using the caregiver's own API key (not a doctor or therapist)
+- Chat page and settings for the caregiver's own API key (shipped)
+- A carefully scoped AI helper: an optional chat with Cub for tips and basic questions, using the caregiver's own API key (not a doctor or therapist) (shipped)
 - Light personality adjustment for the companion (conversational style and verbosity)
 
 ### Medium Term (Phase 6)

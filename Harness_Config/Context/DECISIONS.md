@@ -291,3 +291,24 @@ Reason:
 - A real provider call costs money, needs the user's key and answers differently each time, so it stays in the manual pass.
 
 Status: Accepted, current.
+
+### ADR-019
+
+Cub's chat replies come from one fixed Claude model, under rules fixed in the app, and Cub sees only what the caregiver chose to share (#96).
+
+Rules:
+- The model is fixed to Claude Haiku 5.5. There is no model setting.
+- Cub's rules, the baby context and the caps live in `Core` (`CubGuidelines`, `BabyChatContext`). `Remote/` only maps them to the provider's SDK, so they are tested without a provider and stay the same if the provider changes.
+- A reply is capped at 400 output tokens, and at most the last 20 turns are sent; the first turn sent is always the caregiver's.
+- With "General advice" (the default), no baby data is sent. A picked baby shares its name, age, height and weight (each with its date, "date unknown" or "not recorded") and a vaccine summary. The birth date, the last feed and the last sleep are never sent.
+- Every key save shows a consent confirm first, listing what is sent; declining stores nothing.
+- A failed reply shows one neutral inline line, not an alert and not in Cub's voice (ADR-013). The failed message is never sent again.
+- The chat is never stored. Leaving the page drops a reply still on its way.
+- The rules are checked by hand against `CUB_GUIDELINES_CHECKLIST.md` with a real key; the tests check that each rule is in the prompt.
+
+Reason:
+- The caregiver pays for each reply with their own key, so one small, fast model and a short reply keep the cost low and predictable.
+- Rules in `Core` keep ADR-017's path thin: the provider client holds no product decisions.
+- Caregivers' data is personal. Sharing only the picked baby, only after consent, and never fast-changing routine data keeps the caregiver in control and the context accurate.
+
+Status: Accepted, current.

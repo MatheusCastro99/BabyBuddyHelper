@@ -12,9 +12,11 @@
 
 	<!-- The app project targets platform frameworks only, so a plain net10.0 project can't reference it (#104).
 	     The Core/ source files are compiled into this project instead: a file added to Core/ is picked up with no edit here.
-	     SecureApiKeyStore is left out because it needs MAUI's SecureStorage. -->
+	     SecureApiKeyStore is left out because it needs MAUI's SecureStorage.
+	     Remote/ is linked the same way; its tests replace the network with a fake (ADR-018). -->
 	<ItemGroup>
 		<Compile Include="../../Core/**/*.cs" Exclude="../../Core/Storage/SecureApiKeyStore.cs" LinkBase="Core" />
+		<Compile Include="../../Remote/**/*.cs" LinkBase="Remote" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -22,7 +24,8 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<!-- Keep in step with the app project: the linked Core/ code is compiled against this version here -->
+		<!-- Keep in step with the app project: the linked Core/ and Remote/ code is compiled against these versions here -->
+		<PackageReference Include="Anthropic" Version="13.0.0" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="10.0.13" />
 		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.11.0" />
 		<PackageReference Include="xunit.v3" Version="4.0.2" />
