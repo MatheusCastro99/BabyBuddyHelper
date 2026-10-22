@@ -11,9 +11,9 @@ This is the checklist for judging a change against **this project's** rules rath
 
 Read these before judging anything. If a check below disagrees with them, the docs win. Say so in the output so the skill can be fixed.
 
-- `docs/ai/context/DECISIONS.md` (ADRs and their current status)
-- `docs/ai/AI_CONTEXT.md` (the WARNINGS sections especially)
-- `docs/ai/context/CURRENT_STATE.md` (what phase we're in, and what's intentionally unfinished)
+- `Harness_Config/Context/DECISIONS.md` (ADRs and their current status)
+- `Harness_Config/Context/ARCHITECTURE_DESIGN.md` (the Platform notes section especially)
+- `Harness_Config/Context/ROADMAP.md` (what phase we're in, and what's intentionally unfinished)
 
 An ADR marked "Pending" or "temporary" describes a target, not the current state. Don't report the gap as a defect unless the change under review claims to close it.
 
@@ -71,7 +71,7 @@ For each check, confirm it with evidence from the code (`file:line`), not from m
 
 <!-- Local skill copy updated for #26 database-first write behavior and the new bound-property regression trap. -->
 
-### Philosophy (AI_CONTEXT → Technical Philosophy)
+### Philosophy (standing rules in `.claude/CLAUDE.md`)
 - The following are **not** defects: no MVVM, no Repository pattern, no CQRS or MediatR, no Clean Architecture. Recommend one only when a concrete, present problem needs it, and name that problem.
 - Prefer the simplest change that fits. Speculative future-proofing is a finding in its own right.
 

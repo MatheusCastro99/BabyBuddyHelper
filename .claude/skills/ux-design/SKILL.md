@@ -9,7 +9,7 @@ This skill adds a UX lens on top of the session context. It produces a **recomme
 
 ## 1. Load context
 
-- `docs/ai/context/UI_GUIDELINES.md` is **the authority**: identity, principles, palette, typography, screen purposes. Don't restate it; apply it.
+- `Harness_Config/Context/UI_GUIDELINES.md` is **the authority**: identity, principles, palette, typography, screen purposes. Don't restate it; apply it.
 - `Resources/Styles/Palettes/BoyPalette.xaml` and `GirlPalette.xaml` hold the palette colors (`BabyBuddy*`, `Primary*`, ...) with identical keys; pages read them via `DynamicResource`, and the user switches palette at runtime. `Resources/Styles/Colors.xaml` holds the shared neutrals. `Resources/Styles/Styles.xaml` holds the named styles (`PrimaryAction`, `SecondaryAction`, `PageTitle`, `SectionTitle`, `BodyText`, `CaptionText`, `Headline`, `SubHeadline`), consumed via `StaticResource`. Both palettes are light; there is no dark mode, and `AppThemeBinding` is not used.
 - The XAML and code-behind of the page being changed, in `UI/Pages/` or `UI/Controls/`.
 
