@@ -119,7 +119,7 @@ These capabilities are planned and are not included in the current prototype.
 - Syncfusion Scheduler
 - SkiaSharp.Extended.UI.Maui (Lottie animation for Cub)
 - CommunityToolkit.Maui
-- Anthropic C# SDK (referenced, not used yet)
+- Anthropic C# SDK (Cub's chat replies, in `Remote/`)
 
 ### Data
 
@@ -190,7 +190,9 @@ BabyBuddyHelper/
 │   │   ├── AppointmentModel.cs
 │   │   ├── BabyModel.cs
 │   │   ├── VaccineModel.cs
-│   │   └── VaccinationRecordModel.cs
+│   │   ├── VaccinationRecordModel.cs
+│   │   ├── ChatTurn.cs
+│   │   └── BabyChatContext.cs
 │   │
 │   ├── Services/
 │   │   ├── TaskListService.cs
@@ -198,7 +200,8 @@ BabyBuddyHelper/
 │   │   ├── BabyFilterService.cs
 │   │   ├── TrackerDataSeeder.cs
 │   │   ├── VaccineCatalog.cs
-│   │   └── VaccineService.cs
+│   │   ├── VaccineService.cs
+│   │   └── CubGuidelines.cs
 │   │
 │   ├── Interfaces/
 │   │   ├── ITaskListService.cs
@@ -207,7 +210,8 @@ BabyBuddyHelper/
 │   │   ├── ITrackerDbService.cs
 │   │   ├── IVaccineCatalog.cs
 │   │   ├── IVaccineService.cs
-│   │   └── IApiKeyStore.cs
+│   │   ├── IApiKeyStore.cs
+│   │   └── ICubChatClient.cs
 │   │
 │   ├── Persistence/
 │   │   ├── TrackerContext.cs
@@ -218,10 +222,14 @@ BabyBuddyHelper/
 │   │
 │   ├── Exceptions/
 │   │   ├── DbCommunicationException.cs
-│   │   └── KeyStorageException.cs
+│   │   ├── KeyStorageException.cs
+│   │   └── CubUnavailableException.cs
 │   │
 │   └── Storage/
 │       └── SecureApiKeyStore.cs
+│
+├── Remote/
+│   └── ClaudeCubChatClient.cs
 │
 ├── UI/
 │   ├── Pages/

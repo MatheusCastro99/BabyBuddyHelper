@@ -2,6 +2,7 @@
 using BabyBuddyHelper.Core.Persistence;
 using BabyBuddyHelper.Core.Services;
 using BabyBuddyHelper.Core.Storage;
+using BabyBuddyHelper.Remote;
 using CommunityToolkit.Maui;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -36,6 +37,7 @@ namespace BabyBuddyHelper
                 .AddSingleton<IVaccineService, VaccineService>()
                 .AddSingleton<ITrackerDbService, EfTrackerDbService>()
                 .AddSingleton<IApiKeyStore, SecureApiKeyStore>()
+                .AddSingleton<ICubChatClient, ClaudeCubChatClient>() //The only place that references Remote/ (ADR-017)
                 .AddDbContextFactory<TrackerContext>(options =>
                     options.UseSqlite($"Data Source={Path.Combine(FileSystem.AppDataDirectory, "babybuddy.db3")}"));
 

@@ -68,14 +68,17 @@ BabyBuddyHelper/
 │   │   ├── AppointmentModel.cs - Data model for appointments (extends tasks)
 │   │   ├── BabyModel.cs - Data model for baby profiles (age computed from date of birth)
 │   │   ├── VaccineModel.cs - Data model for one vaccine in the built-in catalog
-│   │   └── VaccinationRecordModel.cs - Data model for one baby's doses and dates for one vaccine
+│   │   ├── VaccinationRecordModel.cs - Data model for one baby's doses and dates for one vaccine
+│   │   ├── ChatTurn.cs - One message of the chat with Cub, kept in memory only
+│   │   └── BabyChatContext.cs - What Cub may know about the baby picked in the chat (never the birth date, feeds or sleeps)
 │   ├── Services/
 │   │   ├── TaskListService.cs - In-memory cache and single source of truth for tasks and appointments
 │   │   ├── BabyProfileService.cs - In-memory cache and single source of truth for baby profiles
 │   │   ├── BabyFilterService.cs - Baby selection options shared by the checklist, calendar and task entry
 │   │   ├── TrackerDataSeeder.cs - Debug-only mock data seeding
 │   │   ├── VaccineCatalog.cs - Fixed US CDC vaccine list (birth to 6 years), no database access
-│   │   └── VaccineService.cs - In-memory cache and single source of truth for vaccination records
+│   │   ├── VaccineService.cs - In-memory cache and single source of truth for vaccination records
+│   │   └── CubGuidelines.cs - Cub's fixed chat rules, the baby block, and the reply and history caps
 │   ├── Interfaces/
 │   │   ├── ITaskListService.cs - Interface for TaskListService
 │   │   ├── IBabyProfileService.cs - Interface for BabyProfileService
@@ -83,7 +86,8 @@ BabyBuddyHelper/
 │   │   ├── ITrackerDbService.cs - Persistence boundary, used only by the cache services
 │   │   ├── IVaccineCatalog.cs - Interface for VaccineCatalog
 │   │   ├── IVaccineService.cs - Interface for VaccineService
-│   │   └── IApiKeyStore.cs - Contract for keeping the user's own AI provider key in the device's secure storage
+│   │   ├── IApiKeyStore.cs - Contract for keeping the user's own AI provider key in the device's secure storage
+│   │   └── ICubChatClient.cs - Contract for Cub's chat replies (the off-device path, ADR-017)
 │   ├── Persistence/
 │   │   ├── TrackerContext.cs - EF Core SQLite database context
 │   │   └── EfTrackerDbService.cs - EF Core + SQLite implementation of ITrackerDbService
@@ -91,9 +95,12 @@ BabyBuddyHelper/
 │   │   └── RangeObservableCollection.cs - ObservableCollection that adds many items with one notification
 │   ├── Exceptions/
 │   │   ├── DbCommunicationException.cs - Raised when the local database can't be read or written
-│   │   └── KeyStorageException.cs - Raised when the device's secure storage can't save or remove the user's key
+│   │   ├── KeyStorageException.cs - Raised when the device's secure storage can't save or remove the user's key
+│   │   └── CubUnavailableException.cs - Raised when Cub can't answer (no key, no network, or the provider refusing)
 │   └── Storage/
 │       └── SecureApiKeyStore.cs - Secure-storage implementation of IApiKeyStore (the user's Claude API key)
+├── Remote/
+│   └── ClaudeCubChatClient.cs - Cub's chat replies from Claude (Haiku 5.5) on the user's own key
 ├── UI/
 │   ├── Pages/
 │   │   ├── MainPage.xaml(.cs) - Due date countdown and home dashboard
@@ -124,7 +131,7 @@ BabyBuddyHelper/
 ├── Platforms/ - Platform-specific implementations
 ├── Properties/ - Launch settings
 ├── test/
-│   └── BabyBuddyHelper.Tests/ - xUnit tests for Core/ (a separate project that links the Core sources)
+│   └── BabyBuddyHelper.Tests/ - xUnit tests for Core/ and Remote/ (a separate project that links their sources; the network is a fake)
 ├── App.xaml(.cs) - Application entry and startup data loading
 ├── AppShell.xaml(.cs) - Tab navigation (Home, Checklist, Calendar)
 ├── MauiProgram.cs - Application configuration and dependency injection

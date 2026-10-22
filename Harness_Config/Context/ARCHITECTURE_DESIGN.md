@@ -10,6 +10,7 @@
   - Collections/
   - Exceptions/
   - Storage/
+- Remote/
 - UI/
   - Pages/
   - Controls/
@@ -72,6 +73,10 @@ Core/Storage/
 
 - SecureApiKeyStore.cs
 
+Remote/ (off-device implementations only; only `MauiProgram` references it, ADR-015 and ADR-017)
+
+- ClaudeCubChatClient.cs
+
 UI/Pages/
 
 - MainPage
@@ -124,11 +129,11 @@ UI/Converters/
 - IsAppointmentModelConverter.cs
 - VaccineTagConverter.cs
 
-test/BabyBuddyHelper.Tests/ (a separate plain `net10.0` xUnit project; it links the `Core/` sources instead of referencing the app, leaving out `SecureApiKeyStore.cs`; ADR-018)
+test/BabyBuddyHelper.Tests/ (a separate plain `net10.0` xUnit project; it links the `Core/` and `Remote/` sources instead of referencing the app, leaving out `SecureApiKeyStore.cs`; ADR-018)
 
-- Infrastructure/: TestDatabase.cs, TestServices.cs, DatabaseTest.cs, TestData.cs, TestHostTests.cs
-- Services/: TaskCrudTests.cs, TaskConversionTests.cs, TaskSortingTests.cs, TaskFilteringTests.cs, BabyProfileCrudTests.cs, BabyRemovalTests.cs, BabyMeasurementDateTests.cs, BabyFilterServiceTests.cs, VaccinationRecordCrudTests.cs, CollidingDataTests.cs
-- Models/: TaskModelTests.cs, VaccinationRecordFlagTests.cs
+- Infrastructure/: TestDatabase.cs, TestServices.cs, DatabaseTest.cs, TestData.cs, TestHostTests.cs, FakeAnthropicHandler.cs, FakeApiKeyStore.cs
+- Services/: TaskCrudTests.cs, TaskConversionTests.cs, TaskSortingTests.cs, TaskFilteringTests.cs, BabyProfileCrudTests.cs, BabyRemovalTests.cs, BabyMeasurementDateTests.cs, BabyFilterServiceTests.cs, VaccinationRecordCrudTests.cs, CollidingDataTests.cs, CubGuidelinesTests.cs, ClaudeCubChatClientTests.cs
+- Models/: TaskModelTests.cs, VaccinationRecordFlagTests.cs, BabyChatContextTests.cs
 
 See the data-flow diagram: [DataFlow.excalidraw](../../docs/DataFlow.excalidraw)
 
@@ -136,7 +141,7 @@ See the data-flow diagram: [DataFlow.excalidraw](../../docs/DataFlow.excalidraw)
 
 The layered Core/UI layout is current (ADR-015). When further redesign becomes necessary, Service-based, Feature-based, and Modular organization are candidates (ADR-005); none is scheduled on the roadmap.
 
-Planned in Phase 5: a root-level `Remote/` folder for off-device implementations (clients for external services, their DTOs and mapping). Contracts stay in `Core/Interfaces`, and only `MauiProgram` references `Remote/`. The rule is recorded in ADR-015 and ADR-017. The folder does not exist yet; its first file arrives with the Claude client in #96.
+The root-level `Remote/` folder holds off-device implementations (clients for external services, their DTOs and mapping). Contracts stay in `Core/Interfaces`, and only `MauiProgram` references `Remote/`. The rule is recorded in ADR-015 and ADR-017. Its first file is the Claude client for Cub's chat (`ClaudeCubChatClient`, #96).
 
 ## Platform notes
 
