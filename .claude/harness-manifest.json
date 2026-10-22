@@ -1,0 +1,27 @@
+{
+  "source": "ProdHarnessConfig",
+  "commit": "9c239752941e9b7dd02546fcfd20ed3bdbd2eb7a",
+  "sourceDirty": false,
+  "project": "BabyBuddyHelper",
+  "installedAt": "2026-10-22T17:07:03.029Z",
+  "files": {
+    ".claude/agents/red-team.md": "2b35bbb473971a03975b902c1a3ed483a52423159e99c1d240054696e6866619",
+    ".claude/agents/surveyor.md": "8a58e71ee7be2560394a8b53b1a6fbe11ddbec5eac2bc88e34f6b600915c8a72",
+    ".claude/harness.json": "740d456d371bd477fad7b60a680c4d7289e19510a7b6285dd9c984d3efdd95bc",
+    ".claude/hooks/check-gate.cjs": "a5f528961cab2d4e9346fe72fb67065ea6c90192b861f13fc480b937b7709471",
+    ".claude/hooks/docs-gate.cjs": "01bf263aca205d134ac1be87e9ec9985a0f972a8829a17f632df305c645e22ce",
+    ".claude/hooks/file-check.cjs": "8a7acc009d57aefb4bfe325e8cbf58a7c13e5e05a6a6ad63ac21f50b607c63c1",
+    ".claude/hooks/quiet.cjs": "acefc28a0de6e9f9a01c190094aade663897bca2e15a7cff536906c3ed83c70a",
+    ".claude/hooks/session-state.cjs": "7a794659cedc967e35b66ee7e6c3fe02a793f54fefc6e6c83c0c32573efde172",
+    ".claude/lib/harness.cjs": "0abc6e53d20b18c53cb1fa08e1854ea35ebb60fdbe543c49e6d04d327212315a",
+    ".claude/scripts/check.cjs": "f02b89d615ddb1d4f53ffbb9a04c05efaf179f78c7123a450a70b5063d922fec",
+    ".claude/scripts/close.cjs": "13d794843ef61dcac6550bbdc32313201a890231d4b0748a1ba7cda5a2070b3f",
+    ".claude/scripts/handoff-check.cjs": "aa734cd04a23849a05d04f8ad76bce880936c84237a81e594b3fe41034ce6802",
+    ".claude/scripts/stale-docs.cjs": "b891b7c105959369eb5d1967df77d0deb0f35fd5873074d39357eb03a18e8e24",
+    ".claude/settings.json": "1c0782697d0d43017852a6d8ea9b71004a8d07dcf172880eaf3f3eef928e8830",
+    ".claude/skills/build/SKILL.md": "3bf0e3abcea472e9f5159d060ed0ef5e81b4f696e1f4fbe84037846eef2caa28",
+    ".claude/skills/close/SKILL.md": "af6a8fcdbbbd6ba04f5c222b0b05fed90bf3e9c0ad035176acf3e4aeb96ee435",
+    ".claude/skills/review/SKILL.md": "2b4560772ad27fc6e15f192d5a17ad474f0c67ef2846de86809dcc0d51e27f13",
+    ".claude/skills/scope/SKILL.md": "c196189ea7b6681c741cef34069a9e9f8c7dadca9777d4d7950a44b5eb8370c8"
+  }
+}
