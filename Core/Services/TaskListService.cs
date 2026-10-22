@@ -131,6 +131,17 @@ namespace BabyBuddyHelper.Core.Services
             }
         }
 
+        //Adds a pending copy of a task right after the original, so a routine can be repeated without retyping it
+        public async Task DuplicateAsync(TaskModel task)
+        {
+            TaskModel copy = task.Clone();
+            copy.IsCompleted = false;
+
+            int index = Tasks.IndexOf(task);
+            Tasks.Insert(index + 1, copy);
+            await _trackerDbService.AddTaskAsync(copy);
+        }
+
         public void OrganizeByPriority()
         {
             var sortedList = Tasks

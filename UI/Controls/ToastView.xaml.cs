@@ -115,7 +115,7 @@ namespace BabyBuddyHelper.UI.Controls
         static CubAnimation? GetCubAnimation(ToastKind kind) => kind switch
         {
             ToastKind.TaskCompleted or ToastKind.VaccineRecordCompleted or ToastKind.ApiKeySaved => CubAnimation.Clap,
-            ToastKind.TaskDeleted or ToastKind.BabyProfileDeleted or ToastKind.VaccineRecordRemoved => null,
+            ToastKind.BabyProfileDeleted or ToastKind.VaccineRecordRemoved => null,
             _ => CubAnimation.Nod,
         };
 
