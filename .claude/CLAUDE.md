@@ -1,87 +1,83 @@
-CLAUDE.md — Repository guidance for claude-code and subagents
+# BabyBuddyHelper
 
-Purpose
--------
-This file tells claude-code and local subagents how to safely interact with this repository. It collects the essential project facts, authoritative docs that must be loaded before making changes, coding constraints, and high-level behavioral rules for all subagents.
+A cross-platform parenting companion built with .NET MAUI: it helps parents and caregivers organize baby-care tasks, appointments, baby profiles and vaccines, with a friendly companion, Cub. It is a functional prototype in active development, offline-first.
 
-Repository facts
----------------
-- Repo root: the directory containing `BabyBuddyHelper.slnx`
-- Solution: BabyBuddyHelper.slnx
-- Platform: .NET MAUI targeting .NET 10
-- C# language version: 14.0
+## Repository facts
 
-Authoritative docs (always load before making edits)
----------------------------------------------------
-When planning or making changes, the agent MUST read these files first and follow their rules exactly:
-- docs/ai/AI_CONTEXT.md
-- docs/ai/context/ARCHITECTURE_DESIGN.md
-- docs/ai/context/CURRENT_STATE.md
-- docs/ai/context/DECISIONS.md
-- docs/ai/context/UI_GUIDELINES.md
-- docs/ai/context/ROADMAP.md
-- docs/README.md
-- docs/FeaturesSet.md
+- Stack: .NET MAUI on .NET 10, C# 14. Targets Android, iOS, Mac Catalyst and Windows (`net10.0-windows10.0.19041.0`). EF Core on SQLite. xUnit tests on Microsoft.Testing.Platform
+- Solution: `BabyBuddyHelper.slnx`; the app project `BabyBuddyHelper.csproj` sits at the repo root
+- GitHub: MatheusCastro99/BabyBuddyHelper (public). Default branch: `main`
+- Project config for the harness: `.claude/harness.json` (checks, docs, CI checks)
 
-AI tooling (Claude Code)
-------------------------
-Runnable definitions live in `.claude/agents/` and `.claude/skills/` (gitignored, maintainer's personal tooling). Their documentation is tracked in `docs/ai/agents/` and `docs/ai/skills/`.
+## Where things are
 
-Subagents:
-- red-team — independent adversarial reviewer, read-only. Spawn it before handing over a large or risky PR, or to challenge a design. It preloads `review-guardrails`.
-- historian — pre-merge doc updater. Applies the main session's stale-docs list to docs/, checks each item against the code, reports anything beyond the list without editing it, and drafts ADRs without writing them. Never commits.
+Docs are read when the work needs them, never all up front.
 
-Skills (applied inline, alongside the session context):
-- review-guardrails — project review checklist: ADR rules, known regression traps, severity scale
-- product-owner — feature value, scope, acceptance criteria, P0–P3 priority
-- ux-design — Parenting Companion identity, style tokens, accessibility
+- `Core/` — models, services, interfaces, persistence, storage, collections, exceptions
+- `UI/` — pages, controls, UI services, converters
+- `Resources/Styles/` — palettes, shared colors and named styles
+- `test/BabyBuddyHelper.Tests/` — the xUnit project; it compiles `Core/` source files directly
+- `Harness_Config/Context/DECISIONS.md` — the ADR log; read the ADRs a change touches
+- `Harness_Config/Context/ARCHITECTURE_DESIGN.md` — layers, data flow, persistence
+- `Harness_Config/Context/UI_GUIDELINES.md` — the UI authority (essentials in `.claude/rules/ui.md`)
+- `Harness_Config/Context/ROADMAP.md` — phases and what comes next
+- `docs/README.md`, `docs/FeaturesSet.md`, `docs/PRD.md`, `docs/ProjectVision.md` — the public project docs
 
-Subagent invocation
--------------------
-- Brief the subagent with: goal (issue number and decided scope), target (branch, commit range, PR, or design doc), constraints (ADRs in play, out-of-scope items), and expected deliverable.
-- Agents and skills recommend; the maintainer makes every decision.
-- Always return a concise summary and list of modified files before committing.
+## Commands
 
-Coding and design constraints
-----------------------------
+Run project checks through the runner, never by hand: `node .claude/scripts/check.cjs <fast|full|id>`. It keeps the real exit code and trims the output. Check IDs are in `.claude/harness.json`.
+
+- Build the Windows app (optional; CI's `build` check is the gate): `dotnet build BabyBuddyHelper.csproj -f net10.0-windows10.0.19041.0`. With a target framework, always name the project.
+
+## Workflow
+
+Every issue goes through the harness skills, in order. Each block ends where its skill says.
+
+- **Standard:**
+  1. `/scope <n>` — plan mode, one plan, gate G1
+  2. `build` — autonomous; draft PR and handoff
+  3. a fresh Opus session: `/review <n>` — red-team, gate G2
+  4. the owner merges, then `/close <n>`
+- **Small:** `/scope <n> small` — the same gates, in one session.
+
+Working state lives in `.claude/work/<n>/` (gitignored). The approved plan and the handoff are also posted to the issue. If `.claude/work/<n>/BLOCKED` exists, stop and tell the owner.
+
+## Standing rules
+
 - Preserve .NET MAUI idioms; do not recommend Xamarin.Forms.
 - Keep C# 14 and .NET 10 compatibility.
-- TaskListService is the single source of truth for tasks/appointments; BabyProfileService for baby profiles (ADR-001).
-- Follow ADRs in docs/ai/context/DECISIONS.md (especially ADR-007: id-based CRUD). Do not change GUID migration.
+- `TaskListService` is the single source of truth for tasks and appointments; `BabyProfileService` for baby profiles (ADR-001).
+- Follow the ADRs in `DECISIONS.md`, especially ADR-007: id-based CRUD. Do not change the GUID migration.
 - Prefer small, safe changes. Avoid big architectural rewrites unless explicitly requested.
-- Avoid introducing: CQRS, MediatR, Repository pattern, heavy MVVM unless the user explicitly requests an MVVM migration.
-- Tests and builds: always run `dotnet build` and `dotnet test --project test/BabyBuddyHelper.Tests/BabyBuddyHelper.Tests.csproj` after code changes; fix warnings where possible. With a target framework, name the project: `dotnet build BabyBuddyHelper.csproj -f net10.0-windows10.0.19041.0`.
-- A change to Core/ behaviour comes with tests, and a bug fix in Core/ comes with a test that reproduces the bug; state any exception in the PR (ADR-018).
-- Place new files by layer: Core/ (models, services, interfaces, persistence, storage, collections, exceptions), UI/ (pages, controls, UI services, converters) or Remote/ (off-device implementations only: clients for external services, their DTOs and mapping). Contracts stay in Core/Interfaces, and only MauiProgram references Remote/. Namespaces follow folders.
-- Place tests in test/BabyBuddyHelper.Tests: Services/ (through the cache services, on the in-memory database), Models/ (model logic) or Infrastructure/ (the test host).
+- Avoid introducing CQRS, MediatR, the Repository pattern, or heavy MVVM, unless the owner explicitly requests an MVVM migration.
+- Fix build warnings where possible.
+- A change to `Core/` behaviour comes with tests, and a bug fix in `Core/` comes with a test that reproduces the bug; state any exception in the PR (ADR-018).
+- Place new files by layer: `Core/` (models, services, interfaces, persistence, storage, collections, exceptions), `UI/` (pages, controls, UI services, converters) or `Remote/` (off-device implementations only: clients for external services, their DTOs and mapping). Contracts stay in `Core/Interfaces`, and only `MauiProgram` references `Remote/`. Namespaces follow folders.
+- Place tests in `test/BabyBuddyHelper.Tests`: `Services/` (through the cache services, on the in-memory database), `Models/` (model logic) or `Infrastructure/` (the test host).
 
-Documentation rules
--------------------
-- The main session keeps a running stale-docs list per PR (ID, file and location, what's stale, what it should say, evidence).
-- Right before merge, the historian subagent applies the list; the maintainer reviews its diff against the list and the implementation.
-- Keep docs consistent with reality: update implemented feature lists, architecture lists, and roadmap when features ship.
+## Working agreements
 
-Branching and commits
----------------------
-- Use a short feature branch for multi-file edits.
-- Branch names describe the change: `<type>/<short-topic>`, e.g. `deps/anthropic-12.56.0`, `fix/scheduler-timezone`, `docs/branch-naming-rule`. Never use auto-generated names (e.g. `claude/nifty-thompson-xxxx`); if a session or tool assigns one, rename before pushing or ask the maintainer.
-- Provide a clear commit message summarizing intent and files changed.
+1. The owner makes every project decision: scope, architecture, product, priorities, wording. Recommend; never assume or decide.
+2. A decision that affects direction or scope comes as 2–3 options, one marked recommended, each with trade-offs and why it fits this project.
+3. Say so when a path looks sub-optimal, and recommend an alternative from evidence. Still don't choose.
+4. Anything the plan doesn't cover stops the work: a behaviour change, a new dependency, a scope change. Ask first. A scope change goes into the issue before it goes into the code.
+5. Fix what was asked and name what else you found. The owner decides whether the scope grows.
+6. For each finding, before proposing a fix: can it be reached today? Does it affect the people who use the app? Is the fix worth its cost? The owner decides on every finding.
+7. Verify a claim before relying on it (a small test, the source file); don't trust memory.
+8. For small implementation choices (naming, formatting), take a reasonable default and proceed.
+9. Standing rules belong to the owner. Propose or draft one; don't add, reword or change one yourself.
 
-Safety and secrets
-------------------
-- Do not commit secrets or .env with secrets. red-team checks for secrets only within the change it reviews;
+## Branches and commits
 
-Contacting the user
--------------------
-- For ambiguous decisions that affect product direction, present options (2–3) and request confirmation.
-- For small implementation choices (naming, formatting) prefer reasonable defaults and proceed.
+- One issue, one branch, one PR: `<type>/<n>-<short-name>`, with `feat`, `fix`, `docs` or `chore`. Never use auto-generated names (e.g. `claude/nifty-thompson-xxxx`); if a session or tool assigns one, rename it before pushing or ask the owner.
+- One commit per sub-phase: `<type>: <summary> (#<n>)`. Docs that a change makes untrue are updated in the same commit.
+- Pushing a feature branch, opening a **draft** PR and commenting on the issue are pre-authorized. Never push to the default branch, force-push, or merge: the owner merges.
 
-Change log
-----------
-- 2026-09-17: Initial CLAUDE.md added (aligns with repo docs and subagent list).
-- 2026-09-18 (#33): Replaced the subagent list with the Claude Code tooling (red-team + three skills); retired TechLead, ProductOwner, UXDesigner, ProjectHistorian and Coordinator.
-- 2026-09-24 (#68): Added the historian subagent; documentation rules now follow the stale-docs list → historian → review flow; UI_GUIDELINES is now an authoritative document
-- 2026-10-08 (#95): Added the Remote/ placement rule (ADR-015, ADR-017).
-- 2026-10-08 (#100): Core/Storage added to the layer list.
-- 2026-10-09 (#104): Added the test command, the tests-with-Core-changes rule and the test placement rule (ADR-018).
-- 2026-10-14: Added the branch naming rule (descriptive names, no auto-generated ones).
+## Safety
+
+- Public repository: no secrets (`.env`, API keys, the Syncfusion license key), no personal notes, no unfixed security findings in commits, comments or PRs. Report security findings to the owner directly.
+- Never edit the hooks, `.claude/scripts/` or `harness.json` to make a check pass.
+
+## Compact instructions
+
+When compacting, keep: the issue number and tier, the plan's sub-phase list with each one's status, the last check results, the open owner decisions, and any BLOCKED state. Drop file contents and tool output.

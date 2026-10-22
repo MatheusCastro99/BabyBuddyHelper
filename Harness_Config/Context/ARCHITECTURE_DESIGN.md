@@ -125,10 +125,46 @@ test/BabyBuddyHelper.Tests/ (a separate plain `net10.0` xUnit project; it links 
 - Services/: TaskCrudTests.cs, TaskConversionTests.cs, TaskSortingTests.cs, TaskFilteringTests.cs, BabyProfileCrudTests.cs, BabyRemovalTests.cs, BabyMeasurementDateTests.cs, BabyFilterServiceTests.cs, VaccinationRecordCrudTests.cs, CollidingDataTests.cs
 - Models/: TaskModelTests.cs, VaccinationRecordFlagTests.cs
 
-See the data-flow diagram: [DataFlow.excalidraw](../../DataFlow.excalidraw)
+See the data-flow diagram: [DataFlow.excalidraw](../../docs/DataFlow.excalidraw)
 
 ## Future Architecture Direction
 
 The layered Core/UI layout is current (ADR-015). When further redesign becomes necessary, Service-based, Feature-based, and Modular organization are candidates (ADR-005); none is scheduled on the roadmap.
 
 Planned in Phase 5: a root-level `Remote/` folder for off-device implementations (clients for external services, their DTOs and mapping). Contracts stay in `Core/Interfaces`, and only `MauiProgram` references `Remote/`. The rule is recorded in ADR-015 and ADR-017. The folder does not exist yet; its first file arrives with the Claude client in #96.
+
+## Platform notes
+
+Details that the code doesn't explain on its own. Moved from the retired `AI_CONTEXT.md` (#121).
+
+### Secrets at build time
+
+- `.env` is for development only and is a build input only: the `GenerateBuildSecrets` target compiles its values into `BuildSecrets`. In CI the values come from GitHub Secrets.
+- Do not embed `.env` as an `EmbeddedResource`, and do not copy it to the output directory. Both approaches were removed due to security concerns.
+- Server-side credentials never go into the client app.
+- At startup, `MauiProgram` validates the registered Syncfusion key and writes the result to the debug output (Syncfusion's message when it is rejected, never the key).
+
+### The user's API key (ADR-010)
+
+- The user-supplied key is the one secret that is not compiled in. `IApiKeyStore` (`SecureApiKeyStore` in `Core/Storage`) keeps it in secure storage only, checks its format only, never reads it back into the UI and never logs it.
+- A key the device cannot read is treated as "no key" and never deletes the stored value.
+- Android keeps the secure storage file out of backups (`auto_backup_rules.xml` and `data_extraction_rules.xml`).
+
+### Cub (Lottie)
+
+- Cub is one generated Lottie file, `Resources/Raw/cub.json`, played through the shared `UI/Controls/CubView.cs`. `tools/cub/generate_cub.py` writes the file (run by hand, never by the build).
+- The frame table in `CubView` mirrors `SEGMENTS` in the script, so the two must change together.
+- `SkiaSharp.Extended.UI.Maui` targets .NET 9, so the csproj pins `Microsoft.Maui.Controls.Compatibility` 10.0.110 explicitly; without it the Windows build breaks. Drop the pin once the Lottie package ships a .NET 10 build.
+
+### Chat page
+
+- `ChatPage` only asks the key store whether a key exists and never reads the key. The conversation is never stored.
+- The settings popup (`CubSettingsPopup`) is shown as a modal page, so `ChatPage.OnAppearing` runs again when it closes. Keep that: it is how the page picks up a key saved or removed there.
+- On Android the page switches the window to resize above the keyboard while it shows, and back to the default when it goes away.
+- On Windows, focus returns to the message box after Send through the native control, because MAUI's `IsFocused` is stale there and `Focus()` does nothing.
+
+### Theme
+
+- The app is pinned to the light theme (`App.xaml.cs`, through `UserAppTheme`); the boy and girl palettes take the place of a dark mode (UI_GUIDELINES.md).
+- `PaletteService` applies the palette and saves the choice in Preferences (a device UI setting, not database data).
+- The Windows title bar uses the nav bar colors through a MAUI `TitleBar`.

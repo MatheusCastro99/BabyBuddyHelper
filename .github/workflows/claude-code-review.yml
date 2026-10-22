@@ -2,7 +2,9 @@ name: Claude Code Review
 
 on:
   pull_request:
-    types: [opened, synchronize, ready_for_review, reopened]
+    # Once per PR, when a draft is marked ready (#121). The harness's review
+    # skill waits for this run and triages its comments; @claude stays on demand.
+    types: [ready_for_review]
     # Optional: Only run on specific file changes
     # paths:
     #   - "src/**/*.ts"
