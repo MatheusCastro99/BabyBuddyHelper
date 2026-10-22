@@ -283,6 +283,8 @@ When Cub can't answer, one neutral line takes the thinking line's place: "Cub co
 
 Settings live behind the gear in a small popup. A saved key is never shown again: only a "Key safely stored" line remains. A mistyped key gets a calm inline hint, not an alert. Replace and Remove ask first.
 
+Every key save, a replace included, first shows a neutral confirm, "Before Cub can chat", that lists what goes to Anthropic: the messages in the chat and, if a baby is picked, their name, age, height, weight and vaccines. It also says feeds and sleeps are never sent, that Anthropic bills the key for each reply, and that the chat isn't kept. "Save key" stores the key; "Not now" stores nothing and leaves the popup as it was. Like the failure line, it is in the app's voice, not Cub's (ADR-013).
+
 ---
 
 ### Add and Edit Experience
