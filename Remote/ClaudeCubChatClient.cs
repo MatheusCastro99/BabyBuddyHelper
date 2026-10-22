@@ -44,8 +44,6 @@ namespace BabyBuddyHelper.Remote
             if (request.Messages.Count == 0)
                 throw new CubUnavailableException("There is no message from the parent to send.");
 
-            Message reply;
-
             try
             {
                 var client = new AnthropicClient(new ClientOptions
@@ -56,9 +54,16 @@ namespace BabyBuddyHelper.Remote
                     MaxRetries = MaxRetries
                 });
 
-                reply = await client.Messages.Create(request, cancellationToken);
+                Message reply = await client.Messages.Create(request, cancellationToken);
+
+                //Inside the try: the SDK checks a reply's shape only when it is read, so a wrong one throws here
+                return MapReply(reply);
             }
             catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested) //The caller gave up; not a failure
+            {
+                throw;
+            }
+            catch (CubUnavailableException) //A reply with no text, from MapReply
             {
                 throw;
             }
@@ -66,8 +71,6 @@ namespace BabyBuddyHelper.Remote
             {
                 throw new CubUnavailableException("Claude couldn't answer.", exception);
             }
-
-            return MapReply(reply);
         }
 
         internal static MessageCreateParams BuildRequest(IReadOnlyList<ChatTurn> turns, BabyChatContext? babyContext)

@@ -177,6 +177,19 @@ namespace BabyBuddyHelper.Tests.Services
             AssertKeepsNoSecret(exception);
         }
 
+        //Valid JSON that isn't a message passes the SDK's call and only fails when the reply is read (its validation is lazy)
+        [Theory]
+        [InlineData("{}")]
+        [InlineData("""{"content":"x"}""")]
+        public async Task GetReplyAsync_ReplyOfTheWrongShape_ThrowsTheOneException(string body)
+        {
+            FakeAnthropicHandler handler = FakeAnthropicHandler.Answering(HttpStatusCode.OK, body);
+
+            CubUnavailableException exception = await Assert.ThrowsAsync<CubUnavailableException>(() => Client(handler).GetReplyAsync(OneQuestion, null, TestContext.Current.CancellationToken));
+
+            AssertKeepsNoSecret(exception);
+        }
+
         //A page that closes cancels its request; that isn't a failure to show
         [Fact]
         public async Task GetReplyAsync_CallerCancels_PassesTheCancellationThrough()
