@@ -27,7 +27,7 @@ public partial class ChatPage : ContentPage
     private readonly Dictionary<string, Guid?> _babyOptions; //Picker label to baby Id; "General advice" is null
     private readonly ObservableCollection<ChatItem> _items = []; //Never stored: a new ChatPage starts with an empty conversation
     private readonly List<ChatTurn> _history = []; //What Cub is sent: answered messages and their replies only, never a failed one
-    private readonly CancellationTokenSource _closing = new(); //Cancelled when the page is popped, so a late reply is dropped
+    private readonly CancellationTokenSource _closing = new(); //Cancelled when the page leaves the stack, so a late reply is dropped
     private bool _isSettingsOpen;
     private bool _isWaitingForCub;
 
@@ -65,13 +65,13 @@ public partial class ChatPage : ContentPage
         SetSoftInputMode(WindowSoftInputModeAdjust.Pan);
     }
 
-    //Leaving the chat ends it: a reply still on its way is cancelled and never shown. The settings popup is a modal push,
-    //not a pop, so opening it doesn't stop a reply
+    //Leaving the chat ends it: a reply still on its way is cancelled and never shown. Only a navigation that takes the page
+    //off the stack counts: the settings popup is a modal push, and a tab switch (Replace) keeps the chat for when it returns
     protected override void OnNavigatedFrom(NavigatedFromEventArgs args)
     {
         base.OnNavigatedFrom(args);
 
-        if (args.NavigationType is not NavigationType.Push)
+        if (args.NavigationType is NavigationType.Pop or NavigationType.PopToRoot or NavigationType.Remove)
         {
             _closing.Cancel();
         }

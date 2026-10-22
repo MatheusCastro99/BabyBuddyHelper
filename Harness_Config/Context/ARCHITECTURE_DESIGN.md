@@ -173,7 +173,7 @@ Details that the code doesn't explain on its own. Moved from the retired `AI_CON
 - Replies come through `ICubChatClient` only (ADR-017). `MainPage` passes the chat client and the baby, filter, vaccine and catalog services to the page; the page never references `Remote/`.
 - The "Chatting about" picker is read when a message is sent, so a change applies from the next message. "General advice" sends no baby data; a picked baby is turned into a `BabyChatContext` at that moment.
 - The page keeps two lists: the items it shows (parent, Cub, thinking, failure) and the turns it sends (answered messages and their replies only). A message that failed is never sent again.
-- Leaving the page (a pop) cancels a reply still on its way, and a late reply is dropped. Opening the settings popup is a modal push, so it doesn't.
+- Leaving the page (a pop, a pop to the tab's root, or a removal) cancels a reply still on its way, and a late reply is dropped. Opening the settings popup is a modal push and switching tabs is a replace, so neither does: the chat is still there when the parent comes back.
 - The settings popup (`CubSettingsPopup`) is shown as a modal page, so `ChatPage.OnAppearing` runs again when it closes. Keep that: it is how the page picks up a key saved or removed there.
 - `CubSettingsPopup` shows the consent confirm before every `SaveKeyAsync`, a replace included. "Not now" returns before anything is stored. Keys saved before #96 never saw it.
 - On Android the page switches the window to resize above the keyboard while it shows, and back to the default when it goes away.
