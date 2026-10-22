@@ -99,7 +99,8 @@ public partial class ChatPage : ContentPage
     private void OnBabyPickerSelectedIndexChanged(object? sender, EventArgs e) => LayOutCubHeading(); //A longer name may no longer fit
 
     //"Cub – is talking about: [picker]" stays on one line while it fits. On a narrow card (a phone) the picker moves onto its
-    //own line under it, instead of being squeezed out of sight, and the tagline moves down one row
+    //own line under it, instead of being squeezed out of sight, and the tagline moves down one row. The label then also
+    //spans the free column, so on the narrowest phones (or with larger text) it wraps instead of running under the gear
     private void LayOutCubHeading()
     {
         if (!BabyPicker.IsVisible || CubHeading.Width <= 0)
@@ -116,6 +117,7 @@ public partial class ChatPage : ContentPage
         Grid.SetRow(BabyPicker, fits ? 0 : 1);
         Grid.SetColumn(BabyPicker, fits ? 2 : 0);
         Grid.SetColumnSpan(BabyPicker, fits ? 1 : 3);
+        Grid.SetColumnSpan(TalkingAboutLabel, fits ? 1 : 2);
         Grid.SetRow(CubTagline, fits ? 1 : 2);
     }
 
