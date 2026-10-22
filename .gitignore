@@ -366,7 +366,7 @@ FodyWeavers.xsd
 .github/agents
 
 #Claude Code harness: per-session state and personal settings
-.claude/work/
+.harness/work/
 .claude/settings.local.json
 
 #Environment variables
