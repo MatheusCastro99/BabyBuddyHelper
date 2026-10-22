@@ -249,7 +249,7 @@ Epic: Issue #92. Sub-phases run in order, one issue and one PR each.
 - The AI is optional: the app stays fully usable offline and without a key
 - Cub answers with Claude Haiku 5.5 (one fixed model), in whole replies of at most 400 tokens; the last 20 turns are sent, starting with the caregiver's
 - The rules are fixed in `Core` (`CubGuidelines`): the owner's baseline (never negative, not medical advice with a nudge to the pediatrician, on topic) plus a firm "contact emergency services now", no diagnosis, dosage or delaying care, kindness for the parent, no judgement on parenting choices, and vaccines following the schedule and the pediatrician. They are checked by hand with `CUB_GUIDELINES_CHECKLIST.md`
-- A "Chatting about" picker on the chat: "General advice" by default, or one baby, which shares its name, age, height and weight (each with its date state) and a vaccine summary. Cub may then use the baby's name; otherwise it says "your baby" or "the little one". The birth date, last feed and last sleep are never shared
+- A baby picker in Cub's card on the chat ("Cub is talking about: …"): "General advice" by default, or one baby, which shares its name, age, height and weight (each with its date state) and a vaccine summary. Cub may then use the baby's name; otherwise it says "your baby" or "the little one". The birth date, last feed and last sleep are never shared
 - Every key save first shows a consent confirm listing what is sent; "Not now" stores nothing. Keys saved before #96 never saw it (left to the owner)
 - A failed reply shows one neutral inline line, not an alert and not in Cub's voice. Decisions recorded in ADR-019
 

@@ -89,6 +89,8 @@ public partial class ChatPage : ContentPage
 
         SetupState.IsVisible = !hasKey;
         ChatState.IsVisible = hasKey;
+        CubTagline.IsVisible = !hasKey;
+        BabyPickerRow.IsVisible = hasKey;
     }
 
     private void OnMessageTextChanged(object? sender, TextChangedEventArgs e) => UpdateSendButton();

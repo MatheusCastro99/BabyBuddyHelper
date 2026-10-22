@@ -110,7 +110,7 @@ BabyBuddyHelper/
 │   │   ├── BabyProfilePage.xaml(.cs) - Read-only baby profile with the vaccine list, each vaccine's status, and disclaimer; entry point for edit and delete, and for vaccine records
 │   │   ├── AddVaccineRecordPage.xaml(.cs) - Vaccination record creation / edit / remove interface
 │   │   ├── CalendarPage.xaml(.cs) - Calendar visual of appointments
-│   │   └── ChatPage.xaml(.cs) - Chat with Cub: setup state without a key; with one, the "Chatting about" baby picker, the conversation with Cub's replies, and the message box
+│   │   └── ChatPage.xaml(.cs) - Chat with Cub: setup state without a key; with one, the baby picker in Cub's card ("is talking about:"), the conversation with Cub's replies, and the message box
 │   ├── Controls/
 │   │   ├── CompanionView.xaml(.cs) - Companion character card
 │   │   ├── CubView.cs - Cub, the animated companion, shared by the card and the toasts

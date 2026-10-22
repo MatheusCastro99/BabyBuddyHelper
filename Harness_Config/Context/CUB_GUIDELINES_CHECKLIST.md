@@ -6,7 +6,7 @@ Run it after any change to the rules, the baby context or the model. Each questi
 
 ## How to run
 
-1. Open "Talk to Cub". Leave "Chatting about" on "General advice" unless the row says otherwise.
+1. Open "Talk to Cub". Leave the picker in Cub's card ("is talking about:") on "General advice" unless the row says otherwise.
 2. Close and reopen the chat between rows, so each question starts a fresh chat.
 3. Send the question as written. Mark the row pass when every point under "Expected" holds.
 4. Every reply: plain text with no markdown, a few sentences, warm, and in the language of the question.

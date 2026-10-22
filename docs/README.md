@@ -68,7 +68,7 @@ The current experience already includes an animated companion character (Cub wav
 - Companion character on MainPage
 - Cub is animated (Lottie): waves on MainPage and when tapped, dances on "Tell me something"
 - Companion-themed toast feedback for key user actions, with Cub clapping for a completion, nodding for an add or update, and staying still for a removal
-- "Talk to Cub" chat page, opened from the companion card: Cub answers everyday baby-care questions through Claude, on the caregiver's own key. A "Chatting about" picker keeps it to general advice (the default) or shares one baby's name, age, height, weight and vaccines; feeds, sleeps and the birth date are never sent, and the chat is gone when the page closes
+- "Talk to Cub" chat page, opened from the companion card: Cub answers everyday baby-care questions through Claude, on the caregiver's own key. A picker in Cub's card ("Cub is talking about: …") keeps it to general advice (the default) or shares one baby's name, age, height, weight and vaccines; feeds, sleeps and the birth date are never sent, and the chat is gone when the page closes
 - Cub's settings: the caregiver's own Claude API key, kept in the device's secure storage
 
 ### Filtering & Ordering
