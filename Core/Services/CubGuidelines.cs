@@ -7,17 +7,19 @@ namespace BabyBuddyHelper.Core.Services
     //the baby context and the caps live here so they can be tested without a provider.
     public static class CubGuidelines
     {
-        public const int MaxReplyTokens = 400; //Keeps replies short and the parent's bill small
         public const int MaxTurnsSent = 20; //The most recent turns of the chat sent with each message
 
-        private const string Rules = """
+        //The rules are split where the parent's style and length lines go (#97); every style keeps all of them
+        private const string Identity = """
             You are Cub, the friendly lion-cub companion in BabyBuddyHelper, an app that helps parents and caregivers look after their babies. You are talking with a parent or caregiver. You give practical baby-care tips and answer basic questions about babies and parenting. You are not a doctor, a nurse or a therapist.
 
             How you write:
             - Reply in the language the parent writes in.
             - Write plain text only, with no markdown: no headings, bold, italics, bullet symbols, numbered lists or tables.
-            - Keep replies short: a few warm, clear sentences.
-            - Be warm and encouraging. Never be negative, harsh or alarming, except in an emergency.
+            """;
+
+        private const string Rules = """
+            - Never be negative, harsh or alarming, except in an emergency.
 
             Health and safety:
             - Emergencies come first. If a message describes a possible emergency, such as trouble breathing, blue or grey lips, a baby who is limp or hard to wake, a seizure, heavy bleeding, a swallowed object or poison, or a high fever in a baby under 3 months, say clearly and firmly, before anything else, that they should contact emergency services now. Don't soften it, and don't put other advice first.
@@ -39,10 +41,39 @@ namespace BabyBuddyHelper.Core.Services
             The parent chose "General advice": you know nothing about their baby. Speak in general terms such as "your baby" or "the little one", and don't assume the baby's name, age or details.
             """;
 
-        //The fixed rules, plus what Cub may know about the picked baby (null for "General advice")
-        public static string BuildSystemPrompt(BabyChatContext? babyContext)
+        //Short and Balanced keep the parent's bill small; Detailed has room for two short paragraphs (ADR-019)
+        public static int MaxReplyTokensFor(CubVerbosity verbosity) => verbosity switch
         {
-            var prompt = new StringBuilder(Rules);
+            CubVerbosity.Short => 250,
+            CubVerbosity.Balanced => 400,
+            CubVerbosity.Detailed => 700,
+            _ => throw new ArgumentOutOfRangeException(nameof(verbosity), verbosity, null)
+        };
+
+        public static string StyleLine(CubStyle style) => style switch
+        {
+            CubStyle.Supportive => "Be warm and encouraging. Acknowledge how the parent feels, then answer, and end on a reassuring note.",
+            CubStyle.Neutral => "Be calm and matter-of-fact. Answer plainly, without extra reassurance, and stay kind.",
+            CubStyle.Direct => "Get straight to the point. Lead with the answer and skip small talk, and stay kind.",
+            _ => throw new ArgumentOutOfRangeException(nameof(style), style, null)
+        };
+
+        public static string LengthLine(CubVerbosity verbosity) => verbosity switch
+        {
+            CubVerbosity.Short => "Answer in one or two sentences.",
+            CubVerbosity.Balanced => "Answer in a few clear sentences.",
+            CubVerbosity.Detailed => "Give a fuller answer, at most two short paragraphs.",
+            _ => throw new ArgumentOutOfRangeException(nameof(verbosity), verbosity, null)
+        };
+
+        //The fixed rules with the parent's style and length, plus what Cub may know about the picked baby (null for "General advice")
+        public static string BuildSystemPrompt(BabyChatContext? babyContext, CubPersonality personality)
+        {
+            var prompt = new StringBuilder(Identity);
+            prompt.AppendLine();
+            prompt.Append("- ").AppendLine(StyleLine(personality.Style));
+            prompt.Append("- ").AppendLine(LengthLine(personality.Verbosity));
+            prompt.Append(Rules);
             prompt.AppendLine().AppendLine();
 
             if (babyContext is null)

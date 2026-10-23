@@ -54,7 +54,7 @@ namespace BabyBuddyHelper.Tests.Services
             JsonElement root = body.RootElement;
             Assert.Equal("claude-haiku-5-5", root.GetProperty("model").GetString());
             Assert.Equal(400, root.GetProperty("max_tokens").GetInt32());
-            Assert.Equal(CubGuidelines.BuildSystemPrompt(null), root.GetProperty("system").GetString());
+            Assert.Equal(CubGuidelines.BuildSystemPrompt(null, CubPersonality.Default), root.GetProperty("system").GetString());
             Assert.Equal(
                 [("user", "Hi Cub"), ("assistant", "Hello!"), ("user", ParentText)],
                 root.GetProperty("messages").EnumerateArray().Select(message => (message.GetProperty("role").GetString(), message.GetProperty("content").GetString())));
@@ -83,7 +83,7 @@ namespace BabyBuddyHelper.Tests.Services
             await Client(handler).GetReplyAsync(OneQuestion, context, TestContext.Current.CancellationToken);
 
             using JsonDocument body = JsonDocument.Parse(handler.LastBody!);
-            Assert.Equal(CubGuidelines.BuildSystemPrompt(context), body.RootElement.GetProperty("system").GetString());
+            Assert.Equal(CubGuidelines.BuildSystemPrompt(context, CubPersonality.Default), body.RootElement.GetProperty("system").GetString());
         }
 
         //At most 20 turns are sent, and the first one sent is the parent's

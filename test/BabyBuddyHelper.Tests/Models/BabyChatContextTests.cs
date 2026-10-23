@@ -149,7 +149,7 @@ namespace BabyBuddyHelper.Tests.Models
         {
             BabyModel baby = Baby();
 
-            string prompt = CubGuidelines.BuildSystemPrompt(BabyChatContext.From(baby, [Record(baby, RoutineVaccine, totalDoses: 3, completedDoses: 3)], Catalog));
+            string prompt = CubGuidelines.BuildSystemPrompt(BabyChatContext.From(baby, [Record(baby, RoutineVaccine, totalDoses: 3, completedDoses: 3)], Catalog), CubPersonality.Default);
             string babyBlock = prompt[prompt.IndexOf("The parent picked", StringComparison.Ordinal)..]; //The fixed rules mention feeding and sleep in general
 
             foreach (DateTime hidden in new[] { baby.DateOfBirth, baby.LastFeed, baby.LastSleep })

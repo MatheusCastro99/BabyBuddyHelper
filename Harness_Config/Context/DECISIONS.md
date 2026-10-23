@@ -299,7 +299,7 @@ Cub's chat replies come from one fixed Claude model, under rules fixed in the ap
 Rules:
 - The model is fixed to Claude Haiku 5.5. There is no model setting.
 - Cub's rules, the baby context and the caps live in `Core` (`CubGuidelines`, `BabyChatContext`). `Remote/` only maps them to the provider's SDK, so they are tested without a provider and stay the same if the provider changes.
-- A reply is capped at 400 output tokens, and at most the last 20 turns are sent; the first turn sent is always the caregiver's.
+- A reply is capped by the reply length the caregiver picks (#97): 250 output tokens for Short, 400 for Balanced (the default) and 700 for Detailed. At most the last 20 turns are sent; the first turn sent is always the caregiver's.
 - With "General advice" (the default), no baby data is sent. A picked baby shares its name, age, height and weight (each with its date, "date unknown" or "not recorded") and a vaccine summary. The birth date, the last feed and the last sleep are never sent.
 - Every key save shows a consent confirm first, listing what is sent; declining stores nothing.
 - A failed reply shows one neutral inline line, not an alert and not in Cub's voice (ADR-013). The failed message is never sent again.

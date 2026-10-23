@@ -84,8 +84,8 @@ namespace BabyBuddyHelper.Remote
             return new MessageCreateParams
             {
                 Model = Model.ClaudeHaiku5_5,
-                MaxTokens = CubGuidelines.MaxReplyTokens,
-                System = CubGuidelines.BuildSystemPrompt(babyContext),
+                MaxTokens = CubGuidelines.MaxReplyTokensFor(CubPersonality.Default.Verbosity),
+                System = CubGuidelines.BuildSystemPrompt(babyContext, CubPersonality.Default),
                 Messages = messages
             };
         }

@@ -32,6 +32,7 @@ Core/Models/
 - VaccinationRecordModel.cs
 - ChatTurn.cs
 - BabyChatContext.cs
+- CubPersonality.cs
 
 Core/Services/
 

@@ -70,7 +70,8 @@ BabyBuddyHelper/
 │   │   ├── VaccineModel.cs - Data model for one vaccine in the built-in catalog
 │   │   ├── VaccinationRecordModel.cs - Data model for one baby's doses and dates for one vaccine
 │   │   ├── ChatTurn.cs - One message of the chat with Cub, kept in memory only
-│   │   └── BabyChatContext.cs - What Cub may know about the baby picked in the chat (never the birth date, feeds or sleeps)
+│   │   ├── BabyChatContext.cs - What Cub may know about the baby picked in the chat (never the birth date, feeds or sleeps)
+│   │   └── CubPersonality.cs - How Cub talks in the chat: the style and reply length the parent picks
 │   ├── Services/
 │   │   ├── TaskListService.cs - In-memory cache and single source of truth for tasks and appointments
 │   │   ├── BabyProfileService.cs - In-memory cache and single source of truth for baby profiles
@@ -78,7 +79,7 @@ BabyBuddyHelper/
 │   │   ├── TrackerDataSeeder.cs - Debug-only mock data seeding
 │   │   ├── VaccineCatalog.cs - Fixed US CDC vaccine list (birth to 6 years), no database access
 │   │   ├── VaccineService.cs - In-memory cache and single source of truth for vaccination records
-│   │   └── CubGuidelines.cs - Cub's fixed chat rules, the baby block, and the reply and history caps
+│   │   └── CubGuidelines.cs - Cub's fixed chat rules, the style and length lines, the baby block, and the reply and history caps
 │   ├── Interfaces/
 │   │   ├── ITaskListService.cs - Interface for TaskListService
 │   │   ├── IBabyProfileService.cs - Interface for BabyProfileService

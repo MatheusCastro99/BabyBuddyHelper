@@ -29,19 +29,87 @@ namespace BabyBuddyHelper.Tests.Services
         [InlineData("Be kind about the parent's own wellbeing")]
         [InlineData("Don't judge parenting choices")]
         [InlineData("Decline off-topic requests graciously")]
-        public void BuildSystemPrompt_AlwaysHoldsEachRule(string marker)
+        public void BuildSystemPrompt_EveryStyleAndLength_HoldsEachRule(string marker)
         {
             BabyModel baby = new() { Name = "Lia", DateOfBirth = DateTime.Today.AddMonths(-2) };
 
-            Assert.Contains(marker, CubGuidelines.BuildSystemPrompt(null));
-            Assert.Contains(marker, CubGuidelines.BuildSystemPrompt(BabyChatContext.From(baby, [], Catalog)));
+            foreach (CubPersonality personality in AllPersonalities)
+            {
+                Assert.Contains(marker, CubGuidelines.BuildSystemPrompt(null, personality));
+                Assert.Contains(marker, CubGuidelines.BuildSystemPrompt(BabyChatContext.From(baby, [], Catalog), personality));
+            }
+        }
+
+        public static readonly CubPersonality[] AllPersonalities =
+            [.. Enum.GetValues<CubStyle>().SelectMany(style => Enum.GetValues<CubVerbosity>().Select(verbosity => new CubPersonality(style, verbosity)))];
+
+        [Theory]
+        [InlineData(CubStyle.Supportive, "Be warm and encouraging. Acknowledge how the parent feels")]
+        [InlineData(CubStyle.Neutral, "Be calm and matter-of-fact. Answer plainly")]
+        [InlineData(CubStyle.Direct, "Get straight to the point. Lead with the answer")]
+        public void BuildSystemPrompt_Style_HasItsLineOnly(CubStyle style, string marker)
+        {
+            foreach (CubVerbosity verbosity in Enum.GetValues<CubVerbosity>())
+            {
+                string prompt = CubGuidelines.BuildSystemPrompt(null, new CubPersonality(style, verbosity));
+
+                Assert.Contains($"- {CubGuidelines.StyleLine(style)}", prompt);
+                Assert.Contains(marker, prompt);
+
+                foreach (CubStyle other in Enum.GetValues<CubStyle>().Where(other => other != style))
+                    Assert.DoesNotContain(CubGuidelines.StyleLine(other), prompt);
+            }
+        }
+
+        [Theory]
+        [InlineData(CubVerbosity.Short, "Answer in one or two sentences.")]
+        [InlineData(CubVerbosity.Balanced, "Answer in a few clear sentences.")]
+        [InlineData(CubVerbosity.Detailed, "Give a fuller answer, at most two short paragraphs.")]
+        public void BuildSystemPrompt_Length_HasItsLineOnly(CubVerbosity verbosity, string line)
+        {
+            foreach (CubStyle style in Enum.GetValues<CubStyle>())
+            {
+                string prompt = CubGuidelines.BuildSystemPrompt(null, new CubPersonality(style, verbosity));
+
+                Assert.Contains($"- {line}", prompt);
+
+                foreach (CubVerbosity other in Enum.GetValues<CubVerbosity>().Where(other => other != verbosity))
+                    Assert.DoesNotContain(CubGuidelines.LengthLine(other), prompt);
+            }
+        }
+
+        //Today's fixed "warm" and "short" lines would contradict Neutral, Direct and Detailed, so only the chosen lines set them
+        [Theory]
+        [InlineData(CubStyle.Neutral)]
+        [InlineData(CubStyle.Direct)]
+        public void BuildSystemPrompt_NotSupportive_NeverAsksForWarmth(CubStyle style)
+        {
+            string prompt = CubGuidelines.BuildSystemPrompt(null, new CubPersonality(style, CubVerbosity.Detailed));
+
+            Assert.DoesNotContain("warm", prompt, StringComparison.OrdinalIgnoreCase);
+            Assert.DoesNotContain("Keep replies short", prompt);
+        }
+
+        [Theory]
+        [InlineData(CubVerbosity.Short, 250)]
+        [InlineData(CubVerbosity.Balanced, 400)]
+        [InlineData(CubVerbosity.Detailed, 700)]
+        public void MaxReplyTokensFor_EachLength_HasItsCap(CubVerbosity verbosity, int cap)
+        {
+            Assert.Equal(cap, CubGuidelines.MaxReplyTokensFor(verbosity));
+        }
+
+        [Fact]
+        public void Default_IsSupportiveAndBalanced()
+        {
+            Assert.Equal(new CubPersonality(CubStyle.Supportive, CubVerbosity.Balanced), CubPersonality.Default);
         }
 
         //"General advice" sends no baby data
         [Fact]
         public void BuildSystemPrompt_GeneralAdvice_HasNoBabyBlock()
         {
-            string prompt = CubGuidelines.BuildSystemPrompt(null);
+            string prompt = CubGuidelines.BuildSystemPrompt(null, CubPersonality.Default);
 
             Assert.Contains("\"General advice\"", prompt);
             Assert.Contains("\"your baby\" or \"the little one\"", prompt);
@@ -57,7 +125,7 @@ namespace BabyBuddyHelper.Tests.Services
             VaccineModel vaccine = Catalog.Vaccines[0];
             var record = new VaccinationRecordModel { BabyId = baby.Id, VaccineId = vaccine.Id, TotalDoses = 3, CompletedDoses = 3 };
 
-            string prompt = CubGuidelines.BuildSystemPrompt(BabyChatContext.From(baby, [record], Catalog));
+            string prompt = CubGuidelines.BuildSystemPrompt(BabyChatContext.From(baby, [record], Catalog), CubPersonality.Default);
 
             Assert.Contains("The parent picked their baby Lia for this chat. You may call the baby by name.", prompt);
             Assert.Contains("- Age: 4 months old", prompt);
@@ -72,7 +140,7 @@ namespace BabyBuddyHelper.Tests.Services
         {
             BabyModel baby = new() { Name = "Lia", DateOfBirth = DateTime.Today.AddMonths(-4) };
 
-            string prompt = CubGuidelines.BuildSystemPrompt(BabyChatContext.From(baby, [], Catalog));
+            string prompt = CubGuidelines.BuildSystemPrompt(BabyChatContext.From(baby, [], Catalog), CubPersonality.Default);
 
             Assert.EndsWith("- Vaccines: none recorded in the app", prompt);
         }
@@ -128,7 +196,6 @@ namespace BabyBuddyHelper.Tests.Services
 
             Assert.Equal(CubGuidelines.MaxTurnsSent, CubGuidelines.TrimHistory(turns).Count);
             Assert.Equal(20, CubGuidelines.MaxTurnsSent);
-            Assert.Equal(400, CubGuidelines.MaxReplyTokens);
         }
     }
 }

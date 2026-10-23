@@ -192,7 +192,8 @@ BabyBuddyHelper/
 │   │   ├── VaccineModel.cs
 │   │   ├── VaccinationRecordModel.cs
 │   │   ├── ChatTurn.cs
-│   │   └── BabyChatContext.cs
+│   │   ├── BabyChatContext.cs
+│   │   └── CubPersonality.cs
 │   │
 │   ├── Services/
 │   │   ├── TaskListService.cs
