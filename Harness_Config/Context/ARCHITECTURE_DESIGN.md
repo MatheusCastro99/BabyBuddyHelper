@@ -33,6 +33,7 @@ Core/Models/
 - ChatTurn.cs
 - BabyChatContext.cs
 - CubPersonality.cs
+- CubReply.cs
 
 Core/Services/
 
@@ -172,6 +173,7 @@ Details that the code doesn't explain on its own. Moved from the retired `AI_CON
 
 - `ChatPage` only asks the key store whether a key exists and never reads the key. The conversation is never stored.
 - Replies come through `ICubChatClient` only (ADR-017). `MainPage` passes the chat client and the baby, filter, vaccine and catalog services to the page; the page never references `Remote/`.
+- `ICubChatClient` takes the system prompt, the output-token cap and the turns, all built in Core (`CubGuidelines`), and returns the reply unchecked as a `CubReply`: its trimmed text, which may be empty, and whether it was cut off at the cap. `Remote/` only fixes the model and maps to the SDK.
 - The baby picker in Cub's card ("is talking about:") is read when a message is sent, so a change applies from the next message. "General advice" sends no baby data; a picked baby is turned into a `BabyChatContext` at that moment.
 - The page keeps two lists: the items it shows (parent, Cub, thinking, failure) and the turns it sends (answered messages and their replies only). A message that failed is never sent again.
 - Leaving the page (a pop, a pop to the tab's root, or a removal) cancels a reply still on its way, and a late reply is dropped. Opening the settings popup is a modal push and switching tabs is a replace, so neither does: the chat is still there when the parent comes back.

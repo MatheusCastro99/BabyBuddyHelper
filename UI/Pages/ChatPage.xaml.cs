@@ -1,6 +1,7 @@
 using BabyBuddyHelper.Core.Exceptions;
 using BabyBuddyHelper.Core.Interfaces;
 using BabyBuddyHelper.Core.Models;
+using BabyBuddyHelper.Core.Services;
 using BabyBuddyHelper.UI.Controls;
 using CommunityToolkit.Maui;
 using CommunityToolkit.Maui.Extensions;
@@ -161,7 +162,11 @@ public partial class ChatPage : ContentPage
 
         try
         {
-            reply = await _cubChatClient.GetReplyAsync([.. _history, message], GetPickedBabyContext(), _closing.Token);
+            CubReply answer = await _cubChatClient.GetReplyAsync(CubGuidelines.TrimHistory([.. _history, message]),
+                CubGuidelines.BuildSystemPrompt(GetPickedBabyContext(), CubPersonality.Default),
+                CubGuidelines.MaxReplyTokensFor(CubPersonality.Default.Verbosity), _closing.Token);
+
+            reply = answer.Text.Length == 0 ? null : answer.Text; //An empty reply shows the failure line, as before
         }
         catch (OperationCanceledException) //The page was closed: there is no one left to show the reply to
         {

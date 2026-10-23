@@ -71,7 +71,8 @@ BabyBuddyHelper/
 │   │   ├── VaccinationRecordModel.cs - Data model for one baby's doses and dates for one vaccine
 │   │   ├── ChatTurn.cs - One message of the chat with Cub, kept in memory only
 │   │   ├── BabyChatContext.cs - What Cub may know about the baby picked in the chat (never the birth date, feeds or sleeps)
-│   │   └── CubPersonality.cs - How Cub talks in the chat: the style and reply length the parent picks
+│   │   ├── CubPersonality.cs - How Cub talks in the chat: the style and reply length the parent picks
+│   │   └── CubReply.cs - One unchecked reply from the chat provider: its text and whether it was cut off
 │   ├── Services/
 │   │   ├── TaskListService.cs - In-memory cache and single source of truth for tasks and appointments
 │   │   ├── BabyProfileService.cs - In-memory cache and single source of truth for baby profiles
@@ -88,7 +89,7 @@ BabyBuddyHelper/
 │   │   ├── IVaccineCatalog.cs - Interface for VaccineCatalog
 │   │   ├── IVaccineService.cs - Interface for VaccineService
 │   │   ├── IApiKeyStore.cs - Contract for keeping the user's own AI provider key in the device's secure storage
-│   │   └── ICubChatClient.cs - Contract for Cub's chat replies (the off-device path, ADR-017)
+│   │   └── ICubChatClient.cs - Contract for Cub's chat replies (the off-device path, ADR-017): Core gives the prompt, cap and turns
 │   ├── Persistence/
 │   │   ├── TrackerContext.cs - EF Core SQLite database context
 │   │   └── EfTrackerDbService.cs - EF Core + SQLite implementation of ITrackerDbService
