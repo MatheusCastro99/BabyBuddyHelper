@@ -307,7 +307,7 @@ Rules:
 - The rules are checked by hand against `CUB_GUIDELINES_CHECKLIST.md` with a real key; the tests check that each rule is in the prompt.
 
 Reason:
-- The caregiver pays for each reply with their own key, so one small, fast model and a short reply keep the cost low and predictable.
+- The caregiver pays with their own key, so one small, fast model and a short reply keep the cost low. Since #97 each message also pays for a grade (ADR-020): two calls when the reply passes, up to four when it is retried.
 - Rules in `Core` keep ADR-017's path thin: the provider client holds no product decisions.
 - Caregivers' data is personal. Sharing only the picked baby, only after consent, and never fast-changing routine data keeps the caregiver in control and the context accurate.
 

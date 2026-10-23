@@ -21,7 +21,7 @@ namespace BabyBuddyHelper.UI.Controls
             "When you write to Cub, this goes to Anthropic, the company behind Claude, using your key:\n"
             + "• your messages in this chat\n"
             + "• if you pick a baby: their name, age, height, weight and vaccines\n"
-            + "Feeds and sleeps are never sent. Anthropic bills your key for each reply. This app doesn't keep the chat once you close it.";
+            + "Feeds and sleeps are never sent. Anthropic bills your key for each message (Cub's reply and a quick check of it). This app doesn't keep the chat once you close it.";
 
         readonly IApiKeyStore _apiKeyStore;
         readonly ICubPersonalityStore _personalityStore;
