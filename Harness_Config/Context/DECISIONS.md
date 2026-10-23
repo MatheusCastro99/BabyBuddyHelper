@@ -257,7 +257,7 @@ Rules:
 - Nothing leaves the device without a user action, and the user is told what is sent before it is sent.
 - Only what the user chose to share for that request is sent.
 - Pages never reference `Remote/` or a provider SDK. They talk to the contract.
-- Remote implementations never write to the database or the cache services (ADR-001, ADR-008). What comes back is shown, not stored, unless a later ADR says otherwise.
+- Remote implementations never write to the database or the cache services (ADR-001, ADR-008). What comes back is shown, not stored, unless a later ADR says otherwise. Cub's chat replies are shown only after the checks in ADR-020.
 - A failed call throws one exception type and leaves local data untouched. The app says so gently and carries on.
 - Keys follow ADR-010.
 
@@ -312,3 +312,26 @@ Reason:
 - Caregivers' data is personal. Sharing only the picked baby, only after consent, and never fast-changing routine data keeps the caregiver in control and the context accurate.
 
 Status: Accepted, current.
+
+### ADR-020
+
+Every chat reply of Cub's is checked before the caregiver sees it, and a reply that fails is never shown (#97).
+
+Path:
+`ChatPage` -> `CubReplyService` (Core) -> `ICubChatClient` -> Claude, called again for the grade
+
+Rules:
+- Code checks come first: a reply fails if it is empty, if it was cut off at the token cap, or if it has markdown (`**`, a code fence, or a `#` heading at the start of a line).
+- A reply that passes them goes to a grader: a second call to the same fixed model, with Cub's rules, the chosen style and length, and a language check in its prompt, and the parent's last message and the reply as its one turn. Only a grade that starts with `PASS` passes; anything else, an unreadable grade included, is a fail.
+- A failed reply gets exactly one retry: the same request, with a fixed note for the reason added to the rules (none for an empty reply). The failed reply and the grader's words are never sent back, and never shown.
+- If the retry fails too, the caregiver sees the neutral inline line "Cub couldn't find a good answer to that. Try asking another way." It is not an alert and not Cub's voice (ADR-013), and the turn stays out of the history sent to Claude.
+- Fail closed: if the grader can't be reached, nothing is shown but today's "Cub couldn't answer just now" line (ADR-019).
+- The checks, the grader's prompt and the notes live in `Core` (`CubReplyChecks`, `CubGuidelines`, `CubReplyService`); `Remote/` only maps the call (ADR-017).
+
+Reason:
+- The parent is often an expecting or new parent asking about their baby: a reply that breaks the rules must not reach them, even rarely.
+- Code catches the cheap, certain failures for free; only the grader can judge tone, language and the rules, so it is paid for only when the code finds nothing.
+- One retry turns most cut-offs and slips into a good reply without making the parent wait for more than four calls.
+- Fixed notes keep model text from steering the next call.
+
+Status: Proposed (#97).

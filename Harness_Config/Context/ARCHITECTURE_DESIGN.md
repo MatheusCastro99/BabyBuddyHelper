@@ -34,6 +34,7 @@ Core/Models/
 - BabyChatContext.cs
 - CubPersonality.cs
 - CubReply.cs
+- CubOutcome.cs
 
 Core/Services/
 
@@ -44,6 +45,8 @@ Core/Services/
 - VaccineCatalog.cs
 - VaccineService.cs
 - CubGuidelines.cs
+- CubReplyChecks.cs
+- CubReplyService.cs
 
 Core/Interfaces/
 
@@ -134,8 +137,8 @@ UI/Converters/
 
 test/BabyBuddyHelper.Tests/ (a separate plain `net10.0` xUnit project; it links the `Core/` and `Remote/` sources instead of referencing the app, leaving out `SecureApiKeyStore.cs`; ADR-018)
 
-- Infrastructure/: TestDatabase.cs, TestServices.cs, DatabaseTest.cs, TestData.cs, TestHostTests.cs, FakeAnthropicHandler.cs, FakeApiKeyStore.cs
-- Services/: TaskCrudTests.cs, TaskConversionTests.cs, TaskSortingTests.cs, TaskFilteringTests.cs, BabyProfileCrudTests.cs, BabyRemovalTests.cs, BabyMeasurementDateTests.cs, BabyFilterServiceTests.cs, VaccinationRecordCrudTests.cs, CollidingDataTests.cs, CubGuidelinesTests.cs, ClaudeCubChatClientTests.cs
+- Infrastructure/: TestDatabase.cs, TestServices.cs, DatabaseTest.cs, TestData.cs, TestHostTests.cs, FakeAnthropicHandler.cs, FakeApiKeyStore.cs, FakeCubChatClient.cs
+- Services/: TaskCrudTests.cs, TaskConversionTests.cs, TaskSortingTests.cs, TaskFilteringTests.cs, BabyProfileCrudTests.cs, BabyRemovalTests.cs, BabyMeasurementDateTests.cs, BabyFilterServiceTests.cs, VaccinationRecordCrudTests.cs, CollidingDataTests.cs, CubGuidelinesTests.cs, ClaudeCubChatClientTests.cs, CubReplyChecksTests.cs, CubReplyServiceTests.cs
 - Models/: TaskModelTests.cs, VaccinationRecordFlagTests.cs, BabyChatContextTests.cs
 
 See the data-flow diagram: [DataFlow.excalidraw](../../docs/DataFlow.excalidraw)

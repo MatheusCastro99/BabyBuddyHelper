@@ -194,7 +194,8 @@ BabyBuddyHelper/
 │   │   ├── ChatTurn.cs
 │   │   ├── BabyChatContext.cs
 │   │   ├── CubPersonality.cs
-│   │   └── CubReply.cs
+│   │   ├── CubReply.cs
+│   │   └── CubOutcome.cs
 │   │
 │   ├── Services/
 │   │   ├── TaskListService.cs
@@ -203,7 +204,9 @@ BabyBuddyHelper/
 │   │   ├── TrackerDataSeeder.cs
 │   │   ├── VaccineCatalog.cs
 │   │   ├── VaccineService.cs
-│   │   └── CubGuidelines.cs
+│   │   ├── CubGuidelines.cs
+│   │   ├── CubReplyChecks.cs
+│   │   └── CubReplyService.cs
 │   │
 │   ├── Interfaces/
 │   │   ├── ITaskListService.cs

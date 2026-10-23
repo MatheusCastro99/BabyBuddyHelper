@@ -72,7 +72,8 @@ BabyBuddyHelper/
 │   │   ├── ChatTurn.cs - One message of the chat with Cub, kept in memory only
 │   │   ├── BabyChatContext.cs - What Cub may know about the baby picked in the chat (never the birth date, feeds or sleeps)
 │   │   ├── CubPersonality.cs - How Cub talks in the chat: the style and reply length the parent picks
-│   │   └── CubReply.cs - One unchecked reply from the chat provider: its text and whether it was cut off
+│   │   ├── CubReply.cs - One unchecked reply from the chat provider: its text and whether it was cut off
+│   │   └── CubOutcome.cs - What the chat shows for one message: a checked reply, or nothing when both tries failed
 │   ├── Services/
 │   │   ├── TaskListService.cs - In-memory cache and single source of truth for tasks and appointments
 │   │   ├── BabyProfileService.cs - In-memory cache and single source of truth for baby profiles
@@ -80,7 +81,9 @@ BabyBuddyHelper/
 │   │   ├── TrackerDataSeeder.cs - Debug-only mock data seeding
 │   │   ├── VaccineCatalog.cs - Fixed US CDC vaccine list (birth to 6 years), no database access
 │   │   ├── VaccineService.cs - In-memory cache and single source of truth for vaccination records
-│   │   └── CubGuidelines.cs - Cub's fixed chat rules, the style and length lines, the baby block, and the reply and history caps
+│   │   ├── CubGuidelines.cs - Cub's fixed chat rules, the style and length lines, the baby block, the grader's prompt, the retry notes, and the caps
+│   │   ├── CubReplyChecks.cs - The code checks on a reply: empty, cut off, or markdown
+│   │   └── CubReplyService.cs - The sanity layer: asks Cub, checks and grades the reply, and retries once
 │   ├── Interfaces/
 │   │   ├── ITaskListService.cs - Interface for TaskListService
 │   │   ├── IBabyProfileService.cs - Interface for BabyProfileService
