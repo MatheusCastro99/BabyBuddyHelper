@@ -1,9 +1,9 @@
 {
   "source": "ProdHarnessConfig",
-  "commit": "0ff8334362eba4d94d2403fb785b31241e50917d",
+  "commit": "860a327c56880ab497f2e86baf013a798308f7e5",
   "sourceDirty": false,
   "project": "BabyBuddyHelper",
-  "installedAt": "2026-10-22T20:28:38.179Z",
+  "installedAt": "2026-10-23T15:07:53.884Z",
   "files": {
     ".claude/agents/red-team.md": "2b35bbb473971a03975b902c1a3ed483a52423159e99c1d240054696e6866619",
     ".claude/agents/surveyor.md": "8a58e71ee7be2560394a8b53b1a6fbe11ddbec5eac2bc88e34f6b600915c8a72",
@@ -19,7 +19,7 @@
     ".claude/scripts/handoff-check.cjs": "c54c23f177df6dfc86cc0501d4665d104b6e6983a87b64df2dd55161061b627d",
     ".claude/scripts/stale-docs.cjs": "b891b7c105959369eb5d1967df77d0deb0f35fd5873074d39357eb03a18e8e24",
     ".claude/settings.json": "1c0782697d0d43017852a6d8ea9b71004a8d07dcf172880eaf3f3eef928e8830",
-    ".claude/skills/build/SKILL.md": "6fca2667a0c758fc14e6db5cc65c46073ba8dc33197302b76ce26e8d1dd03a05",
+    ".claude/skills/build/SKILL.md": "376b48ab25e5ccbba0ab48991920278169aae5e47a2e9a95b8db76662d9607e7",
     ".claude/skills/close/SKILL.md": "af6a8fcdbbbd6ba04f5c222b0b05fed90bf3e9c0ad035176acf3e4aeb96ee435",
     ".claude/skills/review/SKILL.md": "4600f74430780ab89ef635b35d9506ee0f68bd88f6b2f02fe7a08ef12c6e98cc",
     ".claude/skills/scope/SKILL.md": "c0886297e3544cbf3c7803fa0abc95e7a1d153b1bc65cfef9a03a23acae24ccf"
