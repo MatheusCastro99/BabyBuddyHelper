@@ -20,6 +20,18 @@ namespace BabyBuddyHelper.Tests.Models
             Assert.Equal(task.IsCompleted, clone.IsCompleted);
         }
 
+        [Fact]
+        public void Clone_Task_ChangingTheCloneLeavesTheOriginal()
+        {
+            var task = new TaskModel(2, "Buy crib", "Check the safety rating");
+            TaskModel clone = task.Clone();
+
+            clone.IsCompleted = !task.IsCompleted;
+
+            Assert.False(task.IsCompleted);
+            Assert.True(clone.IsCompleted);
+        }
+
         //The copy must stay an appointment: TaskListService saves clones, and a plain TaskModel would store as a task
         [Fact]
         public void Clone_Appointment_KeepsTypeAndFields()
