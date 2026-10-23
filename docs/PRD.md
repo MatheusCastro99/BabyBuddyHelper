@@ -92,7 +92,8 @@ BabyBuddyHelper/
 │   │   ├── IVaccineCatalog.cs - Interface for VaccineCatalog
 │   │   ├── IVaccineService.cs - Interface for VaccineService
 │   │   ├── IApiKeyStore.cs - Contract for keeping the user's own AI provider key in the device's secure storage
-│   │   └── ICubChatClient.cs - Contract for Cub's chat replies (the off-device path, ADR-017): Core gives the prompt, cap and turns
+│   │   ├── ICubChatClient.cs - Contract for Cub's chat replies (the off-device path, ADR-017): Core gives the prompt, cap and turns
+│   │   └── ICubPersonalityStore.cs - Contract for keeping Cub's style and reply length on the device
 │   ├── Persistence/
 │   │   ├── TrackerContext.cs - EF Core SQLite database context
 │   │   └── EfTrackerDbService.cs - EF Core + SQLite implementation of ITrackerDbService
@@ -103,7 +104,8 @@ BabyBuddyHelper/
 │   │   ├── KeyStorageException.cs - Raised when the device's secure storage can't save or remove the user's key
 │   │   └── CubUnavailableException.cs - Raised when Cub can't answer (no key, no network, or the provider refusing)
 │   └── Storage/
-│       └── SecureApiKeyStore.cs - Secure-storage implementation of IApiKeyStore (the user's Claude API key)
+│       ├── SecureApiKeyStore.cs - Secure-storage implementation of IApiKeyStore (the user's Claude API key)
+│       └── PreferencesCubPersonalityStore.cs - Preferences implementation of ICubPersonalityStore (Cub's style and reply length)
 ├── Remote/
 │   └── ClaudeCubChatClient.cs - Cub's chat replies from Claude (Haiku 5.5) on the user's own key
 ├── UI/
@@ -121,7 +123,7 @@ BabyBuddyHelper/
 │   │   ├── CubView.cs - Cub, the animated companion, shared by the card and the toasts
 │   │   ├── ToastView.xaml(.cs) - Companion-themed toast feedback
 │   │   ├── PaletteSwitchView.xaml(.cs) - Boy / girl palette switch
-│   │   ├── CubSettingsPopup.xaml(.cs) - Cub's settings popup: enter, replace or remove the user's API key
+│   │   ├── CubSettingsPopup.xaml(.cs) - Cub's settings popup: enter, replace or remove the user's API key, and pick Cub's style and reply length
 │   │   ├── ChatItemTemplateSelector.cs - Picks the chat's parent bubble, Cub bubble, thinking line or failure line
 │   │   └── KeyboardFocusRing.cs - Focus ring for keyboard users
 │   ├── Services/

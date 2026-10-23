@@ -13,15 +13,18 @@ namespace BabyBuddyHelper.UI.Pages;
 
 //The chat with Cub: a pushed page opened from the companion card (ADR-016). It only ever asks the key store whether
 //a key exists; the key itself is never read here. The conversation lives in this page and goes away with it.
-//Replies come through ICubChatClient only: the page never references Remote/ or the provider SDK (ADR-017).
+//Replies come through CubReplyService, which checks each one before it is shown (ADR-020), over ICubChatClient:
+//the page never references Remote/ or the provider SDK (ADR-017).
 public partial class ChatPage : ContentPage
 {
     private const string GeneralAdvice = "General advice";
     private const string ThinkingText = "Cub is thinking…";
     private const string FailureText = "Cub couldn't answer just now. Check your connection and key, then try again.";
+    private const string DeclinedText = "Cub couldn't find a good answer to that. Try asking another way."; //Both tries failed the checks (ADR-020)
 
     private readonly IApiKeyStore _apiKeyStore;
-    private readonly ICubChatClient _cubChatClient;
+    private readonly CubReplyService _cubReplyService;
+    private readonly ICubPersonalityStore _personalityStore;
     private readonly IBabyProfileService _babyProfileService;
     private readonly IVaccineService _vaccineService;
     private readonly IVaccineCatalog _vaccineCatalog;
@@ -32,13 +35,14 @@ public partial class ChatPage : ContentPage
     private bool _isSettingsOpen;
     private bool _isWaitingForCub;
 
-    public ChatPage(IApiKeyStore apiKeyStore, ICubChatClient cubChatClient, IBabyProfileService babyProfileService,
+    public ChatPage(IApiKeyStore apiKeyStore, CubReplyService cubReplyService, ICubPersonalityStore personalityStore, IBabyProfileService babyProfileService,
         IBabyFilterService babyFilterService, IVaccineService vaccineService, IVaccineCatalog vaccineCatalog)
     {
         InitializeComponent();
 
         _apiKeyStore = apiKeyStore;
-        _cubChatClient = cubChatClient;
+        _cubReplyService = cubReplyService;
+        _personalityStore = personalityStore;
         _babyProfileService = babyProfileService;
         _vaccineService = vaccineService;
         _vaccineCatalog = vaccineCatalog;
@@ -128,7 +132,7 @@ public partial class ChatPage : ContentPage
     private void UpdateSendButton() =>
         SendButton.IsEnabled = !_isWaitingForCub && !string.IsNullOrWhiteSpace(MessageEditor.Text);
 
-    //Shows the message, then "Cub is thinking…" until the reply, or the failure line, takes its place
+    //Shows the message, then "Cub is thinking…" until the checked reply, or a failure line, takes its place
     private async void OnSendClicked(object? sender, EventArgs e)
     {
         string text = MessageEditor.Text?.Trim() ?? string.Empty;
@@ -158,23 +162,20 @@ public partial class ChatPage : ContentPage
         Dispatcher.Dispatch(() => (MessageEditor.Handler?.PlatformView as Microsoft.UI.Xaml.Controls.Control)?.Focus(Microsoft.UI.Xaml.FocusState.Programmatic));
 #endif
 
-        string? reply;
+        CubOutcome? outcome;
 
         try
         {
-            CubReply answer = await _cubChatClient.GetReplyAsync(CubGuidelines.TrimHistory([.. _history, message]),
-                CubGuidelines.BuildSystemPrompt(GetPickedBabyContext(), CubPersonality.Default),
-                CubGuidelines.MaxReplyTokensFor(CubPersonality.Default.Verbosity), _closing.Token);
-
-            reply = answer.Text.Length == 0 ? null : answer.Text; //An empty reply shows the failure line, as before
+            //The style and length are read at send time, like the baby picker, so a change in the popup applies from the next message
+            outcome = await _cubReplyService.AskAsync([.. _history, message], GetPickedBabyContext(), _personalityStore.Load(), _closing.Token);
         }
         catch (OperationCanceledException) //The page was closed: there is no one left to show the reply to
         {
             return;
         }
-        catch (CubUnavailableException) //No network, no key, or Claude refused. Nothing local was touched
+        catch (CubUnavailableException) //No network, no key, Claude refused, or the grader couldn't answer. Nothing local was touched
         {
-            reply = null;
+            outcome = null;
         }
 
         if (_closing.IsCancellationRequested)
@@ -184,16 +185,18 @@ public partial class ChatPage : ContentPage
 
         _items.Remove(thinking);
 
-        if (reply is null)
+        //Only a checked reply joins the history; a failed or declined message is never sent again
+        if (outcome is CubOutcome.Reply reply)
         {
-            _items.Add(new ChatItem(ChatItemKind.Failure, FailureText));
-            SemanticScreenReader.Announce(FailureText);
+            _history.Add(message);
+            _history.Add(new ChatTurn(ChatSpeaker.Cub, reply.Text));
+            _items.Add(new ChatItem(ChatItemKind.Cub, reply.Text));
         }
         else
         {
-            _history.Add(message);
-            _history.Add(new ChatTurn(ChatSpeaker.Cub, reply));
-            _items.Add(new ChatItem(ChatItemKind.Cub, reply));
+            string line = outcome is CubOutcome.Declined ? DeclinedText : FailureText;
+            _items.Add(new ChatItem(ChatItemKind.Failure, line));
+            SemanticScreenReader.Announce(line);
         }
 
         _isWaitingForCub = false;
@@ -232,7 +235,7 @@ public partial class ChatPage : ContentPage
             //Asked here, not remembered from the page: the popup must open on what is stored right now
             bool hasKey = await _apiKeyStore.HasKeyAsync();
 
-            await this.ShowPopupAsync(new CubSettingsPopup(_apiKeyStore, this, hasKey), new PopupOptions
+            await this.ShowPopupAsync(new CubSettingsPopup(_apiKeyStore, _personalityStore, this, hasKey), new PopupOptions
             {
                 Shape = new RoundRectangle { CornerRadius = 24, StrokeThickness = 0 },
                 Shadow = new Shadow { Brush = Colors.Black, Opacity = 0.18f, Radius = 24, Offset = new Point(0, 6) }, //Softer than the toolkit's default

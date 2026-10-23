@@ -6,7 +6,7 @@
                BackgroundColor="{DynamicResource BabyBuddySurface}"
                Padding="20">
 
-    <!--Cub's settings: the user's own Claude API key (ADR-010). Personality options join it in #97-->
+    <!--Cub's settings: the user's own Claude API key (ADR-010), and how Cub talks in the chat (#97)-->
     <!--A width cap, not a fixed width: on a phone or a narrow window the popup shrinks with the page and the text wraps-->
     <VerticalStackLayout Spacing="14" MaximumWidthRequest="360">
         <Grid ColumnDefinitions="*,Auto" ColumnSpacing="12">
@@ -91,5 +91,24 @@
                 HorizontalOptions="Start"
                 SemanticProperties.Hint="Opens the Claude console in your browser"
                 Clicked="OnHowToGetKeyClicked" />
+
+        <BoxView HeightRequest="1" Color="{DynamicResource BabyBuddyBorder}" />
+
+        <!--How Cub talks in the chat (#97). Each choice is saved the moment it is picked, so there is no Save here.
+            Native radio buttons: the selected one shows a filled dot, not only a color, and screen readers hear "1 of 3".
+            The rows wrap, so a narrow phone stacks the options instead of clipping them-->
+        <Label Text="Conversation style" Style="{StaticResource ItemTitle}" SemanticProperties.HeadingLevel="Level2" />
+        <FlexLayout x:Name="StyleOptions" Wrap="Wrap" Direction="Row" AlignItems="Center" RadioButtonGroup.GroupName="CubStyle">
+            <RadioButton Content="Supportive" Value="Supportive" Margin="0,0,12,0" CheckedChanged="OnStyleChanged" />
+            <RadioButton Content="Neutral" Value="Neutral" Margin="0,0,12,0" CheckedChanged="OnStyleChanged" />
+            <RadioButton Content="Direct" Value="Direct" CheckedChanged="OnStyleChanged" />
+        </FlexLayout>
+
+        <Label Text="Reply length" Style="{StaticResource ItemTitle}" SemanticProperties.HeadingLevel="Level2" />
+        <FlexLayout x:Name="LengthOptions" Wrap="Wrap" Direction="Row" AlignItems="Center" RadioButtonGroup.GroupName="CubVerbosity">
+            <RadioButton Content="Short" Value="Short" Margin="0,0,12,0" CheckedChanged="OnLengthChanged" />
+            <RadioButton Content="Balanced" Value="Balanced" Margin="0,0,12,0" CheckedChanged="OnLengthChanged" />
+            <RadioButton Content="Detailed" Value="Detailed" CheckedChanged="OnLengthChanged" />
+        </FlexLayout>
     </VerticalStackLayout>
 </toolkit:Popup>

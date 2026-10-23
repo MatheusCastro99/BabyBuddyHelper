@@ -256,6 +256,9 @@ Epic: Issue #92. Sub-phases run in order, one issue and one PR each.
 > 5.6 Companion personality (Issue #97):
 
 - Allow user to minimally adjust how Cub talks: conversational style (supportive, neutral, direct) and verbosity, in the settings popup
+- In the gear popup: "Conversation style" (Supportive, the default, Neutral or Direct) and "Reply length" (Short, Balanced, the default, or Detailed), saved on the device as soon as they are picked. They shape the chat replies only; tips, toasts and animations don't change
+- Each length has its own cap: 250, 400 or 700 output tokens
+- A sanity layer checks every reply before it is shown: code checks (empty, cut off, markdown), then a Haiku grader that must answer PASS. A failed reply is retried once with a fixed note; if the retry fails too, a neutral line says "Cub couldn't find a good answer to that. Try asking another way." A grader that can't answer shows the usual failure line. Decisions recorded in ADR-020
 
 ---
 

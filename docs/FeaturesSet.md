@@ -36,6 +36,8 @@
 
 ✅ Cub answers in the chat (Claude Haiku 5.5, on the caregiver's own key) within fixed guidelines: general tips, never a diagnosis or dosage, a firm "contact emergency services now" for emergencies. Cub knows about one baby only when the caregiver picks it; the chat is never stored
 
+✅ Cub's personality in the chat: the caregiver picks a conversation style (Supportive, Neutral or Direct) and a reply length (Short, Balanced or Detailed) in Cub's settings. Every reply is checked before it is shown, and one that breaks the rules is never shown
+
 ✅ Linking tasks and appointments to baby profiles
 
 ✅ Filtering based upon upcoming date, priority, or specific baby profiles

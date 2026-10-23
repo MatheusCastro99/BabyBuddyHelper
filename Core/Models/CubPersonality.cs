@@ -19,5 +19,11 @@ namespace BabyBuddyHelper.Core.Models
     public sealed record CubPersonality(CubStyle Style, CubVerbosity Verbosity)
     {
         public static CubPersonality Default { get; } = new(CubStyle.Supportive, CubVerbosity.Balanced);
+
+        //Reads the names a store saved. A missing or unknown name (first run, or one from another version) falls back to
+        //that half of the default, as the palette does (PaletteService)
+        public static CubPersonality FromSaved(string? style, string? verbosity) => new(
+            Enum.TryParse(style, out CubStyle savedStyle) && Enum.IsDefined(savedStyle) ? savedStyle : Default.Style,
+            Enum.TryParse(verbosity, out CubVerbosity savedVerbosity) && Enum.IsDefined(savedVerbosity) ? savedVerbosity : Default.Verbosity);
     }
 }
