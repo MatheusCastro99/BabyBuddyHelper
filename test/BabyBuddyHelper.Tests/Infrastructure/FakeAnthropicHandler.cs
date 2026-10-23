@@ -18,14 +18,17 @@ namespace BabyBuddyHelper.Tests.Infrastructure
             _respond = respond;
         }
 
-        //A reply made of the given text blocks
-        public static FakeAnthropicHandler Replying(params string[] textBlocks)
+        //A whole reply made of the given text blocks
+        public static FakeAnthropicHandler Replying(params string[] textBlocks) => Stopping("end_turn", textBlocks);
+
+        //A reply made of the given text blocks that stopped for the given reason, such as "max_tokens" for one cut off at the cap
+        public static FakeAnthropicHandler Stopping(string stopReason, params string[] textBlocks)
         {
             string content = string.Join(",", textBlocks.Select(text => $$"""{"type":"text","text":{{System.Text.Json.JsonSerializer.Serialize(text)}}}"""));
 
             return Answering(HttpStatusCode.OK,
                 """{"id":"msg_test","type":"message","role":"assistant","model":"claude-haiku-5-5","content":[""" + content
-                + """],"stop_reason":"end_turn","stop_sequence":null,"usage":{"input_tokens":1,"output_tokens":1}}""");
+                + $$$"""],"stop_reason":{{{System.Text.Json.JsonSerializer.Serialize(stopReason)}}},"stop_sequence":null,"usage":{"input_tokens":1,"output_tokens":1}}""");
         }
 
         public static FakeAnthropicHandler Failing(HttpStatusCode status) =>

@@ -1,5 +1,6 @@
 ﻿using BabyBuddyHelper.Core.Interfaces;
 using BabyBuddyHelper.Core.Models;
+using BabyBuddyHelper.Core.Services;
 using System.Collections.ObjectModel;
 using System.Globalization;
 
@@ -13,7 +14,8 @@ namespace BabyBuddyHelper.UI.Pages
         private readonly IVaccineCatalog _vaccineCatalog;
         private readonly IVaccineService _vaccineService;
         private readonly IApiKeyStore _apiKeyStore;
-        private readonly ICubChatClient _cubChatClient;
+        private readonly CubReplyService _cubReplyService;
+        private readonly ICubPersonalityStore _personalityStore;
         private readonly IBabyFilterService _babyFilterService;
         private DateTime currentDate;
         private bool _isNavigating;
@@ -49,7 +51,7 @@ namespace BabyBuddyHelper.UI.Pages
         };
 
         public MainPage(ITaskListService taskListService, IBabyProfileService babyProfileService, IVaccineCatalog vaccineCatalog, IVaccineService vaccineService, IApiKeyStore apiKeyStore,
-            ICubChatClient cubChatClient, IBabyFilterService babyFilterService)
+            CubReplyService cubReplyService, ICubPersonalityStore personalityStore, IBabyFilterService babyFilterService)
         {
             InitializeComponent();
 
@@ -58,7 +60,8 @@ namespace BabyBuddyHelper.UI.Pages
             _vaccineCatalog = vaccineCatalog;
             _vaccineService = vaccineService;
             _apiKeyStore = apiKeyStore;
-            _cubChatClient = cubChatClient;
+            _cubReplyService = cubReplyService;
+            _personalityStore = personalityStore;
             _babyFilterService = babyFilterService;
             BabyProfiles = babyProfileService.BabyProfiles;
 
@@ -163,7 +166,7 @@ namespace BabyBuddyHelper.UI.Pages
 
         //The chat is a pushed page like the profile (ADR-016). It starts empty every time: the conversation isn't kept
         private async void OnTalkToCubRequested(object? sender, EventArgs e) => await PushOnceAsync(() =>
-            new ChatPage(_apiKeyStore, _cubChatClient, _babyProfileService, _babyFilterService, _vaccineService, _vaccineCatalog));
+            new ChatPage(_apiKeyStore, _cubReplyService, _personalityStore, _babyProfileService, _babyFilterService, _vaccineService, _vaccineCatalog));
 
         //A double-click, or a click on the button that also reaches the card, can ask twice. The flag covers the
         //push while it's in flight; the stack check covers a late second request after it landed.

@@ -1,5 +1,6 @@
 using BabyBuddyHelper.Core.Exceptions;
 using BabyBuddyHelper.Core.Interfaces;
+using BabyBuddyHelper.Core.Models;
 using BabyBuddyHelper.UI.Services;
 using CommunityToolkit.Maui.Views;
 
@@ -8,6 +9,7 @@ namespace BabyBuddyHelper.UI.Controls
     /// <summary>
     /// Cub's settings, opened from the gear on the chat. The user enters, replaces or removes their own
     /// Claude API key here. A saved key is never read back: the popup only knows whether one exists.
+    /// The parent also picks how Cub talks in the chat (#97); each choice is saved the moment it is picked.
     /// </summary>
     public partial class CubSettingsPopup : Popup
     {
@@ -19,22 +21,61 @@ namespace BabyBuddyHelper.UI.Controls
             "When you write to Cub, this goes to Anthropic, the company behind Claude, using your key:\n"
             + "• your messages in this chat\n"
             + "• if you pick a baby: their name, age, height, weight and vaccines\n"
-            + "Feeds and sleeps are never sent. Anthropic bills your key for each reply. This app doesn't keep the chat once you close it.";
+            + "Feeds and sleeps are never sent. Anthropic bills your key for each message (Cub's reply and a quick check of it). This app doesn't keep the chat once you close it.";
 
         readonly IApiKeyStore _apiKeyStore;
+        readonly ICubPersonalityStore _personalityStore;
         readonly Page _hostPage; //Alerts and confirmations are raised from the page the popup sits on
         readonly bool _hasKey;
         bool _isBusy;
+        CubPersonality _personality;
 
-        public CubSettingsPopup(IApiKeyStore apiKeyStore, Page hostPage, bool hasKey)
+        public CubSettingsPopup(IApiKeyStore apiKeyStore, ICubPersonalityStore personalityStore, Page hostPage, bool hasKey)
         {
             InitializeComponent();
 
             _apiKeyStore = apiKeyStore;
+            _personalityStore = personalityStore;
             _hostPage = hostPage;
             _hasKey = hasKey;
 
             ShowState(isEntering: !hasKey);
+
+            //Set before the options are checked, so showing the saved choice doesn't save it again
+            _personality = personalityStore.Load();
+            CheckOption(StyleOptions, _personality.Style.ToString());
+            CheckOption(LengthOptions, _personality.Verbosity.ToString());
+        }
+
+        static void CheckOption(Layout options, string value)
+        {
+            foreach (RadioButton option in options.Children.OfType<RadioButton>())
+            {
+                option.IsChecked = Equals(option.Value, value);
+            }
+        }
+
+        //Saved at once: the parent's next message uses it, and closing the popup any way keeps it
+        void OnStyleChanged(object? sender, CheckedChangedEventArgs e)
+        {
+            if (e.Value && sender is RadioButton { Value: string name } && Enum.TryParse(name, out CubStyle style) && style != _personality.Style)
+            {
+                SavePersonality(_personality with { Style = style });
+            }
+        }
+
+        void OnLengthChanged(object? sender, CheckedChangedEventArgs e)
+        {
+            if (e.Value && sender is RadioButton { Value: string name } && Enum.TryParse(name, out CubVerbosity verbosity) && verbosity != _personality.Verbosity)
+            {
+                SavePersonality(_personality with { Verbosity = verbosity });
+            }
+        }
+
+        void SavePersonality(CubPersonality personality)
+        {
+            _personality = personality;
+            _personalityStore.Save(personality);
         }
 
         //Cancel only exists while replacing: it goes back to the key that is still saved

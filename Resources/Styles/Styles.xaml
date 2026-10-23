@@ -218,6 +218,9 @@
         <Setter Property="ProgressColor" Value="{DynamicResource BabyBuddyPrimary}" />
     </Style>
 
+    <!--Drawn by the app, so the circle follows the palette instead of the system accent (Windows) or the template purple
+        (Android) (#97). Picked: a PrimaryDark ring and dot; not picked: a BabyBuddyMuted ring (both over 3:1 on the surface).
+        The dot, not only the color, shows which one is picked. Each Stroke is set by the states only, never also as a base value-->
     <Style TargetType="RadioButton">
         <Setter Property="BackgroundColor" Value="Transparent"/>
         <Setter Property="TextColor" Value="{DynamicResource BabyBuddyText}" />
@@ -225,6 +228,36 @@
         <Setter Property="FontSize" Value="14"/>
         <Setter Property="MinimumHeightRequest" Value="44"/>
         <Setter Property="MinimumWidthRequest" Value="44"/>
+        <Setter Property="ControlTemplate">
+            <ControlTemplate>
+                <Grid ColumnDefinitions="Auto,*" ColumnSpacing="8" BackgroundColor="Transparent">
+                    <VisualStateManager.VisualStateGroups>
+                        <VisualStateGroupList>
+                            <VisualStateGroup x:Name="CheckedStates">
+                                <VisualState x:Name="Checked">
+                                    <VisualState.Setters>
+                                        <Setter TargetName="RadioRing" Property="Ellipse.Stroke" Value="{DynamicResource PrimaryDark}"/>
+                                        <Setter TargetName="RadioDot" Property="Ellipse.Opacity" Value="1"/>
+                                    </VisualState.Setters>
+                                </VisualState>
+                                <VisualState x:Name="Unchecked">
+                                    <VisualState.Setters>
+                                        <Setter TargetName="RadioRing" Property="Ellipse.Stroke" Value="{DynamicResource BabyBuddyMuted}"/>
+                                        <Setter TargetName="RadioDot" Property="Ellipse.Opacity" Value="0"/>
+                                    </VisualState.Setters>
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateGroupList>
+                    </VisualStateManager.VisualStateGroups>
+                    <Grid WidthRequest="20" HeightRequest="20" VerticalOptions="Center">
+                        <Ellipse x:Name="RadioRing" StrokeThickness="2" Fill="Transparent" WidthRequest="20" HeightRequest="20"/>
+                        <Ellipse x:Name="RadioDot" Fill="{DynamicResource PrimaryDark}" WidthRequest="10" HeightRequest="10"
+                                 HorizontalOptions="Center" VerticalOptions="Center"/>
+                    </Grid>
+                    <ContentPresenter Grid.Column="1" VerticalOptions="Center"/>
+                </Grid>
+            </ControlTemplate>
+        </Setter>
     </Style>
 
     <Style TargetType="RefreshView">

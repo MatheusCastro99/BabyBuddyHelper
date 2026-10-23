@@ -38,6 +38,8 @@ namespace BabyBuddyHelper
                 .AddSingleton<ITrackerDbService, EfTrackerDbService>()
                 .AddSingleton<IApiKeyStore, SecureApiKeyStore>()
                 .AddSingleton<ICubChatClient, ClaudeCubChatClient>() //The only place that references Remote/ (ADR-017)
+                .AddSingleton<CubReplyService>()
+                .AddSingleton<ICubPersonalityStore, PreferencesCubPersonalityStore>()
                 .AddDbContextFactory<TrackerContext>(options =>
                     options.UseSqlite($"Data Source={Path.Combine(FileSystem.AppDataDirectory, "babybuddy.db3")}"));
 

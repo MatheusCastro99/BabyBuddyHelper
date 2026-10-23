@@ -9,10 +9,13 @@ using System.Text.Json;
 namespace BabyBuddyHelper.Tests.Services
 {
     //The Claude client on a fake network and a dummy key (#96, ADR-018): what it sends, what it returns,
-    //and that every failure becomes the one CubUnavailableException (ADR-017).
+    //and that every failure becomes the one CubUnavailableException (ADR-017). Core builds the prompt and the cap (#97),
+    //so the client is given stand-ins and only has to send them as they are.
     public class ClaudeCubChatClientTests
     {
         private const string ParentText = "How long should a 4 month old nap?";
+        private const string Rules = "Test rules.";
+        private const int Cap = 400;
 
         private static readonly ChatTurn[] OneQuestion = [new(ChatSpeaker.Parent, ParentText)];
 
@@ -27,34 +30,39 @@ namespace BabyBuddyHelper.Tests.Services
         {
             FakeAnthropicHandler handler = FakeAnthropicHandler.Replying("Hi!");
 
-            await Assert.ThrowsAsync<CubUnavailableException>(() => Client(handler, key).GetReplyAsync(OneQuestion, null, TestContext.Current.CancellationToken));
+            await Assert.ThrowsAsync<CubUnavailableException>(() => Client(handler, key).GetReplyAsync(OneQuestion, Rules, Cap, TestContext.Current.CancellationToken));
 
             Assert.Equal(0, handler.Calls);
         }
 
         [Fact]
-        public async Task GetReplyAsync_NoParentTurnToSend_ThrowsWithNoCall()
+        public async Task GetReplyAsync_NoTurnToSend_ThrowsWithNoCall()
         {
             FakeAnthropicHandler handler = FakeAnthropicHandler.Replying("Hi!");
 
-            await Assert.ThrowsAsync<CubUnavailableException>(() => Client(handler).GetReplyAsync([new(ChatSpeaker.Cub, "Hello!")], null, TestContext.Current.CancellationToken));
+            await Assert.ThrowsAsync<CubUnavailableException>(() => Client(handler).GetReplyAsync([], Rules, Cap, TestContext.Current.CancellationToken));
 
             Assert.Equal(0, handler.Calls);
         }
 
-        [Fact]
-        public async Task GetReplyAsync_SendsHaikuTheCapTheRulesAndTheTurns()
+        //Each reply length sends its own cap; the turns go as given, since Core trims them
+        [Theory]
+        [InlineData(250)]
+        [InlineData(400)]
+        [InlineData(700)]
+        public async Task GetReplyAsync_SendsHaikuTheGivenCapRulesAndTurns(int cap)
         {
             FakeAnthropicHandler handler = FakeAnthropicHandler.Replying("Hi!");
             ChatTurn[] turns = [new(ChatSpeaker.Parent, "Hi Cub"), new(ChatSpeaker.Cub, "Hello!"), new(ChatSpeaker.Parent, ParentText)];
+            string rules = CubGuidelines.BuildSystemPrompt(null, CubPersonality.Default);
 
-            await Client(handler).GetReplyAsync(turns, null, TestContext.Current.CancellationToken);
+            await Client(handler).GetReplyAsync(turns, rules, cap, TestContext.Current.CancellationToken);
 
             using JsonDocument body = JsonDocument.Parse(handler.LastBody!);
             JsonElement root = body.RootElement;
             Assert.Equal("claude-haiku-5-5", root.GetProperty("model").GetString());
-            Assert.Equal(400, root.GetProperty("max_tokens").GetInt32());
-            Assert.Equal(CubGuidelines.BuildSystemPrompt(null), root.GetProperty("system").GetString());
+            Assert.Equal(cap, root.GetProperty("max_tokens").GetInt32());
+            Assert.Equal(rules, root.GetProperty("system").GetString());
             Assert.Equal(
                 [("user", "Hi Cub"), ("assistant", "Hello!"), ("user", ParentText)],
                 root.GetProperty("messages").EnumerateArray().Select(message => (message.GetProperty("role").GetString(), message.GetProperty("content").GetString())));
@@ -66,7 +74,7 @@ namespace BabyBuddyHelper.Tests.Services
         {
             FakeAnthropicHandler handler = FakeAnthropicHandler.Replying("Hi!");
 
-            await Client(handler).GetReplyAsync(OneQuestion, null, TestContext.Current.CancellationToken);
+            await Client(handler).GetReplyAsync(OneQuestion, Rules, Cap, TestContext.Current.CancellationToken);
 
             Assert.Equal("api.anthropic.com", handler.LastRequest!.RequestUri!.Host);
             Assert.Equal(Uri.UriSchemeHttps, handler.LastRequest.RequestUri.Scheme);
@@ -75,52 +83,41 @@ namespace BabyBuddyHelper.Tests.Services
         }
 
         [Fact]
-        public async Task GetReplyAsync_PickedBaby_SendsItsContextInTheRules()
-        {
-            FakeAnthropicHandler handler = FakeAnthropicHandler.Replying("Hi!");
-            BabyChatContext context = BabyChatContext.From(new BabyModel { Name = "Lia", DateOfBirth = DateTime.Today.AddMonths(-4) }, [], new VaccineCatalog());
-
-            await Client(handler).GetReplyAsync(OneQuestion, context, TestContext.Current.CancellationToken);
-
-            using JsonDocument body = JsonDocument.Parse(handler.LastBody!);
-            Assert.Equal(CubGuidelines.BuildSystemPrompt(context), body.RootElement.GetProperty("system").GetString());
-        }
-
-        //At most 20 turns are sent, and the first one sent is the parent's
-        [Fact]
-        public async Task GetReplyAsync_LongChat_SendsTheTrimmedTurns()
-        {
-            FakeAnthropicHandler handler = FakeAnthropicHandler.Replying("Hi!");
-            ChatTurn[] turns = Enumerable.Range(1, 25).Select(i => new ChatTurn(i % 2 == 1 ? ChatSpeaker.Parent : ChatSpeaker.Cub, $"turn {i}")).ToArray();
-
-            await Client(handler).GetReplyAsync(turns, null, TestContext.Current.CancellationToken);
-
-            using JsonDocument body = JsonDocument.Parse(handler.LastBody!);
-            JsonElement[] sent = body.RootElement.GetProperty("messages").EnumerateArray().ToArray();
-            Assert.Equal(19, sent.Length);
-            Assert.Equal("user", sent[0].GetProperty("role").GetString());
-            Assert.Equal("turn 7", sent[0].GetProperty("content").GetString());
-            Assert.Equal("turn 25", sent[^1].GetProperty("content").GetString());
-        }
-
-        [Fact]
         public async Task GetReplyAsync_Reply_JoinsItsTextBlocksAndTrims()
         {
             FakeAnthropicHandler handler = FakeAnthropicHandler.Replying("  Naps vary a lot ", "at this age.\n");
 
-            string reply = await Client(handler).GetReplyAsync(OneQuestion, null, TestContext.Current.CancellationToken);
+            CubReply reply = await Client(handler).GetReplyAsync(OneQuestion, Rules, Cap, TestContext.Current.CancellationToken);
 
-            Assert.Equal("Naps vary a lot at this age.", reply);
+            Assert.Equal(new CubReply("Naps vary a lot at this age.", CutOff: false), reply);
         }
 
+        //Core's checks decide what an empty reply means (#97), so it comes back instead of throwing
         [Theory]
         [InlineData()]
         [InlineData("   ")]
-        public async Task GetReplyAsync_ReplyWithNoText_Throws(params string[] textBlocks)
+        public async Task GetReplyAsync_ReplyWithNoText_ReturnsItEmpty(params string[] textBlocks)
         {
             FakeAnthropicHandler handler = FakeAnthropicHandler.Replying(textBlocks);
 
-            await Assert.ThrowsAsync<CubUnavailableException>(() => Client(handler).GetReplyAsync(OneQuestion, null, TestContext.Current.CancellationToken));
+            CubReply reply = await Client(handler).GetReplyAsync(OneQuestion, Rules, Cap, TestContext.Current.CancellationToken);
+
+            Assert.Equal(new CubReply(string.Empty, CutOff: false), reply);
+        }
+
+        //Only a reply stopped by the token cap is cut off
+        [Theory]
+        [InlineData("max_tokens", true)]
+        [InlineData("end_turn", false)]
+        [InlineData("stop_sequence", false)]
+        [InlineData("refusal", false)]
+        public async Task GetReplyAsync_StopReason_SetsCutOff(string stopReason, bool cutOff)
+        {
+            FakeAnthropicHandler handler = FakeAnthropicHandler.Stopping(stopReason, "Naps vary a lot at");
+
+            CubReply reply = await Client(handler).GetReplyAsync(OneQuestion, Rules, Cap, TestContext.Current.CancellationToken);
+
+            Assert.Equal(new CubReply("Naps vary a lot at", cutOff), reply);
         }
 
         //401 isn't retried; 429 and 5xx are retried once by the SDK, then fail the same way
@@ -134,7 +131,7 @@ namespace BabyBuddyHelper.Tests.Services
         {
             FakeAnthropicHandler handler = FakeAnthropicHandler.Failing(status);
 
-            CubUnavailableException exception = await Assert.ThrowsAsync<CubUnavailableException>(() => Client(handler).GetReplyAsync(OneQuestion, null, TestContext.Current.CancellationToken));
+            CubUnavailableException exception = await Assert.ThrowsAsync<CubUnavailableException>(() => Client(handler).GetReplyAsync(OneQuestion, Rules, Cap, TestContext.Current.CancellationToken));
 
             Assert.Equal(expectedCalls, handler.Calls);
             AssertKeepsNoSecret(exception);
@@ -145,7 +142,7 @@ namespace BabyBuddyHelper.Tests.Services
         {
             var handler = new FakeAnthropicHandler(_ => throw new HttpRequestException("No route to host."));
 
-            CubUnavailableException exception = await Assert.ThrowsAsync<CubUnavailableException>(() => Client(handler).GetReplyAsync(OneQuestion, null, TestContext.Current.CancellationToken));
+            CubUnavailableException exception = await Assert.ThrowsAsync<CubUnavailableException>(() => Client(handler).GetReplyAsync(OneQuestion, Rules, Cap, TestContext.Current.CancellationToken));
 
             AssertKeepsNoSecret(exception);
         }
@@ -161,7 +158,7 @@ namespace BabyBuddyHelper.Tests.Services
             });
 
             CubUnavailableException exception = await Assert.ThrowsAsync<CubUnavailableException>(
-                () => Client(handler, timeout: TimeSpan.FromMilliseconds(100)).GetReplyAsync(OneQuestion, null, TestContext.Current.CancellationToken));
+                () => Client(handler, timeout: TimeSpan.FromMilliseconds(100)).GetReplyAsync(OneQuestion, Rules, Cap, TestContext.Current.CancellationToken));
 
             AssertKeepsNoSecret(exception);
         }
@@ -172,7 +169,7 @@ namespace BabyBuddyHelper.Tests.Services
         {
             FakeAnthropicHandler handler = FakeAnthropicHandler.Answering(HttpStatusCode.OK, "{not json");
 
-            CubUnavailableException exception = await Assert.ThrowsAsync<CubUnavailableException>(() => Client(handler).GetReplyAsync(OneQuestion, null, TestContext.Current.CancellationToken));
+            CubUnavailableException exception = await Assert.ThrowsAsync<CubUnavailableException>(() => Client(handler).GetReplyAsync(OneQuestion, Rules, Cap, TestContext.Current.CancellationToken));
 
             AssertKeepsNoSecret(exception);
         }
@@ -185,7 +182,7 @@ namespace BabyBuddyHelper.Tests.Services
         {
             FakeAnthropicHandler handler = FakeAnthropicHandler.Answering(HttpStatusCode.OK, body);
 
-            CubUnavailableException exception = await Assert.ThrowsAsync<CubUnavailableException>(() => Client(handler).GetReplyAsync(OneQuestion, null, TestContext.Current.CancellationToken));
+            CubUnavailableException exception = await Assert.ThrowsAsync<CubUnavailableException>(() => Client(handler).GetReplyAsync(OneQuestion, Rules, Cap, TestContext.Current.CancellationToken));
 
             AssertKeepsNoSecret(exception);
         }
@@ -202,7 +199,7 @@ namespace BabyBuddyHelper.Tests.Services
                 return new HttpResponseMessage(HttpStatusCode.OK);
             });
 
-            Exception exception = await Assert.ThrowsAnyAsync<OperationCanceledException>(() => Client(handler).GetReplyAsync(OneQuestion, null, cancellation.Token));
+            Exception exception = await Assert.ThrowsAnyAsync<OperationCanceledException>(() => Client(handler).GetReplyAsync(OneQuestion, Rules, Cap, cancellation.Token));
 
             Assert.IsNotType<CubUnavailableException>(exception);
         }

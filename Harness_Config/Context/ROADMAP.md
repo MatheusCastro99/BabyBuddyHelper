@@ -247,7 +247,7 @@ Epic: Issue #92. Sub-phases run in order, one issue and one PR each.
 - Enforce well rounded and structured guidelines for AI agent, this is not a doctor or therapist
 - The conversation is not kept after the chat closes, and Cub replies in the language the user writes in
 - The AI is optional: the app stays fully usable offline and without a key
-- Cub answers with Claude Haiku 5.5 (one fixed model), in whole replies of at most 400 tokens; the last 20 turns are sent, starting with the caregiver's
+- Cub answers with Claude Haiku 5.5 (one fixed model), in whole replies of at most 400 tokens (#97 ties the cap to the reply length the caregiver picks); the last 20 turns are sent, starting with the caregiver's
 - The rules are fixed in `Core` (`CubGuidelines`): the owner's baseline (never negative, not medical advice with a nudge to the pediatrician, on topic) plus a firm "contact emergency services now", no diagnosis, dosage or delaying care, kindness for the parent, no judgement on parenting choices, and vaccines following the schedule and the pediatrician. They are checked by hand with `CUB_GUIDELINES_CHECKLIST.md`
 - A baby picker in Cub's card on the chat ("Cub is talking about: …"): "General advice" by default, or one baby, which shares its name, age, height and weight (each with its date state) and a vaccine summary. Cub may then use the baby's name; otherwise it says "your baby" or "the little one". The birth date, last feed and last sleep are never shared
 - Every key save first shows a consent confirm listing what is sent; "Not now" stores nothing. Keys saved before #96 never saw it (left to the owner)
@@ -256,6 +256,9 @@ Epic: Issue #92. Sub-phases run in order, one issue and one PR each.
 > 5.6 Companion personality (Issue #97):
 
 - Allow user to minimally adjust how Cub talks: conversational style (supportive, neutral, direct) and verbosity, in the settings popup
+- In the gear popup: "Conversation style" (Supportive, the default, Neutral or Direct) and "Reply length" (Short, Balanced, the default, or Detailed), saved on the device as soon as they are picked. They shape the chat replies only; tips, toasts and animations don't change
+- Each length has its own cap: 250, 400 or 700 output tokens
+- A sanity layer checks every reply before it is shown: code checks (empty, cut off, markdown), then a Haiku grader that must answer PASS. A failed reply is retried once with a fixed note; if the retry fails too, a neutral line says "Cub couldn't find a good answer to that. Try asking another way." A grader that can't answer shows the usual failure line. Decisions recorded in ADR-020
 
 ---
 

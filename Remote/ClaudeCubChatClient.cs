@@ -4,12 +4,11 @@ using Anthropic.Models.Messages;
 using BabyBuddyHelper.Core.Exceptions;
 using BabyBuddyHelper.Core.Interfaces;
 using BabyBuddyHelper.Core.Models;
-using BabyBuddyHelper.Core.Services;
 
 namespace BabyBuddyHelper.Remote
 {
     //Cub's chat replies from Claude, on the parent's own key (#96, ADR-017). It only maps to and from the SDK:
-    //the rules, the baby context and the caps come from CubGuidelines. It never writes anything, and it never logs
+    //the prompt, the cap and the turns come from Core (#97), and the model is fixed. It never writes anything, and it never logs
     //or puts the key or the parent's messages into an exception (ADR-010).
     public sealed class ClaudeCubChatClient : ICubChatClient
     {
@@ -32,14 +31,14 @@ namespace BabyBuddyHelper.Remote
             _timeout = timeout;
         }
 
-        public async Task<string> GetReplyAsync(IReadOnlyList<ChatTurn> turns, BabyChatContext? babyContext, CancellationToken cancellationToken = default)
+        public async Task<CubReply> GetReplyAsync(IReadOnlyList<ChatTurn> turns, string systemPrompt, int maxTokens, CancellationToken cancellationToken = default)
         {
             string? apiKey = await _apiKeyStore.GetKeyAsync();
 
             if (string.IsNullOrWhiteSpace(apiKey))
                 throw new CubUnavailableException("No Claude key is saved.");
 
-            MessageCreateParams request = BuildRequest(turns, babyContext);
+            MessageCreateParams request = BuildRequest(turns, systemPrompt, maxTokens);
 
             if (request.Messages.Count == 0)
                 throw new CubUnavailableException("There is no message from the parent to send.");
@@ -63,19 +62,15 @@ namespace BabyBuddyHelper.Remote
             {
                 throw;
             }
-            catch (CubUnavailableException) //A reply with no text, from MapReply
-            {
-                throw;
-            }
             catch (Exception exception) //API errors, network errors, the SDK's timeout and unreadable replies all mean Cub can't answer
             {
                 throw new CubUnavailableException("Claude couldn't answer.", exception);
             }
         }
 
-        internal static MessageCreateParams BuildRequest(IReadOnlyList<ChatTurn> turns, BabyChatContext? babyContext)
+        internal static MessageCreateParams BuildRequest(IReadOnlyList<ChatTurn> turns, string systemPrompt, int maxTokens)
         {
-            List<MessageParam> messages = CubGuidelines.TrimHistory(turns)
+            List<MessageParam> messages = turns
                 .Select(turn => turn.Speaker == ChatSpeaker.Parent
                     ? (MessageParam)new UserMessageParam { Content = turn.Text }
                     : new AssistantMessageParam { Content = turn.Text })
@@ -84,21 +79,18 @@ namespace BabyBuddyHelper.Remote
             return new MessageCreateParams
             {
                 Model = Model.ClaudeHaiku5_5,
-                MaxTokens = CubGuidelines.MaxReplyTokens,
-                System = CubGuidelines.BuildSystemPrompt(babyContext),
+                MaxTokens = maxTokens,
+                System = systemPrompt,
                 Messages = messages
             };
         }
 
-        //Cub's reply is the text blocks, in order. A reply cut at the token cap is still shown
-        internal static string MapReply(Message reply)
+        //The reply is the text blocks, in order. Core's checks decide what an empty or cut-off reply means (#97)
+        internal static CubReply MapReply(Message reply)
         {
             string text = string.Concat(reply.Content.Select(block => block.TryPickText(out TextBlock? textBlock) ? textBlock.Text : string.Empty)).Trim();
 
-            if (text.Length == 0)
-                throw new CubUnavailableException("Claude sent a reply with no text.");
-
-            return text;
+            return new CubReply(text, reply.StopReason == StopReason.MaxTokens);
         }
     }
 }
