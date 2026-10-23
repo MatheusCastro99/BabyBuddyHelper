@@ -18,7 +18,7 @@ namespace BabyBuddyHelper.Core.Services
             string parentMessage = turns.LastOrDefault(turn => turn.Speaker == ChatSpeaker.Parent)?.Text ?? string.Empty;
 
             CubReply reply = await chatClient.GetReplyAsync(turns, systemPrompt, maxTokens, cancellationToken);
-            CubReplyProblem? problem = await FindProblemAsync(reply, parentMessage, personality, cancellationToken);
+            CubReplyProblem? problem = await FindProblemAsync(reply, parentMessage, personality, babyContext is not null, cancellationToken);
 
             if (problem is null)
                 return new CubOutcome.Reply(reply.Text);
@@ -29,13 +29,13 @@ namespace BabyBuddyHelper.Core.Services
 
             CubReply retry = await chatClient.GetReplyAsync(turns, retryPrompt, maxTokens, cancellationToken);
 
-            return await FindProblemAsync(retry, parentMessage, personality, cancellationToken) is null
+            return await FindProblemAsync(retry, parentMessage, personality, babyContext is not null, cancellationToken) is null
                 ? new CubOutcome.Reply(retry.Text)
                 : new CubOutcome.Declined();
         }
 
         //The code checks first, then the grader, which is only paid for when the code finds nothing
-        private async Task<CubReplyProblem?> FindProblemAsync(CubReply reply, string parentMessage, CubPersonality personality,
+        private async Task<CubReplyProblem?> FindProblemAsync(CubReply reply, string parentMessage, CubPersonality personality, bool babyPicked,
             CancellationToken cancellationToken)
         {
             CubReplyProblem? problem = CubReplyChecks.Check(reply);
@@ -45,7 +45,7 @@ namespace BabyBuddyHelper.Core.Services
 
             CubReply grade = await chatClient.GetReplyAsync(
                 [new ChatTurn(ChatSpeaker.Parent, CubGuidelines.BuildGradeRequest(parentMessage, reply.Text))],
-                CubGuidelines.BuildGraderPrompt(personality), CubGuidelines.MaxGradeTokens, cancellationToken);
+                CubGuidelines.BuildGraderPrompt(personality, babyPicked), CubGuidelines.MaxGradeTokens, cancellationToken);
 
             return CubReplyChecks.IsPassingGrade(grade.Text) ? null : CubReplyProblem.FailedGrade;
         }

@@ -45,7 +45,7 @@ namespace BabyBuddyHelper.Tests.Services
             Assert.Equal(OneQuestion, ask.Turns);
 
             Request grade = client.Requests[1];
-            Assert.Equal(CubGuidelines.BuildGraderPrompt(Personality), grade.SystemPrompt);
+            Assert.Equal(CubGuidelines.BuildGraderPrompt(Personality, babyPicked: false), grade.SystemPrompt);
             Assert.Equal(CubGuidelines.MaxGradeTokens, grade.MaxTokens);
             Assert.Equal([new ChatTurn(ChatSpeaker.Parent, CubGuidelines.BuildGradeRequest(ParentText, GoodReply))], grade.Turns);
         }
@@ -70,7 +70,7 @@ namespace BabyBuddyHelper.Tests.Services
         [Fact]
         public void BuildGraderPrompt_HoldsTheRulesStyleAndLength()
         {
-            string prompt = CubGuidelines.BuildGraderPrompt(Personality);
+            string prompt = CubGuidelines.BuildGraderPrompt(Personality, babyPicked: false);
 
             Assert.Contains("Never be negative", prompt);
             Assert.Contains("contact emergency services now", prompt);
@@ -80,7 +80,39 @@ namespace BabyBuddyHelper.Tests.Services
             Assert.Contains(CubGuidelines.LengthLine(CubVerbosity.Short), prompt);
             Assert.Contains("same language as the parent's message", prompt);
             Assert.Contains("answer with the single word PASS", prompt);
-            Assert.DoesNotContain("General advice", prompt); //The grader has no baby block to contradict a picked baby
+        }
+
+        //With "General advice", the grader holds that rule too, so a made-up name fails
+        [Fact]
+        public void BuildGraderPrompt_GeneralAdvice_HoldsItsRule()
+        {
+            string prompt = CubGuidelines.BuildGraderPrompt(Personality, babyPicked: false);
+
+            Assert.Contains("\"General advice\"", prompt);
+            Assert.Contains("don't assume the baby's name, age or details", prompt);
+            Assert.DoesNotContain("using them is fine", prompt);
+        }
+
+        //With a picked baby, the grader knows Cub was told the details, but never gets them
+        [Fact]
+        public void BuildGraderPrompt_PickedBaby_AllowsItsDetails()
+        {
+            string prompt = CubGuidelines.BuildGraderPrompt(Personality, babyPicked: true);
+
+            Assert.Contains("The app told Cub the baby's name and details, so using them is fine.", prompt);
+            Assert.DoesNotContain("\"General advice\"", prompt);
+            Assert.DoesNotContain("The parent picked", prompt);
+        }
+
+        [Fact]
+        public async Task AskAsync_PickedBaby_GradesWithThePickedBabyPrompt()
+        {
+            BabyChatContext baby = BabyChatContext.From(new BabyModel { Name = "Lia", DateOfBirth = DateTime.Today.AddMonths(-4) }, [], new VaccineCatalog());
+            var client = new FakeCubChatClient(Says(GoodReply), Says("PASS"));
+
+            await new CubReplyService(client).AskAsync(OneQuestion, baby, Personality, TestContext.Current.CancellationToken);
+
+            Assert.Equal(CubGuidelines.BuildGraderPrompt(Personality, babyPicked: true), client.Requests[1].SystemPrompt);
         }
 
         //Code fails never reach the grader; the retry carries the fixed note for the reason, and a good retry is shown
