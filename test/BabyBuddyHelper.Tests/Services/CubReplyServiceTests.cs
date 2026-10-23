@@ -75,6 +75,7 @@ namespace BabyBuddyHelper.Tests.Services
             Assert.Contains("Never be negative", prompt);
             Assert.Contains("contact emergency services now", prompt);
             Assert.Contains("Decline off-topic requests graciously", prompt);
+            Assert.Contains("In an emergency, the health and safety rules come before the style and length.", prompt);
             Assert.Contains(CubGuidelines.StyleLine(CubStyle.Direct), prompt);
             Assert.Contains(CubGuidelines.LengthLine(CubVerbosity.Short), prompt);
             Assert.Contains("same language as the parent's message", prompt);

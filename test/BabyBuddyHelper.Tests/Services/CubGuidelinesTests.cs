@@ -19,6 +19,7 @@ namespace BabyBuddyHelper.Tests.Services
         [InlineData("no markdown")]
         [InlineData("Never be negative")]
         [InlineData("contact emergency services now")]
+        [InlineData("In an emergency, the health and safety rules come before the style and length.")] //#97: no style delays it
         [InlineData("not medical advice")]
         [InlineData("talking to their pediatrician")]
         [InlineData("Never diagnose")]
