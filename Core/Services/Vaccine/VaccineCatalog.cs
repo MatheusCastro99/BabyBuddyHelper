@@ -2,7 +2,7 @@ using BabyBuddyHelper.Core.Interfaces.Vaccine;
 using BabyBuddyHelper.Core.Models.Vaccine;
 using System.Collections.ObjectModel;
 
-namespace BabyBuddyHelper.Core.Services
+namespace BabyBuddyHelper.Core.Services.Vaccine
 {
     //Routine birth-to-6-years immunizations as approved in #41, excluding combination products. Flu and COVID-19 are in the seasonal list (#82).
     //Ordered by age of first dose. CVX codes are CDC's "unspecified formulation" codes, so one entry covers every brand.

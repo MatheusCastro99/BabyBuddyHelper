@@ -1,7 +1,7 @@
 using BabyBuddyHelper.Core.Interfaces.Baby;
 using BabyBuddyHelper.Core.Models.Baby;
 
-namespace BabyBuddyHelper.Core.Services
+namespace BabyBuddyHelper.Core.Services.Baby
 {
     public class BabyFilterService : IBabyFilterService //Builds the baby option lists consumed by ChecklistPage, CalendarPage, and AddTaskPage.
     {

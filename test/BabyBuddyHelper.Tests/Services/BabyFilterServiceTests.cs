@@ -1,5 +1,5 @@
 using BabyBuddyHelper.Core.Models.Baby;
-using BabyBuddyHelper.Core.Services;
+using BabyBuddyHelper.Core.Services.Baby;
 using BabyBuddyHelper.Tests.Infrastructure;
 
 namespace BabyBuddyHelper.Tests.Services

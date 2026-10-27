@@ -7,7 +7,7 @@ using BabyBuddyHelper.Core.Models.Vaccine;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 
-namespace BabyBuddyHelper.Core.Services
+namespace BabyBuddyHelper.Core.Services.Vaccine
 {
     //In-memory cache of vaccination records. Writes persist through ITrackerDbService first; the collection only changes once the
     //database has committed, so a failed save (DbCommunicationException) leaves it untouched. Entries are found again by Id after the await (ADR-007).

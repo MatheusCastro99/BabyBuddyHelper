@@ -1,7 +1,8 @@
 using BabyBuddyHelper.Core.Exceptions;
 using BabyBuddyHelper.Core.Models.Baby;
 using BabyBuddyHelper.Core.Models.Cub;
-using BabyBuddyHelper.Core.Services;
+using BabyBuddyHelper.Core.Services.Cub;
+using BabyBuddyHelper.Core.Services.Vaccine;
 using BabyBuddyHelper.Tests.Infrastructure;
 using static BabyBuddyHelper.Tests.Infrastructure.FakeCubChatClient;
 

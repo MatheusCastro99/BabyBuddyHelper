@@ -151,7 +151,7 @@ The project intentionally favors simplicity over premature optimization.
 Current structure:
 
 ```text
-Core/   Models/, Services/, Interfaces/, Persistence/, Collections/, Exceptions/, Storage/
+Core/   Models/, Services/, Interfaces/ (each with Baby/, TaskList/, Vaccine/ and Cub/ subfolders), Persistence/, Collections/, Exceptions/, Storage/
 UI/     Pages/, Controls/, Services/, Converters/
 ```
 
@@ -204,15 +204,19 @@ BabyBuddyHelper/
 │   │       └── CubOutcome.cs
 │   │
 │   ├── Services/
-│   │   ├── TaskListService.cs
-│   │   ├── BabyProfileService.cs
-│   │   ├── BabyFilterService.cs
-│   │   ├── TrackerDataSeeder.cs
-│   │   ├── VaccineCatalog.cs
-│   │   ├── VaccineService.cs
-│   │   ├── CubGuidelines.cs
-│   │   ├── CubReplyChecks.cs
-│   │   └── CubReplyService.cs
+│   │   ├── Baby/
+│   │   │   ├── BabyProfileService.cs
+│   │   │   └── BabyFilterService.cs
+│   │   ├── TaskList/
+│   │   │   └── TaskListService.cs
+│   │   ├── Vaccine/
+│   │   │   ├── VaccineCatalog.cs
+│   │   │   └── VaccineService.cs
+│   │   ├── Cub/
+│   │   │   ├── CubGuidelines.cs
+│   │   │   ├── CubReplyChecks.cs
+│   │   │   └── CubReplyService.cs
+│   │   └── TrackerDataSeeder.cs
 │   │
 │   ├── Interfaces/
 │   │   ├── Baby/

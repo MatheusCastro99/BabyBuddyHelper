@@ -79,15 +79,19 @@ BabyBuddyHelper/
 │   │       ├── CubReply.cs - One unchecked reply from the chat provider: its text and whether it was cut off
 │   │       └── CubOutcome.cs - What the chat shows for one message: a checked reply, or nothing when both tries failed
 │   ├── Services/
-│   │   ├── TaskListService.cs - In-memory cache and single source of truth for tasks and appointments
-│   │   ├── BabyProfileService.cs - In-memory cache and single source of truth for baby profiles
-│   │   ├── BabyFilterService.cs - Baby selection options shared by the checklist, calendar and task entry
-│   │   ├── TrackerDataSeeder.cs - Debug-only mock data seeding
-│   │   ├── VaccineCatalog.cs - Fixed US CDC vaccine list (birth to 6 years), no database access
-│   │   ├── VaccineService.cs - In-memory cache and single source of truth for vaccination records
-│   │   ├── CubGuidelines.cs - Cub's fixed chat rules, the style and length lines, the baby block, the grader's prompt, the retry notes, and the caps
-│   │   ├── CubReplyChecks.cs - The code checks on a reply: empty, cut off, or markdown
-│   │   └── CubReplyService.cs - The sanity layer: asks Cub, checks and grades the reply, and retries once
+│   │   ├── Baby/
+│   │   │   ├── BabyProfileService.cs - In-memory cache and single source of truth for baby profiles
+│   │   │   └── BabyFilterService.cs - Baby selection options shared by the checklist, calendar and task entry
+│   │   ├── TaskList/
+│   │   │   └── TaskListService.cs - In-memory cache and single source of truth for tasks and appointments
+│   │   ├── Vaccine/
+│   │   │   ├── VaccineCatalog.cs - Fixed US CDC vaccine list (birth to 6 years), no database access
+│   │   │   └── VaccineService.cs - In-memory cache and single source of truth for vaccination records
+│   │   ├── Cub/
+│   │   │   ├── CubGuidelines.cs - Cub's fixed chat rules, the style and length lines, the baby block, the grader's prompt, the retry notes, and the caps
+│   │   │   ├── CubReplyChecks.cs - The code checks on a reply: empty, cut off, or markdown
+│   │   │   └── CubReplyService.cs - The sanity layer: asks Cub, checks and grades the reply, and retries once
+│   │   └── TrackerDataSeeder.cs - Debug-only mock data seeding
 │   ├── Interfaces/
 │   │   ├── Baby/
 │   │   │   ├── IBabyProfileService.cs - Interface for BabyProfileService

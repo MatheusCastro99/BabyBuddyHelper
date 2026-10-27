@@ -9,6 +9,10 @@
     - Vaccine/
     - Cub/
   - Services/
+    - Baby/
+    - TaskList/
+    - Vaccine/
+    - Cub/
   - Interfaces/
     - Baby/
     - TaskList/
@@ -50,15 +54,19 @@ Core/Models/
 
 Core/Services/
 
-- TaskListService.cs
-- BabyProfileService.cs
-- BabyFilterService.cs
+- Baby/
+  - BabyProfileService.cs
+  - BabyFilterService.cs
+- TaskList/
+  - TaskListService.cs
+- Vaccine/
+  - VaccineCatalog.cs
+  - VaccineService.cs
+- Cub/
+  - CubGuidelines.cs
+  - CubReplyChecks.cs
+  - CubReplyService.cs
 - TrackerDataSeeder.cs
-- VaccineCatalog.cs
-- VaccineService.cs
-- CubGuidelines.cs
-- CubReplyChecks.cs
-- CubReplyService.cs
 
 Core/Interfaces/
 

@@ -1,6 +1,6 @@
 using BabyBuddyHelper.Core.Exceptions;
 using BabyBuddyHelper.Core.Models.Cub;
-using BabyBuddyHelper.Core.Services;
+using BabyBuddyHelper.Core.Services.Cub;
 using BabyBuddyHelper.Remote;
 using BabyBuddyHelper.Tests.Infrastructure;
 using System.Net;

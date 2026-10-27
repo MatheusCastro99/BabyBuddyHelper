@@ -5,7 +5,7 @@ using BabyBuddyHelper.Core.Interfaces.Vaccine;
 using BabyBuddyHelper.Core.Interfaces;
 using BabyBuddyHelper.Core.Models.Baby;
 using BabyBuddyHelper.Core.Models.Cub;
-using BabyBuddyHelper.Core.Services;
+using BabyBuddyHelper.Core.Services.Cub;
 using BabyBuddyHelper.UI.Controls;
 using CommunityToolkit.Maui;
 using CommunityToolkit.Maui.Extensions;
