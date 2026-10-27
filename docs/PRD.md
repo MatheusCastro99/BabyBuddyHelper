@@ -64,16 +64,20 @@ VaccinationRecordModel (one baby's progress on one catalog vaccine, stored in th
 BabyBuddyHelper/
 ├── Core/
 │   ├── Models/
-│   │   ├── TaskModel.cs - Data model for tasks
-│   │   ├── AppointmentModel.cs - Data model for appointments (extends tasks)
-│   │   ├── BabyModel.cs - Data model for baby profiles (age computed from date of birth)
-│   │   ├── VaccineModel.cs - Data model for one vaccine in the built-in catalog
-│   │   ├── VaccinationRecordModel.cs - Data model for one baby's doses and dates for one vaccine
-│   │   ├── ChatTurn.cs - One message of the chat with Cub, kept in memory only
-│   │   ├── BabyChatContext.cs - What Cub may know about the baby picked in the chat (never the birth date, feeds or sleeps)
-│   │   ├── CubPersonality.cs - How Cub talks in the chat: the style and reply length the parent picks
-│   │   ├── CubReply.cs - One unchecked reply from the chat provider: its text and whether it was cut off
-│   │   └── CubOutcome.cs - What the chat shows for one message: a checked reply, or nothing when both tries failed
+│   │   ├── Baby/
+│   │   │   └── BabyModel.cs - Data model for baby profiles (age computed from date of birth)
+│   │   ├── TaskList/
+│   │   │   ├── TaskModel.cs - Data model for tasks
+│   │   │   └── AppointmentModel.cs - Data model for appointments (extends tasks)
+│   │   ├── Vaccine/
+│   │   │   ├── VaccineModel.cs - Data model for one vaccine in the built-in catalog
+│   │   │   └── VaccinationRecordModel.cs - Data model for one baby's doses and dates for one vaccine
+│   │   └── Cub/
+│   │       ├── ChatTurn.cs - One message of the chat with Cub, kept in memory only
+│   │       ├── BabyChatContext.cs - What Cub may know about the baby picked in the chat (never the birth date, feeds or sleeps)
+│   │       ├── CubPersonality.cs - How Cub talks in the chat: the style and reply length the parent picks
+│   │       ├── CubReply.cs - One unchecked reply from the chat provider: its text and whether it was cut off
+│   │       └── CubOutcome.cs - What the chat shows for one message: a checked reply, or nothing when both tries failed
 │   ├── Services/
 │   │   ├── TaskListService.cs - In-memory cache and single source of truth for tasks and appointments
 │   │   ├── BabyProfileService.cs - In-memory cache and single source of truth for baby profiles

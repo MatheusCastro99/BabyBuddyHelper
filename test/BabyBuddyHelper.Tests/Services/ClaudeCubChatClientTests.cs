@@ -1,5 +1,5 @@
 using BabyBuddyHelper.Core.Exceptions;
-using BabyBuddyHelper.Core.Models;
+using BabyBuddyHelper.Core.Models.Cub;
 using BabyBuddyHelper.Core.Services;
 using BabyBuddyHelper.Remote;
 using BabyBuddyHelper.Tests.Infrastructure;

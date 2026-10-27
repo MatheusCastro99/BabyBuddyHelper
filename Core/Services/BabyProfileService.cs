@@ -1,7 +1,7 @@
 using BabyBuddyHelper.Core.Collections;
 using BabyBuddyHelper.Core.Interfaces.Baby;
 using BabyBuddyHelper.Core.Interfaces;
-using BabyBuddyHelper.Core.Models;
+using BabyBuddyHelper.Core.Models.Baby;
 using System.Collections.ObjectModel;
 
 namespace BabyBuddyHelper.Core.Services

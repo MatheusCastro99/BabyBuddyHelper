@@ -1,6 +1,6 @@
 using BabyBuddyHelper.Core.Exceptions;
 using BabyBuddyHelper.Core.Interfaces.Baby;
-using BabyBuddyHelper.Core.Models;
+using BabyBuddyHelper.Core.Models.Baby;
 using BabyBuddyHelper.UI.Services;
 using System.Globalization;
 

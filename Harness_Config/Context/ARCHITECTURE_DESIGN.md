@@ -4,6 +4,10 @@
 
 - Core/
   - Models/
+    - Baby/
+    - TaskList/
+    - Vaccine/
+    - Cub/
   - Services/
   - Interfaces/
     - Baby/
@@ -29,16 +33,20 @@
 
 Core/Models/
 
-- TaskModel.cs
-- AppointmentModel.cs
-- BabyModel.cs
-- VaccineModel.cs
-- VaccinationRecordModel.cs
-- ChatTurn.cs
-- BabyChatContext.cs
-- CubPersonality.cs
-- CubReply.cs
-- CubOutcome.cs
+- Baby/
+  - BabyModel.cs
+- TaskList/
+  - TaskModel.cs
+  - AppointmentModel.cs
+- Vaccine/
+  - VaccineModel.cs
+  - VaccinationRecordModel.cs
+- Cub/
+  - ChatTurn.cs
+  - BabyChatContext.cs
+  - CubPersonality.cs
+  - CubReply.cs
+  - CubOutcome.cs
 
 Core/Services/
 

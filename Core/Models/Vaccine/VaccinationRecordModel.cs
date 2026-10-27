@@ -1,4 +1,4 @@
-namespace BabyBuddyHelper.Core.Models
+namespace BabyBuddyHelper.Core.Models.Vaccine
 {
     //One baby's progress on one catalog vaccine. At most one record per baby per vaccine (unique index in TrackerContext).
     //VaccineId points into the fixed catalog, which lives outside the database (ADR-012), so it has no foreign key.

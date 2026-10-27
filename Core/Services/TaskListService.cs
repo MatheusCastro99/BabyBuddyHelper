@@ -2,7 +2,8 @@
 using BabyBuddyHelper.Core.Interfaces.Baby;
 using BabyBuddyHelper.Core.Interfaces.TaskList;
 using BabyBuddyHelper.Core.Interfaces;
-using BabyBuddyHelper.Core.Models;
+using BabyBuddyHelper.Core.Models.Baby;
+using BabyBuddyHelper.Core.Models.TaskList;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 

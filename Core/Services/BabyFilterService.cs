@@ -1,5 +1,5 @@
 using BabyBuddyHelper.Core.Interfaces.Baby;
-using BabyBuddyHelper.Core.Models;
+using BabyBuddyHelper.Core.Models.Baby;
 
 namespace BabyBuddyHelper.Core.Services
 {

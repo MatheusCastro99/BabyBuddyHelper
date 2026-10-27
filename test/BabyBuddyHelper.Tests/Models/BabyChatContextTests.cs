@@ -1,4 +1,6 @@
-using BabyBuddyHelper.Core.Models;
+using BabyBuddyHelper.Core.Models.Baby;
+using BabyBuddyHelper.Core.Models.Cub;
+using BabyBuddyHelper.Core.Models.Vaccine;
 using BabyBuddyHelper.Core.Services;
 using System.Globalization;
 

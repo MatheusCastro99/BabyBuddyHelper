@@ -1,4 +1,4 @@
-using BabyBuddyHelper.Core.Models;
+using BabyBuddyHelper.Core.Models.Baby;
 using BabyBuddyHelper.Core.Services;
 using BabyBuddyHelper.Tests.Infrastructure;
 

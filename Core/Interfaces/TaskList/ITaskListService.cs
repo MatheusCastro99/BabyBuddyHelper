@@ -1,4 +1,4 @@
-﻿using BabyBuddyHelper.Core.Models;
+﻿using BabyBuddyHelper.Core.Models.TaskList;
 using System.Collections.ObjectModel;
 
 namespace BabyBuddyHelper.Core.Interfaces.TaskList

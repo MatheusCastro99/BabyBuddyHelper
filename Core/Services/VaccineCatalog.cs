@@ -1,5 +1,5 @@
 using BabyBuddyHelper.Core.Interfaces.Vaccine;
-using BabyBuddyHelper.Core.Models;
+using BabyBuddyHelper.Core.Models.Vaccine;
 using System.Collections.ObjectModel;
 
 namespace BabyBuddyHelper.Core.Services

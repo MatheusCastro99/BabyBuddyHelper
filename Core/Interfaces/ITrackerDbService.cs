@@ -1,4 +1,6 @@
-using BabyBuddyHelper.Core.Models;
+using BabyBuddyHelper.Core.Models.Baby;
+using BabyBuddyHelper.Core.Models.TaskList;
+using BabyBuddyHelper.Core.Models.Vaccine;
 
 namespace BabyBuddyHelper.Core.Interfaces
 {

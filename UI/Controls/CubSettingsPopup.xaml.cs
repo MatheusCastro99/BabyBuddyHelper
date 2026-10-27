@@ -1,7 +1,7 @@
 using BabyBuddyHelper.Core.Exceptions;
 using BabyBuddyHelper.Core.Interfaces.Cub;
 using BabyBuddyHelper.Core.Interfaces;
-using BabyBuddyHelper.Core.Models;
+using BabyBuddyHelper.Core.Models.Cub;
 using BabyBuddyHelper.UI.Services;
 using CommunityToolkit.Maui.Views;
 

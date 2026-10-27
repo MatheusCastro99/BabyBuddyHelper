@@ -1,4 +1,4 @@
-﻿using BabyBuddyHelper.Core.Models;
+﻿using BabyBuddyHelper.Core.Models.TaskList;
 using System.Globalization;
 
 namespace BabyBuddyHelper.UI.Converters

@@ -1,7 +1,9 @@
 using BabyBuddyHelper.Core.Interfaces.Vaccine;
+using BabyBuddyHelper.Core.Models.Baby;
+using BabyBuddyHelper.Core.Models.Vaccine;
 using System.Globalization;
 
-namespace BabyBuddyHelper.Core.Models
+namespace BabyBuddyHelper.Core.Models.Cub
 {
     //What Cub may know about the baby the parent picked in the chat (#96), already written out as text.
     //It has no field for the birth date, the last feed or the last sleep, so those can never be sent (ADR-017).

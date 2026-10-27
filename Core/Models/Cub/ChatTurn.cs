@@ -1,4 +1,4 @@
-namespace BabyBuddyHelper.Core.Models
+namespace BabyBuddyHelper.Core.Models.Cub
 {
     public enum ChatSpeaker
     {

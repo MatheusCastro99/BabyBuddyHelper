@@ -1,4 +1,4 @@
-using BabyBuddyHelper.Core.Models;
+using BabyBuddyHelper.Core.Models.Cub;
 using BabyBuddyHelper.Core.Services;
 
 namespace BabyBuddyHelper.Tests.Services

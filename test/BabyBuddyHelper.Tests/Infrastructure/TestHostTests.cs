@@ -1,5 +1,6 @@
 using BabyBuddyHelper.Core.Exceptions;
-using BabyBuddyHelper.Core.Models;
+using BabyBuddyHelper.Core.Models.TaskList;
+using BabyBuddyHelper.Core.Models.Vaccine;
 
 namespace BabyBuddyHelper.Tests.Infrastructure
 {

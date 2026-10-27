@@ -1,4 +1,4 @@
-namespace BabyBuddyHelper.Core.Models
+namespace BabyBuddyHelper.Core.Models.Vaccine
 {
     //One entry of the fixed vaccine catalog: reference data written into the code, never stored in the database (ADR-012)
     public class VaccineModel

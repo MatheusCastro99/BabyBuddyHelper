@@ -1,4 +1,4 @@
-using BabyBuddyHelper.Core.Models;
+using BabyBuddyHelper.Core.Models.Cub;
 using System.Text.RegularExpressions;
 
 namespace BabyBuddyHelper.Core.Services
