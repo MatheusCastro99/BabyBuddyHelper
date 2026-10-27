@@ -1,6 +1,6 @@
 using BabyBuddyHelper.Core.Models.TaskList;
 
-namespace BabyBuddyHelper.Tests.Models
+namespace BabyBuddyHelper.Tests.Models.TaskList
 {
     public class TaskModelTests
     {

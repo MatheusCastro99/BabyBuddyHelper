@@ -6,7 +6,7 @@ using BabyBuddyHelper.Tests.Infrastructure;
 using System.Net;
 using System.Text.Json;
 
-namespace BabyBuddyHelper.Tests.Services
+namespace BabyBuddyHelper.Tests.Remote
 {
     //The Claude client on a fake network and a dummy key (#96, ADR-018): what it sends, what it returns,
     //and that every failure becomes the one CubUnavailableException (ADR-017). Core builds the prompt and the cap (#97),

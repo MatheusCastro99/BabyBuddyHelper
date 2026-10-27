@@ -2,7 +2,7 @@ using BabyBuddyHelper.Core.Models.Baby;
 using BabyBuddyHelper.Core.Services.Baby;
 using BabyBuddyHelper.Tests.Infrastructure;
 
-namespace BabyBuddyHelper.Tests.Services
+namespace BabyBuddyHelper.Tests.Services.Baby
 {
     //The baby option lists shown by the checklist and calendar filters ("All babies") and the task editor ("Unassigned")
     public class BabyFilterServiceTests : DatabaseTest

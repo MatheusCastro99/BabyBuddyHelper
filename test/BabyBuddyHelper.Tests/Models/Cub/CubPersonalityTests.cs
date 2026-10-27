@@ -1,6 +1,6 @@
 using BabyBuddyHelper.Core.Models.Cub;
 
-namespace BabyBuddyHelper.Tests.Models
+namespace BabyBuddyHelper.Tests.Models.Cub
 {
     //Reading the saved style and reply length back (#97). The Preferences store itself needs MAUI, so its fallback lives here.
     public class CubPersonalityTests

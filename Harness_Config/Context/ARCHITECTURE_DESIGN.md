@@ -164,8 +164,17 @@ UI/Converters/
 test/BabyBuddyHelper.Tests/ (a separate plain `net10.0` xUnit project; it links the `Core/` and `Remote/` sources instead of referencing the app, leaving out `SecureApiKeyStore.cs` and `PreferencesCubPersonalityStore.cs`, which need MAUI; ADR-018)
 
 - Infrastructure/: TestDatabase.cs, TestServices.cs, DatabaseTest.cs, TestData.cs, TestHostTests.cs, FakeAnthropicHandler.cs, FakeApiKeyStore.cs, FakeCubChatClient.cs
-- Services/: TaskCrudTests.cs, TaskConversionTests.cs, TaskSortingTests.cs, TaskFilteringTests.cs, BabyProfileCrudTests.cs, BabyRemovalTests.cs, BabyMeasurementDateTests.cs, BabyFilterServiceTests.cs, VaccinationRecordCrudTests.cs, CollidingDataTests.cs, CubGuidelinesTests.cs, ClaudeCubChatClientTests.cs, CubReplyChecksTests.cs, CubReplyServiceTests.cs
-- Models/: TaskModelTests.cs, VaccinationRecordFlagTests.cs, BabyChatContextTests.cs, CubPersonalityTests.cs
+- Services/ (through the cache services; feature subfolders mirror `Core/Services`):
+  - Baby/: BabyProfileCrudTests.cs, BabyRemovalTests.cs, BabyMeasurementDateTests.cs, BabyFilterServiceTests.cs
+  - TaskList/: TaskCrudTests.cs, TaskConversionTests.cs, TaskSortingTests.cs, TaskFilteringTests.cs
+  - Vaccine/: VaccinationRecordCrudTests.cs
+  - Cub/: CubGuidelinesTests.cs, CubReplyChecksTests.cs, CubReplyServiceTests.cs
+  - CollidingDataTests.cs (cross-feature, stays at the root)
+- Models/ (model logic; feature subfolders mirror `Core/Models`):
+  - TaskList/: TaskModelTests.cs
+  - Vaccine/: VaccinationRecordFlagTests.cs
+  - Cub/: BabyChatContextTests.cs, CubPersonalityTests.cs
+- Remote/ (off-device clients, on a fake network): ClaudeCubChatClientTests.cs
 
 See the data-flow diagram: [DataFlow.excalidraw](../../docs/DataFlow.excalidraw)
 
