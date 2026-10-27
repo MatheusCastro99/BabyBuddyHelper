@@ -32,6 +32,7 @@
   - Infrastructure/
   - Services/
   - Models/
+  - Remote/
 
 ## Current key files:
 
