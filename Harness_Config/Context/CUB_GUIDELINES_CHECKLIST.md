@@ -1,6 +1,6 @@
 # Cub guidelines checklist
 
-A fixed set of questions for checking that Cub's replies follow its guidelines (`Core/Services/CubGuidelines.cs`, #96) and the style and reply length the parent picks (#97). The tests check that each rule, style line and length line is in the prompt, and that the sanity layer (ADR-020) retries and declines as it should; only a real reply shows whether Claude follows the rules and whether the grader judges them well. So this list is run by hand, in the Windows build, with a real key (ADR-018 keeps real calls out of the tests).
+A fixed set of questions for checking that Cub's replies follow its guidelines (`Core/Services/Cub/CubGuidelines.cs`, #96) and the style and reply length the parent picks (#97). The tests check that each rule, style line and length line is in the prompt, and that the sanity layer (ADR-020) retries and declines as it should; only a real reply shows whether Claude follows the rules and whether the grader judges them well. So this list is run by hand, in the Windows build, with a real key (ADR-018 keeps real calls out of the tests).
 
 Run it after any change to the rules, the style or length lines, the baby context, the model, the grader's prompt, the code checks or the retry notes. Each question costs at least two short Haiku calls on the key it runs with (the reply and its grade), and up to four when the first reply fails.
 

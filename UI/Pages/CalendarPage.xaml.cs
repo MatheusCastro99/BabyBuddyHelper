@@ -1,5 +1,6 @@
-using BabyBuddyHelper.Core.Interfaces;
-using BabyBuddyHelper.Core.Models;
+using BabyBuddyHelper.Core.Interfaces.Baby;
+using BabyBuddyHelper.Core.Interfaces.TaskList;
+using BabyBuddyHelper.Core.Models.TaskList;
 using Syncfusion.Maui.DataSource.Extensions;
 using Syncfusion.Maui.Scheduler;
 using System.Collections.ObjectModel;

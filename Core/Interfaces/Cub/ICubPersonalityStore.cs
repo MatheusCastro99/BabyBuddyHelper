@@ -1,6 +1,6 @@
-using BabyBuddyHelper.Core.Models;
+using BabyBuddyHelper.Core.Models.Cub;
 
-namespace BabyBuddyHelper.Core.Interfaces
+namespace BabyBuddyHelper.Core.Interfaces.Cub
 {
     public interface ICubPersonalityStore //How Cub talks in the chat (#97): a device setting, like the palette, never in the database
     {

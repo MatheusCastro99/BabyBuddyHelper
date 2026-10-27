@@ -1,7 +1,7 @@
-using BabyBuddyHelper.Core.Models;
+using BabyBuddyHelper.Core.Models.Vaccine;
 using System.Collections.ObjectModel;
 
-namespace BabyBuddyHelper.Core.Interfaces
+namespace BabyBuddyHelper.Core.Interfaces.Vaccine
 {
     public interface IVaccineService //Cache service and single owner of vaccination records (ADR-001/008)
     {

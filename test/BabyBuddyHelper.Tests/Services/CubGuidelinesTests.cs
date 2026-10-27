@@ -1,5 +1,8 @@
-using BabyBuddyHelper.Core.Models;
-using BabyBuddyHelper.Core.Services;
+using BabyBuddyHelper.Core.Models.Baby;
+using BabyBuddyHelper.Core.Models.Cub;
+using BabyBuddyHelper.Core.Models.Vaccine;
+using BabyBuddyHelper.Core.Services.Cub;
+using BabyBuddyHelper.Core.Services.Vaccine;
 
 namespace BabyBuddyHelper.Tests.Services
 {

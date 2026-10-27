@@ -1,4 +1,4 @@
-namespace BabyBuddyHelper.Core.Interfaces
+namespace BabyBuddyHelper.Core.Interfaces.Baby
 {
     public interface IBabyFilterService //Centralizes the baby selection option lists shared by the checklist, calendar, and task entry screens.
     {

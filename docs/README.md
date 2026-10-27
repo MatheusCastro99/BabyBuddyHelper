@@ -151,7 +151,7 @@ The project intentionally favors simplicity over premature optimization.
 Current structure:
 
 ```text
-Core/   Models/, Services/, Interfaces/, Persistence/, Collections/, Exceptions/, Storage/
+Core/   Models/, Services/, Interfaces/ (each with Baby/, TaskList/, Vaccine/ and Cub/ subfolders), Persistence/, Collections/, Exceptions/, Storage/
 UI/     Pages/, Controls/, Services/, Converters/
 ```
 
@@ -188,38 +188,50 @@ BabyBuddyHelper/
 │
 ├── Core/
 │   ├── Models/
-│   │   ├── TaskModel.cs
-│   │   ├── AppointmentModel.cs
-│   │   ├── BabyModel.cs
-│   │   ├── VaccineModel.cs
-│   │   ├── VaccinationRecordModel.cs
-│   │   ├── ChatTurn.cs
-│   │   ├── BabyChatContext.cs
-│   │   ├── CubPersonality.cs
-│   │   ├── CubReply.cs
-│   │   └── CubOutcome.cs
+│   │   ├── Baby/
+│   │   │   └── BabyModel.cs
+│   │   ├── TaskList/
+│   │   │   ├── TaskModel.cs
+│   │   │   └── AppointmentModel.cs
+│   │   ├── Vaccine/
+│   │   │   ├── VaccineModel.cs
+│   │   │   └── VaccinationRecordModel.cs
+│   │   └── Cub/
+│   │       ├── ChatTurn.cs
+│   │       ├── BabyChatContext.cs
+│   │       ├── CubPersonality.cs
+│   │       ├── CubReply.cs
+│   │       └── CubOutcome.cs
 │   │
 │   ├── Services/
-│   │   ├── TaskListService.cs
-│   │   ├── BabyProfileService.cs
-│   │   ├── BabyFilterService.cs
-│   │   ├── TrackerDataSeeder.cs
-│   │   ├── VaccineCatalog.cs
-│   │   ├── VaccineService.cs
-│   │   ├── CubGuidelines.cs
-│   │   ├── CubReplyChecks.cs
-│   │   └── CubReplyService.cs
+│   │   ├── Baby/
+│   │   │   ├── BabyProfileService.cs
+│   │   │   └── BabyFilterService.cs
+│   │   ├── TaskList/
+│   │   │   └── TaskListService.cs
+│   │   ├── Vaccine/
+│   │   │   ├── VaccineCatalog.cs
+│   │   │   └── VaccineService.cs
+│   │   ├── Cub/
+│   │   │   ├── CubGuidelines.cs
+│   │   │   ├── CubReplyChecks.cs
+│   │   │   └── CubReplyService.cs
+│   │   └── TrackerDataSeeder.cs
 │   │
 │   ├── Interfaces/
-│   │   ├── ITaskListService.cs
-│   │   ├── IBabyProfileService.cs
-│   │   ├── IBabyFilterService.cs
+│   │   ├── Baby/
+│   │   │   ├── IBabyProfileService.cs
+│   │   │   └── IBabyFilterService.cs
+│   │   ├── TaskList/
+│   │   │   └── ITaskListService.cs
+│   │   ├── Vaccine/
+│   │   │   ├── IVaccineCatalog.cs
+│   │   │   └── IVaccineService.cs
+│   │   ├── Cub/
+│   │   │   ├── ICubChatClient.cs
+│   │   │   └── ICubPersonalityStore.cs
 │   │   ├── ITrackerDbService.cs
-│   │   ├── IVaccineCatalog.cs
-│   │   ├── IVaccineService.cs
-│   │   ├── IApiKeyStore.cs
-│   │   ├── ICubChatClient.cs
-│   │   └── ICubPersonalityStore.cs
+│   │   └── IApiKeyStore.cs
 │   │
 │   ├── Persistence/
 │   │   ├── TrackerContext.cs

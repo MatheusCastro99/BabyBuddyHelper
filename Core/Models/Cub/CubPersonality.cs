@@ -1,4 +1,4 @@
-namespace BabyBuddyHelper.Core.Models
+namespace BabyBuddyHelper.Core.Models.Cub
 {
     //How Cub talks in the chat (#97). The names are saved as they are, so renaming one resets it to the default.
     public enum CubStyle

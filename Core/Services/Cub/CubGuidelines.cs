@@ -1,7 +1,7 @@
-using BabyBuddyHelper.Core.Models;
+using BabyBuddyHelper.Core.Models.Cub;
 using System.Text;
 
-namespace BabyBuddyHelper.Core.Services
+namespace BabyBuddyHelper.Core.Services.Cub
 {
     //Cub's fixed rules, written into the app (#96). Any provider client in Remote/ sends them as they are: the rules,
     //the baby context and the caps live here so they can be tested without a provider.

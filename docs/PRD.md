@@ -64,36 +64,48 @@ VaccinationRecordModel (one baby's progress on one catalog vaccine, stored in th
 BabyBuddyHelper/
 ├── Core/
 │   ├── Models/
-│   │   ├── TaskModel.cs - Data model for tasks
-│   │   ├── AppointmentModel.cs - Data model for appointments (extends tasks)
-│   │   ├── BabyModel.cs - Data model for baby profiles (age computed from date of birth)
-│   │   ├── VaccineModel.cs - Data model for one vaccine in the built-in catalog
-│   │   ├── VaccinationRecordModel.cs - Data model for one baby's doses and dates for one vaccine
-│   │   ├── ChatTurn.cs - One message of the chat with Cub, kept in memory only
-│   │   ├── BabyChatContext.cs - What Cub may know about the baby picked in the chat (never the birth date, feeds or sleeps)
-│   │   ├── CubPersonality.cs - How Cub talks in the chat: the style and reply length the parent picks
-│   │   ├── CubReply.cs - One unchecked reply from the chat provider: its text and whether it was cut off
-│   │   └── CubOutcome.cs - What the chat shows for one message: a checked reply, or nothing when both tries failed
+│   │   ├── Baby/
+│   │   │   └── BabyModel.cs - Data model for baby profiles (age computed from date of birth)
+│   │   ├── TaskList/
+│   │   │   ├── TaskModel.cs - Data model for tasks
+│   │   │   └── AppointmentModel.cs - Data model for appointments (extends tasks)
+│   │   ├── Vaccine/
+│   │   │   ├── VaccineModel.cs - Data model for one vaccine in the built-in catalog
+│   │   │   └── VaccinationRecordModel.cs - Data model for one baby's doses and dates for one vaccine
+│   │   └── Cub/
+│   │       ├── ChatTurn.cs - One message of the chat with Cub, kept in memory only
+│   │       ├── BabyChatContext.cs - What Cub may know about the baby picked in the chat (never the birth date, feeds or sleeps)
+│   │       ├── CubPersonality.cs - How Cub talks in the chat: the style and reply length the parent picks
+│   │       ├── CubReply.cs - One unchecked reply from the chat provider: its text and whether it was cut off
+│   │       └── CubOutcome.cs - What the chat shows for one message: a checked reply, or nothing when both tries failed
 │   ├── Services/
-│   │   ├── TaskListService.cs - In-memory cache and single source of truth for tasks and appointments
-│   │   ├── BabyProfileService.cs - In-memory cache and single source of truth for baby profiles
-│   │   ├── BabyFilterService.cs - Baby selection options shared by the checklist, calendar and task entry
-│   │   ├── TrackerDataSeeder.cs - Debug-only mock data seeding
-│   │   ├── VaccineCatalog.cs - Fixed US CDC vaccine list (birth to 6 years), no database access
-│   │   ├── VaccineService.cs - In-memory cache and single source of truth for vaccination records
-│   │   ├── CubGuidelines.cs - Cub's fixed chat rules, the style and length lines, the baby block, the grader's prompt, the retry notes, and the caps
-│   │   ├── CubReplyChecks.cs - The code checks on a reply: empty, cut off, or markdown
-│   │   └── CubReplyService.cs - The sanity layer: asks Cub, checks and grades the reply, and retries once
+│   │   ├── Baby/
+│   │   │   ├── BabyProfileService.cs - In-memory cache and single source of truth for baby profiles
+│   │   │   └── BabyFilterService.cs - Baby selection options shared by the checklist, calendar and task entry
+│   │   ├── TaskList/
+│   │   │   └── TaskListService.cs - In-memory cache and single source of truth for tasks and appointments
+│   │   ├── Vaccine/
+│   │   │   ├── VaccineCatalog.cs - Fixed US CDC vaccine list (birth to 6 years), no database access
+│   │   │   └── VaccineService.cs - In-memory cache and single source of truth for vaccination records
+│   │   ├── Cub/
+│   │   │   ├── CubGuidelines.cs - Cub's fixed chat rules, the style and length lines, the baby block, the grader's prompt, the retry notes, and the caps
+│   │   │   ├── CubReplyChecks.cs - The code checks on a reply: empty, cut off, or markdown
+│   │   │   └── CubReplyService.cs - The sanity layer: asks Cub, checks and grades the reply, and retries once
+│   │   └── TrackerDataSeeder.cs - Debug-only mock data seeding
 │   ├── Interfaces/
-│   │   ├── ITaskListService.cs - Interface for TaskListService
-│   │   ├── IBabyProfileService.cs - Interface for BabyProfileService
-│   │   ├── IBabyFilterService.cs - Interface for BabyFilterService
+│   │   ├── Baby/
+│   │   │   ├── IBabyProfileService.cs - Interface for BabyProfileService
+│   │   │   └── IBabyFilterService.cs - Interface for BabyFilterService
+│   │   ├── TaskList/
+│   │   │   └── ITaskListService.cs - Interface for TaskListService
+│   │   ├── Vaccine/
+│   │   │   ├── IVaccineCatalog.cs - Interface for VaccineCatalog
+│   │   │   └── IVaccineService.cs - Interface for VaccineService
+│   │   ├── Cub/
+│   │   │   ├── ICubChatClient.cs - Contract for Cub's chat replies (the off-device path, ADR-017): Core gives the prompt, cap and turns
+│   │   │   └── ICubPersonalityStore.cs - Contract for keeping Cub's style and reply length on the device
 │   │   ├── ITrackerDbService.cs - Persistence boundary, used only by the cache services
-│   │   ├── IVaccineCatalog.cs - Interface for VaccineCatalog
-│   │   ├── IVaccineService.cs - Interface for VaccineService
-│   │   ├── IApiKeyStore.cs - Contract for keeping the user's own AI provider key in the device's secure storage
-│   │   ├── ICubChatClient.cs - Contract for Cub's chat replies (the off-device path, ADR-017): Core gives the prompt, cap and turns
-│   │   └── ICubPersonalityStore.cs - Contract for keeping Cub's style and reply length on the device
+│   │   └── IApiKeyStore.cs - Contract for keeping the user's own AI provider key in the device's secure storage
 │   ├── Persistence/
 │   │   ├── TrackerContext.cs - EF Core SQLite database context
 │   │   └── EfTrackerDbService.cs - EF Core + SQLite implementation of ITrackerDbService

@@ -1,5 +1,7 @@
 using BabyBuddyHelper.Core.Persistence;
-using BabyBuddyHelper.Core.Services;
+using BabyBuddyHelper.Core.Services.Baby;
+using BabyBuddyHelper.Core.Services.TaskList;
+using BabyBuddyHelper.Core.Services.Vaccine;
 
 namespace BabyBuddyHelper.Tests.Infrastructure
 {

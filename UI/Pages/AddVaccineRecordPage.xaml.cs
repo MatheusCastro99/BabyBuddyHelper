@@ -1,6 +1,6 @@
 using BabyBuddyHelper.Core.Exceptions;
-using BabyBuddyHelper.Core.Interfaces;
-using BabyBuddyHelper.Core.Models;
+using BabyBuddyHelper.Core.Interfaces.Vaccine;
+using BabyBuddyHelper.Core.Models.Vaccine;
 using BabyBuddyHelper.UI.Services;
 
 namespace BabyBuddyHelper.UI.Pages;

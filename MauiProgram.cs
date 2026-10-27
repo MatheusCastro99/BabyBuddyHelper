@@ -1,6 +1,13 @@
-﻿using BabyBuddyHelper.Core.Interfaces;
+﻿using BabyBuddyHelper.Core.Interfaces.Baby;
+using BabyBuddyHelper.Core.Interfaces.Cub;
+using BabyBuddyHelper.Core.Interfaces.TaskList;
+using BabyBuddyHelper.Core.Interfaces.Vaccine;
+using BabyBuddyHelper.Core.Interfaces;
 using BabyBuddyHelper.Core.Persistence;
-using BabyBuddyHelper.Core.Services;
+using BabyBuddyHelper.Core.Services.Baby;
+using BabyBuddyHelper.Core.Services.Cub;
+using BabyBuddyHelper.Core.Services.TaskList;
+using BabyBuddyHelper.Core.Services.Vaccine;
 using BabyBuddyHelper.Core.Storage;
 using BabyBuddyHelper.Remote;
 using CommunityToolkit.Maui;

@@ -1,7 +1,7 @@
-using BabyBuddyHelper.Core.Interfaces;
-using BabyBuddyHelper.Core.Models;
+using BabyBuddyHelper.Core.Interfaces.Cub;
+using BabyBuddyHelper.Core.Models.Cub;
 
-namespace BabyBuddyHelper.Core.Services
+namespace BabyBuddyHelper.Core.Services.Cub
 {
     //The sanity layer between Claude and the parent (#97, ADR-020). A reply is shown only after it passes the code checks
     //and the grader answers PASS; a reply that fails gets exactly one retry, with a fixed note for the reason.

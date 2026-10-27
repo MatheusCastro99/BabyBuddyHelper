@@ -1,6 +1,8 @@
 using BabyBuddyHelper.Core.Exceptions;
 using BabyBuddyHelper.Core.Interfaces;
-using BabyBuddyHelper.Core.Models;
+using BabyBuddyHelper.Core.Models.Baby;
+using BabyBuddyHelper.Core.Models.TaskList;
+using BabyBuddyHelper.Core.Models.Vaccine;
 using Microsoft.EntityFrameworkCore;
 using System.Data.Common;
 using System.Diagnostics;

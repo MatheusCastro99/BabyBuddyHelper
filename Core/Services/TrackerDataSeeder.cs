@@ -1,5 +1,5 @@
-using BabyBuddyHelper.Core.Interfaces;
-using BabyBuddyHelper.Core.Models;
+using BabyBuddyHelper.Core.Interfaces.TaskList;
+using BabyBuddyHelper.Core.Models.TaskList;
 
 namespace BabyBuddyHelper.Core.Services
 {

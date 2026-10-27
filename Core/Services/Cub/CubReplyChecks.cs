@@ -1,7 +1,7 @@
-using BabyBuddyHelper.Core.Models;
+using BabyBuddyHelper.Core.Models.Cub;
 using System.Text.RegularExpressions;
 
-namespace BabyBuddyHelper.Core.Services
+namespace BabyBuddyHelper.Core.Services.Cub
 {
     //Why a reply of Cub's was not shown (#97, ADR-020). Each one but Empty has its own fixed retry note in CubGuidelines.
     public enum CubReplyProblem

@@ -1,6 +1,11 @@
-﻿using BabyBuddyHelper.Core.Interfaces;
-using BabyBuddyHelper.Core.Models;
-using BabyBuddyHelper.Core.Services;
+﻿using BabyBuddyHelper.Core.Interfaces.Baby;
+using BabyBuddyHelper.Core.Interfaces.Cub;
+using BabyBuddyHelper.Core.Interfaces.TaskList;
+using BabyBuddyHelper.Core.Interfaces.Vaccine;
+using BabyBuddyHelper.Core.Interfaces;
+using BabyBuddyHelper.Core.Models.Baby;
+using BabyBuddyHelper.Core.Models.Vaccine;
+using BabyBuddyHelper.Core.Services.Cub;
 using System.Collections.ObjectModel;
 using System.Globalization;
 
