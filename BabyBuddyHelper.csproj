@@ -115,18 +115,18 @@
 	<ItemGroup>
 		<!-- Added ahead of use (#95) so a build problem on a mobile target shows before the chat UI (#100) and the
 		     Claude client (#96) depend on them. Only Remote/ references the Anthropic SDK; Microsoft.Extensions.AI is still unused. -->
-		<PackageReference Include="Anthropic" Version="13.0.0" />
+		<PackageReference Include="Anthropic" Version="13.3.0" />
 		<PackageReference Include="CommunityToolkit.Maui" Version="15.0.1" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="10.0.13" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="10.0.14" />
 		<PackageReference Include="Microsoft.Extensions.AI" Version="10.11.0" />
 		<PackageReference Include="Microsoft.Maui.Controls" Version="10.0.120" />
-		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="10.0.13" />
+		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="10.0.14" />
 		<!-- SkiaSharp.Extended.UI.Maui 3.0.0 targets .NET 9 and pulls in the 9.x Compatibility package, which breaks the Windows build.
 		     This reference lifts it to the MAUI 10 version; drop it once the Lottie package ships a .NET 10 build. -->
 		<PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="10.0.120" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
 		<PackageReference Include="SkiaSharp.Extended.UI.Maui" Version="3.0.0" />
-		<PackageReference Include="Syncfusion.Maui.Scheduler" Version="35.1.41" />
+		<PackageReference Include="Syncfusion.Maui.Scheduler" Version="35.1.42" />
 	</ItemGroup>
 
 	<ItemGroup>
