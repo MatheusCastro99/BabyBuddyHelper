@@ -64,8 +64,6 @@
 
 ## Planned Features:
 
-Companion comes to life with an AI-driven personality and interactions
-
 App store release for mobile and desktop
 
 User accounts and sign-in

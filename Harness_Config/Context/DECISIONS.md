@@ -218,7 +218,7 @@ Status: Accepted, current.
 
 Source code is grouped by layer, not by feature. Namespaces follow folders.
 
-- `Core/` holds domain models, cache services, interfaces, the persistence boundary (`TrackerContext`, `EfTrackerDbService`), device storage outside the database (`Core/Storage`: `SecureApiKeyStore`, the user's key in secure storage), collections and exceptions.
+- `Core/` holds domain models, cache services, interfaces, the persistence boundary (`TrackerContext`, `EfTrackerDbService`), device storage outside the database (`Core/Storage`: `SecureApiKeyStore`, the user's key in secure storage; `PreferencesCubPersonalityStore`, Cub's style and reply length in Preferences), collections and exceptions.
 - `UI/` holds pages, controls, UI-only services (`ToastService`, `AlertService`, `PaletteService`) and value converters.
 - `Remote/` holds off-device implementations only: clients for external services, their DTOs and mapping (namespace `BabyBuddyHelper.Remote`). Their contracts stay in `Core/Interfaces`. Only `MauiProgram` references `Remote/`, for DI registration.
 - Namespaces match folders (e.g. `BabyBuddyHelper.Core.Services.Cub`, `BabyBuddyHelper.UI.Pages`).
@@ -279,9 +279,9 @@ Rules:
 - Tests go through the cache services (`TaskListService`, `BabyProfileService`, `VaccineService`) on top of the real `EfTrackerDbService`, the same path the pages use (ADR-014). The persistence boundary is not mocked.
 - Each test owns its database. Tests do not depend on each other or on run order, and never touch `babybuddy.db3`.
 - A stored-data test checks the cache and then checks again after a simulated restart.
-- Core code that needs a MAUI API is left out of the test project and named there (today: `SecureApiKeyStore`).
+- Core code that needs a MAUI API is left out of the test project and named there (today: `SecureApiKeyStore` and `PreferencesCubPersonalityStore`).
 - A change to Core/ behaviour comes with tests, and a bug fix in Core/ comes with a test that reproduces the bug. An exception is stated in the PR.
-- `Remote/` is covered the same way once it has code (#96): its sources are linked, and the network is replaced by a fake. No automated test calls a real provider or uses a real key (ADR-010). `UI/` is not covered.
+- `Remote/` is covered the same way (#96): its sources are linked, and the network is replaced by a fake. No automated test calls a real provider or uses a real key (ADR-010). `UI/` is not covered.
 - CI runs the tests in Debug and in Release on every pull request ("xUnit Test Validation").
 - The tests add to the maintainer's manual pass; they do not replace it.
 
@@ -336,4 +336,4 @@ Reason:
 - One retry turns most cut-offs and slips into a good reply without making the parent wait for more than four calls.
 - Fixed notes keep model text from steering the next call.
 
-Status: Proposed (#97).
+Status: Accepted, current.

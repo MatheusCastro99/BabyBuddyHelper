@@ -12,13 +12,13 @@
 
 BabyBuddyHelper is a cross-platform parenting companion built with .NET MAUI. Today, it helps parents and caregivers organize tasks, track appointments, manage baby profiles, and visualize schedules through checklist and calendar experiences.
 
-The project is currently a functional prototype in active development. Phase 4 (vaccine tracker) and its follow-ups are concluded. Phase 5 started with a dual UI mode: a boy / girl palette in place of a light / dark mode. It continues by bringing the companion to life: interactive animations and the groundwork for the AI helper (shipped), the chat page and the settings for the caregiver's own API key (shipped), a carefully scoped AI helper: Cub answers in the chat through Claude, on the caregiver's own key (shipped), then a light personality adjustment, with a check on every reply (shipped). Phase 6 then prepares the first release: mobile targets in CI, a mobile UI/UX polish pass, EF Core migrations, then deployment and distribution. The shipped task, appointment, baby-profile, vaccine, and filtering experience stays as it is.
+The project is currently a functional prototype in active development. Phase 4 (vaccine tracker) and its follow-ups are concluded. Phase 5 is concluded too: it added a dual UI mode (a boy / girl palette in place of a light / dark mode) and brought the companion to life with interactive animations, the chat page and the settings for the caregiver's own API key, a carefully scoped AI helper (Cub answers in the chat through Claude, on the caregiver's own key), and a light personality adjustment, with a check on every reply. Phase 6 then prepares the first release: mobile targets in CI, a mobile UI/UX polish pass, EF Core migrations, then deployment and distribution. The shipped task, appointment, baby-profile, vaccine, and filtering experience stays as it is.
 
 ## Vision and Experience
 
 BabyBuddyHelper is evolving from a task and appointment manager into a warm, friendly, and supportive companion for everyday family life. It is intended to feel low-stress and encouraging, helping caregivers keep track of routines and baby-care activities without becoming another productivity application.
 
-The current experience already includes an animated companion character (Cub waves, claps, dances and nods) and supportive toast feedback. The companion is intended to be welcoming and supportive, not a general-purpose AI chatbot. Planned direction starts with a carefully scoped AI helper for tips and basic questions (not a doctor or therapist) and a companion personality the family can adjust, followed by a first release, then user accounts and cloud synchronization.
+The current experience already includes an animated companion character (Cub waves, claps, dances and nods), supportive toast feedback, and an optional chat where Cub gives tips and answers basic questions (not a doctor or therapist) in a style and reply length the family can adjust. The companion is intended to be welcoming and supportive, not a general-purpose AI chatbot. Planned direction starts with a first release, then user accounts and cloud synchronization.
 
 ---
 
@@ -98,7 +98,6 @@ The current experience already includes an animated companion character (Cub wav
 
 ## Planned Direction
 
-- A companion with carefully scoped AI support (tips and basic questions, not medical advice) and an adjustable personality
 - A first release: mobile polish, release-ready data migrations, and distribution (app stores or direct downloads)
 - User accounts, cloud synchronization, and backup and restore; later, sharing with family
 - Later, personalized advice based on the baby's age and development stage
