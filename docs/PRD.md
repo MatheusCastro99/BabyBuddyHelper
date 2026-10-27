@@ -1,7 +1,7 @@
 # Product Requirements Document: BabyBuddyHelper
 
 ## Purpose
-BabyBuddyHelper is an offline-first parenting companion that helps parents and caregivers manage and track essential baby care activities and preparation tasks. The app organizes tasks by priority and completion status, schedules appointments on an integrated calendar, keeps a profile for each baby (tasks and appointments can be linked to one) with a built-in, read-only US CDC vaccine list, a disclaimer, per-baby vaccination records, and each vaccine's status, and offers a home dashboard with a countdown timer to the expected due date. A companion character and gentle toast feedback keep the experience warm and encouraging. Data is stored locally on the device (SQLite).
+BabyBuddyHelper is an offline-first parenting companion that helps parents and caregivers manage and track essential baby care activities and preparation tasks. The app organizes tasks by priority and completion status, schedules appointments on an integrated calendar, keeps a profile for each baby (tasks and appointments can be linked to one) with a built-in, read-only US CDC vaccine list, a disclaimer, per-baby vaccination records, and each vaccine's status, and offers a home dashboard with a countdown timer to the expected due date. A companion character and gentle toast feedback keep the experience warm and encouraging, and a boy / girl palette lets the family choose the app's look. An optional chat lets caregivers ask the companion, Cub, for tips and basic questions through Claude, on their own API key; it is the app's only off-device call. Data is stored locally on the device (SQLite).
 
 ## Technical Specifications
 - **Language**: C#
@@ -33,6 +33,8 @@ BabyModel
 ├── DateOfBirth (DateTime) - Date of birth
 ├── WeightInLbs (double) - Weight in pounds
 ├── HeightInFt (double) - Height in feet
+├── WeightUpdatedOn (DateTime?) - When the weight last changed (none when not measured)
+├── HeightUpdatedOn (DateTime?) - When the height last changed (none when not measured)
 ├── LastFeed (DateTime) - Time of the last feed
 ├── LastSleep (DateTime) - Time of the last sleep
 └── AgeText (string, computed) - Display age, never stored

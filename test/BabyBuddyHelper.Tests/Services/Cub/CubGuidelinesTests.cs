@@ -31,6 +31,7 @@ namespace BabyBuddyHelper.Tests.Services.Cub
         [InlineData("Vaccines follow the official schedule and the baby's pediatrician")]
         [InlineData("Never judge growth from a single measurement")]
         [InlineData("Be kind about the parent's own wellbeing")]
+        [InlineData("contact emergency services or a crisis line now")] //#92: checklist rows 20–21 rely on it
         [InlineData("Don't judge parenting choices")]
         [InlineData("Decline off-topic requests graciously")]
         public void BuildSystemPrompt_EveryStyleAndLength_HoldsEachRule(string marker)

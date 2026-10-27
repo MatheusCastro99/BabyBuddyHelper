@@ -199,7 +199,7 @@ Filters Update: CONCLUDED
 
 ---
 
-## Phase 5:
+## Phase 5: CONCLUDED
 
 Epic: Issue #92. Sub-phases run in order, one issue and one PR each.
 
@@ -240,7 +240,7 @@ Epic: Issue #92. Sub-phases run in order, one issue and one PR each.
 - Nothing replies and there is no AI call yet; the reply arrives with 5.5
 - The "Tell me something" tip button stays. It and the chat are completely separate
 
-> 5.5 Companion AI agent (Issue #96):
+> 5.5 Companion AI agent (Issue #96): CONCLUDED
 
 - Introduce an AI agent for the companion character to provide personalized tips and answer basic questions. Cub is the agent
 - The Claude client lives in `Remote/`, behind a contract in `Core/Interfaces`
@@ -253,7 +253,7 @@ Epic: Issue #92. Sub-phases run in order, one issue and one PR each.
 - Every key save first shows a consent confirm listing what is sent; "Not now" stores nothing. Keys saved before #96 never saw it (left to the owner)
 - A failed reply shows one neutral inline line, not an alert and not in Cub's voice. Decisions recorded in ADR-019
 
-> 5.6 Companion personality (Issue #97):
+> 5.6 Companion personality (Issue #97): CONCLUDED
 
 - Allow user to minimally adjust how Cub talks: conversational style (supportive, neutral, direct) and verbosity, in the settings popup
 - In the gear popup: "Conversation style" (Supportive, the default, Neutral or Direct) and "Reply length" (Short, Balanced, the default, or Detailed), saved on the device as soon as they are picked. They shape the chat replies only; tips, toasts and animations don't change
