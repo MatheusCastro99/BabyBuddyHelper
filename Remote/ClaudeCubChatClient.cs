@@ -2,6 +2,7 @@ using Anthropic;
 using Anthropic.Core;
 using Anthropic.Models.Messages;
 using BabyBuddyHelper.Core.Exceptions;
+using BabyBuddyHelper.Core.Interfaces.Cub;
 using BabyBuddyHelper.Core.Interfaces;
 using BabyBuddyHelper.Core.Models;
 

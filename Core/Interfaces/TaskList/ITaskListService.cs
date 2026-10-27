@@ -1,7 +1,7 @@
 ﻿using BabyBuddyHelper.Core.Models;
 using System.Collections.ObjectModel;
 
-namespace BabyBuddyHelper.Core.Interfaces
+namespace BabyBuddyHelper.Core.Interfaces.TaskList
 {
     public interface ITaskListService //Setting interface for TaskListService to implement. This allows for dependency injection, easier testing,
                                       // and better encapsulation.

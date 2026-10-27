@@ -1,4 +1,4 @@
-using BabyBuddyHelper.Core.Interfaces;
+using BabyBuddyHelper.Core.Interfaces.Vaccine;
 using BabyBuddyHelper.Core.Models;
 using System.Collections.ObjectModel;
 

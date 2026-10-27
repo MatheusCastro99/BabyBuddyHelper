@@ -1,4 +1,4 @@
-using BabyBuddyHelper.Core.Interfaces;
+using BabyBuddyHelper.Core.Interfaces.Cub;
 using BabyBuddyHelper.Core.Models;
 
 namespace BabyBuddyHelper.Tests.Infrastructure

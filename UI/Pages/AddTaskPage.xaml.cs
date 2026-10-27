@@ -1,5 +1,6 @@
 using BabyBuddyHelper.Core.Exceptions;
-using BabyBuddyHelper.Core.Interfaces;
+using BabyBuddyHelper.Core.Interfaces.Baby;
+using BabyBuddyHelper.Core.Interfaces.TaskList;
 using BabyBuddyHelper.Core.Models;
 using BabyBuddyHelper.UI.Services;
 using System.Diagnostics;

@@ -1,6 +1,6 @@
 using BabyBuddyHelper.Core.Models;
 
-namespace BabyBuddyHelper.Core.Interfaces
+namespace BabyBuddyHelper.Core.Interfaces.Cub
 {
     public interface ICubChatClient //The off-device path for Cub's chat replies (ADR-017). Core talks to this; the implementation lives in Remote/
     {

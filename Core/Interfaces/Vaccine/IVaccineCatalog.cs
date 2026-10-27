@@ -1,6 +1,6 @@
 using BabyBuddyHelper.Core.Models;
 
-namespace BabyBuddyHelper.Core.Interfaces
+namespace BabyBuddyHelper.Core.Interfaces.Vaccine
 {
     public interface IVaccineCatalog //Serves the fixed vaccine list and the schedule it was taken from; read-only, outside the database (ADR-012)
     {

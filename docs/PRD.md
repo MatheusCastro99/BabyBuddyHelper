@@ -85,15 +85,19 @@ BabyBuddyHelper/
 │   │   ├── CubReplyChecks.cs - The code checks on a reply: empty, cut off, or markdown
 │   │   └── CubReplyService.cs - The sanity layer: asks Cub, checks and grades the reply, and retries once
 │   ├── Interfaces/
-│   │   ├── ITaskListService.cs - Interface for TaskListService
-│   │   ├── IBabyProfileService.cs - Interface for BabyProfileService
-│   │   ├── IBabyFilterService.cs - Interface for BabyFilterService
+│   │   ├── Baby/
+│   │   │   ├── IBabyProfileService.cs - Interface for BabyProfileService
+│   │   │   └── IBabyFilterService.cs - Interface for BabyFilterService
+│   │   ├── TaskList/
+│   │   │   └── ITaskListService.cs - Interface for TaskListService
+│   │   ├── Vaccine/
+│   │   │   ├── IVaccineCatalog.cs - Interface for VaccineCatalog
+│   │   │   └── IVaccineService.cs - Interface for VaccineService
+│   │   ├── Cub/
+│   │   │   ├── ICubChatClient.cs - Contract for Cub's chat replies (the off-device path, ADR-017): Core gives the prompt, cap and turns
+│   │   │   └── ICubPersonalityStore.cs - Contract for keeping Cub's style and reply length on the device
 │   │   ├── ITrackerDbService.cs - Persistence boundary, used only by the cache services
-│   │   ├── IVaccineCatalog.cs - Interface for VaccineCatalog
-│   │   ├── IVaccineService.cs - Interface for VaccineService
-│   │   ├── IApiKeyStore.cs - Contract for keeping the user's own AI provider key in the device's secure storage
-│   │   ├── ICubChatClient.cs - Contract for Cub's chat replies (the off-device path, ADR-017): Core gives the prompt, cap and turns
-│   │   └── ICubPersonalityStore.cs - Contract for keeping Cub's style and reply length on the device
+│   │   └── IApiKeyStore.cs - Contract for keeping the user's own AI provider key in the device's secure storage
 │   ├── Persistence/
 │   │   ├── TrackerContext.cs - EF Core SQLite database context
 │   │   └── EfTrackerDbService.cs - EF Core + SQLite implementation of ITrackerDbService

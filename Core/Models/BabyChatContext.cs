@@ -1,4 +1,4 @@
-using BabyBuddyHelper.Core.Interfaces;
+using BabyBuddyHelper.Core.Interfaces.Vaccine;
 using System.Globalization;
 
 namespace BabyBuddyHelper.Core.Models

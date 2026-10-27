@@ -1,4 +1,7 @@
 using BabyBuddyHelper.Core.Exceptions;
+using BabyBuddyHelper.Core.Interfaces.Baby;
+using BabyBuddyHelper.Core.Interfaces.Cub;
+using BabyBuddyHelper.Core.Interfaces.Vaccine;
 using BabyBuddyHelper.Core.Interfaces;
 using BabyBuddyHelper.Core.Models;
 using BabyBuddyHelper.Core.Services;

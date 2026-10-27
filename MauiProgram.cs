@@ -1,4 +1,8 @@
-﻿using BabyBuddyHelper.Core.Interfaces;
+﻿using BabyBuddyHelper.Core.Interfaces.Baby;
+using BabyBuddyHelper.Core.Interfaces.Cub;
+using BabyBuddyHelper.Core.Interfaces.TaskList;
+using BabyBuddyHelper.Core.Interfaces.Vaccine;
+using BabyBuddyHelper.Core.Interfaces;
 using BabyBuddyHelper.Core.Persistence;
 using BabyBuddyHelper.Core.Services;
 using BabyBuddyHelper.Core.Storage;

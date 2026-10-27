@@ -211,15 +211,19 @@ BabyBuddyHelper/
 │   │   └── CubReplyService.cs
 │   │
 │   ├── Interfaces/
-│   │   ├── ITaskListService.cs
-│   │   ├── IBabyProfileService.cs
-│   │   ├── IBabyFilterService.cs
+│   │   ├── Baby/
+│   │   │   ├── IBabyProfileService.cs
+│   │   │   └── IBabyFilterService.cs
+│   │   ├── TaskList/
+│   │   │   └── ITaskListService.cs
+│   │   ├── Vaccine/
+│   │   │   ├── IVaccineCatalog.cs
+│   │   │   └── IVaccineService.cs
+│   │   ├── Cub/
+│   │   │   ├── ICubChatClient.cs
+│   │   │   └── ICubPersonalityStore.cs
 │   │   ├── ITrackerDbService.cs
-│   │   ├── IVaccineCatalog.cs
-│   │   ├── IVaccineService.cs
-│   │   ├── IApiKeyStore.cs
-│   │   ├── ICubChatClient.cs
-│   │   └── ICubPersonalityStore.cs
+│   │   └── IApiKeyStore.cs
 │   │
 │   ├── Persistence/
 │   │   ├── TrackerContext.cs
