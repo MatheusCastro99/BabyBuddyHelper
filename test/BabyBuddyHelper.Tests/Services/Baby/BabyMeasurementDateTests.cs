@@ -2,7 +2,7 @@ using BabyBuddyHelper.Core.Models.Baby;
 using BabyBuddyHelper.Core.Persistence;
 using BabyBuddyHelper.Tests.Infrastructure;
 
-namespace BabyBuddyHelper.Tests.Services
+namespace BabyBuddyHelper.Tests.Services.Baby
 {
     //BabyProfileService dates each measurement: a changed weight or height is dated today, an unchanged one keeps its
     //date, and 0 (not measured) has none. The dates are worked out against what is stored, never taken from the caller.

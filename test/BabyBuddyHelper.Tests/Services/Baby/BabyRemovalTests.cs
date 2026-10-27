@@ -3,7 +3,7 @@ using BabyBuddyHelper.Core.Models.TaskList;
 using BabyBuddyHelper.Core.Models.Vaccine;
 using BabyBuddyHelper.Tests.Infrastructure;
 
-namespace BabyBuddyHelper.Tests.Services
+namespace BabyBuddyHelper.Tests.Services.Baby
 {
     //Removing a baby is decided by the database (ADR-011): its tasks stay but lose the link, and its vaccination records
     //are deleted. The cache services mirror that result, so each test checks the cache and then the stored data.

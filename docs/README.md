@@ -299,7 +299,8 @@ BabyBuddyHelper/
 │   └── BabyBuddyHelper.Tests/
 │       ├── Infrastructure/
 │       ├── Services/
-│       └── Models/
+│       ├── Models/
+│       └── Remote/
 │
 ├── tools/
 │   └── cub/
@@ -354,7 +355,7 @@ The build compiles the Syncfusion license from `SYNCFUSION_LICENSE` in `.env` (o
 dotnet test --project test/BabyBuddyHelper.Tests/BabyBuddyHelper.Tests.csproj
 ```
 
-The tests cover `Core/` and run on a SQLite in-memory database, never on the app's own database. New tests go in `test/BabyBuddyHelper.Tests/`: `Services/` for tests through the cache services, `Models/` for model logic, `Infrastructure/` for the test host. A change to `Core/` behaviour comes with tests.
+The tests cover `Core/` and `Remote/`, and run on a SQLite in-memory database and a fake network, never on the app's own database or a real provider. New tests go in `test/BabyBuddyHelper.Tests/`: `Services/` for tests through the cache services, `Models/` for model logic, `Remote/` for off-device clients on a fake network, `Infrastructure/` for the test host. Inside `Services/` and `Models/`, tests sit in the same feature subfolder (`Baby`, `TaskList`, `Vaccine`, `Cub`) as the code they test; cross-feature tests stay at the root. A change to `Core/` behaviour comes with tests.
 
 ---
 

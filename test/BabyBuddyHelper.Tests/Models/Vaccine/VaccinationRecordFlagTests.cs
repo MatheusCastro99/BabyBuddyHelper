@@ -1,6 +1,6 @@
 using BabyBuddyHelper.Core.Models.Vaccine;
 
-namespace BabyBuddyHelper.Tests.Models
+namespace BabyBuddyHelper.Tests.Models.Vaccine
 {
     //The flags a vaccination record computes from its doses and dates. They read DateTime.Today, so every date here is
     //given as a number of days from today.

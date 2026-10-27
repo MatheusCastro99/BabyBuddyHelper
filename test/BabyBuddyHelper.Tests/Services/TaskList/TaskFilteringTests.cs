@@ -2,7 +2,7 @@ using BabyBuddyHelper.Core.Models.Baby;
 using BabyBuddyHelper.Core.Models.TaskList;
 using BabyBuddyHelper.Tests.Infrastructure;
 
-namespace BabyBuddyHelper.Tests.Services
+namespace BabyBuddyHelper.Tests.Services.TaskList
 {
     //The baby filter on the checklist and the calendar, and the appointment-only view the calendar and MainPage use
     public class TaskFilteringTests : DatabaseTest

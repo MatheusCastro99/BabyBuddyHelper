@@ -55,8 +55,8 @@ When the forked build's reply has a `MAIN SESSION:` line, do what it says before
 - Avoid introducing CQRS, MediatR, the Repository pattern, or heavy MVVM, unless the owner explicitly requests an MVVM migration.
 - Fix build warnings where possible.
 - A change to `Core/` behaviour comes with tests, and a bug fix in `Core/` comes with a test that reproduces the bug; state any exception in the PR (ADR-018).
-- Place new files by layer: `Core/` (models, services, interfaces, persistence, storage, collections, exceptions), `UI/` (pages, controls, UI services, converters) or `Remote/` (off-device implementations only: clients for external services, their DTOs and mapping). Contracts stay in `Core/Interfaces`, and only `MauiProgram` references `Remote/`. Namespaces follow folders.
-- Place tests in `test/BabyBuddyHelper.Tests`: `Services/` (through the cache services, on the in-memory database), `Models/` (model logic) or `Infrastructure/` (the test host).
+- Place new files by layer: `Core/` (models, services, interfaces, persistence, storage, collections, exceptions), `UI/` (pages, controls, UI services, converters) or `Remote/` (off-device implementations only: clients for external services, their DTOs and mapping). Contracts stay in `Core/Interfaces`, and only `MauiProgram` references `Remote/`. Inside `Core/Interfaces`, `Core/Models` and `Core/Services`, files go in their feature subfolder; cross-feature files stay at the layer root (ADR-015). Namespaces follow folders.
+- Place tests in `test/BabyBuddyHelper.Tests`: `Services/` (through the cache services, on the in-memory database), `Models/` (model logic), `Remote/` (off-device clients, on a fake network) or `Infrastructure/` (the test host). Inside `Services/` and `Models/`, tests sit in the same feature subfolder as the code they test; cross-feature tests stay at the root (ADR-015).
 
 ## Working agreements
 

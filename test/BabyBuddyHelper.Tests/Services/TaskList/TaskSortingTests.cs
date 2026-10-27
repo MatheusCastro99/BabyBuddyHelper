@@ -1,7 +1,7 @@
 using BabyBuddyHelper.Core.Models.TaskList;
 using BabyBuddyHelper.Tests.Infrastructure;
 
-namespace BabyBuddyHelper.Tests.Services
+namespace BabyBuddyHelper.Tests.Services.TaskList
 {
     //The orders the checklist can show. GetTasks returns a sorted view and leaves the cache alone; the Organize methods
     //reorder the cache itself.

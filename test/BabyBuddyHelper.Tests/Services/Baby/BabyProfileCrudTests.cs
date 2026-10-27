@@ -1,7 +1,7 @@
 using BabyBuddyHelper.Core.Models.Baby;
 using BabyBuddyHelper.Tests.Infrastructure;
 
-namespace BabyBuddyHelper.Tests.Services
+namespace BabyBuddyHelper.Tests.Services.Baby
 {
     public class BabyProfileCrudTests : DatabaseTest
     {

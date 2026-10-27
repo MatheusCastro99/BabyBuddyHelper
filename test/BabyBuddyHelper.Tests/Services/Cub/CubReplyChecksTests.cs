@@ -1,7 +1,7 @@
 using BabyBuddyHelper.Core.Models.Cub;
 using BabyBuddyHelper.Core.Services.Cub;
 
-namespace BabyBuddyHelper.Tests.Services
+namespace BabyBuddyHelper.Tests.Services.Cub
 {
     //The code checks every reply passes before the grader sees it (#97, ADR-020).
     public class CubReplyChecksTests

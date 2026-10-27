@@ -2,7 +2,7 @@ using BabyBuddyHelper.Core.Models.Baby;
 using BabyBuddyHelper.Core.Models.TaskList;
 using BabyBuddyHelper.Tests.Infrastructure;
 
-namespace BabyBuddyHelper.Tests.Services
+namespace BabyBuddyHelper.Tests.Services.TaskList
 {
     //Tasks and appointments share one table. Converting one into the other changes the row's type, which the database
     //service does as a delete and re-insert under the same Id (see EfTrackerDbService.UpdateTaskAsync).

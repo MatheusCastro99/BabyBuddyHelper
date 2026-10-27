@@ -6,7 +6,7 @@ using BabyBuddyHelper.Core.Services.Vaccine;
 using BabyBuddyHelper.Tests.Infrastructure;
 using static BabyBuddyHelper.Tests.Infrastructure.FakeCubChatClient;
 
-namespace BabyBuddyHelper.Tests.Services
+namespace BabyBuddyHelper.Tests.Services.Cub
 {
     //The sanity layer on a scripted chat client (#97, ADR-020): what is shown, what is retried with which note,
     //and that a grader that can't answer fails closed. Whether Claude grades well is the manual checklist's job.

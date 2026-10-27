@@ -5,7 +5,7 @@ using BabyBuddyHelper.Core.Services.Cub;
 using BabyBuddyHelper.Core.Services.Vaccine;
 using System.Globalization;
 
-namespace BabyBuddyHelper.Tests.Models
+namespace BabyBuddyHelper.Tests.Models.Cub
 {
     //What Cub may know about a picked baby (#96). Ages and dose flags read DateTime.Today, so dates are days from today.
     public class BabyChatContextTests

@@ -4,7 +4,7 @@ using BabyBuddyHelper.Core.Models.Vaccine;
 using BabyBuddyHelper.Core.Services.Cub;
 using BabyBuddyHelper.Core.Services.Vaccine;
 
-namespace BabyBuddyHelper.Tests.Services
+namespace BabyBuddyHelper.Tests.Services.Cub
 {
     //Cub's fixed rules, the baby block and the history trim (#96). The rules are checked by a marker phrase each;
     //whether Claude follows them is the manual checklist's job (CUB_GUIDELINES_CHECKLIST.md).

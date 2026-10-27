@@ -1,7 +1,7 @@
 using BabyBuddyHelper.Core.Models.TaskList;
 using BabyBuddyHelper.Tests.Infrastructure;
 
-namespace BabyBuddyHelper.Tests.Services
+namespace BabyBuddyHelper.Tests.Services.TaskList
 {
     public class TaskCrudTests : DatabaseTest
     {
