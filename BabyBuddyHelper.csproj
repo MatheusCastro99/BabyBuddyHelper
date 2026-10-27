@@ -117,7 +117,7 @@
 		     Claude client (#96) depend on them. Only Remote/ references the Anthropic SDK; Microsoft.Extensions.AI is still unused. -->
 		<PackageReference Include="Anthropic" Version="13.0.0" />
 		<PackageReference Include="CommunityToolkit.Maui" Version="15.0.1" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="10.0.13" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="10.0.14" />
 		<PackageReference Include="Microsoft.Extensions.AI" Version="10.11.0" />
 		<PackageReference Include="Microsoft.Maui.Controls" Version="10.0.120" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="10.0.13" />
