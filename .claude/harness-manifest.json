@@ -1,9 +1,9 @@
 {
   "source": "ProdHarnessConfig",
-  "commit": "51aa5249ccde7cf9695637747e2014f77155ee0e",
+  "commit": "e4457d2234b4cfce118b9663415d25e19db1d527",
   "sourceDirty": false,
   "project": "BabyBuddyHelper",
-  "installedAt": "2026-10-27T16:02:35.404Z",
+  "installedAt": "2026-10-28T20:51:55.557Z",
   "files": {
     ".claude/agents/builder.md": "e4c5c2123e6b694c9feafdecf395aa636345a7377638a7a9edc21003fe7c79d0",
     ".claude/agents/red-team.md": "2b35bbb473971a03975b902c1a3ed483a52423159e99c1d240054696e6866619",
@@ -18,12 +18,12 @@
     ".claude/lib/harness.cjs": "a62514ecf14fba7dd630f622c4e9411fcb4200917fc8a8f01ca27f87e0511a8c",
     ".claude/scripts/check.cjs": "f02b89d615ddb1d4f53ffbb9a04c05efaf179f78c7123a450a70b5063d922fec",
     ".claude/scripts/close.cjs": "13d794843ef61dcac6550bbdc32313201a890231d4b0748a1ba7cda5a2070b3f",
-    ".claude/scripts/handoff-check.cjs": "c54c23f177df6dfc86cc0501d4665d104b6e6983a87b64df2dd55161061b627d",
+    ".claude/scripts/handoff-check.cjs": "65ddc6ac6ef6e7d101feb4c0f2460e0b40bd1665053c9367e017364ee5a9df5d",
     ".claude/scripts/stale-docs.cjs": "b891b7c105959369eb5d1967df77d0deb0f35fd5873074d39357eb03a18e8e24",
     ".claude/settings.json": "85ca312863f6105d5ba3a19478ab029b9aeaf8a77aad5fddc5b98d2469ca6bb9",
-    ".claude/skills/build/SKILL.md": "5133ce6e54034518fed2f9bc476a9c8862669be3d47fb869e8eea11bc60b090a",
+    ".claude/skills/build/SKILL.md": "99751e8d6391e132ef9bd1886a5b51cb174474134a8280a67f564602657d0f3a",
     ".claude/skills/close/SKILL.md": "af6a8fcdbbbd6ba04f5c222b0b05fed90bf3e9c0ad035176acf3e4aeb96ee435",
-    ".claude/skills/review/SKILL.md": "663a5fdd5f6af84ee4df3e45394c9493692989766490b27601bd8a078346598b",
-    ".claude/skills/scope/SKILL.md": "6943138ffc0ee0e10e75c562e512b2e250677eadb2ba54dde24de16ea8e8050b"
+    ".claude/skills/review/SKILL.md": "fa5c1a698b619ffe550be27f22ee6e40f037874523721ce4981717cae60c4336",
+    ".claude/skills/scope/SKILL.md": "11650820bf94f6f4031c05988bc4757e180459c7f56a788f23e0dee8a545d2d3"
   }
 }
