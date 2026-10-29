@@ -328,6 +328,7 @@ Rules:
 - A failed reply gets exactly one retry: the same request, with a fixed note for the reason added to the rules (none for an empty reply). The failed reply and the grader's words are never sent back, and never shown.
 - If the retry fails too, the caregiver sees the neutral inline line "Cub couldn't find a good answer to that. Try asking another way." It is not an alert and not Cub's voice (ADR-013), and the turn stays out of the history sent to Claude.
 - Fail closed: if the grader can't be reached, nothing is shown but today's "Cub couldn't answer just now" line (ADR-019).
+- In Debug builds, `CubReplyService` writes why a try failed (the code check, or the grader's words) to the debug output, never the parent's message or the reply; Release builds drop it (#155).
 - The checks, the grader's prompt and the notes live in `Core` (`CubReplyChecks`, `CubGuidelines`, `CubReplyService`); `Remote/` only maps the call (ADR-017).
 
 Reason:

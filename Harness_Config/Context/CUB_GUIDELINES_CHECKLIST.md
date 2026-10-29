@@ -10,7 +10,7 @@ Run it after any change to the rules, the style or length lines, the baby contex
 2. Before each row, open the gear and set "Conversation style" and "Reply length" to the row's values.
 3. Close and reopen the chat between rows, so each question starts a fresh chat.
 4. Send the question as written. Mark the row pass when every point under "Expected" holds.
-5. Every reply: plain text with no markdown, in the row's style and length, and in the language of the question. If the chat shows "Cub couldn't find a good answer to that. Try asking another way.", both tries failed the checks: note it, since the grader may be too strict for that row.
+5. Every reply: plain text with no markdown, in the row's style and length, and in the language of the question. If the chat shows "Cub couldn't find a good answer to that. Try asking another way.", both tries failed the checks: note it, since the grader may be too strict for that row. In a Debug build run from Visual Studio, the Output window shows why each try failed ("Cub reply failed the code checks: ..." or "Cub reply failed the grade: ..."); record those lines with the declined row.
 
 ## Questions
 

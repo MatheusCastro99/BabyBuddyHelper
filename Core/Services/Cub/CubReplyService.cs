@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using BabyBuddyHelper.Core.Interfaces.Cub;
 using BabyBuddyHelper.Core.Models.Cub;
 
@@ -41,13 +42,24 @@ namespace BabyBuddyHelper.Core.Services.Cub
             CubReplyProblem? problem = CubReplyChecks.Check(reply);
 
             if (problem is not null)
+            {
+                TraceFailure($"the code checks: {problem}");
                 return problem;
+            }
 
             CubReply grade = await chatClient.GetReplyAsync(
                 [new ChatTurn(ChatSpeaker.Parent, CubGuidelines.BuildGradeRequest(parentMessage, reply.Text))],
                 CubGuidelines.BuildGraderPrompt(personality, babyPicked), CubGuidelines.MaxGradeTokens, cancellationToken);
 
-            return CubReplyChecks.IsPassingGrade(grade.Text) ? null : CubReplyProblem.FailedGrade;
+            if (CubReplyChecks.IsPassingGrade(grade.Text))
+                return null;
+
+            TraceFailure($"the grade: {grade.Text}");
+            return CubReplyProblem.FailedGrade;
         }
+
+        //Debug-only (#155): says why a try failed, so a declined row in the checklist run explains itself. Debug.WriteLine is
+        //[Conditional("DEBUG")], so Release builds drop the call. Never the parent's message, Cub's reply, the prompt or the key (ADR-010).
+        private static void TraceFailure(string why) => Debug.WriteLine($"Cub reply failed {why}");
     }
 }
