@@ -32,14 +32,15 @@ namespace BabyBuddyHelper.Remote
             _timeout = timeout;
         }
 
-        public async Task<CubReply> GetReplyAsync(IReadOnlyList<ChatTurn> turns, string systemPrompt, int maxTokens, CancellationToken cancellationToken = default)
+        public async Task<CubReply> GetReplyAsync(IReadOnlyList<ChatTurn> turns, string systemPrompt, int maxTokens, CubThinking thinking,
+            CancellationToken cancellationToken = default)
         {
             string? apiKey = await _apiKeyStore.GetKeyAsync();
 
             if (string.IsNullOrWhiteSpace(apiKey))
                 throw new CubUnavailableException("No Claude key is saved.");
 
-            MessageCreateParams request = BuildRequest(turns, systemPrompt, maxTokens);
+            MessageCreateParams request = BuildRequest(turns, systemPrompt, maxTokens, thinking);
 
             if (request.Messages.Count == 0)
                 throw new CubUnavailableException("There is no message from the parent to send.");
@@ -69,7 +70,9 @@ namespace BabyBuddyHelper.Remote
             }
         }
 
-        internal static MessageCreateParams BuildRequest(IReadOnlyList<ChatTurn> turns, string systemPrompt, int maxTokens)
+        //Haiku 5.5 thinks when a request doesn't say, and thinking counts against max_tokens (#155), so every request sets it:
+        //Off turns it off; Low lets the model think, at low effort
+        internal static MessageCreateParams BuildRequest(IReadOnlyList<ChatTurn> turns, string systemPrompt, int maxTokens, CubThinking thinking)
         {
             List<MessageParam> messages = turns
                 .Select(turn => turn.Speaker == ChatSpeaker.Parent
@@ -77,12 +80,26 @@ namespace BabyBuddyHelper.Remote
                     : new AssistantMessageParam { Content = turn.Text })
                 .ToList();
 
-            return new MessageCreateParams
+            return thinking switch
             {
-                Model = Model.ClaudeHaiku5_5,
-                MaxTokens = maxTokens,
-                System = systemPrompt,
-                Messages = messages
+                CubThinking.Off => new MessageCreateParams
+                {
+                    Model = Model.ClaudeHaiku5_5,
+                    MaxTokens = maxTokens,
+                    System = systemPrompt,
+                    Messages = messages,
+                    Thinking = new ThinkingConfigDisabled()
+                },
+                CubThinking.Low => new MessageCreateParams
+                {
+                    Model = Model.ClaudeHaiku5_5,
+                    MaxTokens = maxTokens,
+                    System = systemPrompt,
+                    Messages = messages,
+                    Thinking = new ThinkingConfigAdaptive(),
+                    OutputConfig = new OutputConfig { Effort = Effort.Low }
+                },
+                _ => throw new ArgumentOutOfRangeException(nameof(thinking), thinking, null)
             };
         }
 

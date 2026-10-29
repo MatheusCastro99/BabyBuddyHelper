@@ -200,6 +200,7 @@ BabyBuddyHelper/
 │   │       ├── BabyChatContext.cs
 │   │       ├── CubPersonality.cs
 │   │       ├── CubReply.cs
+│   │       ├── CubThinking.cs
 │   │       └── CubOutcome.cs
 │   │
 │   ├── Services/

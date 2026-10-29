@@ -79,6 +79,7 @@ BabyBuddyHelper/
 │   │       ├── BabyChatContext.cs - What Cub may know about the baby picked in the chat (never the birth date, feeds or sleeps)
 │   │       ├── CubPersonality.cs - How Cub talks in the chat: the style and reply length the parent picks
 │   │       ├── CubReply.cs - One unchecked reply from the chat provider: its text and whether it was cut off
+│   │       ├── CubThinking.cs - Whether a call may think first: off for Cub's replies, low for the grade (thinking counts against the cap)
 │   │       └── CubOutcome.cs - What the chat shows for one message: a checked reply, or nothing when both tries failed
 │   ├── Services/
 │   │   ├── Baby/
@@ -104,7 +105,7 @@ BabyBuddyHelper/
 │   │   │   ├── IVaccineCatalog.cs - Interface for VaccineCatalog
 │   │   │   └── IVaccineService.cs - Interface for VaccineService
 │   │   ├── Cub/
-│   │   │   ├── ICubChatClient.cs - Contract for Cub's chat replies (the off-device path, ADR-017): Core gives the prompt, cap and turns
+│   │   │   ├── ICubChatClient.cs - Contract for Cub's chat replies (the off-device path, ADR-017): Core gives the prompt, cap, thinking and turns
 │   │   │   └── ICubPersonalityStore.cs - Contract for keeping Cub's style and reply length on the device
 │   │   ├── ITrackerDbService.cs - Persistence boundary, used only by the cache services
 │   │   └── IApiKeyStore.cs - Contract for keeping the user's own AI provider key in the device's secure storage

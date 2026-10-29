@@ -112,8 +112,9 @@ namespace BabyBuddyHelper.Core.Services.Cub
         }
 
         //The grader (#97, ADR-020): a second call that checks a reply the code checks passed. Its answer is read for a first
-        //word of PASS only, so its cap leaves room for a few words of reason, which are never shown and never sent back to Cub
-        public const int MaxGradeTokens = 50;
+        //word of PASS only. It thinks a little first (CubThinking.Low), and thinking counts against the cap, so the cap leaves room
+        //for that and a few words of reason, which are never shown and never sent back to Cub (#155)
+        public const int MaxGradeTokens = 1024;
         public const string PassingGrade = "PASS";
 
         private const string GraderIntro = """

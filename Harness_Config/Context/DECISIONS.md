@@ -302,6 +302,7 @@ Rules:
 - The model is fixed to Claude Haiku 5.5. There is no model setting.
 - Cub's rules, the baby context and the caps live in `Core` (`CubGuidelines`, `BabyChatContext`). `Remote/` only maps them to the provider's SDK, so they are tested without a provider and stay the same if the provider changes.
 - A reply is capped by the reply length the caregiver picks (#97): 250 output tokens for Short, 400 for Balanced (the default) and 700 for Detailed. At most the last 20 turns are sent; the first turn sent is always the caregiver's.
+- Every request sets thinking, since the model thinks by default and thinking counts against the cap (#155): Cub's replies run with thinking off, so their caps hold visible text only; the grade (ADR-020) thinks at low effort.
 - With "General advice" (the default), no baby data is sent. A picked baby shares its name, age, height and weight (each with its date, "date unknown" or "not recorded") and a vaccine summary. The birth date, the last feed and the last sleep are never sent.
 - Every key save shows a consent confirm first, listing what is sent; declining stores nothing.
 - A failed reply shows one neutral inline line, not an alert and not in Cub's voice (ADR-013). The failed message is never sent again.
@@ -324,11 +325,11 @@ Path:
 
 Rules:
 - Code checks come first: a reply fails if it is empty, if it was cut off at the token cap, or if it has markdown (`**`, a code fence, or a `#` heading at the start of a line).
-- A reply that passes them goes to a grader: a second call to the same fixed model, with Cub's rules, the chosen style and length, and a language check in its prompt (with "General advice", its rule too; never the baby's details), is told to fail only a clear break of a rule that applies to the message, where a rule about what a reply must never say always applies (with a picked baby, also that it can't see the details), and the parent's last message and the reply as its one turn. Only a grade whose first word is `PASS` (in any case, ignoring `*`, `.` or `:` around it) passes; anything else, an unreadable grade included, is a fail.
+- A reply that passes them goes to a grader: a second call to the same fixed model, thinking at low effort under a 1024-token cap that leaves room for it (#155), with Cub's rules, the chosen style and length, and a language check in its prompt (with "General advice", its rule too; never the baby's details), is told to fail only a clear break of a rule that applies to the message, where a rule about what a reply must never say always applies (with a picked baby, also that it can't see the details), and the parent's last message and the reply as its one turn. Only a grade whose first word is `PASS` (in any case, ignoring `*`, `.` or `:` around it) passes; anything else, an unreadable grade included, is a fail.
 - A failed reply gets exactly one retry: the same request, with a fixed note for the reason added to the rules (none for an empty reply). The failed reply and the grader's words are never sent back, and never shown.
 - If the retry fails too, the caregiver sees the neutral inline line "Cub couldn't find a good answer to that. Try asking another way." It is not an alert and not Cub's voice (ADR-013), and the turn stays out of the history sent to Claude.
 - Fail closed: if the grader can't be reached, nothing is shown but today's "Cub couldn't answer just now" line (ADR-019).
-- In Debug builds, `CubReplyService` writes why a try failed (the code check, or the grader's words) to the debug output, never the parent's message or the reply; Release builds drop it (#155).
+- In Debug builds, `CubReplyService` writes why a try failed (the code check, or the grader's words, or that the grade had no text and whether it was cut off) to the debug output, never the parent's message or the reply; Release builds drop it (#155).
 - The checks, the grader's prompt and the notes live in `Core` (`CubReplyChecks`, `CubGuidelines`, `CubReplyService`); `Remote/` only maps the call (ADR-017).
 
 Reason:

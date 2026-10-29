@@ -7,7 +7,7 @@ namespace BabyBuddyHelper.Tests.Infrastructure
     //under CubReplyService, so the sanity layer is tested without the SDK or the network.
     public sealed class FakeCubChatClient(params Func<CubReply>[] script) : ICubChatClient
     {
-        public sealed record Request(IReadOnlyList<ChatTurn> Turns, string SystemPrompt, int MaxTokens);
+        public sealed record Request(IReadOnlyList<ChatTurn> Turns, string SystemPrompt, int MaxTokens, CubThinking Thinking);
 
         private readonly Queue<Func<CubReply>> _script = new(script);
 
@@ -18,10 +18,11 @@ namespace BabyBuddyHelper.Tests.Infrastructure
         public static Func<CubReply> SaysCutOff(string text) => () => new CubReply(text, CutOff: true);
         public static Func<CubReply> Throws(Exception exception) => () => throw exception;
 
-        public Task<CubReply> GetReplyAsync(IReadOnlyList<ChatTurn> turns, string systemPrompt, int maxTokens, CancellationToken cancellationToken = default)
+        public Task<CubReply> GetReplyAsync(IReadOnlyList<ChatTurn> turns, string systemPrompt, int maxTokens, CubThinking thinking,
+            CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            Requests.Add(new Request(turns, systemPrompt, maxTokens));
+            Requests.Add(new Request(turns, systemPrompt, maxTokens, thinking));
 
             if (_script.Count == 0)
                 throw new InvalidOperationException($"The script has no step for call {Requests.Count}.");

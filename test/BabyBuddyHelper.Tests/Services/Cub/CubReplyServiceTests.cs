@@ -33,7 +33,7 @@ namespace BabyBuddyHelper.Tests.Services.Cub
             Assert.Equal(2, client.Requests.Count);
         }
 
-        //Cub is asked with the parent's style, length and cap; the grader with its own prompt, the reply and its small cap
+        //Cub is asked with the parent's style, length and cap, without thinking; the grader with its own prompt, the reply and its cap, thinking a little (#155)
         [Fact]
         public async Task AskAsync_SendsTheReplyRequestThenTheGradeRequest()
         {
@@ -44,11 +44,13 @@ namespace BabyBuddyHelper.Tests.Services.Cub
             Request ask = client.Requests[0];
             Assert.Equal(CubGuidelines.BuildSystemPrompt(null, Personality), ask.SystemPrompt);
             Assert.Equal(250, ask.MaxTokens);
+            Assert.Equal(CubThinking.Off, ask.Thinking);
             Assert.Equal(OneQuestion, ask.Turns);
 
             Request grade = client.Requests[1];
             Assert.Equal(CubGuidelines.BuildGraderPrompt(Personality, babyPicked: false), grade.SystemPrompt);
             Assert.Equal(CubGuidelines.MaxGradeTokens, grade.MaxTokens);
+            Assert.Equal(CubThinking.Low, grade.Thinking);
             Assert.Equal([new ChatTurn(ChatSpeaker.Parent, CubGuidelines.BuildGradeRequest(ParentText, GoodReply))], grade.Turns);
         }
 
@@ -138,6 +140,7 @@ namespace BabyBuddyHelper.Tests.Services.Cub
             Assert.Equal($"{client.Requests[0].SystemPrompt}{Environment.NewLine}{Environment.NewLine}{note}", client.Requests[1].SystemPrompt);
             Assert.Equal(client.Requests[0].Turns, client.Requests[1].Turns); //The failed reply is never sent back
             Assert.Equal(client.Requests[0].MaxTokens, client.Requests[1].MaxTokens);
+            Assert.Equal(CubThinking.Off, client.Requests[1].Thinking); //The retry is a reply too
         }
 
         //An empty reply has no note: the same request is simply asked again

@@ -18,7 +18,7 @@ namespace BabyBuddyHelper.Core.Services.Cub
             int maxTokens = CubGuidelines.MaxReplyTokensFor(personality.Verbosity);
             string parentMessage = turns.LastOrDefault(turn => turn.Speaker == ChatSpeaker.Parent)?.Text ?? string.Empty;
 
-            CubReply reply = await chatClient.GetReplyAsync(turns, systemPrompt, maxTokens, cancellationToken);
+            CubReply reply = await chatClient.GetReplyAsync(turns, systemPrompt, maxTokens, CubThinking.Off, cancellationToken);
             CubReplyProblem? problem = await FindProblemAsync(reply, parentMessage, personality, babyContext is not null, cancellationToken);
 
             if (problem is null)
@@ -28,7 +28,7 @@ namespace BabyBuddyHelper.Core.Services.Cub
             string? note = CubGuidelines.RetryNote(problem.Value);
             string retryPrompt = note is null ? systemPrompt : $"{systemPrompt}{Environment.NewLine}{Environment.NewLine}{note}";
 
-            CubReply retry = await chatClient.GetReplyAsync(turns, retryPrompt, maxTokens, cancellationToken);
+            CubReply retry = await chatClient.GetReplyAsync(turns, retryPrompt, maxTokens, CubThinking.Off, cancellationToken);
 
             return await FindProblemAsync(retry, parentMessage, personality, babyContext is not null, cancellationToken) is null
                 ? new CubOutcome.Reply(retry.Text)
@@ -49,12 +49,14 @@ namespace BabyBuddyHelper.Core.Services.Cub
 
             CubReply grade = await chatClient.GetReplyAsync(
                 [new ChatTurn(ChatSpeaker.Parent, CubGuidelines.BuildGradeRequest(parentMessage, reply.Text))],
-                CubGuidelines.BuildGraderPrompt(personality, babyPicked), CubGuidelines.MaxGradeTokens, cancellationToken);
+                CubGuidelines.BuildGraderPrompt(personality, babyPicked), CubGuidelines.MaxGradeTokens, CubThinking.Low, cancellationToken);
 
             if (CubReplyChecks.IsPassingGrade(grade.Text))
                 return null;
 
-            TraceFailure($"the grade: {grade.Text}");
+            //A grade with no text says whether its cap ran out, so an empty line in the trace explains itself (#155)
+            string why = grade.Text.Length > 0 ? grade.Text : grade.CutOff ? "(cut off with no text)" : "(no text)";
+            TraceFailure($"the grade: {why}");
             return CubReplyProblem.FailedGrade;
         }
 

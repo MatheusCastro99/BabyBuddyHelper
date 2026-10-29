@@ -51,6 +51,7 @@ Core/Models/
   - BabyChatContext.cs
   - CubPersonality.cs
   - CubReply.cs
+  - CubThinking.cs
   - CubOutcome.cs
 
 Core/Services/
@@ -215,7 +216,7 @@ Details that the code doesn't explain on its own. Moved from the retired `AI_CON
 - `CubReplyService` trims the history, asks for a reply, runs the code checks (`CubReplyChecks`: empty, cut off, markdown) and then the grader, and retries once with a fixed note. It returns a `CubOutcome`: `Reply` or `Declined`. `CubUnavailableException`, a grader that can't answer included, and cancellation pass through.
 - The page shows a `Reply` and adds it to the history; `Declined` and a `CubUnavailableException` each show their own neutral line on the failure template, and the message never joins the history.
 - The style and reply length (`CubPersonality`) are a device setting in Preferences (`ICubPersonalityStore`, like the palette), never in the database. The page reads them when a message is sent, so a change in the popup applies from the next message. `CubPersonality.FromSaved` falls back to Supportive and Balanced, each on its own, for a missing or unknown name.
-- `ICubChatClient` takes the system prompt, the output-token cap and the turns, all built in Core (`CubGuidelines`), and returns the reply unchecked as a `CubReply`: its trimmed text, which may be empty, and whether it was cut off at the cap. `Remote/` only fixes the model and maps to the SDK.
+- `ICubChatClient` takes the system prompt, the output-token cap, whether to think (`CubThinking`) and the turns, all built in Core (`CubGuidelines`, `CubReplyService`), and returns the reply unchecked as a `CubReply`: its trimmed text, which may be empty, and whether it was cut off at the cap. `Remote/` only fixes the model and maps to the SDK.
 - The baby picker in Cub's card ("is talking about:") is read when a message is sent, so a change applies from the next message. "General advice" sends no baby data; a picked baby is turned into a `BabyChatContext` at that moment.
 - The page keeps two lists: the items it shows (parent, Cub, thinking, failure) and the turns it sends (answered messages and their replies only). A message that failed is never sent again.
 - Leaving the page (a pop, a pop to the tab's root, or a removal) cancels a reply still on its way, and a late reply is dropped. Opening the settings popup is a modal push and switching tabs is a replace, so neither does: the chat is still there when the parent comes back.
