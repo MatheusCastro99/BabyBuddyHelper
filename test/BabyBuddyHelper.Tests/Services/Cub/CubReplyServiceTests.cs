@@ -33,7 +33,7 @@ namespace BabyBuddyHelper.Tests.Services.Cub
             Assert.Equal(2, client.Requests.Count);
         }
 
-        //Cub is asked with the parent's style, length and cap; the grader with its own prompt, the reply and its small cap
+        //Cub is asked with the parent's style, length and cap, without thinking; the grader with its own prompt, the reply and its cap, thinking a little (#155)
         [Fact]
         public async Task AskAsync_SendsTheReplyRequestThenTheGradeRequest()
         {
@@ -44,11 +44,13 @@ namespace BabyBuddyHelper.Tests.Services.Cub
             Request ask = client.Requests[0];
             Assert.Equal(CubGuidelines.BuildSystemPrompt(null, Personality), ask.SystemPrompt);
             Assert.Equal(250, ask.MaxTokens);
+            Assert.Equal(CubThinking.Off, ask.Thinking);
             Assert.Equal(OneQuestion, ask.Turns);
 
             Request grade = client.Requests[1];
             Assert.Equal(CubGuidelines.BuildGraderPrompt(Personality, babyPicked: false), grade.SystemPrompt);
             Assert.Equal(CubGuidelines.MaxGradeTokens, grade.MaxTokens);
+            Assert.Equal(CubThinking.Low, grade.Thinking);
             Assert.Equal([new ChatTurn(ChatSpeaker.Parent, CubGuidelines.BuildGradeRequest(ParentText, GoodReply))], grade.Turns);
         }
 
@@ -81,6 +83,9 @@ namespace BabyBuddyHelper.Tests.Services.Cub
             Assert.Contains(CubGuidelines.StyleLine(CubStyle.Direct), prompt);
             Assert.Contains(CubGuidelines.LengthLine(CubVerbosity.Short), prompt);
             Assert.Contains("same language as the parent's message", prompt);
+            Assert.Contains("instructions above that apply to this message", prompt);
+            Assert.Contains("Fail it only for a clear break", prompt);
+            Assert.Contains("A rule about what a reply must never say always applies.", prompt);
             Assert.Contains("answer with the single word PASS", prompt);
         }
 
@@ -93,6 +98,7 @@ namespace BabyBuddyHelper.Tests.Services.Cub
             Assert.Contains("\"General advice\"", prompt);
             Assert.Contains("don't assume the baby's name, age or details", prompt);
             Assert.DoesNotContain("using them is fine", prompt);
+            Assert.DoesNotContain("You can't see those details", prompt);
         }
 
         //With a picked baby, the grader knows Cub was told the details, but never gets them
@@ -102,6 +108,7 @@ namespace BabyBuddyHelper.Tests.Services.Cub
             string prompt = CubGuidelines.BuildGraderPrompt(Personality, babyPicked: true);
 
             Assert.Contains("The app told Cub the baby's name and details, so using them is fine.", prompt);
+            Assert.Contains("You can't see those details", prompt);
             Assert.DoesNotContain("\"General advice\"", prompt);
             Assert.DoesNotContain("The parent picked", prompt);
         }
@@ -133,6 +140,7 @@ namespace BabyBuddyHelper.Tests.Services.Cub
             Assert.Equal($"{client.Requests[0].SystemPrompt}{Environment.NewLine}{Environment.NewLine}{note}", client.Requests[1].SystemPrompt);
             Assert.Equal(client.Requests[0].Turns, client.Requests[1].Turns); //The failed reply is never sent back
             Assert.Equal(client.Requests[0].MaxTokens, client.Requests[1].MaxTokens);
+            Assert.Equal(CubThinking.Off, client.Requests[1].Thinking); //The retry is a reply too
         }
 
         //An empty reply has no note: the same request is simply asked again
@@ -175,8 +183,7 @@ namespace BabyBuddyHelper.Tests.Services.Cub
 
         [Theory]
         [InlineData("")]
-        [InlineData("pass")]
-        [InlineData("**PASS**")]
+        [InlineData("PASSED")]
         [InlineData("I'm not sure.")]
         public async Task AskAsync_UnreadableGrade_CountsAsAFail(string grade)
         {
@@ -184,6 +191,26 @@ namespace BabyBuddyHelper.Tests.Services.Cub
 
             Assert.Equal(new CubOutcome.Declined(), await Ask(client));
             Assert.Equal(4, client.Requests.Count);
+        }
+
+        //A grade whose cap ran out on thinking comes back cut off with no text; it is a fail, never a pass (#155)
+        [Fact]
+        public async Task AskAsync_GradeCutOffWithNoText_CountsAsAFail()
+        {
+            var client = new FakeCubChatClient(Says(GoodReply), SaysCutOff(""), Says(GoodReply), SaysCutOff(""));
+
+            Assert.Equal(new CubOutcome.Declined(), await Ask(client));
+            Assert.Equal(4, client.Requests.Count);
+        }
+
+        //A grade that wraps PASS in formatting still passes (#155)
+        [Fact]
+        public async Task AskAsync_FormattedPassGrade_ShowsTheReply()
+        {
+            var client = new FakeCubChatClient(Says(GoodReply), Says("**PASS**"));
+
+            Assert.Equal(new CubOutcome.Reply(GoodReply), await Ask(client));
+            Assert.Equal(2, client.Requests.Count);
         }
 
         //Exactly one retry: whatever fails twice is declined, and nothing more is asked
