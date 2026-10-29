@@ -83,6 +83,7 @@ namespace BabyBuddyHelper.Tests.Services.Cub
             Assert.Contains("same language as the parent's message", prompt);
             Assert.Contains("instructions above that apply to this message", prompt);
             Assert.Contains("Fail it only for a clear break", prompt);
+            Assert.Contains("A rule about what a reply must never say always applies.", prompt);
             Assert.Contains("answer with the single word PASS", prompt);
         }
 
