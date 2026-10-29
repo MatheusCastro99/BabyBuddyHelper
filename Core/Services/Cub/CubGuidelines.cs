@@ -111,8 +111,8 @@ namespace BabyBuddyHelper.Core.Services.Cub
             return prompt.Append(Rules);
         }
 
-        //The grader (#97, ADR-020): a second call that checks a reply the code checks passed. Its answer is read for a leading
-        //PASS only, so its cap leaves room for a few words of reason, which are never shown and never sent back to Cub
+        //The grader (#97, ADR-020): a second call that checks a reply the code checks passed. Its answer is read for a first
+        //word of PASS only, so its cap leaves room for a few words of reason, which are never shown and never sent back to Cub
         public const int MaxGradeTokens = 50;
         public const string PassingGrade = "PASS";
 

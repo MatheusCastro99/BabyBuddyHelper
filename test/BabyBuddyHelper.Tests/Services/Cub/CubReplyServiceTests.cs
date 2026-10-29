@@ -179,8 +179,7 @@ namespace BabyBuddyHelper.Tests.Services.Cub
 
         [Theory]
         [InlineData("")]
-        [InlineData("pass")]
-        [InlineData("**PASS**")]
+        [InlineData("PASSED")]
         [InlineData("I'm not sure.")]
         public async Task AskAsync_UnreadableGrade_CountsAsAFail(string grade)
         {
@@ -188,6 +187,16 @@ namespace BabyBuddyHelper.Tests.Services.Cub
 
             Assert.Equal(new CubOutcome.Declined(), await Ask(client));
             Assert.Equal(4, client.Requests.Count);
+        }
+
+        //A grade that wraps PASS in formatting still passes (#155)
+        [Fact]
+        public async Task AskAsync_FormattedPassGrade_ShowsTheReply()
+        {
+            var client = new FakeCubChatClient(Says(GoodReply), Says("**PASS**"));
+
+            Assert.Equal(new CubOutcome.Reply(GoodReply), await Ask(client));
+            Assert.Equal(2, client.Requests.Count);
         }
 
         //Exactly one retry: whatever fails twice is declined, and nothing more is asked

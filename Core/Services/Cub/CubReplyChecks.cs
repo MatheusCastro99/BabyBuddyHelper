@@ -34,8 +34,18 @@ namespace BabyBuddyHelper.Core.Services.Cub
         public static bool HasMarkdown(string text) =>
             text.Contains("**", StringComparison.Ordinal) || text.Contains("```", StringComparison.Ordinal) || Heading().IsMatch(text);
 
-        //The grade passes only when it starts with PASS; anything else, an unreadable grade included, is a fail
-        public static bool IsPassingGrade(string grade) => grade.StartsWith(CubGuidelines.PassingGrade, StringComparison.Ordinal);
+        //The grade passes only when its first word is PASS, in any case, ignoring "*", "." or ":" around it (so "**PASS**" and "Pass."
+        //pass). Anything else, an unreadable grade included, is a fail (#155)
+        public static bool IsPassingGrade(string grade)
+        {
+            ReadOnlySpan<char> text = grade.AsSpan().TrimStart();
+            int end = 0;
+
+            while (end < text.Length && !char.IsWhiteSpace(text[end]))
+                end++;
+
+            return text[..end].Trim("*.:").Equals(CubGuidelines.PassingGrade, StringComparison.OrdinalIgnoreCase);
+        }
 
         [GeneratedRegex(@"^[ \t]{0,3}#{1,6}(?:[ \t]|\r?$)", RegexOptions.Multiline)]
         private static partial Regex Heading();

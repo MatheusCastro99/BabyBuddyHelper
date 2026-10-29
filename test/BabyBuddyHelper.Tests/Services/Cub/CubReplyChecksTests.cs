@@ -52,12 +52,18 @@ namespace BabyBuddyHelper.Tests.Services.Cub
         [Theory]
         [InlineData("PASS", true)]
         [InlineData("PASS - follows every rule", true)]
+        [InlineData("pass", true)]
+        [InlineData("Pass.", true)]
+        [InlineData("**PASS**", true)]
+        [InlineData("PASS:", true)]
+        [InlineData("  PASS", true)]
         [InlineData("FAIL: too long", false)]
-        [InlineData("pass", false)]
-        [InlineData("**PASS**", false)]
+        [InlineData("**FAIL**", false)]
+        [InlineData("PASSED", false)]
         [InlineData("I think this is a PASS", false)]
         [InlineData("", false)]
-        public void IsPassingGrade_OnlyALeadingPass(string grade, bool passes)
+        [InlineData("   ", false)]
+        public void IsPassingGrade_FirstWordIsPass(string grade, bool passes)
         {
             Assert.Equal(passes, CubReplyChecks.IsPassingGrade(grade));
         }
