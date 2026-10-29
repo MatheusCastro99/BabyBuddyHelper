@@ -81,6 +81,8 @@ namespace BabyBuddyHelper.Tests.Services.Cub
             Assert.Contains(CubGuidelines.StyleLine(CubStyle.Direct), prompt);
             Assert.Contains(CubGuidelines.LengthLine(CubVerbosity.Short), prompt);
             Assert.Contains("same language as the parent's message", prompt);
+            Assert.Contains("instructions above that apply to this message", prompt);
+            Assert.Contains("Fail it only for a clear break", prompt);
             Assert.Contains("answer with the single word PASS", prompt);
         }
 
@@ -93,6 +95,7 @@ namespace BabyBuddyHelper.Tests.Services.Cub
             Assert.Contains("\"General advice\"", prompt);
             Assert.Contains("don't assume the baby's name, age or details", prompt);
             Assert.DoesNotContain("using them is fine", prompt);
+            Assert.DoesNotContain("You can't see those details", prompt);
         }
 
         //With a picked baby, the grader knows Cub was told the details, but never gets them
@@ -102,6 +105,7 @@ namespace BabyBuddyHelper.Tests.Services.Cub
             string prompt = CubGuidelines.BuildGraderPrompt(Personality, babyPicked: true);
 
             Assert.Contains("The app told Cub the baby's name and details, so using them is fine.", prompt);
+            Assert.Contains("You can't see those details", prompt);
             Assert.DoesNotContain("\"General advice\"", prompt);
             Assert.DoesNotContain("The parent picked", prompt);
         }
