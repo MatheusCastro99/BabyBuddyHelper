@@ -9,7 +9,7 @@ using BabyBuddyHelper.Core.Models.Cub;
 namespace BabyBuddyHelper.Remote
 {
     //Cub's chat replies from Claude, on the parent's own key (#96, ADR-017). It only maps to and from the SDK:
-    //the prompt, the cap and the turns come from Core (#97), and the model is fixed. It never writes anything, and it never logs
+    //the prompt, the cap, the thinking and the turns come from Core (#97, #155), and the model is fixed. It never writes anything, and it never logs
     //or puts the key or the parent's messages into an exception (ADR-010).
     public sealed class ClaudeCubChatClient : ICubChatClient
     {

@@ -193,6 +193,16 @@ namespace BabyBuddyHelper.Tests.Services.Cub
             Assert.Equal(4, client.Requests.Count);
         }
 
+        //A grade whose cap ran out on thinking comes back cut off with no text; it is a fail, never a pass (#155)
+        [Fact]
+        public async Task AskAsync_GradeCutOffWithNoText_CountsAsAFail()
+        {
+            var client = new FakeCubChatClient(Says(GoodReply), SaysCutOff(""), Says(GoodReply), SaysCutOff(""));
+
+            Assert.Equal(new CubOutcome.Declined(), await Ask(client));
+            Assert.Equal(4, client.Requests.Count);
+        }
+
         //A grade that wraps PASS in formatting still passes (#155)
         [Fact]
         public async Task AskAsync_FormattedPassGrade_ShowsTheReply()
