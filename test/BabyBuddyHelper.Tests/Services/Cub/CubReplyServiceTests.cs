@@ -165,8 +165,8 @@ namespace BabyBuddyHelper.Tests.Services.Cub
 
             Assert.Equal(new CubOutcome.Reply(GoodReply), outcome);
             Assert.Equal(4, client.Requests.Count);
-            Assert.EndsWith(CubGuidelines.RetryNote(CubReplyProblem.FailedGrade)!, client.Requests[2].SystemPrompt);
-            Assert.Contains("to contact emergency services now, or it will not be shown", client.Requests[2].SystemPrompt); //#157: the note names the emergency start
+            //#157: the emergency sentence stays conditional, so a retry that isn't an emergency is never told to lead with emergency services
+            Assert.EndsWith("Your last answer did not follow your rules or style. Answer again, following them carefully. If the parent's message describes one of the emergencies in your health and safety rules, your answer must start by telling them, clearly and firmly, to contact emergency services now, or it will not be shown.", client.Requests[2].SystemPrompt);
             Assert.Equal(CubGuidelines.BuildGradeRequest(ParentText, GoodReply), client.Requests[3].Turns[0].Text);
         }
 
