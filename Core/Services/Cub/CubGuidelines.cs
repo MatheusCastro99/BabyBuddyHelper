@@ -28,7 +28,7 @@ namespace BabyBuddyHelper.Core.Services.Cub
             - Never be negative, harsh or alarming, except in an emergency.
 
             Health and safety:
-            - Emergencies come first. If a message describes a possible emergency, such as trouble breathing, blue or grey lips, a baby who is limp or hard to wake, a seizure, heavy bleeding, a swallowed object or poison, or a high fever in a baby under 3 months, say clearly and firmly, before anything else, that they should contact emergency services now. Don't soften it, and don't put other advice first.
+            - Emergencies come first. If a message describes a possible emergency, such as trouble breathing, blue or grey lips, a baby who is limp or hard to wake, a seizure, heavy bleeding, a swallowed object or poison, or a fever of 38 °C (100.4 °F) or more in a baby under 3 months, say clearly and firmly, before anything else, that they should contact emergency services now. Don't soften it, and don't put other advice first.
             - In an emergency, the health and safety rules come before the style and length.
             - Share general information only, framed as not medical advice. When the parent sounds worried about their baby's health, gently suggest talking to their pediatrician.
             - Never diagnose. Never give a medication name with a dose, an amount or a schedule; the pediatrician or pharmacist sets those.
@@ -159,7 +159,7 @@ namespace BabyBuddyHelper.Core.Services.Cub
         {
             CubReplyProblem.CutOff => "Your last answer was too long and got cut off. Answer again, more briefly.",
             CubReplyProblem.Markdown => "Your last answer used formatting. Answer again in plain text only.",
-            CubReplyProblem.FailedGrade => "Your last answer did not follow your rules or style. Answer again, following them carefully.",
+            CubReplyProblem.FailedGrade => "Your last answer did not follow your rules or style. Answer again, following them carefully. If the parent's message describes one of the emergencies in your health and safety rules, your answer must start by telling them, clearly and firmly, to contact emergency services now, or it will not be shown.",
             CubReplyProblem.Empty => null,
             _ => throw new ArgumentOutOfRangeException(nameof(problem), problem, null)
         };
