@@ -39,11 +39,14 @@ Every issue goes through the harness skills, in order. Each block ends where its
   2. `build` — autonomous, forked on a Sonnet `builder`; draft PR and handoff. After G1 and `/clear`, "continue <n>" means: invoke `build` for <n> at once. The fork reads the plan; don't read it first or wait for a go.
   3. a fresh Opus session: `/review <n>` — red-team, gate G2
   4. the owner merges, then `/close <n>`
-- **Small:** `/scope <n> small` — the same gates, in one session. When the forked build returns, run `review` here: the approved plan's tier decides, not the fork's reply.
+- **An Epic's close:** `/close <n> epic` first runs the knowledge audit, then `/scope <n> small` for a docs pass with its findings, then `/close <n> epic` cleans up.
+- **Small:** `/scope <n> small` — the same gates, in one session. When the forked build returns, run `review` here: the approved plan's tier decides, not the fork's reply. After a G2 fixes round (`build <n> amend`), review's narrow re-review follows instead.
+
+Content, art or design drafted with the owner is drafted before `/scope`, in its own session, and ends in an approved file; `/scope` plans from it.
 
 Working state lives in `.harness/work/<n>/` (gitignored). The approved plan and the handoff are also posted to the issue. If `.harness/work/<n>/BLOCKED` exists, stop and tell the owner.
 
-When the forked build's reply has a `MAIN SESSION:` line, do what it says before you reply: the fork can't reach the app's PR tools. It runs the UI check itself, through Windows UI Automation.
+When the forked build's reply has a `MAIN SESSION:` line, do what it says before you reply: the fork can't reach the app's PR tools. The UI check runs in `review`, on the `ui-check` agent, through Windows UI Automation.
 
 ## Standing rules
 
