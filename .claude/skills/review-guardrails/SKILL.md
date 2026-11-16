@@ -58,6 +58,13 @@ For each check, confirm it with evidence from the code (`file:line`), not from m
 ### Seeding (ADR-009)
 - Mock data goes only through `TaskListService`, only in Debug builds, and only when the list is empty. Check for `#if DEBUG` guards.
 
+### Schema and migrations (ADR-002) — DRAFT, pending the owner's approval at G2 (#76)
+- A change to `TrackerContext` or to a persisted model comes with a generated migration in `Core/Persistence/Migrations` (made through `tools/BabyBuddyHelper.DesignTime`, never hand-written). Flag a diff that changes the model with no new migration.
+- A merged migration is never edited or deleted: a fix is a new migration. The snapshot and the designer files are generated; a hand edit to them is a violation.
+- Nothing calls `EnsureCreated`, and `Migrate` never runs inside an explicit transaction.
+- `MigrationTests` pass (`HasPendingModelChanges` is false, and rows written at `InitialCreate` survive the upgrade to the latest migration).
+- Neither the app project nor the test project references `Microsoft.EntityFrameworkCore.Design`, and the app project doesn't compile `tools/**`.
+
 ### User Feedback (ADR-013)
 - Reinforcing and positive feedback (Saves, completions, updates, deletions) will be done through Toast notifications with Cub interactions.
 - Negative feedback (Database errors, failures) will be communicated through Alerts, requiring user acknowledgment before proceeding. Cub interactions will not be used for negative feedback.
