@@ -349,7 +349,7 @@ dotnet restore
 dotnet build BabyBuddyHelper.csproj -f net10.0-windows10.0.19041.0
 ```
 
-Name the project, because the repository root also holds the solution (`BabyBuddyHelper.slnx`, with the tests and the design-time tool) and MSBuild will not pick between the two. Swap the target framework to build another platform (for example `net10.0-android`).
+Name the project: at the root, MSBuild otherwise builds the solution (`BabyBuddyHelper.slnx`), whose test and design-time projects have no Windows target, so `-f` would fail for them. Swap the target framework to build another platform (for example `net10.0-android`).
 
 The build compiles the Syncfusion license from `SYNCFUSION_LICENSE` in `.env` (or the environment variable in CI). A key is valid for one Syncfusion major version only, so a major package upgrade needs a new key.
 
