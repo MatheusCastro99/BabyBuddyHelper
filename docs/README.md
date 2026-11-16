@@ -12,7 +12,7 @@
 
 BabyBuddyHelper is a cross-platform parenting companion built with .NET MAUI. Today, it helps parents and caregivers organize tasks, track appointments, manage baby profiles, and visualize schedules through checklist and calendar experiences.
 
-The project is currently a functional prototype in active development. Phase 4 (vaccine tracker) and its follow-ups are concluded. Phase 5 is concluded too: it added a dual UI mode (a boy / girl palette in place of a light / dark mode) and brought the companion to life with interactive animations, the chat page and the settings for the caregiver's own API key, a carefully scoped AI helper (Cub answers in the chat through Claude, on the caregiver's own key), and a light personality adjustment, with a check on every reply. Phases 6 to 8 are the road to v1.0, a first release on Android and Windows: release-safe data (EF Core migrations), mobile readiness (mobile CI and a mobile UI/UX polish pass), then release and distribution (Google Play, the Microsoft Store and a Windows download). The shipped task, appointment, baby-profile, vaccine, and filtering experience stays as it is.
+The project is currently a functional prototype in active development. Phase 4 (vaccine tracker) and its follow-ups are concluded. Phase 5 is concluded too: it added a dual UI mode (a boy / girl palette in place of a light / dark mode) and brought the companion to life with interactive animations, the chat page and the settings for the caregiver's own API key, a carefully scoped AI helper (Cub answers in the chat through Claude, on the caregiver's own key), and a light personality adjustment, with a check on every reply. Phase 6 is concluded too: user data now survives app updates through EF Core migrations, and unused package references are gone. Phases 7 and 8 finish the road to v1.0, a first release on Android and Windows: mobile readiness (mobile CI and a mobile UI/UX polish pass), then release and distribution (Google Play, the Microsoft Store and a Windows download). The shipped task, appointment, baby-profile, vaccine, and filtering experience stays as it is.
 
 ## Vision and Experience
 
@@ -98,7 +98,7 @@ The current experience already includes an animated companion character (Cub wav
 
 ## Planned Direction
 
-- A first release: mobile polish, release-ready data migrations, and distribution (app stores or direct downloads)
+- A first release: mobile polish and distribution (app stores or direct downloads)
 - User accounts, cloud synchronization, and backup and restore; later, sharing with family
 - Later, personalized advice based on the baby's age and development stage
 
@@ -346,8 +346,10 @@ dotnet restore
 ### Build
 
 ```bash
-dotnet build
+dotnet build BabyBuddyHelper.csproj -f net10.0-windows10.0.19041.0
 ```
+
+Name the project: at the root, MSBuild otherwise builds the solution (`BabyBuddyHelper.slnx`), whose test and design-time projects have no Windows target, so `-f` would fail for them. Swap the target framework to build another platform (for example `net10.0-android`).
 
 The build compiles the Syncfusion license from `SYNCFUSION_LICENSE` in `.env` (or the environment variable in CI). A key is valid for one Syncfusion major version only, so a major package upgrade needs a new key.
 
@@ -386,7 +388,7 @@ This project follows modern software engineering practices:
 
 ### Medium Term (Phases 6 to 8: the road to v1.0)
 
-- Phase 6, release-safe data: EF Core migrations, and removing unused package references
+- Phase 6, release-safe data: EF Core migrations, and removing unused package references (shipped)
 - Phase 7, mobile ready: mobile targets in CI (Android first), and a mobile UI/UX polish pass with an accessibility check
 - Phase 8, release and distribution: app identity, a privacy policy, a real-key check of Cub's chat, the signed Android build on Google Play, the Windows build on the Microsoft Store and as a download on GitHub, and the store listings
 - iOS follows after v1.0

@@ -50,7 +50,7 @@ For each check, confirm it with evidence from the code (`file:line`), not from m
 - Pages may read `IVaccineCatalog` directly. It is the one exception to "pages read from the cache services only".
 
 ### Layout (ADR-015)
-- New files go by layer: `Core/` (models, services, interfaces, persistence, collections, exceptions) or `UI/` (pages, controls, UI services, converters). Namespaces follow folders.
+- New files go by layer: `Core/` (models, services, interfaces, persistence, storage, collections, exceptions), `UI/` (pages, controls, UI services, converters) or `Remote/` (off-device implementations only; only `MauiProgram` references it). Dev-only tooling goes in `tools/` and never ships. Namespaces follow folders.
 
 ### Navigation (ADR-016)
 - Detail and read-only pages use `PushAsync`; add/edit editors use `PushModalAsync`.
@@ -64,6 +64,7 @@ For each check, confirm it with evidence from the code (`file:line`), not from m
 - Nothing calls `EnsureCreated`, and `Migrate` never runs inside an explicit transaction.
 - `MigrationTests` pass (`HasPendingModelChanges` is false, and rows written at `InitialCreate` survive the upgrade to the latest migration).
 - Neither the app project nor the test project references `Microsoft.EntityFrameworkCore.Design`, and the app project doesn't compile `tools/**`.
+- A Core file left out of the test project because it needs a MAUI API is left out of `tools/BabyBuddyHelper.DesignTime` too (the same list, ADR-018). Flag a diff that changes one list and not the other.
 
 ### User Feedback (ADR-013)
 - Reinforcing and positive feedback (Saves, completions, updates, deletions) will be done through Toast notifications with Cub interactions.

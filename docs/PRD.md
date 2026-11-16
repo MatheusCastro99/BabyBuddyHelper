@@ -156,6 +156,9 @@ BabyBuddyHelper/
 ├── Properties/ - Launch settings
 ├── test/
 │   └── BabyBuddyHelper.Tests/ - xUnit tests for Core/ and Remote/ (a separate project that links their sources; the network is a fake)
+├── tools/ - Dev-only tooling, never shipped
+│   ├── BabyBuddyHelper.DesignTime/ - Host for `dotnet ef`: generates the migrations in Core/Persistence/Migrations
+│   └── cub/ - Cub's animation generator and preview
 ├── App.xaml(.cs) - Application entry and startup data loading
 ├── AppShell.xaml(.cs) - Tab navigation (Home, Checklist, Calendar)
 ├── MauiProgram.cs - Application configuration and dependency injection
