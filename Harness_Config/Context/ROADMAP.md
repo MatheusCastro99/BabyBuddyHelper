@@ -67,7 +67,7 @@ Filters Update: CONCLUDED
 - `TaskListService`, `BabyProfileService` and `VaccineService` are the cache services backed by `ITrackerDbService`.
 - `EfTrackerDbService` is the active EF Core + SQLite implementation.
 - Database-first writes are complete: `EfTrackerDbService` commits first, `DbCommunicationException` reports database failures, and startup load failures alert the user so they can retry.
-- Debug-only `SimulateDbFailure` and `ResetDatabaseOnStartup` support development-time failure and schema-reset testing.
+- Debug-only `SimulateDbFailure` and `ResetDatabaseOnStartup` support development-time failure testing and one-run database resets.
 - Phase 3 is complete.
 
 ---
@@ -150,7 +150,7 @@ Filters Update: CONCLUDED
 	- Handles vaccination records for each baby profile
 - At most one vaccination record per baby per vaccine (unique (BabyId, VaccineId) index)
 - Deleting Baby Profile deletes all associated vaccination records (No orphaned records)
-- SQLite: entity mapping plus EF Core integration. Current strategy uses `EnsureCreated`; the new table reached existing databases through one debug reset run. Migrations are tracked in #76.
+- SQLite: entity mapping plus EF Core integration. The strategy then was `EnsureCreated`, and the new table reached existing databases through one debug reset run; EF Core migrations replaced it in #76 (ADR-002).
 
 > AddVaccineRecordPage: CONCLUDED
 
@@ -262,28 +262,72 @@ Epic: Issue #92. Sub-phases run in order, one issue and one PR each.
 
 ---
 
-## Phase 6:
+## Phase 6: Release-safe data (Epic #166)
 
-> Mobile Focus:
+> Goal of Phases 6 to 8: a first public release (v1.0) on Android and Windows that a caregiver can install from a store, with data that survives updates. iOS follows in v1.1.
+> Phase 6 comes first: once real users hold data, every schema change without migrations wipes it.
 
-- CI/CD Pipeline for mobile targets (Issue #71)
-- Optimize the app for mobile devices, ensuring a responsive and user-friendly experience (Issue #72)
+> 6.1 Adopt EF Core migrations (Issue #76):
 
-> Database Preparation for Release:
+- `InitialCreate` and `Database.Migrate`; `ResetDatabaseOnStartup` keeps working
 
-- Prepare the database for release, ensuring data integrity and consistency
-- Implement data migration strategies for future updates and changes to the database schema (Issue #76)
+> 6.2 Remove unused and stale package references (Issue #169):
 
-> Deployment and Distribution:
-
-- Prepare the app for deployment
-- Consider distribution channels (e.g., app stores, direct downloads) and necessary configurations for each channel
-- Dockerize the application for easier distribution and deployment
-- Re-verify the vaccine catalog and the disclaimer's schedule version before the first release (Issue #79)
+- Drop `Microsoft.Extensions.AI` (unused) and re-check the `Microsoft.Maui.Controls.Compatibility` pin
 
 ---
 
-## Phase 7:
+## Phase 7: Mobile ready (Epic #167)
+
+> 7.1 CI builds the mobile targets (Issue #71):
+
+- Android on every pull request for v1.0 (CI already builds Windows); iOS and Mac Catalyst in v1.1
+
+> 7.2 Mobile UI/UX polish (Issue #72):
+
+- 7.2a Known fixes (Issue #175): resume refresh, the priority counter, the palette switch on mobile, the status bar, chat picker clipping, 48 dp targets, landscape Add task
+- 7.2b Phone-width audit (Issue #176): every page checked with the ux-design skill
+- 7.2c Accessibility pass (Issue #177): TalkBack and large fonts
+
+---
+
+## Phase 8: Release and distribution (Epic #168)
+
+> 8.1 App identity (Issue #170):
+
+- The application ID (final before the first Play upload), the name, icon and splash, the Windows package identity matching the Partner Center reservation, and a versioning scheme
+
+> 8.2 Privacy policy and store declarations (Issue #171):
+
+- The policy at a public URL, linked in the app; Google Play Data safety and the health-apps declaration; the Microsoft Store privacy answers
+
+> 8.3 Cub real-key checklist run (Issue #172):
+
+- All 22 rows. Cub's AI ships in v1.0, with the user's own key, if the run passes; otherwise the chat is hidden behind a flag for v1.0
+
+> 8.4 Vaccine catalog re-verify (Issue #79):
+
+- A release check, run right before 8.7: the catalog and the disclaimer's schedule version
+
+> 8.5 Signed Android pipeline and Google Play beta (Issue #173):
+
+- A tag builds a signed AAB; internal testing, then the closed test (currently 12 testers for 14 days for new personal accounts; recheck the rule)
+- Google Play is the only Android channel: no direct APK
+
+> 8.6 Windows release (Issue #178):
+
+- MSIX packaging (today `WindowsPackageType` is `None`), the Partner Center account, a Microsoft Store build and a signed GitHub download from the same tag, Store certification, and smoke and upgrade tests
+- The signing format and the certificate for the download are open on #178
+
+> 8.7 Store listings and v1.0 (Issue #174):
+
+- The Google Play and Microsoft Store listings, content ratings, the rollout, and the README install section
+
+> Order: 6.1 and 6.2 come first, then 7.1 and 7.2. 8.1, 8.2 and 8.3 don't depend on Phases 6 and 7 and can run in between. 8.5 and 8.6 run side by side, then 8.4 and 8.7.
+
+---
+
+## Phase 9:
 
 > Authentication and User Accounts:
 
@@ -305,7 +349,7 @@ Epic: Issue #92. Sub-phases run in order, one issue and one PR each.
 - Ensure backup files are secure and easily accessible
 ---
 
-## Phase 8:
+## Phase 10:
 
 > Advanced AI Features:
 

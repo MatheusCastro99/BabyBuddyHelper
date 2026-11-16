@@ -19,6 +19,7 @@
     - Vaccine/
     - Cub/
   - Persistence/
+    - Migrations/
   - Collections/
   - Exceptions/
   - Storage/
@@ -33,6 +34,7 @@
   - Services/
   - Models/
   - Remote/
+- tools/BabyBuddyHelper.DesignTime/
 
 ## Current key files:
 
@@ -90,6 +92,7 @@ Core/Persistence/
 
 - TrackerContext.cs
 - EfTrackerDbService.cs
+- Migrations/: the generated EF Core migrations and `TrackerContextModelSnapshot.cs` (never edited by hand)
 
 Core/Collections/
 
@@ -148,6 +151,10 @@ Resources/Raw/
 
 - cub.json (Cub's Lottie animations)
 
+tools/BabyBuddyHelper.DesignTime/ (a plain `net10.0` project that only `dotnet ef` uses; it compiles the `Core/` sources the way the test project does and holds `TrackerContextDesignTimeFactory` and the `Microsoft.EntityFrameworkCore.Design` package; the app's csproj excludes `tools/**`, and nothing references this project)
+
+- TrackerContextDesignTimeFactory.cs
+
 tools/cub/ (run by hand, not part of the build)
 
 - generate_cub.py
@@ -171,7 +178,7 @@ test/BabyBuddyHelper.Tests/ (a separate plain `net10.0` xUnit project; it links 
   - TaskList/: TaskCrudTests.cs, TaskConversionTests.cs, TaskSortingTests.cs, TaskFilteringTests.cs
   - Vaccine/: VaccinationRecordCrudTests.cs
   - Cub/: CubGuidelinesTests.cs, CubReplyChecksTests.cs, CubReplyServiceTests.cs
-  - CollidingDataTests.cs (cross-feature, stays at the root)
+  - CollidingDataTests.cs, MigrationTests.cs (cross-feature, stay at the root)
 - Models/ (model logic; feature subfolders mirror `Core/Models`):
   - TaskList/: TaskModelTests.cs
   - Vaccine/: VaccinationRecordFlagTests.cs
@@ -189,6 +196,17 @@ The root-level `Remote/` folder holds off-device implementations (clients for ex
 ## Platform notes
 
 Details that the code doesn't explain on its own. Moved from the retired `AI_CONTEXT.md` (#121).
+
+### Schema changes: add a migration (ADR-002)
+
+A change to the EF model (the `TrackerContext` configuration, or a mapped property) comes with a migration, generated, never written by hand. Logic that isn't mapped needs none: `HasPendingModelChanges` (in `MigrationTests`) is the test. From the repo root:
+
+1. `dotnet tool restore` (once; the manifest in `.config/dotnet-tools.json` pins `dotnet-ef`).
+2. `dotnet ef migrations add <Name> --project tools/BabyBuddyHelper.DesignTime --startup-project tools/BabyBuddyHelper.DesignTime --output-dir ../../Core/Persistence/Migrations --namespace BabyBuddyHelper.Core.Persistence.Migrations`. Both project options are needed: the tool otherwise takes the app project, which it can't run against.
+3. EF writes the migration files into `Core/Persistence/Migrations`, but it writes the updated `TrackerContextModelSnapshot.cs` under `tools/BabyBuddyHelper.DesignTime/BabyBuddyHelper/Core/Persistence/Migrations` (it only looks for the snapshot inside the project's own folder). Move that file over `Core/Persistence/Migrations/TrackerContextModelSnapshot.cs` and delete the stray `tools/BabyBuddyHelper.DesignTime/BabyBuddyHelper` folder. Left there, the stray file is compiled into the design-time project next to the real one and the build fails on duplicate types.
+4. `node .claude/scripts/check.cjs fast`. `MigrationTests` fail when the snapshot and the model disagree, and when rows written at `InitialCreate` don't survive the upgrade.
+
+Never edit or delete a migration that is merged: add a new one. `dotnet ef migrations list` (same two project options) shows what the snapshot knows.
 
 ### Secrets at build time
 

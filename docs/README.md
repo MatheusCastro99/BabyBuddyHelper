@@ -12,7 +12,7 @@
 
 BabyBuddyHelper is a cross-platform parenting companion built with .NET MAUI. Today, it helps parents and caregivers organize tasks, track appointments, manage baby profiles, and visualize schedules through checklist and calendar experiences.
 
-The project is currently a functional prototype in active development. Phase 4 (vaccine tracker) and its follow-ups are concluded. Phase 5 is concluded too: it added a dual UI mode (a boy / girl palette in place of a light / dark mode) and brought the companion to life with interactive animations, the chat page and the settings for the caregiver's own API key, a carefully scoped AI helper (Cub answers in the chat through Claude, on the caregiver's own key), and a light personality adjustment, with a check on every reply. Phase 6 then prepares the first release: mobile targets in CI, a mobile UI/UX polish pass, EF Core migrations, then deployment and distribution. The shipped task, appointment, baby-profile, vaccine, and filtering experience stays as it is.
+The project is currently a functional prototype in active development. Phase 4 (vaccine tracker) and its follow-ups are concluded. Phase 5 is concluded too: it added a dual UI mode (a boy / girl palette in place of a light / dark mode) and brought the companion to life with interactive animations, the chat page and the settings for the caregiver's own API key, a carefully scoped AI helper (Cub answers in the chat through Claude, on the caregiver's own key), and a light personality adjustment, with a check on every reply. Phases 6 to 8 are the road to v1.0, a first release on Android and Windows: release-safe data (EF Core migrations), mobile readiness (mobile CI and a mobile UI/UX polish pass), then release and distribution (Google Play, the Microsoft Store and a Windows download). The shipped task, appointment, baby-profile, vaccine, and filtering experience stays as it is.
 
 ## Vision and Experience
 
@@ -81,7 +81,7 @@ The current experience already includes an animated companion character (Cub wav
 ### Dual UI Mode
 
 - Boy and girl color palettes in place of a light / dark mode
-- Palette switch on the tab row (Windows; mobile placement is planned in the Phase 6 polish pass)
+- Palette switch on the tab row (Windows; mobile placement is planned in Phase 7 (Issue #175))
 - The choice is saved on the device and applied at startup
 
 ### Data & Reliability
@@ -235,7 +235,8 @@ BabyBuddyHelper/
 │   │
 │   ├── Persistence/
 │   │   ├── TrackerContext.cs
-│   │   └── EfTrackerDbService.cs
+│   │   ├── EfTrackerDbService.cs
+│   │   └── Migrations/
 │   │
 │   ├── Collections/
 │   │   └── RangeObservableCollection.cs
@@ -303,6 +304,7 @@ BabyBuddyHelper/
 │       └── Remote/
 │
 ├── tools/
+│   ├── BabyBuddyHelper.DesignTime/
 │   └── cub/
 │       ├── generate_cub.py
 │       └── preview.html
@@ -382,14 +384,14 @@ This project follows modern software engineering practices:
 - A carefully scoped AI helper: an optional chat with Cub for tips and basic questions, using the caregiver's own API key (not a doctor or therapist) (shipped)
 - Light personality adjustment for the companion (conversational style and verbosity), with a check on every reply (shipped)
 
-### Medium Term (Phase 6)
+### Medium Term (Phases 6 to 8: the road to v1.0)
 
-- Mobile targets in CI
-- Mobile UI/UX polish
-- EF Core migrations
-- Deployment and distribution (app stores or direct downloads, Dockerization)
+- Phase 6, release-safe data: EF Core migrations, and removing unused package references
+- Phase 7, mobile ready: mobile targets in CI (Android first), and a mobile UI/UX polish pass with an accessibility check
+- Phase 8, release and distribution: app identity, a privacy policy, a real-key check of Cub's chat, the signed Android build on Google Play, the Windows build on the Microsoft Store and as a download on GitHub, and the store listings
+- iOS follows after v1.0
 
-### Long Term (Phases 7 and 8)
+### Long Term (Phases 9 and 10)
 
 - User authentication and accounts
 - Cloud synchronization (Azure)

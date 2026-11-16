@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net10.0</TargetFramework>
+		<RootNamespace>BabyBuddyHelper.DesignTime</RootNamespace>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<IsPackable>false</IsPackable>
+	</PropertyGroup>
+
+	<!-- Host for `dotnet ef` only (#76): the MAUI app targets platform frameworks, and EF tooling doesn't run against it.
+	     Core/ is compiled in the same way as in the test project, so the migrations in Core/Persistence/Migrations come out
+	     of this project and are compiled by the app and the tests. Nothing references this project; it never ships. -->
+	<ItemGroup>
+		<Compile Include="../../Core/**/*.cs" Exclude="../../Core/Storage/SecureApiKeyStore.cs;../../Core/Storage/PreferencesCubPersonalityStore.cs" LinkBase="Core" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<!-- Keep in step with the app project: the linked Core/ code is compiled against these versions here -->
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="10.0.14" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.14">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+	</ItemGroup>
+
+</Project>

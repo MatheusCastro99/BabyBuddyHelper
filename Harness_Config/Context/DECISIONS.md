@@ -23,9 +23,12 @@ Status: Accepted, current.
 EF Core + SQLite implementation is active through `EfTrackerDbService`.
 
 Implementation notes:
-- Database lifecycle uses `EnsureCreated` (no EF migrations yet).
-- While the app is not live, schema changes may reset the local database.
-- Debug-only `ResetDatabaseOnStartup` in `Core/Persistence/EfTrackerDbService.cs` exists for one-run schema resets.
+- Database lifecycle uses EF Core migrations (amended in #76). `EfTrackerDbService` calls `Database.MigrateAsync` once, lazily, before the first operation. It creates an empty database from `InitialCreate` and upgrades an existing one in place, so a schema change no longer loses local data. Before #76 the lifecycle used `EnsureCreated`, which never alters an existing database.
+- A schema change comes with a generated migration in `Core/Persistence/Migrations`. A merged migration is never edited or deleted. `EnsureCreated` is never used next to `Migrate`.
+- The migrations are generated through `tools/BabyBuddyHelper.DesignTime`, a small project that compiles `Core/` and holds the design-time factory and `Microsoft.EntityFrameworkCore.Design`. Neither the app nor the test project references the Design package. The recipe is in `ARCHITECTURE_DESIGN.md`.
+- A database built by `EnsureCreated` has no migration history, and `Migrate` fails on it ("table already exists"). There is no baseline code: it is reset once (delete `babybuddy.db3`, or set `ResetDatabaseOnStartup` for one run), which is fine because no release exists yet.
+- Debug-only `ResetDatabaseOnStartup` in `Core/Persistence/EfTrackerDbService.cs` exists for one-run resets: the database is deleted, then migrated.
+- `MigrationTests` check that a fresh database applies every migration, that the model and the migration snapshot agree (`HasPendingModelChanges`), and that rows written at `InitialCreate` survive the upgrade to the latest migration.
 - Persistence operations use one short-lived `TrackerContext` per call through `IDbContextFactory<TrackerContext>`.
 
 Status: Accepted, current.
