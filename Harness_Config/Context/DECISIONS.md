@@ -228,6 +228,7 @@ Source code is grouped by layer, not by feature. Namespaces follow folders.
 - Inside `Core/Interfaces`, `Core/Models` and `Core/Services`, files sit in feature subfolders (`Baby`, `TaskList`, `Vaccine`, `Cub`); cross-feature files stay at the layer root.
 - `App`, `AppShell`, `MauiProgram`, `Platforms/`, `Properties/` and `Resources/` stay at the root, following MAUI conventions.
 - `test/` holds the automated tests, outside the app project (ADR-018).
+- `tools/` holds dev-only tooling that never ships and the app does not compile: `BabyBuddyHelper.DesignTime` (the `dotnet ef` host, ADR-002) and `cub/` (Cub's animation generator and preview).
 
 Reason:
 - The flat root folders were slowing navigation, and Phase 4 adds several new models, services and pages.
@@ -283,6 +284,7 @@ Rules:
 - Each test owns its database. Tests do not depend on each other or on run order, and never touch `babybuddy.db3`.
 - A stored-data test checks the cache and then checks again after a simulated restart.
 - Core code that needs a MAUI API is left out of the test project and named there (today: `SecureApiKeyStore` and `PreferencesCubPersonalityStore`).
+- The design-time project (`tools/BabyBuddyHelper.DesignTime`, ADR-002) links Core the same way and repeats that list. Keep the two lists in step: CI never builds the design-time project, so a miss shows up only at the next `dotnet ef`.
 - A change to Core/ behaviour comes with tests, and a bug fix in Core/ comes with a test that reproduces the bug. An exception is stated in the PR.
 - `Remote/` is covered the same way (#96): its sources are linked, and the network is replaced by a fake. No automated test calls a real provider or uses a real key (ADR-010). `UI/` is not covered.
 - CI runs the tests in Debug and in Release on every pull request ("xUnit Test Validation").
