@@ -303,6 +303,7 @@ BabyBuddyHelper/
 │       └── Remote/
 │
 ├── tools/
+│   ├── BabyBuddyHelper.DesignTime/
 │   └── cub/
 │       ├── generate_cub.py
 │       └── preview.html
