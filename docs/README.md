@@ -235,7 +235,8 @@ BabyBuddyHelper/
 │   │
 │   ├── Persistence/
 │   │   ├── TrackerContext.cs
-│   │   └── EfTrackerDbService.cs
+│   │   ├── EfTrackerDbService.cs
+│   │   └── Migrations/
 │   │
 │   ├── Collections/
 │   │   └── RangeObservableCollection.cs

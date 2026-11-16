@@ -111,7 +111,8 @@ BabyBuddyHelper/
 │   │   └── IApiKeyStore.cs - Contract for keeping the user's own AI provider key in the device's secure storage
 │   ├── Persistence/
 │   │   ├── TrackerContext.cs - EF Core SQLite database context
-│   │   └── EfTrackerDbService.cs - EF Core + SQLite implementation of ITrackerDbService
+│   │   ├── EfTrackerDbService.cs - EF Core + SQLite implementation of ITrackerDbService
+│   │   └── Migrations/ - Generated EF Core migrations and the model snapshot
 │   ├── Collections/
 │   │   └── RangeObservableCollection.cs - ObservableCollection that adds many items with one notification
 │   ├── Exceptions/

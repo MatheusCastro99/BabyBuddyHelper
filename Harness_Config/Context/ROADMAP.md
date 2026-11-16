@@ -67,7 +67,7 @@ Filters Update: CONCLUDED
 - `TaskListService`, `BabyProfileService` and `VaccineService` are the cache services backed by `ITrackerDbService`.
 - `EfTrackerDbService` is the active EF Core + SQLite implementation.
 - Database-first writes are complete: `EfTrackerDbService` commits first, `DbCommunicationException` reports database failures, and startup load failures alert the user so they can retry.
-- Debug-only `SimulateDbFailure` and `ResetDatabaseOnStartup` support development-time failure and schema-reset testing.
+- Debug-only `SimulateDbFailure` and `ResetDatabaseOnStartup` support development-time failure testing and one-run database resets.
 - Phase 3 is complete.
 
 ---
@@ -150,7 +150,7 @@ Filters Update: CONCLUDED
 	- Handles vaccination records for each baby profile
 - At most one vaccination record per baby per vaccine (unique (BabyId, VaccineId) index)
 - Deleting Baby Profile deletes all associated vaccination records (No orphaned records)
-- SQLite: entity mapping plus EF Core integration. Current strategy uses `EnsureCreated`; the new table reached existing databases through one debug reset run. Migrations are tracked in #76.
+- SQLite: entity mapping plus EF Core integration. The strategy then was `EnsureCreated`, and the new table reached existing databases through one debug reset run; EF Core migrations replaced it in #76 (ADR-002).
 
 > AddVaccineRecordPage: CONCLUDED
 

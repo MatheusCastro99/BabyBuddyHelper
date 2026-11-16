@@ -17,8 +17,9 @@ namespace BabyBuddyHelper.Core.Persistence
 #if DEBUG
         private enum SimulatedDbFailure { None, Load, Save }
 
-        //Set to true for one run after a schema change: EnsureCreated never alters an existing database. Set it back afterwards,
-        //or every launch starts from an empty database. static readonly rather than const, so the compiler doesn't flag dead code.
+        //Set to true for one run to start from an empty database: it is deleted, then migrated. Migrations upgrade a database in place,
+        //so this is only for a database no migration can upgrade (one built before migrations existed has no migration history).
+        //Set it back afterwards, or every launch starts from an empty database. static readonly rather than const, so the compiler doesn't flag dead code.
         private static readonly bool ResetDatabaseOnStartup = false;
 
         //Set for a run to exercise the failure handling. Load fails every read (the startup load), Save fails every write.
@@ -208,7 +209,7 @@ namespace BabyBuddyHelper.Core.Persistence
             return await _contextFactory.CreateDbContextAsync();
         }
 
-        //Creates the database on first use. Concurrent callers share the same run; a failed run is retried on the next call.
+        //Creates and migrates the database on first use. Concurrent callers share the same run; a failed run is retried on the next call.
         private Task EnsureDatabaseReadyAsync()
         {
             if (_databaseReadyTask is null || _databaseReadyTask.IsFaulted || _databaseReadyTask.IsCanceled)
@@ -231,8 +232,9 @@ namespace BabyBuddyHelper.Core.Persistence
             }
 #endif
 
-            bool created = await db.Database.EnsureCreatedAsync();
-            Debug.WriteLine($"Database {(created ? "created" : "opened")}: {db.Database.GetDbConnection().DataSource}");
+            //Creates the database and applies every migration not yet applied. Never call this inside an explicit transaction.
+            await db.Database.MigrateAsync();
+            Debug.WriteLine($"Database migrated: {db.Database.GetDbConnection().DataSource}");
         }
     }
 }
