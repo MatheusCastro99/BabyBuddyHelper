@@ -225,7 +225,7 @@ Never edit or delete a migration that is merged: add a new one. `dotnet ef migra
 
 - Cub is one generated Lottie file, `Resources/Raw/cub.json`, played through the shared `UI/Controls/CubView.cs`. `tools/cub/generate_cub.py` writes the file (run by hand, never by the build).
 - The frame table in `CubView` mirrors `SEGMENTS` in the script, so the two must change together.
-- `SkiaSharp.Extended.UI.Maui` targets .NET 9, so the csproj pins `Microsoft.Maui.Controls.Compatibility` 10.0.110 explicitly; without it the Windows build breaks. Drop the pin once the Lottie package ships a .NET 10 build.
+- `SkiaSharp.Extended.UI.Maui` targets .NET 9, so the csproj pins `Microsoft.Maui.Controls.Compatibility` explicitly (the csproj holds the current version); without it the Windows build breaks. Drop the pin once the Lottie package ships a .NET 10 build.
 
 ### Chat page
 

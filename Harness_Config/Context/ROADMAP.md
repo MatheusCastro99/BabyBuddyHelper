@@ -273,7 +273,7 @@ Epic: Issue #92. Sub-phases run in order, one issue and one PR each.
 
 > 6.2 Remove unused and stale package references (Issue #169):
 
-- Drop `Microsoft.Extensions.AI` (unused) and re-check the `Microsoft.Maui.Controls.Compatibility` pin
+- Drop `Microsoft.Extensions.AI` (unused) and re-check the `Microsoft.Maui.Controls.Compatibility` pin (done): the package is gone; the pin stays because `SkiaSharp.Extended.UI.Maui` still has no .NET 10 build (checked 2026-11-16)
 
 ---
 
