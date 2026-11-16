@@ -199,7 +199,7 @@ Details that the code doesn't explain on its own. Moved from the retired `AI_CON
 
 ### Schema changes: add a migration (ADR-002)
 
-A change to `TrackerContext` or to a persisted model comes with a migration, generated, never written by hand. From the repo root:
+A change to the EF model (the `TrackerContext` configuration, or a mapped property) comes with a migration, generated, never written by hand. Logic that isn't mapped needs none: `HasPendingModelChanges` (in `MigrationTests`) is the test. From the repo root:
 
 1. `dotnet tool restore` (once; the manifest in `.config/dotnet-tools.json` pins `dotnet-ef`).
 2. `dotnet ef migrations add <Name> --project tools/BabyBuddyHelper.DesignTime --startup-project tools/BabyBuddyHelper.DesignTime --output-dir ../../Core/Persistence/Migrations --namespace BabyBuddyHelper.Core.Persistence.Migrations`. Both project options are needed: the tool otherwise takes the app project, which it can't run against.
