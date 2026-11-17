@@ -231,6 +231,8 @@ Checklist items should be easy to scan, easy to complete, and visually calm.
 
 Edit and delete are 48x48 icon buttons with screen-reader labels. Deleting a task or appointment asks first.
 
+The filter row (two switches and the baby button) wraps instead of using fixed columns, so no switch draws over the next label at any width. On Windows the native switches and the completion checkbox are sized to 48x48.
+
 ---
 
 ### Calendar

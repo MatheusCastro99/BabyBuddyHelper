@@ -39,7 +39,18 @@ namespace BabyBuddyHelper
 
             Window window = new(new AppShell()) { TitleBar = titleBar };
             window.Created += OnWindowCreated;
+            window.ModalPushed += OnModalPushed;
             return window;
+        }
+
+        //Android: a modal opens in its own dialog window, which the status bar call at startup doesn't reach. The dispatch
+        //lets the dialog finish showing first. Other platforms do nothing.
+        private static void OnModalPushed(object? sender, ModalPushedEventArgs e)
+        {
+            if (e.Modal is Page modal)
+            {
+                modal.Dispatcher.Dispatch(PaletteService.ApplyModalStatusBar);
+            }
         }
 
         //Pages already exist at this point and fill in through CollectionChanged as the caches load.

@@ -16,6 +16,8 @@
         <Grid WidthRequest="48" HeightRequest="48">
             <Switch x:Name="PaletteToggle"
                     Opacity="0"
+                    WidthRequest="{OnPlatform Default=-1, WinUI=48}"
+                    HeightRequest="{OnPlatform Default=-1, WinUI=48}"
                     HorizontalOptions="Fill"
                     VerticalOptions="Fill"
                     SemanticProperties.Hint="Switches the app's colors between the boy and girl palettes" />

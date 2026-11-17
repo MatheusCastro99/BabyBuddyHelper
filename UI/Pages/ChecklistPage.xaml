@@ -23,14 +23,17 @@
         </VerticalStackLayout>
 
         <Border Grid.Row="1" Padding="14,10" StrokeThickness="0" BackgroundColor="{DynamicResource BabyBuddySurface}" MaximumWidthRequest="650">
-            <Grid ColumnDefinitions="*,Auto,*">
-                <HorizontalStackLayout Grid.Column="0" HorizontalOptions="Start" Spacing="8" VerticalOptions="Center">
+            <!--A wrapping row, not three columns: at 448 dp the star columns were narrower than the first switch, which then drew over the next label. Each item keeps its natural width and the row wraps below that-->
+            <FlexLayout Wrap="Wrap" JustifyContent="SpaceBetween" AlignItems="Center">
+                <HorizontalStackLayout Margin="0,0,12,0" Spacing="8" VerticalOptions="Center">
                     <Label Text="Pending first" VerticalOptions="Center" Style="{StaticResource BodyText}" />
                     <Grid WidthRequest="48" HeightRequest="48">
                         <Switch x:Name="PendingFirstSwitch"
                                 IsToggled="{Binding isPendingFirst}"
                                 Toggled="IsPendingFirstHandler"
                                 Opacity="0"
+                                WidthRequest="{OnPlatform Default=-1, WinUI=48}"
+                                HeightRequest="{OnPlatform Default=-1, WinUI=48}"
                                 HorizontalOptions="Fill"
                                 VerticalOptions="Fill" />
 
@@ -85,12 +88,14 @@
                     </Grid>
                 </HorizontalStackLayout>
 
-                <HorizontalStackLayout Grid.Column="1" HorizontalOptions="Start" Spacing="8" VerticalOptions="Center">
+                <HorizontalStackLayout Margin="0,0,12,0" Spacing="8" VerticalOptions="Center">
                     <Label Text="Upcoming first" VerticalOptions="Center" Style="{StaticResource BodyText}" />
                     <Grid WidthRequest="48" HeightRequest="48">
                         <Switch x:Name="DateOrderSwitch"
                                 Toggled="IsDateOrderHandler"
                                 Opacity="0"
+                                WidthRequest="{OnPlatform Default=-1, WinUI=48}"
+                                HeightRequest="{OnPlatform Default=-1, WinUI=48}"
                                 HorizontalOptions="Fill"
                                 VerticalOptions="Fill" />
 
@@ -146,12 +151,10 @@
                 </HorizontalStackLayout>
 
                 <Button x:Name="ChecklistBabyFilterButton"
-                        Grid.Column="2"
                         Text="All babies"
                         Style="{StaticResource SecondaryAction}"
-                        HorizontalOptions="End"
                         Clicked="OnChecklistBabyFilterClicked"/>
-            </Grid>
+            </FlexLayout>
         </Border>
 
         <CollectionView Grid.Row="2" ItemsSource="{Binding TaskList}" SelectionMode="Single" MaximumWidthRequest="750" Margin="0,0,0,0">
@@ -178,7 +181,7 @@
 
                                     <!--No column spacing: each icon button's 13px padding already spaces the icons apart-->
                                     <Grid Grid.Column="1" ColumnDefinitions="Auto, Auto, Auto" ColumnSpacing="0" VerticalOptions="Center">
-                                        <CheckBox IsChecked="{Binding IsCompleted, Mode=OneWay}" CheckedChanged="OnTaskCompletedChanged" HorizontalOptions="End" VerticalOptions="Center" Grid.Column="0" />
+                                        <CheckBox IsChecked="{Binding IsCompleted, Mode=OneWay}" CheckedChanged="OnTaskCompletedChanged" HorizontalOptions="End" VerticalOptions="Center" Grid.Column="0" WidthRequest="{OnPlatform Default=-1, WinUI=48}" HeightRequest="{OnPlatform Default=-1, WinUI=48}" />
 
                                         <!--Same icon buttons as the vaccine rows on BabyProfilePage: keyboard and screen-reader reachable, drawn in a mid-tone of the current palette so they keep 3:1 against the card.
                                             48x48 touch area around an ~18px icon-->
