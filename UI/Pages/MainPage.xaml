@@ -18,11 +18,17 @@
         <ScrollView>
             <VerticalStackLayout Padding="20" Spacing="18">
                 <Border BackgroundColor="{DynamicResource BabyBuddySurface}" StrokeThickness="0" Padding="20" Margin="0,8,0,0">
-                    <VerticalStackLayout Spacing="8">
-                        <Label Text="Good morning" Style="{StaticResource BodyText}" FontAttributes="Bold" />
-                        <Label Text="{Binding CountdownText}" Style="{StaticResource PageTitle}" />
-                        <Label Text="Your little routine is looking calm and steady today." Style="{StaticResource BodyText}" />
-                    </VerticalStackLayout>
+                    <!--The palette switch sits at the top right, beside the greeting line only, so the title and the sentence below keep the full width.
+                        Windows keeps it on the tab row footer instead (ShellTabBarFooter)-->
+                    <Grid ColumnDefinitions="*,Auto" RowDefinitions="Auto,Auto,Auto" RowSpacing="8">
+                        <Label Grid.Row="0" Text="Good morning" Style="{StaticResource BodyText}" FontAttributes="Bold" VerticalOptions="Center" />
+                        <controls:PaletteSwitchView Grid.Row="0" Grid.Column="1"
+                                                    Padding="0"
+                                                    HorizontalOptions="End"
+                                                    IsVisible="{OnPlatform Default=True, WinUI=False}" />
+                        <Label Grid.Row="1" Grid.ColumnSpan="2" Text="{Binding CountdownText}" Style="{StaticResource PageTitle}" />
+                        <Label Grid.Row="2" Grid.ColumnSpan="2" Text="Your little routine is looking calm and steady today." Style="{StaticResource BodyText}" />
+                    </Grid>
                 </Border>
 
                 <Grid ColumnDefinitions="*,*,*" ColumnSpacing="14">

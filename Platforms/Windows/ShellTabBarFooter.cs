@@ -8,6 +8,7 @@ namespace BabyBuddyHelper.WinUI
     /// <summary>
     /// Puts the palette switch on the Shell tab row, in line with the tabs and at the far right.
     /// Shell has no slot for this, so it goes into the footer of the native NavigationView that draws the tabs.
+    /// Windows only: the other platforms show the switch on the Home greeting card, and Home hides its own on WinUI.
     /// </summary>
     public static class ShellTabBarFooter
     {

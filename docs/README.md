@@ -81,7 +81,7 @@ The current experience already includes an animated companion character (Cub wav
 ### Dual UI Mode
 
 - Boy and girl color palettes in place of a light / dark mode
-- Palette switch on the tab row (Windows; mobile placement is planned in Phase 7 (Issue #175))
+- Palette switch: on the tab row on Windows, at the top right of the Home card on Android
 - The choice is saved on the device and applied at startup
 
 ### Data & Reliability

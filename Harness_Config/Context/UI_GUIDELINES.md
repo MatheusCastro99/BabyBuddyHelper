@@ -211,6 +211,8 @@ Should answer:
 
 The dashboard should feel supportive and informative, not overloaded.
 
+On Android the greeting card carries the boy / girl palette switch at its top right, beside the greeting line; on Windows the switch stays on the tab row. The dashboard refreshes when the app comes back from the background, so the countdown, the week count, the ages and the vaccine tags are never a day stale.
+
 Each baby card can carry one gentle vaccine tag under the age: "Due today: {vaccine}" or "Due soon: {vaccine}". Due today wins over due soon. For several vaccines the tag reads "{label}: N vaccines · check baby profile". Overdue never shows on the dashboard (it stays a gentle reminder on the profile). The tag is spelled out in words, never color alone, and uses the soft blue DueTag style with no alarm styling.
 
 ---
