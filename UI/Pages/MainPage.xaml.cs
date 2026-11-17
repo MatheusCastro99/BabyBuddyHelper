@@ -34,9 +34,9 @@ namespace BabyBuddyHelper.UI.Pages
         public bool HasNoBabyProfiles => !HasBabyProfiles;
         public string ProfileCountText => BabyProfiles.Count switch
         {
-            0 => "No profiles yet",
-            1 => "1 little profile",
-            _ => $"{BabyProfiles.Count} little profiles"
+            0 => "None yet",
+            1 => "1 baby",
+            _ => $"{BabyProfiles.Count} babies"
         };
 
         //Each baby's vaccine tag, only for babies with something due; the cards look theirs up through VaccineTagConverter
@@ -44,9 +44,9 @@ namespace BabyBuddyHelper.UI.Pages
 
         public string WeeklyAppointmentText => CountAppointmentsThisWeek() switch
         {
-            0 => "Nothing scheduled",
-            1 => "1 appointment",
-            var count => $"{count} appointments"
+            0 => "Nothing planned",
+            1 => "1 planned",
+            var count => $"{count} planned"
         };
 
         public string CompletedTaskText => _taskListService.Tasks.Count(task => task.IsCompleted) switch

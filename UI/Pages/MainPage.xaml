@@ -26,7 +26,8 @@
                                                     Padding="0"
                                                     HorizontalOptions="End"
                                                     IsVisible="{OnPlatform Default=True, WinUI=False}" />
-                        <Label Grid.Row="1" Grid.ColumnSpan="2" Text="{Binding CountdownText}" Style="{StaticResource PageTitle}" />
+                        <!--Wraps instead of truncating: the PageTitle style cut the headline off at phone width-->
+                        <Label Grid.Row="1" Grid.ColumnSpan="2" Text="{Binding CountdownText}" Style="{StaticResource PageTitle}" LineBreakMode="WordWrap" />
                         <Label Grid.Row="2" Grid.ColumnSpan="2" Text="Your little routine is looking calm and steady today." Style="{StaticResource BodyText}" />
                     </Grid>
                 </Border>
@@ -37,7 +38,7 @@
                             <Border BackgroundColor="{DynamicResource BabyBuddySecondary}" StrokeThickness="0" Padding="8,6" HorizontalOptions="Center" StrokeShape="RoundRectangle 12">
                                 <Label Text="🗓️" FontSize="22" HorizontalOptions="Center" />
                             </Border>
-                            <Label Text="This Week" Style="{StaticResource SectionTitle}" HorizontalTextAlignment="Center" />
+                            <Label Text="Week" Style="{StaticResource SectionTitle}" HorizontalTextAlignment="Center" />
                             <Label Text="{Binding WeeklyAppointmentText}" Style="{StaticResource BodyText}" HorizontalTextAlignment="Center" />
                         </VerticalStackLayout>
                     </Border>
@@ -47,7 +48,7 @@
                             <Border BackgroundColor="{DynamicResource BabyBuddySuccess}" StrokeThickness="0" Padding="8,6" HorizontalOptions="Center" StrokeShape="RoundRectangle 12">
                                 <Label Text="✅" FontSize="22" HorizontalOptions="Center" />
                             </Border>
-                            <Label Text="Checklist" Style="{StaticResource SectionTitle}" HorizontalTextAlignment="Center" />
+                            <Label Text="Tasks" Style="{StaticResource SectionTitle}" HorizontalTextAlignment="Center" />
                             <Label Text="{Binding CompletedTaskText}" Style="{StaticResource BodyText}" HorizontalTextAlignment="Center" />
                         </VerticalStackLayout>
                     </Border>
@@ -57,7 +58,7 @@
                             <Border BackgroundColor="{DynamicResource BabyBuddyWarm}" StrokeThickness="0" Padding="8,6" HorizontalOptions="Center" StrokeShape="RoundRectangle 12">
                                 <Label Text="🧸" FontSize="22" HorizontalOptions="Center" />
                             </Border>
-                            <Label Text="Profiles" Style="{StaticResource SectionTitle}" HorizontalTextAlignment="Center" />
+                            <Label Text="Babies" Style="{StaticResource SectionTitle}" HorizontalTextAlignment="Center" />
                             <Label Text="{Binding ProfileCountText}" Style="{StaticResource BodyText}" HorizontalTextAlignment="Center" />
                         </VerticalStackLayout>
                     </Border>

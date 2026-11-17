@@ -15,7 +15,7 @@
             screen-reader label, with a 48x48 touch area-->
         <Grid WidthRequest="{OnPlatform Default=48, WinUI=49}" HeightRequest="{OnPlatform Default=48, WinUI=49}">
             <Switch x:Name="PaletteToggle"
-                    Opacity="0"
+                    Opacity="{OnPlatform Android=0.01, Default=0}"
                     HorizontalOptions="Fill"
                     VerticalOptions="Fill"
                     SemanticProperties.Hint="Switches the app's colors between the boy and girl palettes" />

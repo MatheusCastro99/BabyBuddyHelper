@@ -46,7 +46,7 @@ The current experience already includes an animated companion character (Cub wav
 - Integrated Syncfusion Scheduler
 - Week calendar view
 - Visual appointment scheduling
-- Double-click appointment editing
+- Double-click appointment editing (a single tap on Android)
 - Create appointments directly from empty calendar cells
 - Real-time calendar refresh when tasks change
 

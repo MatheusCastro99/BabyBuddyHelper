@@ -82,24 +82,38 @@ public partial class CalendarPage : ContentPage
         CalendarBabyFilterButton.Text = label;
     }
 
+    //On a phone a single tap on an appointment opens its editor: a double tap is hard to land on a 46 dp wide block and nothing
+    //on screen says to try it. Elsewhere the double tap stays the only way, so a stray click does not open the editor.
+    private async void OnCalendarTapped(object? sender, SchedulerTappedEventArgs e)
+    {
+        if (DeviceInfo.Platform != DevicePlatform.Android || !e.Element.ToString().Equals("Appointment")) return;
+
+        await EditTappedAppointment(e.Appointments);
+    }
+
     private async void OnCalendarDoubleTapped(object? sender, SchedulerDoubleTappedEventArgs e)
     {
         if (e.Element.ToString().Equals("Appointment")) //Editing an existing appointment through Calendar
         {
-            var schedulerAppointment = e.Appointments.FirstOrDefault() as SchedulerAppointment;
-            if (schedulerAppointment is null) return;
-
-            var appointmentToEdit = _taskListService.GetAppointments()
-                .FirstOrDefault(appt => appt.Id.Equals(schedulerAppointment.Id)); //Retrieve first appointment from TaskListService that
-                                                                                  //matches the Id of the tapped SchedulerAppointment
-            if (appointmentToEdit != null)
-            {
-                await EditAppointment(appointmentToEdit);
-            }
+            await EditTappedAppointment(e.Appointments);
         }
         else                                            //Creating a new appointment through Calendar
         {
             await AddNewAppointment(e.Date);
+        }
+    }
+
+    private async Task EditTappedAppointment(IEnumerable<object>? tappedAppointments)
+    {
+        var schedulerAppointment = tappedAppointments?.FirstOrDefault() as SchedulerAppointment;
+        if (schedulerAppointment is null) return;
+
+        var appointmentToEdit = _taskListService.GetAppointments()
+            .FirstOrDefault(appt => appt.Id.Equals(schedulerAppointment.Id)); //Retrieve first appointment from TaskListService that
+                                                                              //matches the Id of the tapped SchedulerAppointment
+        if (appointmentToEdit != null)
+        {
+            await EditAppointment(appointmentToEdit);
         }
     }
 
