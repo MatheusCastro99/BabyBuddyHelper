@@ -119,7 +119,7 @@
 		<PackageReference Include="CommunityToolkit.Maui" Version="15.0.1" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="10.0.14" />
 		<PackageReference Include="Microsoft.Maui.Controls" Version="10.0.130" />
-		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="10.0.14" />
+		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="11.0.0" />
 		<!-- SkiaSharp.Extended.UI.Maui 3.0.0 targets .NET 9 and pulls in the 9.x Compatibility package, which breaks the Windows build.
 		     This reference lifts it to the MAUI 10 version; drop it once the Lottie package ships a .NET 10 build.
 		     Re-checked 2026-11-16: 3.0.0 and 3.1.0-preview.3 still target .NET 9 (Compatibility 9.0.82). Dependabot bumps edit this line. -->
