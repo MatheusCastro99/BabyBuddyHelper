@@ -231,8 +231,6 @@ Checklist items should be easy to scan, easy to complete, and visually calm.
 
 Edit and delete are 48x48 icon buttons with screen-reader labels. Deleting a task or appointment asks first.
 
-In landscape on a phone, where height is short, Add task moves up beside the title, the subtitle is hidden and the spacing tightens, so the list keeps its room. Portrait, and desktop windows, keep the title, filters, list and Add task at the bottom.
-
 ---
 
 ### Calendar

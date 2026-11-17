@@ -16,48 +16,13 @@
         </ResourceDictionary>
     </ContentPage.Resources>
 
-    <!--The base layout is portrait: the title, the filters, the list and Add task as the last row, all across both columns.
-        In landscape on a phone there is little height, so Add task moves up beside the title, the subtitle goes and the spacing tightens,
-        which leaves the room to the list. The landscape state is switched off on desktop (WinUI and Mac Catalyst), where a wide window
-        is not a short one and keeps the portrait layout. Leaving the state puts every value back (VisualStateManager)-->
-    <Grid x:Name="ChecklistGrid" ColumnDefinitions="*,Auto" ColumnSpacing="0" RowDefinitions="Auto, Auto, *, Auto" Padding="20" RowSpacing="16">
-        <VisualStateManager.VisualStateGroups>
-            <VisualStateGroupList>
-                <VisualStateGroup x:Name="OrientationStates">
-                    <VisualState x:Name="Portrait">
-                        <VisualState.StateTriggers>
-                            <OrientationStateTrigger Orientation="Portrait" />
-                        </VisualState.StateTriggers>
-                    </VisualState>
-                    <VisualState x:Name="Landscape">
-                        <VisualState.StateTriggers>
-                            <OrientationStateTrigger Orientation="{OnPlatform Default=Landscape, WinUI=Unknown, MacCatalyst=Unknown}" />
-                        </VisualState.StateTriggers>
-                        <VisualState.Setters>
-                            <Setter TargetName="ChecklistGrid" Property="RowDefinitions" Value="Auto, Auto, *" />
-                            <Setter TargetName="ChecklistGrid" Property="ColumnSpacing" Value="16" />
-                            <Setter TargetName="ChecklistGrid" Property="RowSpacing" Value="8" />
-                            <Setter TargetName="ChecklistGrid" Property="Padding" Value="20,8" />
-                            <Setter TargetName="ChecklistTitleBlock" Property="Grid.ColumnSpan" Value="1" />
-                            <Setter TargetName="ChecklistTitleBlock" Property="Margin" Value="0" />
-                            <Setter TargetName="ChecklistSubtitle" Property="IsVisible" Value="False" />
-                            <Setter TargetName="AddTaskBar" Property="Grid.Row" Value="0" />
-                            <Setter TargetName="AddTaskBar" Property="Grid.Column" Value="1" />
-                            <Setter TargetName="AddTaskBar" Property="Grid.ColumnSpan" Value="1" />
-                            <Setter TargetName="AddTaskBar" Property="Padding" Value="0" />
-                            <Setter TargetName="AddTaskBar" Property="VerticalOptions" Value="Center" />
-                        </VisualState.Setters>
-                    </VisualState>
-                </VisualStateGroup>
-            </VisualStateGroupList>
-        </VisualStateManager.VisualStateGroups>
-
-        <VerticalStackLayout x:Name="ChecklistTitleBlock" Grid.Row="0" Grid.ColumnSpan="2" Spacing="6" Margin="0,8,0,0">
+    <Grid RowDefinitions="Auto, Auto, *, Auto" Padding="20" RowSpacing="16">
+        <VerticalStackLayout Grid.Row="0" Spacing="6" Margin="0,8,0,0">
             <Label Text="Today's rhythm" Style="{StaticResource PageTitle}" HorizontalTextAlignment="Center" />
-            <Label x:Name="ChecklistSubtitle" Text="Small steps, steady care." Style="{StaticResource BodyText}" HorizontalTextAlignment="Center" />
+            <Label Text="Small steps, steady care." Style="{StaticResource BodyText}" HorizontalTextAlignment="Center" />
         </VerticalStackLayout>
 
-        <Border Grid.Row="1" Grid.ColumnSpan="2" Padding="14,10" StrokeThickness="0" BackgroundColor="{DynamicResource BabyBuddySurface}" MaximumWidthRequest="650">
+        <Border Grid.Row="1" Padding="14,10" StrokeThickness="0" BackgroundColor="{DynamicResource BabyBuddySurface}" MaximumWidthRequest="650">
             <Grid ColumnDefinitions="*,Auto,*">
                 <HorizontalStackLayout Grid.Column="0" HorizontalOptions="Start" Spacing="8" VerticalOptions="Center">
                     <Label Text="Pending first" VerticalOptions="Center" Style="{StaticResource BodyText}" />
@@ -189,7 +154,7 @@
             </Grid>
         </Border>
 
-        <CollectionView Grid.Row="2" Grid.ColumnSpan="2" ItemsSource="{Binding TaskList}" SelectionMode="Single" MaximumWidthRequest="750" Margin="0,0,0,0">
+        <CollectionView Grid.Row="2" ItemsSource="{Binding TaskList}" SelectionMode="Single" MaximumWidthRequest="750" Margin="0,0,0,0">
             <CollectionView.ItemTemplate>
                 <DataTemplate>
                     <Grid>
@@ -261,7 +226,7 @@
             </CollectionView.ItemTemplate>
         </CollectionView>
 
-        <FlexLayout x:Name="AddTaskBar" Grid.Row="3" Grid.ColumnSpan="2" JustifyContent="Center" Padding="0,10,0,0" MaximumWidthRequest="450">
+        <FlexLayout Grid.Row="3" JustifyContent="Center" Padding="0,10,0,0" MaximumWidthRequest="450">
             <Button
                 x:Name="AddTaskBtn"
                 Text="Add task"
@@ -271,6 +236,6 @@
                 HorizontalOptions="Center" />
         </FlexLayout>
 
-        <controls:ToastView Grid.RowSpan="4" Grid.ColumnSpan="2" />
+        <controls:ToastView Grid.RowSpan="4" />
     </Grid>
 </ContentPage>
