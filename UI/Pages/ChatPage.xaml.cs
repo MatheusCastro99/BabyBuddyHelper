@@ -117,11 +117,20 @@ public partial class ChatPage : ContentPage
             return;
         }
 
-        double lineWidth = CubName.Measure(double.PositiveInfinity, double.PositiveInfinity).Width
-            + TalkingAboutLabel.Measure(double.PositiveInfinity, double.PositiveInfinity).Width
-            + BabyPicker.Measure(double.PositiveInfinity, double.PositiveInfinity).Width
-            + 2 * CubHeading.ColumnSpacing;
+        //The picker is measured at its natural width, so a cap from an earlier layout can't make a longer name look like it fits
+        BabyPicker.MaximumWidthRequest = double.PositiveInfinity;
+
+        double nameWidth = CubName.Measure(double.PositiveInfinity, double.PositiveInfinity).Width;
+        double labelWidth = TalkingAboutLabel.Measure(double.PositiveInfinity, double.PositiveInfinity).Width;
+        double pickerWidth = BabyPicker.Measure(double.PositiveInfinity, double.PositiveInfinity).Width;
+        double lineWidth = nameWidth + labelWidth + pickerWidth + 2 * CubHeading.ColumnSpacing;
         bool fits = lineWidth <= CubHeading.Width;
+
+        //The picker never gets more than the room it has: the whole heading width on its own line, what is left beside the label
+        //inline. A long baby name is cut short inside the picker instead of running past the card, so it never clips
+        BabyPicker.MaximumWidthRequest = fits
+            ? Math.Max(0, CubHeading.Width - nameWidth - labelWidth - 2 * CubHeading.ColumnSpacing)
+            : CubHeading.Width;
 
         Grid.SetRow(BabyPicker, fits ? 0 : 1);
         Grid.SetColumn(BabyPicker, fits ? 2 : 0);

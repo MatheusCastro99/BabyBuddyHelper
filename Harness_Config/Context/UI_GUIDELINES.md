@@ -211,6 +211,8 @@ Should answer:
 
 The dashboard should feel supportive and informative, not overloaded.
 
+On Android the greeting card carries the boy / girl palette switch at its top right, beside the greeting line; on Windows the switch stays on the tab row. The dashboard refreshes when the app comes back from the background, so the countdown, the week count, the ages and the vaccine tags are never a day stale.
+
 Each baby card can carry one gentle vaccine tag under the age: "Due today: {vaccine}" or "Due soon: {vaccine}". Due today wins over due soon. For several vaccines the tag reads "{label}: N vaccines · check baby profile". Overdue never shows on the dashboard (it stays a gentle reminder on the profile). The tag is spelled out in words, never color alone, and uses the soft blue DueTag style with no alarm styling.
 
 ---
@@ -227,7 +229,9 @@ Should answer:
 
 Checklist items should be easy to scan, easy to complete, and visually calm.
 
-Edit and delete are 44x44 icon buttons with screen-reader labels. Deleting a task or appointment asks first.
+Edit and delete are 48x48 icon buttons with screen-reader labels. Deleting a task or appointment asks first.
+
+The filter row (two switches and the baby button) wraps instead of using fixed columns, so no switch draws over the next label at any width. On Windows the native switches and the completion checkbox are sized to 48x48.
 
 ---
 
@@ -277,7 +281,7 @@ Should answer:
 
 With no key saved, the page shows a gentle setup state, never an error. The chat looks like the rest of the app (cards, Cub, warm copy), not an AI console.
 
-Cub's card reads "Cub – is talking about: [picker]" over its tagline, "Here for everyday tips and a kind word." The picker offers "General advice" (the default) or one baby by name, and its screen-reader text is "Which baby Cub can know about". When that first line doesn't fit (a phone), the picker moves onto its own line under it. Without a key there is nothing to pick, so the first line is just "Cub". The parent's messages are on the right (BabyBuddySecondary, RoundRectangle 18,18,18,6) and Cub's replies on the left (BabyBuddySurface, RoundRectangle 18,18,6,18), both in PrimaryDarkText, with 16 of space between messages; screen readers hear "You said: …" and "Cub said: …". While a reply is on its way, "Cub is thinking…" shows on the left and Send waits.
+Cub's card reads "Cub – is talking about: [picker]" over its tagline, "Here for everyday tips and a kind word." The picker offers "General advice" (the default) or one baby by name, and its screen-reader text is "Which baby Cub can know about". When that first line doesn't fit (a phone), the picker moves onto its own line under it, and a name longer than the line is cut short inside the picker instead of running past the card. Without a key there is nothing to pick, so the first line is just "Cub". The parent's messages are on the right (BabyBuddySecondary, RoundRectangle 18,18,18,6) and Cub's replies on the left (BabyBuddySurface, RoundRectangle 18,18,6,18), both in PrimaryDarkText, with 16 of space between messages; screen readers hear "You said: …" and "Cub said: …". While a reply is on its way, "Cub is thinking…" shows on the left and Send waits.
 
 When Cub can't answer, one neutral line takes the thinking line's place: "Cub couldn't answer just now. Check your connection and key, then try again." It is not an alert and not in Cub's voice (ADR-013), and the rest of the app keeps working. When every reply Cub wrote failed the checks (ADR-020), the same kind of line says "Cub couldn't find a good answer to that. Try asking another way."
 

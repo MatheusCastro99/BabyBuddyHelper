@@ -208,7 +208,7 @@ Epic: Issue #92. Sub-phases run in order, one issue and one PR each.
 - Instead of regular light / dark mode, the app features a boy / girl palette; the app stays pinned to the light theme
 - Two palette dictionaries with identical keys: `BoyPalette` (the previous look, the default) and `GirlPalette` (soft pink, rose and plum); `Colors.xaml` keeps the shared neutrals
 - `PaletteStyle` enum (Boy, Girl) and `PaletteService` swap the palette at runtime; the choice is saved in Preferences, with no database change
-- A switch on the tab row (Off = Boy / On = Girl) with a boy and a girl symbol icon, on Windows. Mobile placement is part of Issue #72; the saved palette applies on every platform
+- A switch on the tab row (Off = Boy / On = Girl) with a boy and a girl symbol icon, on Windows, and at the top right of the Home greeting card on Android (#175). The saved palette applies on every platform
 - Buttons use the firmer `PrimaryDark` fill so white text reaches 4.5:1; the edit and trash icons have one SVG per palette
 
 > 5.2 Companion animations (Issue #94): CONCLUDED

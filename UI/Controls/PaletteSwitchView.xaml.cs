@@ -3,8 +3,9 @@ using BabyBuddyHelper.UI.Services;
 namespace BabyBuddyHelper.UI.Controls
 {
     /// <summary>
-    /// Switches the app between the boy and girl palettes (off = boy, on = girl). It sits on the Shell tab row,
-    /// at the far right, so it is reachable from every tab without living on any page.
+    /// Switches the app between the boy and girl palettes (off = boy, on = girl). On Windows it sits on the Shell
+    /// tab row, at the far right, so it is reachable from every tab (ShellTabBarFooter). On Android and the other
+    /// platforms, which have no such slot, it sits at the top right of the Home greeting card.
     /// </summary>
     public partial class PaletteSwitchView : ContentView
     {

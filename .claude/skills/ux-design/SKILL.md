@@ -34,7 +34,7 @@ You can't see the running app. Base findings on the XAML and say what the owner 
 
 **Accessibility.** This is never traded for looks.
 - Text contrast is at least 4.5:1 (3:1 for large text).
-- Touch targets are at least 44×44 (iOS) and 48×48 dp (Android).
+- Touch targets are at least 48×48 on every platform (the project uses Android's 48 dp everywhere; iOS asks for 44×44).
 - Interactive elements carry `SemanticProperties.Description` or `Hint` where the visual isn't self-explanatory.
 - State is never shown by color alone, e.g. completion and priority.
 
