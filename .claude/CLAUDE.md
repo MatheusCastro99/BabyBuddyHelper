@@ -28,7 +28,7 @@ Docs are read when the work needs them, never all up front.
 
 Run project checks through the runner, never by hand: `node .claude/scripts/check.cjs <fast|full|id>`. It keeps the real exit code and trims the output. Check IDs are in `.claude/harness.json`.
 
-- Build the Windows app (optional; CI's `windows-build` check is the gate): `dotnet build BabyBuddyHelper.csproj -f net10.0-windows10.0.19041.0`. With a target framework, always name the project.
+- Build the Windows app (optional; CI's `windows-build` and `android-build` checks are the gate): `dotnet build BabyBuddyHelper.csproj -f net10.0-windows10.0.19041.0`. With a target framework, always name the project.
 - Schema change: add a migration through `tools/BabyBuddyHelper.DesignTime`; the steps are in `ARCHITECTURE_DESIGN.md` › Schema changes (ADR-002).
 
 ## Workflow
