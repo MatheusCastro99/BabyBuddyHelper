@@ -24,6 +24,7 @@ namespace BabyBuddyHelper.UI.Pages
         private readonly IBabyFilterService _babyFilterService;
         private DateTime currentDate;
         private bool _isNavigating;
+        private Window? _resumedWindow;
 
         public int MonthsUntilDue { get; private set; }
         public int DaysUntilDue { get; private set; }
@@ -86,6 +87,7 @@ namespace BabyBuddyHelper.UI.Pages
             //TaskListService.SetCompletionAsync updates the cached task in place without raising CollectionChanged,
             //so returning to this tab is what brings the completion count back in sync.
             RefreshDashboardState();
+            HookWindowResumed();
 
             _ = Companion.GreetAsync();
         }
@@ -96,6 +98,26 @@ namespace BabyBuddyHelper.UI.Pages
 
             Companion.StopGreeting();
         }
+
+        //The tab stays alive while the app is in the background, so a day change (or the due date passing) while away
+        //is only noticed when the app comes back. The page hooks its own window, once, as soon as it has one.
+        private void HookWindowResumed()
+        {
+            if (Window is null || ReferenceEquals(Window, _resumedWindow))
+            {
+                return;
+            }
+
+            if (_resumedWindow is not null)
+            {
+                _resumedWindow.Resumed -= OnWindowResumed;
+            }
+
+            _resumedWindow = Window;
+            _resumedWindow.Resumed += OnWindowResumed;
+        }
+
+        private void OnWindowResumed(object? sender, EventArgs e) => MainThread.BeginInvokeOnMainThread(RefreshDashboardState);
 
         private int CountAppointmentsThisWeek()
         {
@@ -228,8 +250,15 @@ namespace BabyBuddyHelper.UI.Pages
 
         private void RefreshDashboardState()
         {
+            HandleCounter(); //Recomputes against today's date: the countdown only changes when the date does
             VaccineTagsByBabyId = BuildVaccineTags();
 
+            //BabyModel has no change notification, so raising BabyProfiles (the same instance) wouldn't redraw a card's age or tag.
+            //Assigning the source again does; it replaces the binding, which only ever pointed at this collection.
+            BabyList.ItemsSource = null;
+            BabyList.ItemsSource = BabyProfiles;
+
+            OnPropertyChanged(nameof(CountdownText));
             OnPropertyChanged(nameof(VaccineTagsByBabyId));
             OnPropertyChanged(nameof(BabyProfiles));
             OnPropertyChanged(nameof(HasBabyProfiles));

@@ -83,7 +83,8 @@
                                    Style="{StaticResource BodyText}" />
                         </Border>
 
-                        <CollectionView ItemsSource="{Binding BabyProfiles}"
+                        <CollectionView x:Name="BabyList"
+                                        ItemsSource="{Binding BabyProfiles}"
                                         IsVisible="{Binding HasBabyProfiles}"
                                         SelectionMode="None">
                             <CollectionView.ItemTemplate>
