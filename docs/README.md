@@ -285,7 +285,8 @@ BabyBuddyHelper/
 │
 ├── Platforms/
 │   └── Windows/
-│       └── ShellTabBarFooter.cs
+│       ├── ShellTabBarFooter.cs
+│       └── WinUITapTargets.cs
 ├── Resources/
 │   ├── Raw/
 │   │   └── cub.json

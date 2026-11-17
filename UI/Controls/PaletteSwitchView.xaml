@@ -13,11 +13,9 @@
 
         <!--Same drawn switch as the checklist filters: the real Switch is invisible and takes the input, focus and
             screen-reader label, with a 48x48 touch area-->
-        <Grid WidthRequest="48" HeightRequest="48">
+        <Grid WidthRequest="{OnPlatform Default=48, WinUI=49}" HeightRequest="{OnPlatform Default=48, WinUI=49}">
             <Switch x:Name="PaletteToggle"
                     Opacity="0"
-                    WidthRequest="{OnPlatform Default=-1, WinUI=48}"
-                    HeightRequest="{OnPlatform Default=-1, WinUI=48}"
                     HorizontalOptions="Fill"
                     VerticalOptions="Fill"
                     SemanticProperties.Hint="Switches the app's colors between the boy and girl palettes" />
