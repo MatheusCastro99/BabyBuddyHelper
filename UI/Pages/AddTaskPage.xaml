@@ -42,7 +42,7 @@
                     <StackLayout IsVisible="{Binding Source={x:Reference IsAppointmentCheckBox}, Path=IsChecked}" Spacing="12" Margin="0,8,0,0">
                         <Label Text="Date" Style="{StaticResource SectionTitle}" />
                         <Border BackgroundColor="{DynamicResource BabyBuddySurfaceAlt}" Stroke="{DynamicResource BabyBuddyBorder}" StrokeShape="RoundRectangle 12" Padding="10,8">
-                            <DatePicker x:Name="DateEntry" MinimumDate="01/01/2025" HeightRequest="44" BackgroundColor="{DynamicResource BabyBuddySurface}" TextColor="{DynamicResource BabyBuddyText}" />
+                            <DatePicker x:Name="DateEntry" MinimumDate="01/01/2025" HeightRequest="48" BackgroundColor="{DynamicResource BabyBuddySurface}" TextColor="{DynamicResource BabyBuddyText}" />
                         </Border>
 
                         <Grid ColumnDefinitions="*,*" ColumnSpacing="12" RowDefinitions="Auto,Auto" RowSpacing="6">
@@ -50,10 +50,10 @@
                             <Label Grid.Row="0" Grid.Column="1" Text="End" Style="{StaticResource BodyText}" HorizontalTextAlignment="Center" />
 
                             <Border Grid.Row="1" Grid.Column="0" BackgroundColor="{DynamicResource BabyBuddySurfaceAlt}" Stroke="{DynamicResource BabyBuddyBorder}" StrokeShape="RoundRectangle 12" Padding="10,8">
-                                <TimePicker x:Name="StartingTimeEntry" HeightRequest="44" HorizontalOptions="Center" BackgroundColor="Transparent" TextColor="{DynamicResource BabyBuddyText}" />
+                                <TimePicker x:Name="StartingTimeEntry" HeightRequest="48" HorizontalOptions="Center" BackgroundColor="Transparent" TextColor="{DynamicResource BabyBuddyText}" />
                             </Border>
                             <Border Grid.Row="1" Grid.Column="1" BackgroundColor="{DynamicResource BabyBuddySurfaceAlt}" Stroke="{DynamicResource BabyBuddyBorder}" StrokeShape="RoundRectangle 12" Padding="10,8">
-                                <TimePicker x:Name="EndingTimeEntry" HeightRequest="44" HorizontalOptions="Center" BackgroundColor="Transparent" TextColor="{DynamicResource BabyBuddyText}" />
+                                <TimePicker x:Name="EndingTimeEntry" HeightRequest="48" HorizontalOptions="Center" BackgroundColor="Transparent" TextColor="{DynamicResource BabyBuddyText}" />
                             </Border>
                         </Grid>
 

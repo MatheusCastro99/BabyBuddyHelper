@@ -80,7 +80,7 @@
         <Setter Property="FontSize" Value="12"/>
     </Style>
 
-    <!--The minus and plus buttons of a number counter (e.g. dose counts). 44x44 keeps the touch target accessible; dimmed at the limit-->
+    <!--The minus and plus buttons of a number counter (e.g. dose counts). 48x48 keeps the touch target accessible; dimmed at the limit-->
     <Style x:Key="CounterButton" TargetType="Button">
         <Setter Property="BackgroundColor" Value="{DynamicResource BabyBuddySurface}"/>
         <Setter Property="TextColor" Value="{DynamicResource BabyBuddyText}"/>
@@ -89,10 +89,10 @@
         <Setter Property="CornerRadius" Value="12"/>
         <Setter Property="FontSize" Value="18"/>
         <Setter Property="Padding" Value="0"/>
-        <Setter Property="WidthRequest" Value="44"/>
-        <Setter Property="HeightRequest" Value="44"/>
-        <Setter Property="MinimumWidthRequest" Value="44"/>
-        <Setter Property="MinimumHeightRequest" Value="44"/>
+        <Setter Property="WidthRequest" Value="48"/>
+        <Setter Property="HeightRequest" Value="48"/>
+        <Setter Property="MinimumWidthRequest" Value="48"/>
+        <Setter Property="MinimumHeightRequest" Value="48"/>
         <Setter Property="VisualStateManager.VisualStateGroups">
             <VisualStateGroupList>
                 <VisualStateGroup x:Name="CommonStates">
@@ -109,8 +109,8 @@
 
     <Style TargetType="CheckBox">
         <Setter Property="Color" Value="{DynamicResource BabyBuddyPrimary}" />
-        <Setter Property="MinimumHeightRequest" Value="44"/>
-        <Setter Property="MinimumWidthRequest" Value="44"/>
+        <Setter Property="MinimumHeightRequest" Value="48"/>
+        <Setter Property="MinimumWidthRequest" Value="48"/>
         <Setter Property="Opacity" Value="1"/>
     </Style>
 
@@ -119,8 +119,8 @@
         <Setter Property="BackgroundColor" Value="{DynamicResource BabyBuddySurface}" />
         <Setter Property="FontFamily" Value="OpenSansRegular"/>
         <Setter Property="FontSize" Value="14"/>
-        <Setter Property="MinimumHeightRequest" Value="44"/>
-        <Setter Property="MinimumWidthRequest" Value="44"/>
+        <Setter Property="MinimumHeightRequest" Value="48"/>
+        <Setter Property="MinimumWidthRequest" Value="48"/>
     </Style>
 
     <Style TargetType="Editor">
@@ -129,8 +129,8 @@
         <Setter Property="FontFamily" Value="OpenSansRegular"/>
         <Setter Property="FontSize" Value="14" />
         <Setter Property="PlaceholderColor" Value="{StaticResource Gray300}" />
-        <Setter Property="MinimumHeightRequest" Value="44"/>
-        <Setter Property="MinimumWidthRequest" Value="44"/>
+        <Setter Property="MinimumHeightRequest" Value="48"/>
+        <Setter Property="MinimumWidthRequest" Value="48"/>
     </Style>
 
     <Style TargetType="Entry">
@@ -139,8 +139,8 @@
         <Setter Property="FontFamily" Value="OpenSansRegular"/>
         <Setter Property="FontSize" Value="14" />
         <Setter Property="PlaceholderColor" Value="{StaticResource Gray300}" />
-        <Setter Property="MinimumHeightRequest" Value="44"/>
-        <Setter Property="MinimumWidthRequest" Value="44"/>
+        <Setter Property="MinimumHeightRequest" Value="48"/>
+        <Setter Property="MinimumWidthRequest" Value="48"/>
     </Style>
 
     <Style TargetType="ImageButton">
@@ -148,8 +148,8 @@
         <Setter Property="BorderColor" Value="Transparent"/>
         <Setter Property="BorderWidth" Value="0"/>
         <Setter Property="CornerRadius" Value="14"/>
-        <Setter Property="MinimumHeightRequest" Value="44"/>
-        <Setter Property="MinimumWidthRequest" Value="44"/>
+        <Setter Property="MinimumHeightRequest" Value="48"/>
+        <Setter Property="MinimumWidthRequest" Value="48"/>
     </Style>
 
     <Style TargetType="Label">
@@ -210,8 +210,8 @@
         <Setter Property="BackgroundColor" Value="{DynamicResource BabyBuddySurface}" />
         <Setter Property="FontFamily" Value="OpenSansRegular"/>
         <Setter Property="FontSize" Value="14" />
-        <Setter Property="MinimumHeightRequest" Value="44"/>
-        <Setter Property="MinimumWidthRequest" Value="44"/>
+        <Setter Property="MinimumHeightRequest" Value="48"/>
+        <Setter Property="MinimumWidthRequest" Value="48"/>
     </Style>
 
     <Style TargetType="ProgressBar">
@@ -226,8 +226,8 @@
         <Setter Property="TextColor" Value="{DynamicResource BabyBuddyText}" />
         <Setter Property="FontFamily" Value="OpenSansRegular"/>
         <Setter Property="FontSize" Value="14"/>
-        <Setter Property="MinimumHeightRequest" Value="44"/>
-        <Setter Property="MinimumWidthRequest" Value="44"/>
+        <Setter Property="MinimumHeightRequest" Value="48"/>
+        <Setter Property="MinimumWidthRequest" Value="48"/>
         <Setter Property="ControlTemplate">
             <ControlTemplate>
                 <Grid ColumnDefinitions="Auto,*" ColumnSpacing="8" BackgroundColor="Transparent">
@@ -312,8 +312,8 @@
         <Setter Property="BackgroundColor" Value="Transparent"/>
         <Setter Property="FontFamily" Value="OpenSansRegular"/>
         <Setter Property="FontSize" Value="14"/>
-        <Setter Property="MinimumHeightRequest" Value="44"/>
-        <Setter Property="MinimumWidthRequest" Value="44"/>
+        <Setter Property="MinimumHeightRequest" Value="48"/>
+        <Setter Property="MinimumWidthRequest" Value="48"/>
     </Style>
 
 </ResourceDictionary>

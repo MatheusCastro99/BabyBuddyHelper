@@ -26,7 +26,7 @@
             <Grid ColumnDefinitions="*,Auto,*">
                 <HorizontalStackLayout Grid.Column="0" HorizontalOptions="Start" Spacing="8" VerticalOptions="Center">
                     <Label Text="Pending first" VerticalOptions="Center" Style="{StaticResource BodyText}" />
-                    <Grid WidthRequest="44" HeightRequest="28">
+                    <Grid WidthRequest="48" HeightRequest="48">
                         <Switch x:Name="PendingFirstSwitch"
                                 IsToggled="{Binding isPendingFirst}"
                                 Toggled="IsPendingFirstHandler"
@@ -59,7 +59,7 @@
                         <Border x:Name="PendingFirstFocusRing"
                                 InputTransparent="True"
                                 IsVisible="False"
-                                WidthRequest="44"
+                                WidthRequest="48"
                                 HeightRequest="28"
                                 StrokeThickness="2"
                                 Stroke="{DynamicResource BabyBuddyText}"
@@ -87,7 +87,7 @@
 
                 <HorizontalStackLayout Grid.Column="1" HorizontalOptions="Start" Spacing="8" VerticalOptions="Center">
                     <Label Text="Upcoming first" VerticalOptions="Center" Style="{StaticResource BodyText}" />
-                    <Grid WidthRequest="44" HeightRequest="28">
+                    <Grid WidthRequest="48" HeightRequest="48">
                         <Switch x:Name="DateOrderSwitch"
                                 Toggled="IsDateOrderHandler"
                                 Opacity="0"
@@ -119,7 +119,7 @@
                         <Border x:Name="DateOrderFocusRing"
                                 InputTransparent="True"
                                 IsVisible="False"
-                                WidthRequest="44"
+                                WidthRequest="48"
                                 HeightRequest="28"
                                 StrokeThickness="2"
                                 Stroke="{DynamicResource BabyBuddyText}"
@@ -181,11 +181,11 @@
                                         <CheckBox IsChecked="{Binding IsCompleted, Mode=OneWay}" CheckedChanged="OnTaskCompletedChanged" HorizontalOptions="End" VerticalOptions="Center" Grid.Column="0" />
 
                                         <!--Same icon buttons as the vaccine rows on BabyProfilePage: keyboard and screen-reader reachable, drawn in a mid-tone of the current palette so they keep 3:1 against the card.
-                                            44x44 touch area around an ~18px icon-->
+                                            48x48 touch area around an ~18px icon-->
                                         <ImageButton Grid.Column="1"
                                                      Source="{DynamicResource EditIcon}"
-                                                     WidthRequest="44"
-                                                     HeightRequest="44"
+                                                     WidthRequest="48"
+                                                     HeightRequest="48"
                                                      Padding="13"
                                                      Aspect="AspectFit"
                                                      BackgroundColor="Transparent"
@@ -196,8 +196,8 @@
 
                                         <ImageButton Grid.Column="2"
                                                      Source="{DynamicResource TrashIcon}"
-                                                     WidthRequest="44"
-                                                     HeightRequest="44"
+                                                     WidthRequest="48"
+                                                     HeightRequest="48"
                                                      Padding="13"
                                                      Aspect="AspectFit"
                                                      BackgroundColor="Transparent"

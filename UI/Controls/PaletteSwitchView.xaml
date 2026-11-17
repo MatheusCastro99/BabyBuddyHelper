@@ -2,7 +2,7 @@
 <ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="BabyBuddyHelper.UI.Controls.PaletteSwitchView"
-             HeightRequest="44"
+             HeightRequest="48"
              Padding="0,0,16,0"
              VerticalOptions="Center">
 
@@ -12,8 +12,8 @@
         <Image Source="boy_symbol.png" WidthRequest="20" HeightRequest="20" VerticalOptions="Center" />
 
         <!--Same drawn switch as the checklist filters: the real Switch is invisible and takes the input, focus and
-            screen-reader label, with a 44x44 touch area-->
-        <Grid WidthRequest="44" HeightRequest="44">
+            screen-reader label, with a 48x48 touch area-->
+        <Grid WidthRequest="48" HeightRequest="48">
             <Switch x:Name="PaletteToggle"
                     Opacity="0"
                     HorizontalOptions="Fill"
@@ -33,7 +33,7 @@
             <Border x:Name="FocusRing"
                     InputTransparent="True"
                     IsVisible="False"
-                    WidthRequest="44"
+                    WidthRequest="48"
                     HeightRequest="28"
                     StrokeThickness="2"
                     Stroke="{DynamicResource BabyBuddyText}"
