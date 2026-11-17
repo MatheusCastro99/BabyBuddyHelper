@@ -116,7 +116,7 @@
 
     <Style TargetType="DatePicker">
         <Setter Property="TextColor" Value="{StaticResource Gray900}" />
-        <Setter Property="BackgroundColor" Value="{DynamicResource BabyBuddySurface}" />
+        <Setter Property="BackgroundColor" Value="Transparent" />
         <Setter Property="FontFamily" Value="OpenSansRegular"/>
         <Setter Property="FontSize" Value="14"/>
         <Setter Property="MinimumHeightRequest" Value="48"/>

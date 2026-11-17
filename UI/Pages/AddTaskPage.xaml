@@ -42,7 +42,7 @@
                     <StackLayout IsVisible="{Binding Source={x:Reference IsAppointmentCheckBox}, Path=IsChecked}" Spacing="12" Margin="0,8,0,0">
                         <Label Text="Date" Style="{StaticResource SectionTitle}" />
                         <Border BackgroundColor="{DynamicResource BabyBuddySurfaceAlt}" Stroke="{DynamicResource BabyBuddyBorder}" StrokeShape="RoundRectangle 12" Padding="10,8">
-                            <DatePicker x:Name="DateEntry" MinimumDate="01/01/2025" HeightRequest="48" BackgroundColor="{DynamicResource BabyBuddySurface}" TextColor="{DynamicResource BabyBuddyText}" />
+                            <DatePicker x:Name="DateEntry" MinimumDate="01/01/2025" HeightRequest="48" TextColor="{DynamicResource BabyBuddyText}" />
                         </Border>
 
                         <Grid ColumnDefinitions="*,*" ColumnSpacing="12" RowDefinitions="Auto,Auto" RowSpacing="6">
@@ -59,7 +59,8 @@
 
                         <Label Text="Location" Style="{StaticResource SectionTitle}" />
                         <Border BackgroundColor="{DynamicResource BabyBuddySurfaceAlt}" Stroke="{DynamicResource BabyBuddyBorder}" StrokeShape="RoundRectangle 12" Padding="10,8">
-                            <Entry x:Name="LocationEntry" Placeholder="Location" TextColor="{DynamicResource BabyBuddyText}" />
+                            <!--The global Entry style fills with Surface, which shows as a lighter patch inside this SurfaceAlt border-->
+                            <Entry x:Name="LocationEntry" Placeholder="Location" BackgroundColor="Transparent" TextColor="{DynamicResource BabyBuddyText}" />
                         </Border>
                     </StackLayout>
                 </VerticalStackLayout>
