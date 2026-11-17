@@ -3,6 +3,7 @@ using BabyBuddyHelper.Core.Interfaces.Baby;
 using BabyBuddyHelper.Core.Interfaces.TaskList;
 using BabyBuddyHelper.Core.Models.TaskList;
 using BabyBuddyHelper.UI.Services;
+using Microsoft.Maui.Controls.PlatformConfiguration.AndroidSpecific;
 using System.Diagnostics;
 
 namespace BabyBuddyHelper.UI.Pages;
@@ -255,4 +256,23 @@ public partial class AddTaskPage : ContentPage
 
         return true;
     }
+
+    //Android only. The app default pans the whole window for the keyboard, which leaves Cancel and Save behind it. While the form is
+    //showing, the page resizes above the keyboard instead (as on ChatPage), so the pinned Cancel/Save row stays in view (#176)
+    protected override void OnAppearing()
+    {
+        base.OnAppearing();
+
+        SetSoftInputMode(WindowSoftInputModeAdjust.Resize);
+    }
+
+    protected override void OnDisappearing()
+    {
+        base.OnDisappearing();
+
+        SetSoftInputMode(WindowSoftInputModeAdjust.Pan);
+    }
+
+    private static void SetSoftInputMode(WindowSoftInputModeAdjust mode) =>
+        Microsoft.Maui.Controls.Application.Current?.On<Microsoft.Maui.Controls.PlatformConfiguration.Android>().UseWindowSoftInputModeAdjust(mode);
 }

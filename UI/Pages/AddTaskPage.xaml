@@ -5,70 +5,100 @@
              Title="Add Task"
              BackgroundColor="{DynamicResource BabyBuddyBackground}">
 
-    <ScrollView>
-        <VerticalStackLayout Padding="20" Spacing="18">
-            <Border BackgroundColor="{DynamicResource BabyBuddySurface}" StrokeThickness="0" Padding="18">
-                <VerticalStackLayout Spacing="6">
-                    <Label x:Name="TaskTitleLabel" Text="Add care moment" Style="{StaticResource PageTitle}" HorizontalTextAlignment="Center" />
-                    <Label Text="Keep the next step simple and clear." Style="{StaticResource BodyText}" HorizontalTextAlignment="Center" />
-                </VerticalStackLayout>
-            </Border>
+    <!--Cancel and Save sit under the scrolling form, so they are visible when the page opens and stay above the keyboard (#176).
+        SafeAreaEdges lifts the page for the keyboard only; the system bars stay as they were-->
+    <Grid RowDefinitions="*,Auto" SafeAreaEdges="None,None,None,SoftInput">
+        <ScrollView>
+            <VerticalStackLayout Padding="20,20,20,0" Spacing="18">
+                <Border BackgroundColor="{DynamicResource BabyBuddySurface}" StrokeThickness="0" Padding="18">
+                    <VerticalStackLayout Spacing="6">
+                        <Label x:Name="TaskTitleLabel" Text="Add care moment" Style="{StaticResource PageTitle}" HorizontalTextAlignment="Center" />
+                        <Label Text="Keep the next step simple and clear." Style="{StaticResource BodyText}" HorizontalTextAlignment="Center" />
+                    </VerticalStackLayout>
+                </Border>
 
-            <Border BackgroundColor="{DynamicResource BabyBuddySurface}" StrokeThickness="0" Padding="18" StrokeShape="RoundRectangle 24">
-                <VerticalStackLayout Spacing="18">
-                    <Label Text="Task Details" Style="{StaticResource SectionTitle}" />
-                    <Entry x:Name="TaskNameEntry" Placeholder="Task name" TextColor="Gray"/>
-                    <Entry x:Name="DescriptionEntry" Placeholder="Description" TextColor="Gray"/>
-                    
-                    <Label Text="Baby (optional)" Style="{StaticResource SectionTitle}" />
-                    <Button x:Name="BabyProfileSelectionButton"
-                            Text="Unassigned"
-                            Style="{StaticResource SecondaryAction}"
-                            HorizontalOptions="Fill"
-                            Clicked="OnSelectBabyProfileClicked" />
+                <Border BackgroundColor="{DynamicResource BabyBuddySurface}" StrokeThickness="0" Padding="18" StrokeShape="RoundRectangle 24">
+                    <VerticalStackLayout Spacing="18">
+                        <Label Text="Task Details" Style="{StaticResource SectionTitle}" />
+                        <Entry x:Name="TaskNameEntry" Placeholder="Task name" TextColor="Gray">
+                            <Entry.Keyboard>
+                                <Keyboard x:FactoryMethod="Create">
+                                    <x:Arguments>
+                                        <KeyboardFlags>CapitalizeSentence,Spellcheck,Suggestions</KeyboardFlags>
+                                    </x:Arguments>
+                                </Keyboard>
+                            </Entry.Keyboard>
+                        </Entry>
+                        <Entry x:Name="DescriptionEntry" Placeholder="Description" TextColor="Gray">
+                            <Entry.Keyboard>
+                                <Keyboard x:FactoryMethod="Create">
+                                    <x:Arguments>
+                                        <KeyboardFlags>CapitalizeSentence,Spellcheck,Suggestions</KeyboardFlags>
+                                    </x:Arguments>
+                                </Keyboard>
+                            </Entry.Keyboard>
+                        </Entry>
+                        
+                        <Label Text="Baby (optional)" Style="{StaticResource SectionTitle}" />
+                        <Button x:Name="BabyProfileSelectionButton"
+                                Text="Unassigned"
+                                Style="{StaticResource SecondaryAction}"
+                                HorizontalOptions="Fill"
+                                Clicked="OnSelectBabyProfileClicked" />
 
-                    <Grid ColumnDefinitions="*,Auto,Auto,Auto" ColumnSpacing="12">
-                        <Label Text="Priority" Style="{StaticResource SectionTitle}" VerticalOptions="Center" />
-                        <Button x:Name="PriorityDecreaseButton" Grid.Column="1" Text="−" Style="{StaticResource CounterButton}" SemanticProperties.Description="Lower priority" Clicked="OnPriorityDecreaseClicked" />
-                        <Label x:Name="PriorityLabel" Grid.Column="2" Style="{StaticResource ItemTitle}" MinimumWidthRequest="24" HorizontalTextAlignment="Center" VerticalOptions="Center" />
-                        <Button x:Name="PriorityIncreaseButton" Grid.Column="3" Text="+" Style="{StaticResource CounterButton}" SemanticProperties.Description="Raise priority" Clicked="OnPriorityIncreaseClicked" />
-                    </Grid>
-
-                    <HorizontalStackLayout Spacing="12" VerticalOptions="Center">
-                        <Label Text="Appointment" VerticalOptions="Center" Style="{StaticResource SectionTitle}" />
-                        <CheckBox x:Name="IsAppointmentCheckBox" />
-                    </HorizontalStackLayout>
-
-                    <StackLayout IsVisible="{Binding Source={x:Reference IsAppointmentCheckBox}, Path=IsChecked}" Spacing="12" Margin="0,8,0,0">
-                        <Label Text="Date" Style="{StaticResource SectionTitle}" />
-                        <Border BackgroundColor="{DynamicResource BabyBuddySurfaceAlt}" Stroke="{DynamicResource BabyBuddyBorder}" StrokeShape="RoundRectangle 12" Padding="10,8">
-                            <DatePicker x:Name="DateEntry" MinimumDate="01/01/2025" HeightRequest="48" BackgroundColor="{DynamicResource BabyBuddySurface}" TextColor="{DynamicResource BabyBuddyText}" />
-                        </Border>
-
-                        <Grid ColumnDefinitions="*,*" ColumnSpacing="12" RowDefinitions="Auto,Auto" RowSpacing="6">
-                            <Label Grid.Row="0" Grid.Column="0" Text="Start" Style="{StaticResource BodyText}" HorizontalTextAlignment="Center" />
-                            <Label Grid.Row="0" Grid.Column="1" Text="End" Style="{StaticResource BodyText}" HorizontalTextAlignment="Center" />
-
-                            <Border Grid.Row="1" Grid.Column="0" BackgroundColor="{DynamicResource BabyBuddySurfaceAlt}" Stroke="{DynamicResource BabyBuddyBorder}" StrokeShape="RoundRectangle 12" Padding="10,8">
-                                <TimePicker x:Name="StartingTimeEntry" HeightRequest="48" HorizontalOptions="Center" BackgroundColor="Transparent" TextColor="{DynamicResource BabyBuddyText}" />
-                            </Border>
-                            <Border Grid.Row="1" Grid.Column="1" BackgroundColor="{DynamicResource BabyBuddySurfaceAlt}" Stroke="{DynamicResource BabyBuddyBorder}" StrokeShape="RoundRectangle 12" Padding="10,8">
-                                <TimePicker x:Name="EndingTimeEntry" HeightRequest="48" HorizontalOptions="Center" BackgroundColor="Transparent" TextColor="{DynamicResource BabyBuddyText}" />
-                            </Border>
+                        <Grid ColumnDefinitions="*,Auto,Auto,Auto" ColumnSpacing="12">
+                            <Label Text="Priority" Style="{StaticResource SectionTitle}" VerticalOptions="Center" />
+                            <Button x:Name="PriorityDecreaseButton" Grid.Column="1" Text="−" Style="{StaticResource CounterButton}" SemanticProperties.Description="Lower priority" Clicked="OnPriorityDecreaseClicked" />
+                            <Label x:Name="PriorityLabel" Grid.Column="2" Style="{StaticResource ItemTitle}" MinimumWidthRequest="24" HorizontalTextAlignment="Center" VerticalOptions="Center" />
+                            <Button x:Name="PriorityIncreaseButton" Grid.Column="3" Text="+" Style="{StaticResource CounterButton}" SemanticProperties.Description="Raise priority" Clicked="OnPriorityIncreaseClicked" />
                         </Grid>
 
-                        <Label Text="Location" Style="{StaticResource SectionTitle}" />
-                        <Border BackgroundColor="{DynamicResource BabyBuddySurfaceAlt}" Stroke="{DynamicResource BabyBuddyBorder}" StrokeShape="RoundRectangle 12" Padding="10,8">
-                            <Entry x:Name="LocationEntry" Placeholder="Location" TextColor="{DynamicResource BabyBuddyText}" />
-                        </Border>
-                    </StackLayout>
-                </VerticalStackLayout>
-            </Border>
+                        <HorizontalStackLayout Spacing="12" VerticalOptions="Center">
+                            <Label Text="Appointment" VerticalOptions="Center" Style="{StaticResource SectionTitle}" />
+                            <CheckBox x:Name="IsAppointmentCheckBox" />
+                        </HorizontalStackLayout>
 
-            <Grid ColumnDefinitions="*,*" ColumnSpacing="12">
-                <Button Grid.Column="0" Text="Cancel" Style="{StaticResource SecondaryAction}" Clicked="OnCancelClicked" />
-                <Button x:Name="TaskSaveButton" Grid.Column="1" Text="Save" Style="{StaticResource PrimaryAction}" Clicked="OnSaveClicked" />
-            </Grid>
-        </VerticalStackLayout>
-    </ScrollView>
+                        <StackLayout IsVisible="{Binding Source={x:Reference IsAppointmentCheckBox}, Path=IsChecked}" Spacing="12" Margin="0,8,0,0">
+                            <Label Text="Date" Style="{StaticResource SectionTitle}" />
+                            <Border BackgroundColor="{DynamicResource BabyBuddySurfaceAlt}" Stroke="{DynamicResource BabyBuddyBorder}" StrokeShape="RoundRectangle 12" Padding="10,8">
+                                <DatePicker x:Name="DateEntry" MinimumDate="01/01/2025" HeightRequest="48" TextColor="{DynamicResource BabyBuddyText}" />
+                            </Border>
+
+                            <Grid ColumnDefinitions="*,*" ColumnSpacing="12" RowDefinitions="Auto,Auto" RowSpacing="6">
+                                <Label Grid.Row="0" Grid.Column="0" Text="Start" Style="{StaticResource BodyText}" HorizontalTextAlignment="Center" />
+                                <Label Grid.Row="0" Grid.Column="1" Text="End" Style="{StaticResource BodyText}" HorizontalTextAlignment="Center" />
+
+                                <Border Grid.Row="1" Grid.Column="0" BackgroundColor="{DynamicResource BabyBuddySurfaceAlt}" Stroke="{DynamicResource BabyBuddyBorder}" StrokeShape="RoundRectangle 12" Padding="10,8">
+                                    <TimePicker x:Name="StartingTimeEntry" HeightRequest="48" HorizontalOptions="Center" BackgroundColor="Transparent" TextColor="{DynamicResource BabyBuddyText}" />
+                                </Border>
+                                <Border Grid.Row="1" Grid.Column="1" BackgroundColor="{DynamicResource BabyBuddySurfaceAlt}" Stroke="{DynamicResource BabyBuddyBorder}" StrokeShape="RoundRectangle 12" Padding="10,8">
+                                    <TimePicker x:Name="EndingTimeEntry" HeightRequest="48" HorizontalOptions="Center" BackgroundColor="Transparent" TextColor="{DynamicResource BabyBuddyText}" />
+                                </Border>
+                            </Grid>
+
+                            <Label Text="Location" Style="{StaticResource SectionTitle}" />
+                            <Border BackgroundColor="{DynamicResource BabyBuddySurfaceAlt}" Stroke="{DynamicResource BabyBuddyBorder}" StrokeShape="RoundRectangle 12" Padding="10,8">
+                                <!--The global Entry style fills with Surface, which shows as a lighter patch inside this SurfaceAlt border-->
+                                <Entry x:Name="LocationEntry" Placeholder="Location" BackgroundColor="Transparent" TextColor="{DynamicResource BabyBuddyText}">
+                                    <Entry.Keyboard>
+                                        <Keyboard x:FactoryMethod="Create">
+                                            <x:Arguments>
+                                                <KeyboardFlags>CapitalizeSentence,Spellcheck,Suggestions</KeyboardFlags>
+                                            </x:Arguments>
+                                        </Keyboard>
+                                    </Entry.Keyboard>
+                                </Entry>
+                            </Border>
+                        </StackLayout>
+                    </VerticalStackLayout>
+                </Border>
+
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <Grid Grid.Row="1" ColumnDefinitions="*,*" ColumnSpacing="12" Padding="20,12,20,20">
+            <Button Grid.Column="0" Text="Cancel" Style="{StaticResource SecondaryAction}" Clicked="OnCancelClicked" />
+            <Button x:Name="TaskSaveButton" Grid.Column="1" Text="Save" Style="{StaticResource PrimaryAction}" Clicked="OnSaveClicked" />
+        </Grid>
+    </Grid>
 </ContentPage>

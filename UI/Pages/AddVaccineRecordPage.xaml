@@ -39,7 +39,7 @@
                     <VerticalStackLayout x:Name="LastDoseSection" Spacing="10">
                         <Label Text="Last dose given on" Style="{StaticResource SectionTitle}" />
                         <Border BackgroundColor="{DynamicResource BabyBuddySurfaceAlt}" Stroke="{DynamicResource BabyBuddyBorder}" StrokeShape="RoundRectangle 12" Padding="10,8">
-                            <DatePicker x:Name="LastDosePicker" HeightRequest="48" HorizontalOptions="Center" TextColor="{DynamicResource BabyBuddyText}" />
+                            <DatePicker x:Name="LastDosePicker" HeightRequest="48" TextColor="{DynamicResource BabyBuddyText}" />
                         </Border>
                     </VerticalStackLayout>
 
@@ -54,7 +54,7 @@
                             </Label>
                         </HorizontalStackLayout>
                         <Border x:Name="NextDosePickerBorder" BackgroundColor="{DynamicResource BabyBuddySurfaceAlt}" Stroke="{DynamicResource BabyBuddyBorder}" StrokeShape="RoundRectangle 12" Padding="10,8">
-                            <DatePicker x:Name="NextDosePicker" HeightRequest="48" HorizontalOptions="Center" TextColor="{DynamicResource BabyBuddyText}" />
+                            <DatePicker x:Name="NextDosePicker" HeightRequest="48" TextColor="{DynamicResource BabyBuddyText}" />
                         </Border>
                     </VerticalStackLayout>
 

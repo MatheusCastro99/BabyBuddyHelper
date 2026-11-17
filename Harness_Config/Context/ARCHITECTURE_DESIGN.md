@@ -163,6 +163,7 @@ tools/cub/ (run by hand, not part of the build)
 Platforms/Windows/
 
 - ShellTabBarFooter.cs
+- WinUITapTargets.cs
 
 UI/Converters/
 

@@ -40,6 +40,12 @@ namespace BabyBuddyHelper.UI.Controls
             _hostPage = hostPage;
             _hasKey = hasKey;
 
+            //Four fifths of the page, leaving room for the popup padding, so the last options are reachable by scrolling
+            if (hostPage.Height > 0)
+            {
+                ContentScroll.MaximumHeightRequest = hostPage.Height * 0.8;
+            }
+
             ShowState(isEntering: !hasKey);
 
             //Set before the options are checked, so showing the saved choice doesn't save it again

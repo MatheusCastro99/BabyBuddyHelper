@@ -213,6 +213,8 @@ The dashboard should feel supportive and informative, not overloaded.
 
 On Android the greeting card carries the boy / girl palette switch at its top right, beside the greeting line; on Windows the switch stays on the tab row. The dashboard refreshes when the app comes back from the background, so the countdown, the week count, the ages and the vaccine tags are never a day stale.
 
+The countdown headline wraps instead of truncating, so it is never cut off on a phone. The three stat tiles read Week, Tasks and Babies over one short line: "Nothing planned" or "{n} planned", "None yet" or "{n} done", "None yet", "1 baby" or "{n} babies". Android phones are locked to portrait: a landscape phone leaves too little height for the lists and forms (#176).
+
 Each baby card can carry one gentle vaccine tag under the age: "Due today: {vaccine}" or "Due soon: {vaccine}". Due today wins over due soon. For several vaccines the tag reads "{label}: N vaccines · check baby profile". Overdue never shows on the dashboard (it stays a gentle reminder on the profile). The tag is spelled out in words, never color alone, and uses the soft blue DueTag style with no alarm styling.
 
 ---
@@ -231,7 +233,9 @@ Checklist items should be easy to scan, easy to complete, and visually calm.
 
 Edit and delete are 48x48 icon buttons with screen-reader labels. Deleting a task or appointment asks first.
 
-The filter row (two switches and the baby button) wraps instead of using fixed columns, so no switch draws over the next label at any width. On Windows the native switches and the completion checkbox are sized to 48x48.
+The filter row (two switches and the baby button) wraps instead of using fixed columns, so no switch draws over the next label at any width. On Windows a handler (`WinUITapTargets`) sizes every native switch and checkbox to a 49x49 DIP hit area, one over the 48 minimum so pixel snapping at fractional display scales can not take it under, and centres the checkbox glyph.
+
+The title block and the filter card are the list's header: they scroll away with it, so a short phone gives the cards the whole height, and Add task stays pinned under the list. A task that is not an appointment shows no date row; an appointment without a location shows no separator after the time. The invisible switches keep a near-zero opacity on Android (0.01, not 0) so TalkBack can still reach them.
 
 ---
 
@@ -246,6 +250,8 @@ Should answer:
 - What is available or free?
 
 Calendar views should prioritize readability and schedule awareness without becoming visually heavy.
+
+The baby filter sits on the title row, to the right of the left-aligned title, so the time grid keeps its height on a short phone. On Android one tap on an appointment opens its editor; double tap works everywhere and, on an empty slot, adds a care moment.
 
 ---
 
@@ -301,6 +307,8 @@ Should answer:
 - What is the fastest path to saving this task or appointment?
 
 The add/edit flow should be direct, streamlined, and supportive.
+
+Add task pins Cancel and Save under the scrolling form, so they are in view when it opens and above the keyboard (the page resizes for the keyboard on Android). A date field fills its whole border, so a tap on the field (outside its thin padding) opens the date dialog. Name and task text start with a capital letter on the keyboard.
 
 Favor:
 
