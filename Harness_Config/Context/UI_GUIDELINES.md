@@ -308,7 +308,7 @@ Should answer:
 
 The add/edit flow should be direct, streamlined, and supportive.
 
-Add task pins Cancel and Save under the scrolling form, so they are in view when it opens and above the keyboard (the page resizes for the keyboard on Android). A date field fills its whole border, so a tap anywhere in it opens the date dialog. Name and task text start with a capital letter on the keyboard.
+Add task pins Cancel and Save under the scrolling form, so they are in view when it opens and above the keyboard (the page resizes for the keyboard on Android). A date field fills its whole border, so a tap on the field (outside its thin padding) opens the date dialog. Name and task text start with a capital letter on the keyboard.
 
 Favor:
 

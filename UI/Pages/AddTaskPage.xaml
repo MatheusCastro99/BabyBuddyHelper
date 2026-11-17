@@ -6,7 +6,7 @@
              BackgroundColor="{DynamicResource BabyBuddyBackground}">
 
     <!--Cancel and Save sit under the scrolling form, so they are visible when the page opens and stay above the keyboard (#176).
-        SafeAreaEdges lifts the page for the keyboard only, as on ChatPage; the system bars stay as they were-->
+        SafeAreaEdges lifts the page for the keyboard only; the system bars stay as they were-->
     <Grid RowDefinitions="*,Auto" SafeAreaEdges="None,None,None,SoftInput">
         <ScrollView>
             <VerticalStackLayout Padding="20,20,20,0" Spacing="18">

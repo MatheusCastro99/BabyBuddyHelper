@@ -95,7 +95,11 @@ public partial class CalendarPage : ContentPage
     {
         if (e.Element.ToString().Equals("Appointment")) //Editing an existing appointment through Calendar
         {
-            await EditTappedAppointment(e.Appointments);
+            //On Android the single tap already opened the editor, so the double tap must not open a second one
+            if (DeviceInfo.Platform != DevicePlatform.Android)
+            {
+                await EditTappedAppointment(e.Appointments);
+            }
         }
         else                                            //Creating a new appointment through Calendar
         {
