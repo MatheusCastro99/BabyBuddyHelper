@@ -40,6 +40,24 @@ namespace BabyBuddyHelper.UI.Services
 
             Swap(style);
             Preferences.Default.Set(PreferenceKey, style.ToString());
+            ApplyStatusBar();
+        }
+
+        /// <summary>
+        /// Android only: paints the status bar in the palette's background color, with dark icons, so it reads as part of
+        /// the nav band under it. It needs a window, so startup calls it from the window's Created event and a palette
+        /// switch calls it after the swap. Other platforms have nothing to paint.
+        /// </summary>
+        public static void ApplyStatusBar()
+        {
+#if ANDROID
+            //Dark status bar icons need Android 6 (API 23); the toolkit's calls are marked the same
+            if (OperatingSystem.IsAndroidVersionAtLeast(23) && Application.Current is { } app && app.Resources.TryGetValue("BabyBuddyBackground", out object? background) && background is Color color)
+            {
+                CommunityToolkit.Maui.Core.Platform.StatusBar.SetColor(color);
+                CommunityToolkit.Maui.Core.Platform.StatusBar.SetStyle(CommunityToolkit.Maui.Core.StatusBarStyle.DarkContent);
+            }
+#endif
         }
 
         //Adds the new palette before removing the old one, so no color key is ever missing while pages are on screen.

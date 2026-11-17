@@ -48,6 +48,8 @@ namespace BabyBuddyHelper
         //and a failed load shows its alerts only once.
         private async void OnWindowCreated(object? sender, EventArgs e)
         {
+            PaletteService.ApplyStatusBar(); //Android: the saved palette was applied before any window existed
+
             if (sender is not Window { Page: { } page })
             {
                 return; //Only subscribed on windows built in CreateWindow, which always carry the shell

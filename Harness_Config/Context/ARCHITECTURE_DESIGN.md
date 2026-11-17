@@ -247,5 +247,5 @@ Never edit or delete a migration that is merged: add a new one. `dotnet ef migra
 ### Theme
 
 - The app is pinned to the light theme (`App.xaml.cs`, through `UserAppTheme`); the boy and girl palettes take the place of a dark mode (UI_GUIDELINES.md).
-- `PaletteService` applies the palette and saves the choice in Preferences (a device UI setting, not database data).
+- `PaletteService` applies the palette and saves the choice in Preferences (a device UI setting, not database data). On Android it also paints the status bar in the palette's `BabyBuddyBackground` with dark icons (CommunityToolkit `StatusBar`), at window creation and after each switch.
 - The Windows title bar uses the nav bar colors through a MAUI `TitleBar`.
