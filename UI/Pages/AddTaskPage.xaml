@@ -54,7 +54,7 @@
                         </Grid>
 
                         <FlexLayout Wrap="Wrap" Direction="Row" AlignItems="Center">
-                            <Label Text="Appointment" Style="{StaticResource SectionTitle}" SemanticProperties.HeadingLevel="None" Margin="0,0,12,0" />
+                            <Label Text="Appointment" Style="{StaticResource SectionTitle}" SemanticProperties.HeadingLevel="None" AutomationProperties.IsInAccessibleTree="False" Margin="0,0,12,0" />
                             <CheckBox x:Name="IsAppointmentCheckBox" SemanticProperties.Description="Appointment" />
                         </FlexLayout>
 

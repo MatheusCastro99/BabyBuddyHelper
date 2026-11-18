@@ -69,14 +69,22 @@
     </ContentPage.Resources>
 
     <Grid>
-        <!--SafeAreaEdges="All" keeps the page clear of the system bars and above the on-screen keyboard (pages are edge-to-edge
+        <!--The page scrolls, so with large text, when the card, the message box and the disclaimer together are taller than the screen,
+            nothing overlaps or is cut off. At normal sizes SizeConversation gives the conversation all the room that is left, so the page
+            looks and behaves as if it didn't scroll. The list keeps its own height, never an unbounded one: a CollectionView in a ScrollView
+            would otherwise grow to hold every message.
+            SafeAreaEdges="All" keeps the page clear of the system bars and above the on-screen keyboard (pages are edge-to-edge
             by default in .NET 10). The width cap keeps the chat readable on a very wide desktop window-->
-        <Grid RowDefinitions="Auto,*" RowSpacing="18" Padding="20" SafeAreaEdges="All" MaximumWidthRequest="760">
+        <ScrollView x:Name="PageScroll" SizeChanged="OnPageSizeChanged">
+        <Grid x:Name="PageGrid" RowDefinitions="Auto,Auto" RowSpacing="18" Padding="20" SafeAreaEdges="All" MaximumWidthRequest="760" SizeChanged="OnPageSizeChanged">
 
             <!--Cub and the settings gear. Cub stays still here: the chat is a calm place, and the wave belongs to MainPage-->
             <Border BackgroundColor="{DynamicResource BabyBuddySurface}" StrokeThickness="0" Padding="14">
-                <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="14">
-                    <Border BackgroundColor="{DynamicResource BabyBuddySecondary}"
+                <!--One row normally. When the heading's picker can't fit beside Cub and the gear (large text), the heading takes a second row
+                    across the whole card (LayOutCubHeading)-->
+                <Grid x:Name="CubCardGrid" ColumnDefinitions="Auto,*,Auto" RowDefinitions="Auto,Auto" ColumnSpacing="14" SizeChanged="OnCubCardSizeChanged">
+                    <Border x:Name="CubIconFrame"
+                            BackgroundColor="{DynamicResource BabyBuddySecondary}"
                             StrokeThickness="0"
                             Padding="4"
                             WidthRequest="64"
@@ -96,8 +104,7 @@
                           ColumnDefinitions="Auto,Auto,*"
                           ColumnSpacing="8"
                           RowSpacing="4"
-                          VerticalOptions="Center"
-                          SizeChanged="OnCubHeadingSizeChanged">
+                          VerticalOptions="Center">
                         <Label x:Name="CubName" Text="Cub" Style="{StaticResource SectionTitle}" VerticalOptions="Center" />
                         <Label x:Name="TalkingAboutLabel"
                                Grid.Column="1"
@@ -117,7 +124,8 @@
                     </Grid>
 
                     <!--48x48 touch area (the Android minimum) around a ~22px icon, drawn in a mid-tone of the current palette like the edit and trash icons-->
-                    <ImageButton Grid.Column="2"
+                    <ImageButton x:Name="SettingsButton"
+                                 Grid.Column="2"
                                  Source="{DynamicResource GearIcon}"
                                  WidthRequest="48"
                                  HeightRequest="48"
@@ -153,9 +161,9 @@
 
             <!--A key is saved: the conversation, the message box, and the fixed "not medical advice" line under it.
                 The baby picker is in Cub's card above-->
-            <Grid x:Name="ChatState" Grid.Row="1" IsVisible="False" RowDefinitions="*,Auto,Auto" RowSpacing="10">
+            <Grid x:Name="ChatState" Grid.Row="1" IsVisible="False" RowDefinitions="Auto,Auto,Auto" RowSpacing="10">
                 <!--The conversation, newest at the bottom-->
-                <CollectionView x:Name="ConversationView" SelectionMode="None" ItemTemplate="{StaticResource ChatItemTemplates}">
+                <CollectionView x:Name="ConversationView" SelectionMode="None" HeightRequest="240" ItemTemplate="{StaticResource ChatItemTemplates}">
                     <CollectionView.EmptyView>
                         <Grid>
                             <Label Text="Ask Cub about everyday baby care."
@@ -194,6 +202,7 @@
                        HorizontalTextAlignment="Center" />
             </Grid>
         </Grid>
+        </ScrollView>
 
         <controls:ToastView />
     </Grid>

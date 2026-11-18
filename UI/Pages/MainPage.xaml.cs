@@ -6,6 +6,7 @@ using BabyBuddyHelper.Core.Interfaces;
 using BabyBuddyHelper.Core.Models.Baby;
 using BabyBuddyHelper.Core.Models.Vaccine;
 using BabyBuddyHelper.Core.Services.Cub;
+using BabyBuddyHelper.UI.Services;
 using System.Collections.ObjectModel;
 using System.Globalization;
 
@@ -181,6 +182,36 @@ namespace BabyBuddyHelper.UI.Pages
                 title.HorizontalTextAlignment = alignment;
                 value.HorizontalTextAlignment = alignment;
             }
+        }
+
+        //Dispatched, so the switch isn't made inside the size change that asked for it (see ChatPage.OnCubCardSizeChanged)
+        private void OnProfilesHeaderSizeChanged(object? sender, EventArgs e) => Dispatcher.Dispatch(LayOutProfilesHeader);
+
+        //"Baby profiles" and its line sit beside Add profile while the title fits on one line and no word of the subtitle breaks. When the
+        //column they get is narrower (large text), the button drops under the subtitle, so the text keeps the full width. The choice comes
+        //from the header's width and the natural widths, never from the current layout, so it can't flip back and forth
+        private void LayOutProfilesHeader()
+        {
+            if (ProfilesHeader.Width <= 0)
+            {
+                return;
+            }
+
+            double buttonWidth = AddProfileButton.Measure(double.PositiveInfinity, double.PositiveInfinity).Width;
+            double textColumn = ProfilesHeader.Width - buttonWidth - ProfilesHeader.ColumnSpacing;
+            double titleWidth = ProfilesTitle.Measure(double.PositiveInfinity, double.PositiveInfinity).Width;
+            double subtitleWord = WordFit.WidestWord(ProfilesSubtitle, ProfilesHeader);
+            bool buttonBelow = Math.Max(titleWidth, subtitleWord) > textColumn;
+
+            ProfilesHeader.ColumnSpacing = buttonBelow ? 0 : 12;
+            ProfilesHeader.RowSpacing = buttonBelow ? 12 : 0;
+
+            Grid.SetColumnSpan(ProfilesHeaderText, buttonBelow ? 2 : 1);
+
+            Grid.SetColumn(AddProfileButton, buttonBelow ? 0 : 1);
+            Grid.SetColumnSpan(AddProfileButton, buttonBelow ? 2 : 1);
+            Grid.SetRow(AddProfileButton, buttonBelow ? 1 : 0);
+            AddProfileButton.HorizontalOptions = buttonBelow ? LayoutOptions.Start : LayoutOptions.Fill;
         }
 
         private static ColumnDefinitionCollection Columns(int count)

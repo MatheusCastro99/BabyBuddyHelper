@@ -32,7 +32,7 @@
                         <!--A wrapping row, not three columns: at 448 dp the star columns were narrower than the first switch, which then drew over the next label. Each item keeps its natural width and the row wraps below that-->
                         <FlexLayout Wrap="Wrap" JustifyContent="SpaceBetween" AlignItems="Center">
                             <HorizontalStackLayout Margin="0,0,12,0" Spacing="8" VerticalOptions="Center">
-                                <Label Text="Pending first" VerticalOptions="Center" Style="{StaticResource BodyText}" />
+                                <Label Text="Pending first" AutomationProperties.IsInAccessibleTree="False" VerticalOptions="Center" Style="{StaticResource BodyText}" />
                                 <Grid WidthRequest="{OnPlatform Default=48, WinUI=49}" HeightRequest="{OnPlatform Default=48, WinUI=49}">
                                     <Switch x:Name="PendingFirstSwitch"
                                             SemanticProperties.Description="Pending first"
@@ -94,7 +94,7 @@
                             </HorizontalStackLayout>
 
                             <HorizontalStackLayout Margin="0,0,12,0" Spacing="8" VerticalOptions="Center">
-                                <Label Text="Upcoming first" VerticalOptions="Center" Style="{StaticResource BodyText}" />
+                                <Label Text="Upcoming first" AutomationProperties.IsInAccessibleTree="False" VerticalOptions="Center" Style="{StaticResource BodyText}" />
                                 <Grid WidthRequest="{OnPlatform Default=48, WinUI=49}" HeightRequest="{OnPlatform Default=48, WinUI=49}">
                                     <Switch x:Name="DateOrderSwitch"
                                             SemanticProperties.Description="Upcoming first"
@@ -168,8 +168,8 @@
                     <Grid>
                         <Border Padding="16" Margin="0,5" BackgroundColor="{DynamicResource BabyBuddySurface}" StrokeThickness="0" StrokeShape="RoundRectangle 22">
                             <StackLayout Spacing="10">
-                                <!--OnTaskRowSizeChanged drops the buttons under the text when a word of it wouldn't fit beside them (large text)-->
-                                <Grid ColumnDefinitions="*, Auto" ColumnSpacing="12" VerticalOptions="Center" SizeChanged="OnTaskRowSizeChanged">
+                                <!--The grid is always two columns by two rows; LayOutTaskRow moves the buttons to their own row under the text when a word of it wouldn't fit beside them (large text)-->
+                                <Grid ColumnDefinitions="*, Auto" RowDefinitions="Auto, Auto" ColumnSpacing="12" VerticalOptions="Center" SizeChanged="OnTaskRowSizeChanged" BindingContextChanged="OnTaskRowBindingContextChanged">
                                     <VerticalStackLayout Grid.Column="0" Spacing="2">
                                         <!--A wrapping row, so a long task name or baby name wraps instead of running past the card-->
                                         <FlexLayout Wrap="Wrap" Direction="Row" AlignItems="End">

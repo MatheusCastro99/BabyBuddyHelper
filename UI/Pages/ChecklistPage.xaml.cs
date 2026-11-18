@@ -114,15 +114,32 @@ public partial class ChecklistPage : ContentPage
         }
     }
 
-    //Persists completion through the service and shows companion-themed toast feedback when a task is completed.
-    //The binding is OneWay, so the model only changes through the service. This event also fires when a row is
-    //rendered; the model already matches the checkbox then, so only a real user tap gets past the first check.
     //A task card reads: the text on the left, the done box and the edit and delete buttons on the right. When a word of the text
-    //(name or description) wouldn't fit beside the buttons (large text on a narrow phone) it would break mid-word, so the buttons drop
-    //under the text, to the right. Otherwise the card is unchanged
+    //(name or description) wouldn't fit beside the buttons (large text on a narrow phone) it would break mid-word, so the text takes
+    //the full width and the buttons go on their own row under it, to the right. Otherwise the card is unchanged.
+    //The grid keeps its two columns and two rows for good: only where the cells sit changes, so the second row is empty (and flat)
+    //while the card is side by side
     private void OnTaskRowSizeChanged(object? sender, EventArgs e)
     {
-        if (sender is not Grid row || row.Width <= 0)
+        if (sender is Grid row)
+        {
+            row.Dispatcher.Dispatch(() => LayOutTaskRow(row)); //Not inside the size change itself: see ChatPage.OnCubCardSizeChanged
+        }
+    }
+
+    //A recycled card keeps its size when it is bound to another task, so no SizeChanged follows: lay it out again for the new text.
+    //Dispatched, so the labels have their new text by then
+    private void OnTaskRowBindingContextChanged(object? sender, EventArgs e)
+    {
+        if (sender is Grid row)
+        {
+            row.Dispatcher.Dispatch(() => LayOutTaskRow(row));
+        }
+    }
+
+    private static void LayOutTaskRow(Grid row)
+    {
+        if (row.Width <= 0)
         {
             return;
         }
@@ -132,22 +149,25 @@ public partial class ChecklistPage : ContentPage
         Label name = ((FlexLayout)text.Children[0]).Children.OfType<Label>().First();
         Label description = text.Children.OfType<Label>().First();
 
+        const double SideBySideSpacing = 12;
         double wordWidth = Math.Max(WordFit.WidestWord(name, row), WordFit.WidestWord(description, row));
         double actionsWidth = actions.Measure(double.PositiveInfinity, double.PositiveInfinity).Width;
-        bool stacked = wordWidth > row.Width - actionsWidth - row.ColumnSpacing;
+        bool stacked = wordWidth > row.Width - actionsWidth - SideBySideSpacing;
 
-        row.ColumnDefinitions = stacked
-            ? [new ColumnDefinition(GridLength.Star)]
-            : [new ColumnDefinition(GridLength.Star), new ColumnDefinition(GridLength.Auto)];
-        row.RowDefinitions = stacked
-            ? [new RowDefinition(GridLength.Auto), new RowDefinition(GridLength.Auto)]
-            : [new RowDefinition(GridLength.Auto)];
+        row.ColumnSpacing = stacked ? 0 : SideBySideSpacing;
+        row.RowSpacing = stacked ? 4 : 0;
+
+        Grid.SetColumnSpan(text, stacked ? 2 : 1);
 
         Grid.SetColumn(actions, stacked ? 0 : 1);
+        Grid.SetColumnSpan(actions, stacked ? 2 : 1);
         Grid.SetRow(actions, stacked ? 1 : 0);
         actions.HorizontalOptions = stacked ? LayoutOptions.End : LayoutOptions.Fill;
     }
 
+    //Persists completion through the service and shows companion-themed toast feedback when a task is completed.
+    //The binding is OneWay, so the model only changes through the service. This event also fires when a row is
+    //rendered; the model already matches the checkbox then, so only a real user tap gets past the first check.
     private async void OnTaskCompletedChanged(object? sender, CheckedChangedEventArgs e)
     {
         if (sender is not CheckBox { BindingContext: TaskModel task } checkBox || task.IsCompleted == e.Value)

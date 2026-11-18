@@ -71,13 +71,16 @@
 
                 <Border BackgroundColor="{DynamicResource BabyBuddySurface}" StrokeThickness="0" Padding="18">
                     <VerticalStackLayout Spacing="16">
-                        <Grid ColumnDefinitions="*,Auto" ColumnSpacing="12">
-                            <VerticalStackLayout Spacing="4">
-                                <Label Text="Baby profiles" Style="{StaticResource SectionTitle}" />
-                                <Label Text="Keep each little routine close and easy to update." Style="{StaticResource BodyText}" />
+                        <!--Title and subtitle on the left, Add profile on the right. When the text column beside the button is too narrow (large text), the
+                            button drops under the subtitle instead (LayOutProfilesHeader). The grid is always two columns by two rows; only where the cells sit changes-->
+                        <Grid x:Name="ProfilesHeader" ColumnDefinitions="*,Auto" RowDefinitions="Auto,Auto" ColumnSpacing="12" SizeChanged="OnProfilesHeaderSizeChanged">
+                            <VerticalStackLayout x:Name="ProfilesHeaderText" Spacing="4">
+                                <Label x:Name="ProfilesTitle" Text="Baby profiles" Style="{StaticResource SectionTitle}" />
+                                <Label x:Name="ProfilesSubtitle" Text="Keep each little routine close and easy to update." Style="{StaticResource BodyText}" />
                             </VerticalStackLayout>
 
-                            <Button Grid.Column="1"
+                            <Button x:Name="AddProfileButton"
+                                    Grid.Column="1"
                                     Text="Add profile"
                                     Style="{StaticResource PrimaryAction}"
                                     Padding="14,10"
