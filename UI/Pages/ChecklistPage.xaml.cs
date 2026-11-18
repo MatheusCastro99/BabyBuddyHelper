@@ -117,6 +117,37 @@ public partial class ChecklistPage : ContentPage
     //Persists completion through the service and shows companion-themed toast feedback when a task is completed.
     //The binding is OneWay, so the model only changes through the service. This event also fires when a row is
     //rendered; the model already matches the checkbox then, so only a real user tap gets past the first check.
+    //A task card reads: the text on the left, the done box and the edit and delete buttons on the right. When a word of the text
+    //(name or description) wouldn't fit beside the buttons (large text on a narrow phone) it would break mid-word, so the buttons drop
+    //under the text, to the right. Otherwise the card is unchanged
+    private void OnTaskRowSizeChanged(object? sender, EventArgs e)
+    {
+        if (sender is not Grid row || row.Width <= 0)
+        {
+            return;
+        }
+
+        VerticalStackLayout text = row.Children.OfType<VerticalStackLayout>().First();
+        Grid actions = row.Children.OfType<Grid>().First();
+        Label name = ((FlexLayout)text.Children[0]).Children.OfType<Label>().First();
+        Label description = text.Children.OfType<Label>().First();
+
+        double wordWidth = Math.Max(WordFit.WidestWord(name, row), WordFit.WidestWord(description, row));
+        double actionsWidth = actions.Measure(double.PositiveInfinity, double.PositiveInfinity).Width;
+        bool stacked = wordWidth > row.Width - actionsWidth - row.ColumnSpacing;
+
+        row.ColumnDefinitions = stacked
+            ? [new ColumnDefinition(GridLength.Star)]
+            : [new ColumnDefinition(GridLength.Star), new ColumnDefinition(GridLength.Auto)];
+        row.RowDefinitions = stacked
+            ? [new RowDefinition(GridLength.Auto), new RowDefinition(GridLength.Auto)]
+            : [new RowDefinition(GridLength.Auto)];
+
+        Grid.SetColumn(actions, stacked ? 0 : 1);
+        Grid.SetRow(actions, stacked ? 1 : 0);
+        actions.HorizontalOptions = stacked ? LayoutOptions.End : LayoutOptions.Fill;
+    }
+
     private async void OnTaskCompletedChanged(object? sender, CheckedChangedEventArgs e)
     {
         if (sender is not CheckBox { BindingContext: TaskModel task } checkBox || task.IsCompleted == e.Value)

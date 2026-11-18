@@ -124,6 +124,89 @@ namespace BabyBuddyHelper.UI.Pages
             RefreshBabyCards();
         });
 
+        private void OnSummaryTilesSizeChanged(object? sender, EventArgs e) => LayOutSummaryTiles();
+
+        //Week, Tasks and Babies sit three across while every title fits its column. When one wouldn't (a narrow phone, or larger text)
+        //the tiles become three full-width rows, emoji left and title with value right, instead of breaking a title mid-word. The choice
+        //comes from the grid's width and the titles' natural width, never from the current layout, so it can't flip back and forth
+        private void LayOutSummaryTiles()
+        {
+            if (SummaryTiles.Width <= 0)
+            {
+                return;
+            }
+
+            (Border Tile, Grid Body, Border Icon, Label Title, Label Value)[] tiles =
+            [
+                (WeekTile, WeekTileBody, WeekIcon, WeekTitle, WeekValue),
+                (TasksTile, TasksTileBody, TasksIcon, TasksTitle, TasksValue),
+                (BabiesTile, BabiesTileBody, BabiesIcon, BabiesTitle, BabiesValue)
+            ];
+
+            double columnWidth = (SummaryTiles.Width - 2 * SummaryTiles.ColumnSpacing) / 3;
+            double widestTitle = tiles.Max(tile => tile.Title.Measure(double.PositiveInfinity, double.PositiveInfinity).Width);
+            bool acrossFits = widestTitle <= columnWidth - tiles[0].Tile.Padding.HorizontalThickness;
+
+            SummaryTiles.ColumnDefinitions = acrossFits ? Columns(3) : Columns(1);
+            SummaryTiles.RowDefinitions = Rows(acrossFits ? 0 : 3);
+            SummaryTiles.RowSpacing = acrossFits ? 0 : SummaryTiles.ColumnSpacing;
+
+            for (int i = 0; i < tiles.Length; i++)
+            {
+                var (tile, body, icon, title, value) = tiles[i];
+
+                Grid.SetColumn(tile, acrossFits ? i : 0);
+                Grid.SetRow(tile, acrossFits ? 0 : i);
+
+                body.ColumnSpacing = acrossFits ? 0 : 14;
+                body.RowSpacing = acrossFits ? 8 : 2;
+                body.RowDefinitions = Rows(acrossFits ? 3 : 2);
+
+                //Across: emoji over title over value, centered. Rows: the emoji spans both lines on the left
+                Grid.SetColumn(icon, 0);
+                Grid.SetRow(icon, 0);
+                Grid.SetColumnSpan(icon, acrossFits ? 2 : 1);
+                Grid.SetRowSpan(icon, acrossFits ? 1 : 2);
+                icon.VerticalOptions = LayoutOptions.Center;
+
+                Grid.SetColumn(title, acrossFits ? 0 : 1);
+                Grid.SetRow(title, acrossFits ? 1 : 0);
+                Grid.SetColumnSpan(title, acrossFits ? 2 : 1);
+
+                Grid.SetColumn(value, acrossFits ? 0 : 1);
+                Grid.SetRow(value, acrossFits ? 2 : 1);
+                Grid.SetColumnSpan(value, acrossFits ? 2 : 1);
+
+                TextAlignment alignment = acrossFits ? TextAlignment.Center : TextAlignment.Start;
+                title.HorizontalTextAlignment = alignment;
+                value.HorizontalTextAlignment = alignment;
+            }
+        }
+
+        private static ColumnDefinitionCollection Columns(int count)
+        {
+            var columns = new ColumnDefinitionCollection();
+
+            for (int i = 0; i < count; i++)
+            {
+                columns.Add(new ColumnDefinition(GridLength.Star));
+            }
+
+            return columns;
+        }
+
+        private static RowDefinitionCollection Rows(int count)
+        {
+            var rows = new RowDefinitionCollection();
+
+            for (int i = 0; i < count; i++)
+            {
+                rows.Add(new RowDefinition(GridLength.Auto));
+            }
+
+            return rows;
+        }
+
         private int CountAppointmentsThisWeek()
         {
             DayOfWeek firstDayOfWeek = CultureInfo.CurrentCulture.DateTimeFormat.FirstDayOfWeek;

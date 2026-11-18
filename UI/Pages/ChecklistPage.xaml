@@ -165,9 +165,11 @@
                     <Grid>
                         <Border Padding="16" Margin="0,5" BackgroundColor="{DynamicResource BabyBuddySurface}" StrokeThickness="0" StrokeShape="RoundRectangle 22">
                             <StackLayout Spacing="10">
-                                <Grid ColumnDefinitions="*, Auto" ColumnSpacing="12" VerticalOptions="Center">
+                                <!--OnTaskRowSizeChanged drops the buttons under the text when a word of it wouldn't fit beside them (large text)-->
+                                <Grid ColumnDefinitions="*, Auto" ColumnSpacing="12" VerticalOptions="Center" SizeChanged="OnTaskRowSizeChanged">
                                     <VerticalStackLayout Grid.Column="0" Spacing="2">
-                                        <HorizontalStackLayout Spacing="0">
+                                        <!--A wrapping row, so a long task name or baby name wraps instead of running past the card-->
+                                        <FlexLayout Wrap="Wrap" Direction="Row" AlignItems="End">
                                             <Label Text="{Binding TaskName}" FontSize="18" FontAttributes="Bold" />
                                             <Label Style="{StaticResource BodyText}" VerticalTextAlignment="End">
                                                 <Label.Text>
@@ -177,7 +179,7 @@
                                                     </MultiBinding>
                                                 </Label.Text>
                                             </Label>
-                                        </HorizontalStackLayout>
+                                        </FlexLayout>
                                         <Label Text="{Binding TaskDescription}" Style="{StaticResource BodyText}" Margin="0,0,0,0" />
                                     </VerticalStackLayout>
 
@@ -217,13 +219,14 @@
                                     <Label Text="{Binding TaskPriority, StringFormat='Priority {0}'}" Style="{StaticResource CaptionText}" />
                                 </Border>
 
-                                <HorizontalStackLayout Spacing="8" Margin="0,2,0,0" IsVisible="{Binding ., Converter={StaticResource IsAppointmentModelConverter}}">
-                                    <Label Text="{Binding AppointmentDate, StringFormat='{0:d}'}" Style="{StaticResource CaptionText}" />
-                                    <BoxView IsVisible="{Binding ., Converter={StaticResource IsAppointmentModelConverter}}" WidthRequest="1" HeightRequest="12" BackgroundColor="{DynamicResource BabyBuddyBorder}" />
-                                    <Label Text="{Binding AppointmentStartTime, StringFormat='{0:hh\:mm}'}" Style="{StaticResource CaptionText}" />
-                                    <BoxView IsVisible="{Binding AppointmentLocation, Converter={StaticResource HasTextConverter}, FallbackValue=False}" WidthRequest="1" HeightRequest="12" BackgroundColor="{DynamicResource BabyBuddyBorder}" />
-                                    <Label Text="{Binding AppointmentLocation}" Style="{StaticResource CaptionText}" LineBreakMode="TailTruncation" />
-                                </HorizontalStackLayout>
+                                <!--Date, time and location; wraps onto the next line when the location is long or the text is large-->
+                                <FlexLayout Wrap="Wrap" Direction="Row" AlignItems="Center" Margin="0,2,0,0" IsVisible="{Binding ., Converter={StaticResource IsAppointmentModelConverter}}">
+                                    <Label Text="{Binding AppointmentDate, StringFormat='{0:d}'}" Style="{StaticResource CaptionText}" Margin="0,0,8,0" />
+                                    <BoxView IsVisible="{Binding ., Converter={StaticResource IsAppointmentModelConverter}}" WidthRequest="1" HeightRequest="12" BackgroundColor="{DynamicResource BabyBuddyBorder}" Margin="0,0,8,0" />
+                                    <Label Text="{Binding AppointmentStartTime, StringFormat='{0:hh\:mm}'}" Style="{StaticResource CaptionText}" Margin="0,0,8,0" />
+                                    <BoxView IsVisible="{Binding AppointmentLocation, Converter={StaticResource HasTextConverter}, FallbackValue=False}" WidthRequest="1" HeightRequest="12" BackgroundColor="{DynamicResource BabyBuddyBorder}" Margin="0,0,8,0" />
+                                    <Label Text="{Binding AppointmentLocation}" Style="{StaticResource CaptionText}" />
+                                </FlexLayout>
                             </StackLayout>
                         </Border>
                     </Grid>

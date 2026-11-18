@@ -139,6 +139,8 @@ UI/Services/
 - ToastService.cs
 - AlertService.cs
 - PaletteService.cs
+- WordFit.cs
+- CrowdedGrid.cs
 
 Resources/Styles/
 

@@ -55,6 +55,15 @@ public partial class AddBabyPage : ContentPage
         LastSleepTimePicker.Time = recentSleep.TimeOfDay;
     }
 
+    //Two-cell form rows stack when a cell is too wide for its half of the row (large text)
+    private void OnPairSizeChanged(object? sender, EventArgs e)
+    {
+        if (sender is Grid grid)
+        {
+            CrowdedGrid.LayOut(grid);
+        }
+    }
+
     private async void OnCancelClicked(object? sender, EventArgs e)
     {
         await Navigation.PopModalAsync();

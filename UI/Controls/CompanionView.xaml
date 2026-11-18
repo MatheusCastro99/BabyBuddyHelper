@@ -33,7 +33,8 @@
                        Style="{StaticResource BodyText}"
                        LineBreakMode="WordWrap" />
                 <!--Two separate features side by side: a canned tip that needs nothing, and the chat (#100).
-                    The row wraps, so on a narrow phone the second button drops under the first-->
+                    The row wraps, so on a narrow phone the second button drops under the first, and the button style wraps a label that
+                    is wider than the column (large text), instead of clipping it-->
                 <FlexLayout Wrap="Wrap" Direction="Row" AlignItems="Start">
                     <Button Text="Tell me something"
                             Style="{StaticResource SecondaryAction}"

@@ -16,7 +16,8 @@
                     <Border.GestureRecognizers>
                         <TapGestureRecognizer Tapped="OnVaccineTapped" />
                     </Border.GestureRecognizers>
-                    <Grid ColumnDefinitions="*,Auto,Auto,Auto" RowDefinitions="Auto,Auto" ColumnSpacing="8" RowSpacing="4">
+                    <!--OnVaccineRowSizeChanged moves the status pill under the name when the name's longest word wouldn't fit beside it-->
+                    <Grid ColumnDefinitions="*,Auto,Auto,Auto" RowDefinitions="Auto,Auto" ColumnSpacing="8" RowSpacing="4" SizeChanged="OnVaccineRowSizeChanged">
                         <Label Text="{Binding Name}" Style="{StaticResource ItemTitle}" VerticalOptions="Center" Margin="0,0,4,0" />
     
                         <!--The row tap is pointer/touch only; this button keeps the record reachable by keyboard and screen readers.
@@ -57,14 +58,15 @@
                             <!--Plain status line: a lone label, so the long overdue line can wrap-->
                             <Label Text="{Binding StatusLine}" IsVisible="{Binding HasPlainStatusLine}" Style="{StaticResource BodyText}" />
     
-                            <!--Due soon: the date first, then the pill. The text here is always a short "Next dose: ..." line, so a horizontal stack is safe-->
-                            <HorizontalStackLayout IsVisible="{Binding IsDueSoon}" Spacing="8">
-                                <Label Text="{Binding StatusLine}" Style="{StaticResource BodyText}" VerticalOptions="Center" />
+                            <!--Due soon: the date first, then the pill. A wrapping row: with large text or a narrow phone the pill drops under the date
+                                instead of squeezing it-->
+                            <FlexLayout IsVisible="{Binding IsDueSoon}" Wrap="Wrap" Direction="Row" AlignItems="Center">
+                                <Label Text="{Binding StatusLine}" Style="{StaticResource BodyText}" Margin="0,2,8,2" />
     
-                                <Border Style="{StaticResource DueTag}">
+                                <Border Style="{StaticResource DueTag}" Margin="0,2">
                                     <Label Text="Due soon" Style="{StaticResource DueTagText}" />
                                 </Border>
-                            </HorizontalStackLayout>
+                            </FlexLayout>
     
                             <Label Text="{Binding Description}" Style="{StaticResource BodyText}" />
                         </VerticalStackLayout>

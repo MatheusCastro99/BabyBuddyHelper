@@ -26,41 +26,44 @@
                                                     Padding="0"
                                                     HorizontalOptions="End"
                                                     IsVisible="{OnPlatform Default=True, WinUI=False}" />
-                        <!--Wraps instead of truncating: the PageTitle style cut the headline off at phone width-->
-                        <Label Grid.Row="1" Grid.ColumnSpan="2" Text="{Binding CountdownText}" Style="{StaticResource PageTitle}" LineBreakMode="WordWrap" />
+                        <!--PageTitle wraps rather than truncating, so the headline stays whole at phone width and large text-->
+                        <Label Grid.Row="1" Grid.ColumnSpan="2" Text="{Binding CountdownText}" Style="{StaticResource PageTitle}" />
                         <Label Grid.Row="2" Grid.ColumnSpan="2" Text="Your little routine is looking calm and steady today." Style="{StaticResource BodyText}" />
                     </Grid>
                 </Border>
 
-                <Grid ColumnDefinitions="*,*,*" ColumnSpacing="14">
-                    <Border Grid.Column="0" Padding="16" BackgroundColor="{DynamicResource BabyBuddySurfaceAlt}" StrokeThickness="0" StrokeShape="RoundRectangle 22">
-                        <VerticalStackLayout Spacing="8">
-                            <Border BackgroundColor="{DynamicResource BabyBuddySecondary}" StrokeThickness="0" Padding="8,6" HorizontalOptions="Center" StrokeShape="RoundRectangle 12">
+                <!--Three tiles across while each title fits its column; three full-width rows (emoji left, title and value right) when one
+                    wouldn't, e.g. a narrow phone or large text, so a title never breaks mid-word (#177). LayOutSummaryTiles decides, from the
+                    grid's width and the titles' natural width, and runs again whenever the width changes-->
+                <Grid x:Name="SummaryTiles" ColumnDefinitions="*,*,*" ColumnSpacing="14" SizeChanged="OnSummaryTilesSizeChanged">
+                    <Border x:Name="WeekTile" Grid.Column="0" Padding="16" BackgroundColor="{DynamicResource BabyBuddySurfaceAlt}" StrokeThickness="0" StrokeShape="RoundRectangle 22">
+                        <Grid x:Name="WeekTileBody" ColumnDefinitions="Auto,*" RowDefinitions="Auto,Auto,Auto" RowSpacing="8">
+                            <Border x:Name="WeekIcon" Grid.ColumnSpan="2" BackgroundColor="{DynamicResource BabyBuddySecondary}" StrokeThickness="0" Padding="8,6" HorizontalOptions="Center" StrokeShape="RoundRectangle 12">
                                 <Label Text="🗓️" FontSize="22" HorizontalOptions="Center" />
                             </Border>
-                            <Label Text="Week" Style="{StaticResource SectionTitle}" HorizontalTextAlignment="Center" />
-                            <Label Text="{Binding WeeklyAppointmentText}" Style="{StaticResource BodyText}" HorizontalTextAlignment="Center" />
-                        </VerticalStackLayout>
+                            <Label x:Name="WeekTitle" Grid.Row="1" Grid.ColumnSpan="2" Text="Week" Style="{StaticResource SectionTitle}" HorizontalTextAlignment="Center" />
+                            <Label x:Name="WeekValue" Grid.Row="2" Grid.ColumnSpan="2" Text="{Binding WeeklyAppointmentText}" Style="{StaticResource BodyText}" HorizontalTextAlignment="Center" />
+                        </Grid>
                     </Border>
 
-                    <Border Grid.Column="1" Padding="16" BackgroundColor="{DynamicResource BabyBuddySurfaceAlt}" StrokeThickness="0" StrokeShape="RoundRectangle 22">
-                        <VerticalStackLayout Spacing="8">
-                            <Border BackgroundColor="{DynamicResource BabyBuddySuccess}" StrokeThickness="0" Padding="8,6" HorizontalOptions="Center" StrokeShape="RoundRectangle 12">
+                    <Border x:Name="TasksTile" Grid.Column="1" Padding="16" BackgroundColor="{DynamicResource BabyBuddySurfaceAlt}" StrokeThickness="0" StrokeShape="RoundRectangle 22">
+                        <Grid x:Name="TasksTileBody" ColumnDefinitions="Auto,*" RowDefinitions="Auto,Auto,Auto" RowSpacing="8">
+                            <Border x:Name="TasksIcon" Grid.ColumnSpan="2" BackgroundColor="{DynamicResource BabyBuddySuccess}" StrokeThickness="0" Padding="8,6" HorizontalOptions="Center" StrokeShape="RoundRectangle 12">
                                 <Label Text="✅" FontSize="22" HorizontalOptions="Center" />
                             </Border>
-                            <Label Text="Tasks" Style="{StaticResource SectionTitle}" HorizontalTextAlignment="Center" />
-                            <Label Text="{Binding CompletedTaskText}" Style="{StaticResource BodyText}" HorizontalTextAlignment="Center" />
-                        </VerticalStackLayout>
+                            <Label x:Name="TasksTitle" Grid.Row="1" Grid.ColumnSpan="2" Text="Tasks" Style="{StaticResource SectionTitle}" HorizontalTextAlignment="Center" />
+                            <Label x:Name="TasksValue" Grid.Row="2" Grid.ColumnSpan="2" Text="{Binding CompletedTaskText}" Style="{StaticResource BodyText}" HorizontalTextAlignment="Center" />
+                        </Grid>
                     </Border>
 
-                    <Border Grid.Column="2" Padding="16" BackgroundColor="{DynamicResource BabyBuddySurfaceAlt}" StrokeThickness="0" StrokeShape="RoundRectangle 22">
-                        <VerticalStackLayout Spacing="8">
-                            <Border BackgroundColor="{DynamicResource BabyBuddyWarm}" StrokeThickness="0" Padding="8,6" HorizontalOptions="Center" StrokeShape="RoundRectangle 12">
+                    <Border x:Name="BabiesTile" Grid.Column="2" Padding="16" BackgroundColor="{DynamicResource BabyBuddySurfaceAlt}" StrokeThickness="0" StrokeShape="RoundRectangle 22">
+                        <Grid x:Name="BabiesTileBody" ColumnDefinitions="Auto,*" RowDefinitions="Auto,Auto,Auto" RowSpacing="8">
+                            <Border x:Name="BabiesIcon" Grid.ColumnSpan="2" BackgroundColor="{DynamicResource BabyBuddyWarm}" StrokeThickness="0" Padding="8,6" HorizontalOptions="Center" StrokeShape="RoundRectangle 12">
                                 <Label Text="🧸" FontSize="22" HorizontalOptions="Center" />
                             </Border>
-                            <Label Text="Babies" Style="{StaticResource SectionTitle}" HorizontalTextAlignment="Center" />
-                            <Label Text="{Binding ProfileCountText}" Style="{StaticResource BodyText}" HorizontalTextAlignment="Center" />
-                        </VerticalStackLayout>
+                            <Label x:Name="BabiesTitle" Grid.Row="1" Grid.ColumnSpan="2" Text="Babies" Style="{StaticResource SectionTitle}" HorizontalTextAlignment="Center" />
+                            <Label x:Name="BabiesValue" Grid.Row="2" Grid.ColumnSpan="2" Text="{Binding ProfileCountText}" Style="{StaticResource BodyText}" HorizontalTextAlignment="Center" />
+                        </Grid>
                     </Border>
                 </Grid>
 

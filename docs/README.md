@@ -276,7 +276,9 @@ BabyBuddyHelper/
 │   ├── Services/
 │   │   ├── ToastService.cs
 │   │   ├── AlertService.cs
-│   │   └── PaletteService.cs
+│   │   ├── PaletteService.cs
+│   │   ├── WordFit.cs
+│   │   └── CrowdedGrid.cs
 │   │
 │   └── Converters/
 │       ├── AssociatedBabyNameConverter.cs

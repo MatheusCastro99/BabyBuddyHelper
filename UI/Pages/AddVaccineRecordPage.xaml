@@ -39,22 +39,23 @@
                     <VerticalStackLayout x:Name="LastDoseSection" Spacing="10">
                         <Label Text="Last dose given on" Style="{StaticResource SectionTitle}" />
                         <Border BackgroundColor="{DynamicResource BabyBuddySurfaceAlt}" Stroke="{DynamicResource BabyBuddyBorder}" StrokeShape="RoundRectangle 12" Padding="10,8">
-                            <DatePicker x:Name="LastDosePicker" HeightRequest="48" TextColor="{DynamicResource BabyBuddyText}" />
+                            <DatePicker x:Name="LastDosePicker" MinimumHeightRequest="48" TextColor="{DynamicResource BabyBuddyText}" />
                         </Border>
                     </VerticalStackLayout>
 
                     <!--Hidden once every dose is given: a complete record needs no next date-->
                     <VerticalStackLayout x:Name="NextDoseSection" Spacing="10">
-                        <HorizontalStackLayout Spacing="8">
+                        <!--The label column wraps, so the long label never runs past the card at large text-->
+                        <Grid ColumnDefinitions="Auto,*" ColumnSpacing="8">
                             <CheckBox x:Name="NextDoseCheckBox" VerticalOptions="Center" CheckedChanged="OnNextDoseCheckedChanged" SemanticProperties.Description="Add a next dose date" />
-                            <Label Text="Add a next dose date" Style="{StaticResource BodyText}" VerticalOptions="Center">
+                            <Label Grid.Column="1" Text="Add a next dose date" Style="{StaticResource BodyText}" VerticalOptions="Center">
                                 <Label.GestureRecognizers>
                                     <TapGestureRecognizer Tapped="OnNextDoseLabelTapped" />
                                 </Label.GestureRecognizers>
                             </Label>
-                        </HorizontalStackLayout>
+                        </Grid>
                         <Border x:Name="NextDosePickerBorder" BackgroundColor="{DynamicResource BabyBuddySurfaceAlt}" Stroke="{DynamicResource BabyBuddyBorder}" StrokeShape="RoundRectangle 12" Padding="10,8">
-                            <DatePicker x:Name="NextDosePicker" HeightRequest="48" TextColor="{DynamicResource BabyBuddyText}" />
+                            <DatePicker x:Name="NextDosePicker" MinimumHeightRequest="48" TextColor="{DynamicResource BabyBuddyText}" />
                         </Border>
                     </VerticalStackLayout>
 
