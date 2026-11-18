@@ -97,6 +97,12 @@ public partial class ChatPage : ContentPage
     {
         bool hasKey = await _apiKeyStore.HasKeyAsync();
 
+        //Before the list shows, the page grid gets the screen's height, so the list never measures against an unbounded one
+        if (hasKey && PageScroll.Height > 0 && PageGrid.HeightRequest < 0)
+        {
+            PageGrid.HeightRequest = PageScroll.Height;
+        }
+
         SetupState.IsVisible = !hasKey;
         ChatState.IsVisible = hasKey;
         TalkingAboutLabel.IsVisible = hasKey;
@@ -113,23 +119,47 @@ public partial class ChatPage : ContentPage
 
     private void OnPageSizeChanged(object? sender, EventArgs e) => Dispatcher.Dispatch(SizeConversation);
 
-    //The conversation takes all the room the rest of the page leaves, so at normal sizes the message box sits at the bottom and the page
-    //doesn't scroll. Under that it keeps a least height, and the page scrolls instead, so large text never makes the card, the message
-    //box and the disclaimer overlap or run off the screen. What the rest of the page needs is the page's height without the list, so it
-    //doesn't depend on the list's own height
+    //The page grid is given a definite height, and the conversation (a star row of it) takes what the card, the message box and the
+    //disclaimer leave. That height is the screen's, so at normal sizes the message box sits at the bottom and nothing scrolls, and it
+    //follows a window resize both ways. When the rest of the page plus a least-height conversation is taller than the screen (large
+    //text), the grid takes that height instead and the page scrolls, so nothing overlaps or runs off the screen.
+    //What the rest of the page needs is the grid's height without the list. Both are read from the same finished layout, and nothing
+    //is changed while the grid's height is not yet the one asked for, so a layout that is still catching up can't make it flip
     private void SizeConversation()
     {
-        if (!ChatState.IsVisible || PageScroll.Height <= 0 || PageGrid.Height <= 0)
+        if (!ChatState.IsVisible)
+        {
+            if (PageGrid.HeightRequest >= 0)
+            {
+                PageGrid.HeightRequest = -1; //The setup state has nothing to fill
+            }
+
+            return;
+        }
+
+        double viewport = PageScroll.Height;
+
+        if (viewport <= 0)
         {
             return;
         }
 
-        double restOfPage = PageGrid.Height - ConversationView.Height;
-        double height = Math.Max(MinimumConversationHeight, Math.Floor(PageScroll.Height - restOfPage));
+        double height = viewport;
 
-        if (Math.Abs(height - ConversationView.HeightRequest) >= 1)
+        if (PageGrid.HeightRequest >= 0)
         {
-            ConversationView.HeightRequest = height;
+            if (Math.Abs(PageGrid.Height - PageGrid.HeightRequest) >= 1 || ConversationView.Height < 0)
+            {
+                return;
+            }
+
+            double restOfPage = PageGrid.Height - ConversationView.Height;
+            height = Math.Max(viewport, Math.Ceiling(restOfPage + MinimumConversationHeight));
+        }
+
+        if (Math.Abs(height - PageGrid.HeightRequest) >= 1)
+        {
+            PageGrid.HeightRequest = height;
         }
     }
 
@@ -141,7 +171,15 @@ public partial class ChatPage : ContentPage
     //never from the current layout, so they can't flip back and forth
     private void LayOutCubHeading()
     {
-        if (!BabyPicker.IsVisible || CubCardGrid.Width <= 0)
+        //Without a key there is only "Cub" and the tagline, so everything goes back to its one-row place (a key removed in the settings
+        //popup can leave the heading under Cub and the gear from an earlier layout)
+        if (!BabyPicker.IsVisible)
+        {
+            PlaceCubHeading(headingBelow: false, fits: true);
+            return;
+        }
+
+        if (CubCardGrid.Width <= 0)
         {
             return;
         }
@@ -164,6 +202,12 @@ public partial class ChatPage : ContentPage
             ? Math.Max(0, headingWidth - nameWidth - labelWidth - 2 * CubHeading.ColumnSpacing)
             : headingWidth;
 
+        PlaceCubHeading(headingBelow, fits);
+    }
+
+    //headingBelow: the whole heading sits in a second row across the card. fits: the picker is on the heading's first line
+    private void PlaceCubHeading(bool headingBelow, bool fits)
+    {
         Grid.SetRow(CubHeading, headingBelow ? 1 : 0);
         Grid.SetColumn(CubHeading, headingBelow ? 0 : 1);
         Grid.SetColumnSpan(CubHeading, headingBelow ? 3 : 1);

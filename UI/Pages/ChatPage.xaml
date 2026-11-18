@@ -69,14 +69,15 @@
     </ContentPage.Resources>
 
     <Grid>
-        <!--The page scrolls, so with large text, when the card, the message box and the disclaimer together are taller than the screen,
-            nothing overlaps or is cut off. At normal sizes SizeConversation gives the conversation all the room that is left, so the page
-            looks and behaves as if it didn't scroll. The list keeps its own height, never an unbounded one: a CollectionView in a ScrollView
-            would otherwise grow to hold every message.
+        <!--The page grid always has a definite height (SizeConversation): at least the screen's, so at normal sizes the conversation fills the
+            room the card, the message box and the disclaimer leave, and the message box sits at the bottom with nothing to scroll. With large
+            text, when those parts and a least-height conversation are taller than the screen, the grid takes that taller height and the
+            page scrolls instead, so nothing overlaps or is cut off. The list is in a star row of that definite height, so it never gets an
+            unbounded one: a CollectionView in a ScrollView would otherwise grow to hold every message.
             SafeAreaEdges="All" keeps the page clear of the system bars and above the on-screen keyboard (pages are edge-to-edge
             by default in .NET 10). The width cap keeps the chat readable on a very wide desktop window-->
         <ScrollView x:Name="PageScroll" SizeChanged="OnPageSizeChanged">
-        <Grid x:Name="PageGrid" RowDefinitions="Auto,Auto" RowSpacing="18" Padding="20" SafeAreaEdges="All" MaximumWidthRequest="760" SizeChanged="OnPageSizeChanged">
+        <Grid x:Name="PageGrid" RowDefinitions="Auto,*" RowSpacing="18" Padding="20" SafeAreaEdges="All" MaximumWidthRequest="760" SizeChanged="OnPageSizeChanged">
 
             <!--Cub and the settings gear. Cub stays still here: the chat is a calm place, and the wave belongs to MainPage-->
             <Border BackgroundColor="{DynamicResource BabyBuddySurface}" StrokeThickness="0" Padding="14">
@@ -161,9 +162,9 @@
 
             <!--A key is saved: the conversation, the message box, and the fixed "not medical advice" line under it.
                 The baby picker is in Cub's card above-->
-            <Grid x:Name="ChatState" Grid.Row="1" IsVisible="False" RowDefinitions="Auto,Auto,Auto" RowSpacing="10">
+            <Grid x:Name="ChatState" Grid.Row="1" IsVisible="False" RowDefinitions="*,Auto,Auto" RowSpacing="10">
                 <!--The conversation, newest at the bottom-->
-                <CollectionView x:Name="ConversationView" SelectionMode="None" HeightRequest="240" ItemTemplate="{StaticResource ChatItemTemplates}">
+                <CollectionView x:Name="ConversationView" SelectionMode="None" ItemTemplate="{StaticResource ChatItemTemplates}" SizeChanged="OnPageSizeChanged">
                     <CollectionView.EmptyView>
                         <Grid>
                             <Label Text="Ask Cub about everyday baby care."
