@@ -29,6 +29,7 @@
         <Setter Property="BackgroundColor" Value="{DynamicResource PrimaryDark}" />
         <Setter Property="FontFamily" Value="OpenSansRegular"/>
         <Setter Property="FontSize" Value="14"/>
+        <Setter Property="LineBreakMode" Value="WordWrap"/>
         <Setter Property="BorderWidth" Value="0"/>
         <Setter Property="CornerRadius" Value="18"/>
         <Setter Property="Padding" Value="16,12"/>
@@ -128,7 +129,7 @@
         <Setter Property="BackgroundColor" Value="{DynamicResource BabyBuddySurface}" />
         <Setter Property="FontFamily" Value="OpenSansRegular"/>
         <Setter Property="FontSize" Value="14" />
-        <Setter Property="PlaceholderColor" Value="{StaticResource Gray300}" />
+        <Setter Property="PlaceholderColor" Value="{DynamicResource BabyBuddyMuted}" />
         <Setter Property="MinimumHeightRequest" Value="48"/>
         <Setter Property="MinimumWidthRequest" Value="48"/>
     </Style>
@@ -138,7 +139,7 @@
         <Setter Property="BackgroundColor" Value="{DynamicResource BabyBuddySurface}" />
         <Setter Property="FontFamily" Value="OpenSansRegular"/>
         <Setter Property="FontSize" Value="14" />
-        <Setter Property="PlaceholderColor" Value="{StaticResource Gray300}" />
+        <Setter Property="PlaceholderColor" Value="{DynamicResource BabyBuddyMuted}" />
         <Setter Property="MinimumHeightRequest" Value="48"/>
         <Setter Property="MinimumWidthRequest" Value="48"/>
     </Style>
@@ -163,7 +164,7 @@
         <Setter Property="TextColor" Value="{DynamicResource BabyBuddyText}" />
         <Setter Property="FontSize" Value="28" />
         <Setter Property="FontAttributes" Value="Bold" />
-        <Setter Property="LineBreakMode" Value="TailTruncation" />
+        <Setter Property="LineBreakMode" Value="WordWrap" />
     </Style>
 
     <Style x:Key="SectionTitle" TargetType="Label">
@@ -279,7 +280,7 @@
         <Setter Property="Shell.TabBarBackgroundColor" Value="{DynamicResource BabyBuddySurface}" />
         <Setter Property="Shell.TabBarForegroundColor" Value="{DynamicResource BabyBuddyPrimary}" />
         <Setter Property="Shell.TabBarTitleColor" Value="{DynamicResource BabyBuddyText}" />
-        <Setter Property="Shell.TabBarUnselectedColor" Value="{StaticResource Gray400}" />
+        <Setter Property="Shell.TabBarUnselectedColor" Value="{DynamicResource BabyBuddyMuted}" />
     </Style>
 
     <Style TargetType="NavigationPage">

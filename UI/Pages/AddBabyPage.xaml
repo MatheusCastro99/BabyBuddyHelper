@@ -18,7 +18,7 @@
                 <VerticalStackLayout Spacing="18">
                     <Label Text="Profile details" Style="{StaticResource SectionTitle}" />
 
-                    <Entry x:Name="NameEntry" Placeholder="Name" TextColor="Gray">
+                    <Entry x:Name="NameEntry" Placeholder="Name" TextColor="{DynamicResource BabyBuddyText}">
                         <Entry.Keyboard>
                             <Keyboard x:FactoryMethod="Create">
                                 <x:Arguments>
@@ -29,8 +29,8 @@
                     </Entry>
 
                     <Grid ColumnDefinitions="*,*" ColumnSpacing="12">
-                        <Entry x:Name="WeightEntry" Grid.Column="0" Placeholder="Weight in lbs" Keyboard="Numeric" TextColor="Gray"/>
-                        <Entry x:Name="HeightEntry" Grid.Column="1" Placeholder="Height in ft" Keyboard="Numeric" TextColor="Gray"/>
+                        <Entry x:Name="WeightEntry" Grid.Column="0" Placeholder="Weight in lbs" Keyboard="Numeric" TextColor="{DynamicResource BabyBuddyText}"/>
+                        <Entry x:Name="HeightEntry" Grid.Column="1" Placeholder="Height in ft" Keyboard="Numeric" TextColor="{DynamicResource BabyBuddyText}"/>
                     </Grid>
 
                     <VerticalStackLayout Spacing="10">
