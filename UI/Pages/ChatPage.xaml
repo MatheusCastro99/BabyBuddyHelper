@@ -83,7 +83,7 @@
                             HeightRequest="64"
                             VerticalOptions="Center"
                             StrokeShape="RoundRectangle 20">
-                        <controls:CubView SemanticProperties.Description="Cub, your companion" />
+                        <controls:CubView AutomationProperties.IsInAccessibleTree="False" />
                     </Border>
 
                     <!--Reads "Cub – is talking about: [picker]" over the tagline. Without a key there is nothing to pick, so the first line is just "Cub".
@@ -177,7 +177,6 @@
                                 MaximumHeightRequest="120"
                                 MaxLength="2000"
                                 VerticalOptions="Center"
-                                SemanticProperties.Description="Message to Cub"
                                 TextChanged="OnMessageTextChanged" />
                         <Button x:Name="SendButton"
                                 Grid.Column="1"

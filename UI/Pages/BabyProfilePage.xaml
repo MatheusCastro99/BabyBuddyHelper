@@ -83,7 +83,7 @@
                 <Border BackgroundColor="{DynamicResource BabyBuddySurface}" StrokeThickness="0" Padding="20">
                     <Grid ColumnDefinitions="*,Auto" ColumnSpacing="12">
                         <VerticalStackLayout Spacing="6">
-                            <Label Text="{Binding Name}" Style="{StaticResource PageTitle}" SemanticProperties.HeadingLevel="Level1" />
+                            <Label Text="{Binding Name}" Style="{StaticResource PageTitle}" />
                             <Label Text="{Binding AgeText}" Style="{StaticResource BodyText}" />
                         </VerticalStackLayout>
 
@@ -106,7 +106,7 @@
                             <Border Grid.Column="0" Padding="16" BackgroundColor="{DynamicResource BabyBuddySurfaceAlt}" StrokeThickness="0" StrokeShape="RoundRectangle 22">
                                 <VerticalStackLayout Spacing="4">
                                     <Label Text="Weight" Style="{StaticResource CaptionText}" />
-                                    <Label Text="{Binding WeightInLbs, StringFormat='{}{0:F1} lbs'}" Style="{StaticResource SectionTitle}" />
+                                    <Label Text="{Binding WeightInLbs, StringFormat='{}{0:F1} lbs'}" Style="{StaticResource SectionTitle}" SemanticProperties.HeadingLevel="None" />
                                     <Label x:Name="WeightUpdatedLabel" Style="{StaticResource CaptionText}" IsVisible="False" />
                                 </VerticalStackLayout>
                             </Border>
@@ -114,7 +114,7 @@
                             <Border Grid.Column="1" Padding="16" BackgroundColor="{DynamicResource BabyBuddySurfaceAlt}" StrokeThickness="0" StrokeShape="RoundRectangle 22">
                                 <VerticalStackLayout Spacing="4">
                                     <Label Text="Height" Style="{StaticResource CaptionText}" />
-                                    <Label Text="{Binding HeightInFt, StringFormat='{}{0:F1} ft'}" Style="{StaticResource SectionTitle}" />
+                                    <Label Text="{Binding HeightInFt, StringFormat='{}{0:F1} ft'}" Style="{StaticResource SectionTitle}" SemanticProperties.HeadingLevel="None" />
                                     <Label x:Name="HeightUpdatedLabel" Style="{StaticResource CaptionText}" IsVisible="False" />
                                 </VerticalStackLayout>
                             </Border>
@@ -130,14 +130,14 @@
                             <Border Grid.Column="0" Padding="16" BackgroundColor="{DynamicResource BabyBuddySurfaceAlt}" StrokeThickness="0" StrokeShape="RoundRectangle 22">
                                 <VerticalStackLayout Spacing="4">
                                     <Label Text="Last feed" Style="{StaticResource CaptionText}" />
-                                    <Label Text="{Binding LastFeed, StringFormat='{}{0:MMM d, h:mm tt}'}" Style="{StaticResource SectionTitle}" />
+                                    <Label Text="{Binding LastFeed, StringFormat='{}{0:MMM d, h:mm tt}'}" Style="{StaticResource SectionTitle}" SemanticProperties.HeadingLevel="None" />
                                 </VerticalStackLayout>
                             </Border>
 
                             <Border Grid.Column="1" Padding="16" BackgroundColor="{DynamicResource BabyBuddySurfaceAlt}" StrokeThickness="0" StrokeShape="RoundRectangle 22">
                                 <VerticalStackLayout Spacing="4">
                                     <Label Text="Last sleep" Style="{StaticResource CaptionText}" />
-                                    <Label Text="{Binding LastSleep, StringFormat='{}{0:MMM d, h:mm tt}'}" Style="{StaticResource SectionTitle}" />
+                                    <Label Text="{Binding LastSleep, StringFormat='{}{0:MMM d, h:mm tt}'}" Style="{StaticResource SectionTitle}" SemanticProperties.HeadingLevel="None" />
                                 </VerticalStackLayout>
                             </Border>
                         </Grid>

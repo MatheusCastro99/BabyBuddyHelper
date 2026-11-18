@@ -35,6 +35,7 @@
                                 <Label Text="Pending first" VerticalOptions="Center" Style="{StaticResource BodyText}" />
                                 <Grid WidthRequest="{OnPlatform Default=48, WinUI=49}" HeightRequest="{OnPlatform Default=48, WinUI=49}">
                                     <Switch x:Name="PendingFirstSwitch"
+                                            SemanticProperties.Description="Pending first"
                                             IsToggled="{Binding isPendingFirst}"
                                             Toggled="IsPendingFirstHandler"
                                             Opacity="{OnPlatform Android=0.01, Default=0}"
@@ -96,6 +97,7 @@
                                 <Label Text="Upcoming first" VerticalOptions="Center" Style="{StaticResource BodyText}" />
                                 <Grid WidthRequest="{OnPlatform Default=48, WinUI=49}" HeightRequest="{OnPlatform Default=48, WinUI=49}">
                                     <Switch x:Name="DateOrderSwitch"
+                                            SemanticProperties.Description="Upcoming first"
                                             Toggled="IsDateOrderHandler"
                                             Opacity="{OnPlatform Android=0.01, Default=0}"
                                             HorizontalOptions="Fill"
@@ -154,6 +156,7 @@
 
                             <Button x:Name="ChecklistBabyFilterButton"
                                     Text="All babies"
+                                    SemanticProperties.Hint="Choose which baby's tasks to show"
                                     Style="{StaticResource SecondaryAction}"
                                     Clicked="OnChecklistBabyFilterClicked"/>
                         </FlexLayout>
@@ -185,7 +188,7 @@
 
                                     <!--No column spacing: each icon button's 13px padding already spaces the icons apart-->
                                     <Grid Grid.Column="1" ColumnDefinitions="Auto, Auto, Auto" ColumnSpacing="0" VerticalOptions="Center">
-                                        <CheckBox IsChecked="{Binding IsCompleted, Mode=OneWay}" CheckedChanged="OnTaskCompletedChanged" HorizontalOptions="End" VerticalOptions="Center" Grid.Column="0" />
+                                        <CheckBox IsChecked="{Binding IsCompleted, Mode=OneWay}" SemanticProperties.Description="{Binding TaskName, StringFormat='Done: {0}'}" CheckedChanged="OnTaskCompletedChanged" HorizontalOptions="End" VerticalOptions="Center" Grid.Column="0" />
 
                                         <!--Same icon buttons as the vaccine rows on BabyProfilePage: keyboard and screen-reader reachable, drawn in a mid-tone of the current palette so they keep 3:1 against the card.
                                             48x48 touch area around an ~18px icon-->

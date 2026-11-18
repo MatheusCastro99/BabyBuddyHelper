@@ -160,7 +160,10 @@
         <Setter Property="FontSize" Value="14" />
     </Style>
 
+    <!--The page title is the page's heading and a SectionTitle a section's, so a screen reader can jump between them. A label that only
+        borrows the look (a tile, a field name, a value) sets HeadingLevel="None" (#177)-->
     <Style x:Key="PageTitle" TargetType="Label">
+        <Setter Property="SemanticProperties.HeadingLevel" Value="Level1" />
         <Setter Property="TextColor" Value="{DynamicResource BabyBuddyText}" />
         <Setter Property="FontSize" Value="28" />
         <Setter Property="FontAttributes" Value="Bold" />
@@ -168,6 +171,7 @@
     </Style>
 
     <Style x:Key="SectionTitle" TargetType="Label">
+        <Setter Property="SemanticProperties.HeadingLevel" Value="Level2" />
         <Setter Property="TextColor" Value="{DynamicResource BabyBuddyText}" />
         <Setter Property="FontSize" Value="18" />
         <Setter Property="FontAttributes" Value="Bold" />

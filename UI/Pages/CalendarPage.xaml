@@ -17,6 +17,7 @@
             <Button Grid.Column="1"
                     x:Name="CalendarBabyFilterButton"
                     Text="All babies"
+                    SemanticProperties.Hint="Choose which baby's appointments to show"
                     Style="{StaticResource SecondaryAction}"
                     VerticalOptions="Start"
                     Clicked="OnCalendarBabyFilterClicked" />

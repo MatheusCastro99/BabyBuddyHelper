@@ -19,7 +19,7 @@
                 <controls:CubView x:Name="Cub"
                                   WidthRequest="80"
                                   HeightRequest="80"
-                                  SemanticProperties.Description="Cub, your companion">
+                                  AutomationProperties.IsInAccessibleTree="False">
                     <controls:CubView.GestureRecognizers>
                         <TapGestureRecognizer Tapped="OnCubTapped" />
                     </controls:CubView.GestureRecognizers>

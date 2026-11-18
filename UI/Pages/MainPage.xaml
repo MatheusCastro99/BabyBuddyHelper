@@ -39,9 +39,9 @@
                     <Border x:Name="WeekTile" Grid.Column="0" Padding="16" BackgroundColor="{DynamicResource BabyBuddySurfaceAlt}" StrokeThickness="0" StrokeShape="RoundRectangle 22">
                         <Grid x:Name="WeekTileBody" ColumnDefinitions="Auto,*" RowDefinitions="Auto,Auto,Auto" RowSpacing="8">
                             <Border x:Name="WeekIcon" Grid.ColumnSpan="2" BackgroundColor="{DynamicResource BabyBuddySecondary}" StrokeThickness="0" Padding="8,6" HorizontalOptions="Center" StrokeShape="RoundRectangle 12">
-                                <Label Text="🗓️" FontSize="22" HorizontalOptions="Center" />
+                                <Label Text="🗓️" FontSize="22" HorizontalOptions="Center" AutomationProperties.IsInAccessibleTree="False" />
                             </Border>
-                            <Label x:Name="WeekTitle" Grid.Row="1" Grid.ColumnSpan="2" Text="Week" Style="{StaticResource SectionTitle}" HorizontalTextAlignment="Center" />
+                            <Label x:Name="WeekTitle" Grid.Row="1" Grid.ColumnSpan="2" Text="Week" Style="{StaticResource SectionTitle}" SemanticProperties.HeadingLevel="None" HorizontalTextAlignment="Center" />
                             <Label x:Name="WeekValue" Grid.Row="2" Grid.ColumnSpan="2" Text="{Binding WeeklyAppointmentText}" Style="{StaticResource BodyText}" HorizontalTextAlignment="Center" />
                         </Grid>
                     </Border>
@@ -49,9 +49,9 @@
                     <Border x:Name="TasksTile" Grid.Column="1" Padding="16" BackgroundColor="{DynamicResource BabyBuddySurfaceAlt}" StrokeThickness="0" StrokeShape="RoundRectangle 22">
                         <Grid x:Name="TasksTileBody" ColumnDefinitions="Auto,*" RowDefinitions="Auto,Auto,Auto" RowSpacing="8">
                             <Border x:Name="TasksIcon" Grid.ColumnSpan="2" BackgroundColor="{DynamicResource BabyBuddySuccess}" StrokeThickness="0" Padding="8,6" HorizontalOptions="Center" StrokeShape="RoundRectangle 12">
-                                <Label Text="✅" FontSize="22" HorizontalOptions="Center" />
+                                <Label Text="✅" FontSize="22" HorizontalOptions="Center" AutomationProperties.IsInAccessibleTree="False" />
                             </Border>
-                            <Label x:Name="TasksTitle" Grid.Row="1" Grid.ColumnSpan="2" Text="Tasks" Style="{StaticResource SectionTitle}" HorizontalTextAlignment="Center" />
+                            <Label x:Name="TasksTitle" Grid.Row="1" Grid.ColumnSpan="2" Text="Tasks" Style="{StaticResource SectionTitle}" SemanticProperties.HeadingLevel="None" HorizontalTextAlignment="Center" />
                             <Label x:Name="TasksValue" Grid.Row="2" Grid.ColumnSpan="2" Text="{Binding CompletedTaskText}" Style="{StaticResource BodyText}" HorizontalTextAlignment="Center" />
                         </Grid>
                     </Border>
@@ -59,9 +59,9 @@
                     <Border x:Name="BabiesTile" Grid.Column="2" Padding="16" BackgroundColor="{DynamicResource BabyBuddySurfaceAlt}" StrokeThickness="0" StrokeShape="RoundRectangle 22">
                         <Grid x:Name="BabiesTileBody" ColumnDefinitions="Auto,*" RowDefinitions="Auto,Auto,Auto" RowSpacing="8">
                             <Border x:Name="BabiesIcon" Grid.ColumnSpan="2" BackgroundColor="{DynamicResource BabyBuddyWarm}" StrokeThickness="0" Padding="8,6" HorizontalOptions="Center" StrokeShape="RoundRectangle 12">
-                                <Label Text="🧸" FontSize="22" HorizontalOptions="Center" />
+                                <Label Text="🧸" FontSize="22" HorizontalOptions="Center" AutomationProperties.IsInAccessibleTree="False" />
                             </Border>
-                            <Label x:Name="BabiesTitle" Grid.Row="1" Grid.ColumnSpan="2" Text="Babies" Style="{StaticResource SectionTitle}" HorizontalTextAlignment="Center" />
+                            <Label x:Name="BabiesTitle" Grid.Row="1" Grid.ColumnSpan="2" Text="Babies" Style="{StaticResource SectionTitle}" SemanticProperties.HeadingLevel="None" HorizontalTextAlignment="Center" />
                             <Label x:Name="BabiesValue" Grid.Row="2" Grid.ColumnSpan="2" Text="{Binding ProfileCountText}" Style="{StaticResource BodyText}" HorizontalTextAlignment="Center" />
                         </Grid>
                     </Border>
@@ -111,7 +111,7 @@
                                         <VerticalStackLayout Spacing="12">
                                             <Grid ColumnDefinitions="*,Auto" ColumnSpacing="12">
                                                 <VerticalStackLayout Spacing="4">
-                                                    <Label Text="{Binding Name}" Style="{StaticResource SectionTitle}" />
+                                                    <Label Text="{Binding Name}" Style="{StaticResource SectionTitle}" SemanticProperties.HeadingLevel="None" />
                                                     <Label Text="{Binding AgeText}" Style="{StaticResource BodyText}" />
 
                                                     <!--Vaccines due today or within the next two weeks (#81). Hidden when nothing is due; overdue stays on the profile.

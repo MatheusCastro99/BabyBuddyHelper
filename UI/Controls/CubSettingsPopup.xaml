@@ -36,7 +36,6 @@
                            IsTextPredictionEnabled="False"
                            ClearButtonVisibility="WhileEditing"
                            ReturnType="Done"
-                           SemanticProperties.Description="Your Claude API key"
                            TextChanged="OnKeyTextChanged"
                            Completed="OnSaveClicked" />
                 </Border>
