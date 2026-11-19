@@ -114,11 +114,11 @@ public partial class ChecklistPage : ContentPage
         }
     }
 
-    //A task card reads: the text on the left, the done box and the edit and delete buttons on the right. When a word of the text
-    //(name or description) wouldn't fit beside the buttons (large text on a narrow phone) it would break mid-word, so the text takes
-    //the full width and the buttons go on their own row under it, to the right. Otherwise the card is unchanged.
-    //The grid keeps its two columns and two rows for good: only where the cells sit changes, so the second row is empty (and flat)
-    //while the card is side by side
+    //A task card reads: the text on the left, the done box and the edit and delete buttons on the right. On a narrow card (a phone) the
+    //buttons beside the text would leave it a sliver, so edit and delete move to the priority chip row, on the right, and only the done
+    //box stays beside the text. And when a word of the text (name or description) wouldn't fit beside what is left next to it (large
+    //text), it would break mid-word, so the text takes the full width and that goes on its own row under it, to the right.
+    //The grid keeps its three columns and three rows for good: only where the cells sit changes, so an unused row is empty and flat
     private void OnTaskRowSizeChanged(object? sender, EventArgs e)
     {
         if (sender is Grid row)
@@ -145,24 +145,55 @@ public partial class ChecklistPage : ContentPage
         }
 
         VerticalStackLayout text = row.Children.OfType<VerticalStackLayout>().First();
-        Grid actions = row.Children.OfType<Grid>().First();
+        CheckBox done = row.Children.OfType<CheckBox>().First();
+        Grid editDelete = row.Children.OfType<Grid>().First();
+        Border chip = row.Children.OfType<Border>().First();
         Label name = ((FlexLayout)text.Children[0]).Children.OfType<Label>().First();
         Label description = text.Children.OfType<Label>().First();
 
-        const double SideBySideSpacing = 12;
+        const double SideBySideSpacing = 12; //Between the text and what sits beside it
+        const double MinTitleWidth = 280; //Narrower than this with all three beside it, and edit and delete go to the chip row
+        const double ChipRowButtonSpacing = 8;
+        const double StackedTopMargin = 4; //Between the text and the buttons under it
+        const double ChipTopMargin = 10;
+
+        double doneWidth = done.Measure(double.PositiveInfinity, double.PositiveInfinity).Width;
+        editDelete.ColumnSpacing = 0; //Measured without the chip row's gap, so the same width decides every time
+        double editDeleteWidth = editDelete.Measure(double.PositiveInfinity, double.PositiveInfinity).Width;
+        bool narrow = row.Width - doneWidth - editDeleteWidth - SideBySideSpacing < MinTitleWidth;
+
+        //Narrow: the edit and delete pair sits on the chip row, so only the done box is beside the text
+        double besideWidth = narrow ? doneWidth : doneWidth + editDeleteWidth;
         double wordWidth = Math.Max(WordFit.WidestWord(name, row), WordFit.WidestWord(description, row));
-        double actionsWidth = actions.Measure(double.PositiveInfinity, double.PositiveInfinity).Width;
-        bool stacked = wordWidth > row.Width - actionsWidth - SideBySideSpacing;
+        bool stacked = wordWidth > row.Width - besideWidth - SideBySideSpacing;
 
-        row.ColumnSpacing = stacked ? 0 : SideBySideSpacing;
-        row.RowSpacing = stacked ? 4 : 0;
+        text.Margin = new Thickness(0, 0, stacked ? 0 : SideBySideSpacing, 0);
+        Grid.SetColumnSpan(text, stacked ? 3 : 1);
 
-        Grid.SetColumnSpan(text, stacked ? 2 : 1);
+        //The done box: beside the text, or under it to the right. Under the text on a wide card, it sits left of the edit and delete buttons
+        Grid.SetRow(done, stacked ? 1 : 0);
+        Grid.SetColumn(done, stacked && narrow ? 0 : 1);
+        Grid.SetColumnSpan(done, stacked && narrow ? 3 : 1);
+        done.Margin = new Thickness(0, stacked ? StackedTopMargin : 0, 0, 0);
 
-        Grid.SetColumn(actions, stacked ? 0 : 1);
-        Grid.SetColumnSpan(actions, stacked ? 2 : 1);
-        Grid.SetRow(actions, stacked ? 1 : 0);
-        actions.HorizontalOptions = stacked ? LayoutOptions.End : LayoutOptions.Fill;
+        //Edit and delete: beside the text (wide), under it with the done box (wide and stacked), or on the chip row (narrow)
+        editDelete.ColumnSpacing = narrow ? ChipRowButtonSpacing : 0; //Wide: each button's 13px padding already spaces them
+        if (narrow)
+        {
+            Grid.SetRow(editDelete, 2);
+            Grid.SetColumn(editDelete, 0);
+            Grid.SetColumnSpan(editDelete, 3); //Spans the star column, so the chip row's width never widens the done box's column
+            editDelete.HorizontalOptions = LayoutOptions.End;
+            editDelete.Margin = new Thickness(0, ChipTopMargin, 0, 0); //The same top margin as the chip, so the two stay centred on each other
+        }
+        else
+        {
+            Grid.SetRow(editDelete, stacked ? 1 : 0);
+            Grid.SetColumn(editDelete, 2);
+            Grid.SetColumnSpan(editDelete, 1);
+            editDelete.HorizontalOptions = LayoutOptions.Fill;
+            editDelete.Margin = new Thickness(0, stacked ? StackedTopMargin : 0, 0, 0);
+        }
     }
 
     //Persists completion through the service and shows companion-themed toast feedback when a task is completed.

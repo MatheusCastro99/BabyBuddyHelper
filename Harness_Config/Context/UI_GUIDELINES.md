@@ -231,7 +231,7 @@ Should answer:
 
 Checklist items should be easy to scan, easy to complete, and visually calm.
 
-Edit and delete are 48x48 icon buttons with screen-reader labels. Deleting a task or appointment asks first.
+Edit and delete are 48x48 icon buttons with screen-reader labels. Deleting a task or appointment asks first. On a narrow card (a phone: less than 280 dp left for the title with all three beside it) the done box stays beside the title and edit and delete move onto the priority chip row, right-aligned with an 8 dp gap; on a wide card (a Windows window) all three sit beside the title. With large text, whatever sits beside the title drops under it when a word would not fit.
 
 The filter row (two switches and the baby button) wraps instead of using fixed columns, so no switch draws over the next label at any width. On Windows a handler (`WinUITapTargets`) sizes every native switch and checkbox to a 49x49 DIP hit area, one over the 48 minimum so pixel snapping at fractional display scales can not take it under, and centres the checkbox glyph.
 
