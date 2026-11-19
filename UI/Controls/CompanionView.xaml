@@ -6,8 +6,18 @@
              x:Name="CompanionRoot">
 
     <Border BackgroundColor="{DynamicResource BabyBuddySurface}" StrokeThickness="0" Padding="18">
-        <Grid ColumnDefinitions="Auto,*" ColumnSpacing="14" VerticalOptions="Center">
-            <Border Grid.Column="0"
+        <!--Cub on the left, the tip and the two buttons on the right. The buttons sit in their own row under the tip, beside Cub, and
+            OnCardSizeChanged moves them to the full card width when a word of a button wouldn't fit beside Cub (large text), so a label never breaks mid-word-->
+        <Grid x:Name="CardGrid"
+              ColumnDefinitions="Auto,*"
+              RowDefinitions="Auto,Auto"
+              ColumnSpacing="14"
+              RowSpacing="10"
+              VerticalOptions="Center"
+              SizeChanged="OnCardSizeChanged">
+            <Border x:Name="CubFrame"
+                    Grid.Column="0"
+                    Grid.RowSpan="2"
                     BackgroundColor="{DynamicResource BabyBuddySecondary}"
                     StrokeThickness="0"
                     Padding="8"
@@ -19,33 +29,37 @@
                 <controls:CubView x:Name="Cub"
                                   WidthRequest="80"
                                   HeightRequest="80"
-                                  SemanticProperties.Description="Cub, your companion">
+                                  AutomationProperties.IsInAccessibleTree="False">
                     <controls:CubView.GestureRecognizers>
                         <TapGestureRecognizer Tapped="OnCubTapped" />
                     </controls:CubView.GestureRecognizers>
                 </controls:CubView>
             </Border>
 
-            <VerticalStackLayout Grid.Column="1" Spacing="10" VerticalOptions="Center">
+            <VerticalStackLayout Grid.Column="1" Spacing="10" VerticalOptions="End">
                 <Label Text="Cub says" Style="{StaticResource SectionTitle}" />
                 <Label x:Name="MessageLabel"
                        Text="{Binding Message, Source={x:Reference CompanionRoot}}"
                        Style="{StaticResource BodyText}"
                        LineBreakMode="WordWrap" />
-                <!--Two separate features side by side: a canned tip that needs nothing, and the chat (#100).
-                    The row wraps, so on a narrow phone the second button drops under the first-->
-                <FlexLayout Wrap="Wrap" Direction="Row" AlignItems="Start">
-                    <Button Text="Tell me something"
-                            Style="{StaticResource SecondaryAction}"
-                            Margin="0,0,10,8"
-                            Clicked="OnTellMeSomethingClicked" />
-                    <Button Text="Talk to Cub"
-                            Style="{StaticResource SecondaryAction}"
-                            Margin="0,0,10,8"
-                            SemanticProperties.Hint="Opens a chat with Cub"
-                            Clicked="OnTalkToCubClicked" />
-                </FlexLayout>
             </VerticalStackLayout>
+
+            <!--Two separate features side by side: a canned tip that needs nothing, and the chat (#100).
+                The row wraps, so on a narrow phone the second button drops under the first, and the button style wraps a label that
+                is wider than the column, instead of clipping it-->
+            <FlexLayout x:Name="ActionsRow" Grid.Row="1" Grid.Column="1" Wrap="Wrap" Direction="Row" AlignItems="Start">
+                <Button x:Name="TellMeSomethingButton"
+                        Text="Tell me something"
+                        Style="{StaticResource SecondaryAction}"
+                        Margin="0,0,10,8"
+                        Clicked="OnTellMeSomethingClicked" />
+                <Button x:Name="TalkToCubButton"
+                        Text="Talk to Cub"
+                        Style="{StaticResource SecondaryAction}"
+                        Margin="0,0,10,8"
+                        SemanticProperties.Hint="Opens a chat with Cub"
+                        Clicked="OnTalkToCubClicked" />
+            </FlexLayout>
         </Grid>
     </Border>
 

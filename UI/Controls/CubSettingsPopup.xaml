@@ -11,17 +11,17 @@
     <!--Scrolls when the page is too short for everything: a phone in a small window, or at a large font size. The height is capped in the code behind (#176)-->
     <ScrollView x:Name="ContentScroll">
         <VerticalStackLayout Spacing="14" MaximumWidthRequest="360">
-            <Grid ColumnDefinitions="*,Auto" ColumnSpacing="12">
-                <Label Text="Cub's settings" Style="{StaticResource SectionTitle}" VerticalOptions="Center" />
+            <!--A wrapping row: with large text the Close button drops under the title instead of squeezing it-->
+            <FlexLayout Wrap="Wrap" Direction="Row" JustifyContent="SpaceBetween" AlignItems="Center">
+                <Label Text="Cub's settings" Style="{StaticResource SectionTitle}" Margin="0,0,12,0" />
 
                 <!--Tapping outside closes the popup too; the button keeps closing reachable by keyboard and screen readers-->
-                <Button Grid.Column="1"
-                        Text="Close"
+                <Button Text="Close"
                         Style="{StaticResource SecondaryAction}"
                         Padding="14,8"
                         SemanticProperties.Description="Close Cub's settings"
                         Clicked="OnCloseClicked" />
-            </Grid>
+            </FlexLayout>
 
             <Label Text="Your Claude API key" Style="{StaticResource ItemTitle}" />
 
@@ -31,12 +31,12 @@
                 <Border BackgroundColor="{DynamicResource BabyBuddySurfaceAlt}" StrokeShape="RoundRectangle 14" Padding="8,2">
                     <Entry x:Name="KeyEntry"
                            Placeholder="sk-ant-..."
+                           SemanticProperties.Hint="Your Claude API key"
                            BackgroundColor="Transparent"
                            IsSpellCheckEnabled="False"
                            IsTextPredictionEnabled="False"
                            ClearButtonVisibility="WhileEditing"
                            ReturnType="Done"
-                           SemanticProperties.Description="Your Claude API key"
                            TextChanged="OnKeyTextChanged"
                            Completed="OnSaveClicked" />
                 </Border>

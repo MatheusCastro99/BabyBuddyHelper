@@ -16,7 +16,8 @@
                     <Border.GestureRecognizers>
                         <TapGestureRecognizer Tapped="OnVaccineTapped" />
                     </Border.GestureRecognizers>
-                    <Grid ColumnDefinitions="*,Auto,Auto,Auto" RowDefinitions="Auto,Auto" ColumnSpacing="8" RowSpacing="4">
+                    <!--OnVaccineRowSizeChanged moves the status pill under the name when the name's longest word wouldn't fit beside it-->
+                    <Grid ColumnDefinitions="*,Auto,Auto,Auto" RowDefinitions="Auto,Auto" ColumnSpacing="8" RowSpacing="4" SizeChanged="OnVaccineRowSizeChanged">
                         <Label Text="{Binding Name}" Style="{StaticResource ItemTitle}" VerticalOptions="Center" Margin="0,0,4,0" />
     
                         <!--The row tap is pointer/touch only; this button keeps the record reachable by keyboard and screen readers.
@@ -57,14 +58,15 @@
                             <!--Plain status line: a lone label, so the long overdue line can wrap-->
                             <Label Text="{Binding StatusLine}" IsVisible="{Binding HasPlainStatusLine}" Style="{StaticResource BodyText}" />
     
-                            <!--Due soon: the date first, then the pill. The text here is always a short "Next dose: ..." line, so a horizontal stack is safe-->
-                            <HorizontalStackLayout IsVisible="{Binding IsDueSoon}" Spacing="8">
-                                <Label Text="{Binding StatusLine}" Style="{StaticResource BodyText}" VerticalOptions="Center" />
+                            <!--Due soon: the date first, then the pill. A wrapping row: with large text or a narrow phone the pill drops under the date
+                                instead of squeezing it-->
+                            <FlexLayout IsVisible="{Binding IsDueSoon}" Wrap="Wrap" Direction="Row" AlignItems="Center">
+                                <Label Text="{Binding StatusLine}" Style="{StaticResource BodyText}" Margin="0,2,8,2" />
     
-                                <Border Style="{StaticResource DueTag}">
+                                <Border Style="{StaticResource DueTag}" Margin="0,2">
                                     <Label Text="Due soon" Style="{StaticResource DueTagText}" />
                                 </Border>
-                            </HorizontalStackLayout>
+                            </FlexLayout>
     
                             <Label Text="{Binding Description}" Style="{StaticResource BodyText}" />
                         </VerticalStackLayout>
@@ -81,7 +83,7 @@
                 <Border BackgroundColor="{DynamicResource BabyBuddySurface}" StrokeThickness="0" Padding="20">
                     <Grid ColumnDefinitions="*,Auto" ColumnSpacing="12">
                         <VerticalStackLayout Spacing="6">
-                            <Label Text="{Binding Name}" Style="{StaticResource PageTitle}" SemanticProperties.HeadingLevel="Level1" />
+                            <Label Text="{Binding Name}" Style="{StaticResource PageTitle}" />
                             <Label Text="{Binding AgeText}" Style="{StaticResource BodyText}" />
                         </VerticalStackLayout>
 
@@ -104,7 +106,7 @@
                             <Border Grid.Column="0" Padding="16" BackgroundColor="{DynamicResource BabyBuddySurfaceAlt}" StrokeThickness="0" StrokeShape="RoundRectangle 22">
                                 <VerticalStackLayout Spacing="4">
                                     <Label Text="Weight" Style="{StaticResource CaptionText}" />
-                                    <Label Text="{Binding WeightInLbs, StringFormat='{}{0:F1} lbs'}" Style="{StaticResource SectionTitle}" />
+                                    <Label Text="{Binding WeightInLbs, StringFormat='{}{0:F1} lbs'}" Style="{StaticResource SectionTitle}" SemanticProperties.HeadingLevel="None" />
                                     <Label x:Name="WeightUpdatedLabel" Style="{StaticResource CaptionText}" IsVisible="False" />
                                 </VerticalStackLayout>
                             </Border>
@@ -112,7 +114,7 @@
                             <Border Grid.Column="1" Padding="16" BackgroundColor="{DynamicResource BabyBuddySurfaceAlt}" StrokeThickness="0" StrokeShape="RoundRectangle 22">
                                 <VerticalStackLayout Spacing="4">
                                     <Label Text="Height" Style="{StaticResource CaptionText}" />
-                                    <Label Text="{Binding HeightInFt, StringFormat='{}{0:F1} ft'}" Style="{StaticResource SectionTitle}" />
+                                    <Label Text="{Binding HeightInFt, StringFormat='{}{0:F1} ft'}" Style="{StaticResource SectionTitle}" SemanticProperties.HeadingLevel="None" />
                                     <Label x:Name="HeightUpdatedLabel" Style="{StaticResource CaptionText}" IsVisible="False" />
                                 </VerticalStackLayout>
                             </Border>
@@ -128,14 +130,14 @@
                             <Border Grid.Column="0" Padding="16" BackgroundColor="{DynamicResource BabyBuddySurfaceAlt}" StrokeThickness="0" StrokeShape="RoundRectangle 22">
                                 <VerticalStackLayout Spacing="4">
                                     <Label Text="Last feed" Style="{StaticResource CaptionText}" />
-                                    <Label Text="{Binding LastFeed, StringFormat='{}{0:MMM d, h:mm tt}'}" Style="{StaticResource SectionTitle}" />
+                                    <Label Text="{Binding LastFeed, StringFormat='{}{0:MMM d, h:mm tt}'}" Style="{StaticResource SectionTitle}" SemanticProperties.HeadingLevel="None" />
                                 </VerticalStackLayout>
                             </Border>
 
                             <Border Grid.Column="1" Padding="16" BackgroundColor="{DynamicResource BabyBuddySurfaceAlt}" StrokeThickness="0" StrokeShape="RoundRectangle 22">
                                 <VerticalStackLayout Spacing="4">
                                     <Label Text="Last sleep" Style="{StaticResource CaptionText}" />
-                                    <Label Text="{Binding LastSleep, StringFormat='{}{0:MMM d, h:mm tt}'}" Style="{StaticResource SectionTitle}" />
+                                    <Label Text="{Binding LastSleep, StringFormat='{}{0:MMM d, h:mm tt}'}" Style="{StaticResource SectionTitle}" SemanticProperties.HeadingLevel="None" />
                                 </VerticalStackLayout>
                             </Border>
                         </Grid>

@@ -146,7 +146,7 @@ namespace BabyBuddyHelper.UI.Services
 
         /// <summary>
         /// Raises a toast request, picking one message at random from the
-        /// pool associated with <paramref name="kind"/>.
+        /// pool associated with <paramref name="kind"/>, and announces it to a screen reader.
         /// </summary>
         public static void Show(ToastKind kind)
         {
@@ -154,6 +154,9 @@ namespace BabyBuddyHelper.UI.Services
             var message = pool[Random.Shared.Next(pool.Length)];
 
             ToastRequested?.Invoke(null, new ToastRequestedEventArgs(kind, message));
+
+            //The toast is a visual moment, so a screen reader is told as well: this is the one place every toast passes through
+            MainThread.BeginInvokeOnMainThread(() => SemanticScreenReader.Announce(message));
         }
     }
 

@@ -27,7 +27,7 @@
                     VerticalOptions="Center"
                     StrokeShape="RoundRectangle 20">
                 <controls:CubView x:Name="Cub"
-                                  SemanticProperties.Description="Cub, your companion" />
+                                  AutomationProperties.IsInAccessibleTree="False" />
             </Border>
 
             <Label Grid.Column="1"

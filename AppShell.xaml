@@ -11,7 +11,7 @@
     Shell.TabBarBackgroundColor="{DynamicResource BabyBuddySurface}"
     Shell.TabBarForegroundColor="{DynamicResource BabyBuddyText}"
     Shell.TabBarTitleColor="{DynamicResource BabyBuddyText}"
-    Shell.TabBarUnselectedColor="{StaticResource Gray400}">
+    Shell.TabBarUnselectedColor="{DynamicResource BabyBuddyMuted}">
     
     <TabBar >
         <ShellContent

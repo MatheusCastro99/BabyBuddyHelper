@@ -20,7 +20,7 @@
                 <Border BackgroundColor="{DynamicResource BabyBuddySurface}" StrokeThickness="0" Padding="18" StrokeShape="RoundRectangle 24">
                     <VerticalStackLayout Spacing="18">
                         <Label Text="Task Details" Style="{StaticResource SectionTitle}" />
-                        <Entry x:Name="TaskNameEntry" Placeholder="Task name" TextColor="Gray">
+                        <Entry x:Name="TaskNameEntry" Placeholder="Task name" TextColor="{DynamicResource BabyBuddyText}">
                             <Entry.Keyboard>
                                 <Keyboard x:FactoryMethod="Create">
                                     <x:Arguments>
@@ -29,7 +29,7 @@
                                 </Keyboard>
                             </Entry.Keyboard>
                         </Entry>
-                        <Entry x:Name="DescriptionEntry" Placeholder="Description" TextColor="Gray">
+                        <Entry x:Name="DescriptionEntry" Placeholder="Description" TextColor="{DynamicResource BabyBuddyText}">
                             <Entry.Keyboard>
                                 <Keyboard x:FactoryMethod="Create">
                                     <x:Arguments>
@@ -39,7 +39,7 @@
                             </Entry.Keyboard>
                         </Entry>
                         
-                        <Label Text="Baby (optional)" Style="{StaticResource SectionTitle}" />
+                        <Label Text="Baby (optional)" Style="{StaticResource SectionTitle}" SemanticProperties.HeadingLevel="None" />
                         <Button x:Name="BabyProfileSelectionButton"
                                 Text="Unassigned"
                                 Style="{StaticResource SecondaryAction}"
@@ -47,36 +47,40 @@
                                 Clicked="OnSelectBabyProfileClicked" />
 
                         <Grid ColumnDefinitions="*,Auto,Auto,Auto" ColumnSpacing="12">
-                            <Label Text="Priority" Style="{StaticResource SectionTitle}" VerticalOptions="Center" />
+                            <Label Text="Priority" Style="{StaticResource SectionTitle}" SemanticProperties.HeadingLevel="None" VerticalOptions="Center" />
                             <Button x:Name="PriorityDecreaseButton" Grid.Column="1" Text="−" Style="{StaticResource CounterButton}" SemanticProperties.Description="Lower priority" Clicked="OnPriorityDecreaseClicked" />
                             <Label x:Name="PriorityLabel" Grid.Column="2" Style="{StaticResource ItemTitle}" MinimumWidthRequest="24" HorizontalTextAlignment="Center" VerticalOptions="Center" />
                             <Button x:Name="PriorityIncreaseButton" Grid.Column="3" Text="+" Style="{StaticResource CounterButton}" SemanticProperties.Description="Raise priority" Clicked="OnPriorityIncreaseClicked" />
                         </Grid>
 
-                        <HorizontalStackLayout Spacing="12" VerticalOptions="Center">
-                            <Label Text="Appointment" VerticalOptions="Center" Style="{StaticResource SectionTitle}" />
-                            <CheckBox x:Name="IsAppointmentCheckBox" />
-                        </HorizontalStackLayout>
+                        <FlexLayout Wrap="Wrap" Direction="Row" AlignItems="Center">
+                            <Label Text="Appointment" Style="{StaticResource SectionTitle}" SemanticProperties.HeadingLevel="None" AutomationProperties.IsInAccessibleTree="False" Margin="0,0,12,0" />
+                            <CheckBox x:Name="IsAppointmentCheckBox" SemanticProperties.Description="Appointment" />
+                        </FlexLayout>
 
                         <StackLayout IsVisible="{Binding Source={x:Reference IsAppointmentCheckBox}, Path=IsChecked}" Spacing="12" Margin="0,8,0,0">
-                            <Label Text="Date" Style="{StaticResource SectionTitle}" />
+                            <Label Text="Date" Style="{StaticResource SectionTitle}" SemanticProperties.HeadingLevel="None" />
                             <Border BackgroundColor="{DynamicResource BabyBuddySurfaceAlt}" Stroke="{DynamicResource BabyBuddyBorder}" StrokeShape="RoundRectangle 12" Padding="10,8">
-                                <DatePicker x:Name="DateEntry" MinimumDate="01/01/2025" HeightRequest="48" TextColor="{DynamicResource BabyBuddyText}" />
+                                <DatePicker x:Name="DateEntry" SemanticProperties.Hint="Appointment date" MinimumDate="01/01/2025" MinimumHeightRequest="48" TextColor="{DynamicResource BabyBuddyText}" />
                             </Border>
 
-                            <Grid ColumnDefinitions="*,*" ColumnSpacing="12" RowDefinitions="Auto,Auto" RowSpacing="6">
-                                <Label Grid.Row="0" Grid.Column="0" Text="Start" Style="{StaticResource BodyText}" HorizontalTextAlignment="Center" />
-                                <Label Grid.Row="0" Grid.Column="1" Text="End" Style="{StaticResource BodyText}" HorizontalTextAlignment="Center" />
-
-                                <Border Grid.Row="1" Grid.Column="0" BackgroundColor="{DynamicResource BabyBuddySurfaceAlt}" Stroke="{DynamicResource BabyBuddyBorder}" StrokeShape="RoundRectangle 12" Padding="10,8">
-                                    <TimePicker x:Name="StartingTimeEntry" HeightRequest="48" HorizontalOptions="Center" BackgroundColor="Transparent" TextColor="{DynamicResource BabyBuddyText}" />
-                                </Border>
-                                <Border Grid.Row="1" Grid.Column="1" BackgroundColor="{DynamicResource BabyBuddySurfaceAlt}" Stroke="{DynamicResource BabyBuddyBorder}" StrokeShape="RoundRectangle 12" Padding="10,8">
-                                    <TimePicker x:Name="EndingTimeEntry" HeightRequest="48" HorizontalOptions="Center" BackgroundColor="Transparent" TextColor="{DynamicResource BabyBuddyText}" />
-                                </Border>
+                            <!--Start and End side by side, or one above the other when a time is too wide for its half (large text): OnPairSizeChanged-->
+                            <Grid ColumnDefinitions="*,*" ColumnSpacing="12" SizeChanged="OnPairSizeChanged">
+                                <VerticalStackLayout Spacing="6">
+                                    <Label Text="Start" Style="{StaticResource BodyText}" HorizontalTextAlignment="Center" />
+                                    <Border BackgroundColor="{DynamicResource BabyBuddySurfaceAlt}" Stroke="{DynamicResource BabyBuddyBorder}" StrokeShape="RoundRectangle 12" Padding="10,8">
+                                        <TimePicker x:Name="StartingTimeEntry" SemanticProperties.Hint="Start time" MinimumHeightRequest="48" HorizontalOptions="Center" BackgroundColor="Transparent" TextColor="{DynamicResource BabyBuddyText}" />
+                                    </Border>
+                                </VerticalStackLayout>
+                                <VerticalStackLayout Spacing="6">
+                                    <Label Text="End" Style="{StaticResource BodyText}" HorizontalTextAlignment="Center" />
+                                    <Border BackgroundColor="{DynamicResource BabyBuddySurfaceAlt}" Stroke="{DynamicResource BabyBuddyBorder}" StrokeShape="RoundRectangle 12" Padding="10,8">
+                                        <TimePicker x:Name="EndingTimeEntry" SemanticProperties.Hint="End time" MinimumHeightRequest="48" HorizontalOptions="Center" BackgroundColor="Transparent" TextColor="{DynamicResource BabyBuddyText}" />
+                                    </Border>
+                                </VerticalStackLayout>
                             </Grid>
 
-                            <Label Text="Location" Style="{StaticResource SectionTitle}" />
+                            <Label Text="Location" Style="{StaticResource SectionTitle}" SemanticProperties.HeadingLevel="None" />
                             <Border BackgroundColor="{DynamicResource BabyBuddySurfaceAlt}" Stroke="{DynamicResource BabyBuddyBorder}" StrokeShape="RoundRectangle 12" Padding="10,8">
                                 <!--The global Entry style fills with Surface, which shows as a lighter patch inside this SurfaceAlt border-->
                                 <Entry x:Name="LocationEntry" Placeholder="Location" BackgroundColor="Transparent" TextColor="{DynamicResource BabyBuddyText}">

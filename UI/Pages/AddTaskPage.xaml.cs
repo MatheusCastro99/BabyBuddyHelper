@@ -110,6 +110,15 @@ public partial class AddTaskPage : ContentPage
         }
     }
 
+    //Two-cell form rows stack when a cell is too wide for its half of the row (large text)
+    private void OnPairSizeChanged(object? sender, EventArgs e)
+    {
+        if (sender is Grid grid)
+        {
+            CrowdedGrid.LayOut(grid);
+        }
+    }
+
     private async void OnCancelClicked(object? sender, EventArgs e) //Exits page without saving anything
     {
         await Navigation.PopModalAsync();
