@@ -231,7 +231,7 @@ Should answer:
 
 Checklist items should be easy to scan, easy to complete, and visually calm.
 
-Edit and delete are 48x48 icon buttons with screen-reader labels. Deleting a task or appointment asks first.
+Edit and delete are 48x48 icon buttons with screen-reader labels. Deleting a task or appointment asks first. On a narrow card (a phone: less than 280 dp left for the title with all three beside it) the done box stays beside the title and edit and delete move onto the priority chip row, right-aligned with an 8 dp gap; on a wide card (a Windows window) all three sit beside the title. With large text, whatever sits beside the title drops under it when a word would not fit.
 
 The filter row (two switches and the baby button) wraps instead of using fixed columns, so no switch draws over the next label at any width. On Windows a handler (`WinUITapTargets`) sizes every native switch and checkbox to a 49x49 DIP hit area, one over the 48 minimum so pixel snapping at fractional display scales can not take it under, and centres the checkbox glyph.
 
@@ -465,7 +465,7 @@ Avoid:
 
 What the app does today:
 
-- Text scales to 200% at 360 dp without clipping, truncating or breaking a word mid-word. Rows wrap, and a layout moves a part aside when a word would not fit: Home tiles become rows, the Add profile button and the Cub card buttons take their own row, a vaccine pill drops under its name, a task card puts its buttons on a row under the text, and two-cell form rows stack. The chat page scrolls when the card, the message box and the disclaimer together are taller than the screen.
+- Text scales to 200% at 360 dp without clipping, truncating or breaking a word mid-word. Rows wrap, and a layout moves a part aside when a word would not fit: Home tiles become rows, the Add profile button and the Cub card buttons take their own row, a vaccine pill drops under its name, a task card moves what sits beside the title (the done box on a phone) to a row under the text, and two-cell form rows stack. The chat page scrolls when the card, the message box and the disclaimer together are taller than the screen.
 - Every control has a spoken name. Buttons, switches and check boxes use Description; Entry, Editor and pickers use Placeholder or Hint, never Description, which stops TalkBack actions on Android. A visible label that repeats its control's name is hidden from the screen reader so it is not read twice.
 - Page titles are headings (Level1) and section titles Level2; a label that only borrows the look sets HeadingLevel to None.
 - Cub, the tile emoji and the palette symbols are decorative and out of the accessibility tree.
