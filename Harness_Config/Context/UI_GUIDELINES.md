@@ -465,7 +465,7 @@ Avoid:
 
 What the app does today:
 
-- Text scales to 200% at 360 dp without clipping, truncating or breaking a word mid-word. Rows wrap, and a layout moves a part aside when a word would not fit: Home tiles become rows, the Add profile button and the Cub card buttons take their own row, a vaccine pill drops under its name, a task card puts its buttons on a row under the text, and two-cell form rows stack. The chat page scrolls when the card, the message box and the disclaimer together are taller than the screen.
+- Text scales to 200% at 360 dp without clipping, truncating or breaking a word mid-word. Rows wrap, and a layout moves a part aside when a word would not fit: Home tiles become rows, the Add profile button and the Cub card buttons take their own row, a vaccine pill drops under its name, a task card moves what sits beside the title (the done box on a phone) to a row under the text, and two-cell form rows stack. The chat page scrolls when the card, the message box and the disclaimer together are taller than the screen.
 - Every control has a spoken name. Buttons, switches and check boxes use Description; Entry, Editor and pickers use Placeholder or Hint, never Description, which stops TalkBack actions on Android. A visible label that repeats its control's name is hidden from the screen reader so it is not read twice.
 - Page titles are headings (Level1) and section titles Level2; a label that only borrows the look sets HeadingLevel to None.
 - Cub, the tile emoji and the palette symbols are decorative and out of the accessibility tree.

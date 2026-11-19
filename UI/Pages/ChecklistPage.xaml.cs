@@ -147,7 +147,6 @@ public partial class ChecklistPage : ContentPage
         VerticalStackLayout text = row.Children.OfType<VerticalStackLayout>().First();
         CheckBox done = row.Children.OfType<CheckBox>().First();
         Grid editDelete = row.Children.OfType<Grid>().First();
-        Border chip = row.Children.OfType<Border>().First();
         Label name = ((FlexLayout)text.Children[0]).Children.OfType<Label>().First();
         Label description = text.Children.OfType<Label>().First();
 
