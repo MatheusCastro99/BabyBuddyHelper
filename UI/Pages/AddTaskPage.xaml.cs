@@ -3,6 +3,7 @@ using BabyBuddyHelper.Core.Interfaces.Baby;
 using BabyBuddyHelper.Core.Interfaces.TaskList;
 using BabyBuddyHelper.Core.Models.TaskList;
 using BabyBuddyHelper.UI.Services;
+using Microsoft.Maui.Controls.PlatformConfiguration.AndroidSpecific;
 using System.Diagnostics;
 
 namespace BabyBuddyHelper.UI.Pages;
@@ -11,6 +12,10 @@ public partial class AddTaskPage : ContentPage
 {
     private readonly ITaskListService _taskListService;
     private readonly IBabyFilterService _babyFilterService;
+    private const int MinPriority = 1;
+    private const int MaxPriority = 10;
+    private const int DefaultPriority = 5;
+    private int _priority = DefaultPriority;
     private Guid? _selectedAssociatedBabyId;
     TaskModel? taskOnEdit;
     AppointmentModel? appointmentOnEdit;
@@ -24,6 +29,7 @@ public partial class AddTaskPage : ContentPage
         this._taskListService = taskListService;
         this._babyFilterService = babyFilterService;
         InitializeBabyProfilePicker();
+        RefreshPriorityState();
 
         if (!(dateTime is null)) //Determines which Page modal is being called from.
         {                        //If it's from CalendarPage, fill information from time cell clicked
@@ -73,23 +79,43 @@ public partial class AddTaskPage : ContentPage
 
         TaskNameEntry.Text = taskToEdit.TaskName;
         DescriptionEntry.Text = taskToEdit.TaskDescription;
-        PriorityStepper.Value = taskToEdit.TaskPriority;
+        _priority = Math.Clamp(taskToEdit.TaskPriority, MinPriority, MaxPriority);
+        RefreshPriorityState();
         InitializeBabyProfilePicker(taskToEdit.AssociatedBabyId);
+    }
+
+    //Shows the priority and dims the button that can't go further (1 and 10)
+    private void RefreshPriorityState()
+    {
+        PriorityLabel.Text = _priority.ToString();
+        PriorityDecreaseButton.IsEnabled = _priority > MinPriority;
+        PriorityIncreaseButton.IsEnabled = _priority < MaxPriority;
     }
 
     private void OnPriorityDecreaseClicked(object? sender, EventArgs e)
     {
-        if (PriorityStepper.Value > PriorityStepper.Minimum)
+        if (_priority > MinPriority)
         {
-            PriorityStepper.Value -= 1;
+            _priority--;
+            RefreshPriorityState();
         }
     }
 
     private void OnPriorityIncreaseClicked(object? sender, EventArgs e)
     {
-        if (PriorityStepper.Value < PriorityStepper.Maximum)
+        if (_priority < MaxPriority)
         {
-            PriorityStepper.Value += 1;
+            _priority++;
+            RefreshPriorityState();
+        }
+    }
+
+    //Two-cell form rows stack when a cell is too wide for its half of the row (large text)
+    private void OnPairSizeChanged(object? sender, EventArgs e)
+    {
+        if (sender is Grid grid)
+        {
+            CrowdedGrid.LayOut(grid);
         }
     }
 
@@ -135,7 +161,7 @@ public partial class AddTaskPage : ContentPage
     //Single place where form controls are turned into a model. Passing existingTask preserves identity and completion state while editing.
     private TaskModel BuildTaskFromForm(TaskModel? existingTask = null)
     {
-        int priority = Convert.ToInt32(PriorityStepper.Value);
+        int priority = _priority;
         //An Entry that was never touched returns null, and the database columns are NOT NULL
         string taskName = TaskNameEntry.Text ?? string.Empty;
         string taskDescription = DescriptionEntry.Text ?? string.Empty;
@@ -239,4 +265,23 @@ public partial class AddTaskPage : ContentPage
 
         return true;
     }
+
+    //Android only. The app default pans the whole window for the keyboard, which leaves Cancel and Save behind it. While the form is
+    //showing, the page resizes above the keyboard instead (as on ChatPage), so the pinned Cancel/Save row stays in view (#176)
+    protected override void OnAppearing()
+    {
+        base.OnAppearing();
+
+        SetSoftInputMode(WindowSoftInputModeAdjust.Resize);
+    }
+
+    protected override void OnDisappearing()
+    {
+        base.OnDisappearing();
+
+        SetSoftInputMode(WindowSoftInputModeAdjust.Pan);
+    }
+
+    private static void SetSoftInputMode(WindowSoftInputModeAdjust mode) =>
+        Microsoft.Maui.Controls.Application.Current?.On<Microsoft.Maui.Controls.PlatformConfiguration.Android>().UseWindowSoftInputModeAdjust(mode);
 }

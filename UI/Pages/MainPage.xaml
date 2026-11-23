@@ -18,42 +18,52 @@
         <ScrollView>
             <VerticalStackLayout Padding="20" Spacing="18">
                 <Border BackgroundColor="{DynamicResource BabyBuddySurface}" StrokeThickness="0" Padding="20" Margin="0,8,0,0">
-                    <VerticalStackLayout Spacing="8">
-                        <Label Text="Good morning" Style="{StaticResource BodyText}" FontAttributes="Bold" />
-                        <Label Text="{Binding CountdownText}" Style="{StaticResource PageTitle}" />
-                        <Label Text="Your little routine is looking calm and steady today." Style="{StaticResource BodyText}" />
-                    </VerticalStackLayout>
+                    <!--The palette switch sits at the top right, beside the greeting line only, so the title and the sentence below keep the full width.
+                        Windows keeps it on the tab row footer instead (ShellTabBarFooter)-->
+                    <Grid ColumnDefinitions="*,Auto" RowDefinitions="Auto,Auto,Auto" RowSpacing="8">
+                        <Label Grid.Row="0" Text="Good morning" Style="{StaticResource BodyText}" FontAttributes="Bold" VerticalOptions="Center" />
+                        <controls:PaletteSwitchView Grid.Row="0" Grid.Column="1"
+                                                    Padding="0"
+                                                    HorizontalOptions="End"
+                                                    IsVisible="{OnPlatform Default=True, WinUI=False}" />
+                        <!--PageTitle wraps rather than truncating, so the headline stays whole at phone width and large text-->
+                        <Label Grid.Row="1" Grid.ColumnSpan="2" Text="{Binding CountdownText}" Style="{StaticResource PageTitle}" />
+                        <Label Grid.Row="2" Grid.ColumnSpan="2" Text="Your little routine is looking calm and steady today." Style="{StaticResource BodyText}" />
+                    </Grid>
                 </Border>
 
-                <Grid ColumnDefinitions="*,*,*" ColumnSpacing="14">
-                    <Border Grid.Column="0" Padding="16" BackgroundColor="{DynamicResource BabyBuddySurfaceAlt}" StrokeThickness="0" StrokeShape="RoundRectangle 22">
-                        <VerticalStackLayout Spacing="8">
-                            <Border BackgroundColor="{DynamicResource BabyBuddySecondary}" StrokeThickness="0" Padding="8,6" HorizontalOptions="Center" StrokeShape="RoundRectangle 12">
-                                <Label Text="🗓️" FontSize="22" HorizontalOptions="Center" />
+                <!--Three tiles across while each title fits its column; three full-width rows (emoji left, title and value right) when one
+                    wouldn't, e.g. a narrow phone or large text, so a title never breaks mid-word (#177). LayOutSummaryTiles decides, from the
+                    grid's width and the titles' natural width, and runs again whenever the width changes-->
+                <Grid x:Name="SummaryTiles" ColumnDefinitions="*,*,*" ColumnSpacing="14" SizeChanged="OnSummaryTilesSizeChanged">
+                    <Border x:Name="WeekTile" Grid.Column="0" Padding="16" BackgroundColor="{DynamicResource BabyBuddySurfaceAlt}" StrokeThickness="0" StrokeShape="RoundRectangle 22">
+                        <Grid x:Name="WeekTileBody" ColumnDefinitions="Auto,*" RowDefinitions="Auto,Auto,Auto" RowSpacing="8">
+                            <Border x:Name="WeekIcon" Grid.ColumnSpan="2" BackgroundColor="{DynamicResource BabyBuddySecondary}" StrokeThickness="0" Padding="8,6" HorizontalOptions="Center" StrokeShape="RoundRectangle 12">
+                                <Label Text="🗓️" FontSize="22" HorizontalOptions="Center" AutomationProperties.IsInAccessibleTree="False" />
                             </Border>
-                            <Label Text="This Week" Style="{StaticResource SectionTitle}" HorizontalTextAlignment="Center" />
-                            <Label Text="{Binding WeeklyAppointmentText}" Style="{StaticResource BodyText}" HorizontalTextAlignment="Center" />
-                        </VerticalStackLayout>
+                            <Label x:Name="WeekTitle" Grid.Row="1" Grid.ColumnSpan="2" Text="Week" Style="{StaticResource SectionTitle}" SemanticProperties.HeadingLevel="None" HorizontalTextAlignment="Center" />
+                            <Label x:Name="WeekValue" Grid.Row="2" Grid.ColumnSpan="2" Text="{Binding WeeklyAppointmentText}" Style="{StaticResource BodyText}" HorizontalTextAlignment="Center" />
+                        </Grid>
                     </Border>
 
-                    <Border Grid.Column="1" Padding="16" BackgroundColor="{DynamicResource BabyBuddySurfaceAlt}" StrokeThickness="0" StrokeShape="RoundRectangle 22">
-                        <VerticalStackLayout Spacing="8">
-                            <Border BackgroundColor="{DynamicResource BabyBuddySuccess}" StrokeThickness="0" Padding="8,6" HorizontalOptions="Center" StrokeShape="RoundRectangle 12">
-                                <Label Text="✅" FontSize="22" HorizontalOptions="Center" />
+                    <Border x:Name="TasksTile" Grid.Column="1" Padding="16" BackgroundColor="{DynamicResource BabyBuddySurfaceAlt}" StrokeThickness="0" StrokeShape="RoundRectangle 22">
+                        <Grid x:Name="TasksTileBody" ColumnDefinitions="Auto,*" RowDefinitions="Auto,Auto,Auto" RowSpacing="8">
+                            <Border x:Name="TasksIcon" Grid.ColumnSpan="2" BackgroundColor="{DynamicResource BabyBuddySuccess}" StrokeThickness="0" Padding="8,6" HorizontalOptions="Center" StrokeShape="RoundRectangle 12">
+                                <Label Text="✅" FontSize="22" HorizontalOptions="Center" AutomationProperties.IsInAccessibleTree="False" />
                             </Border>
-                            <Label Text="Checklist" Style="{StaticResource SectionTitle}" HorizontalTextAlignment="Center" />
-                            <Label Text="{Binding CompletedTaskText}" Style="{StaticResource BodyText}" HorizontalTextAlignment="Center" />
-                        </VerticalStackLayout>
+                            <Label x:Name="TasksTitle" Grid.Row="1" Grid.ColumnSpan="2" Text="Tasks" Style="{StaticResource SectionTitle}" SemanticProperties.HeadingLevel="None" HorizontalTextAlignment="Center" />
+                            <Label x:Name="TasksValue" Grid.Row="2" Grid.ColumnSpan="2" Text="{Binding CompletedTaskText}" Style="{StaticResource BodyText}" HorizontalTextAlignment="Center" />
+                        </Grid>
                     </Border>
 
-                    <Border Grid.Column="2" Padding="16" BackgroundColor="{DynamicResource BabyBuddySurfaceAlt}" StrokeThickness="0" StrokeShape="RoundRectangle 22">
-                        <VerticalStackLayout Spacing="8">
-                            <Border BackgroundColor="{DynamicResource BabyBuddyWarm}" StrokeThickness="0" Padding="8,6" HorizontalOptions="Center" StrokeShape="RoundRectangle 12">
-                                <Label Text="🧸" FontSize="22" HorizontalOptions="Center" />
+                    <Border x:Name="BabiesTile" Grid.Column="2" Padding="16" BackgroundColor="{DynamicResource BabyBuddySurfaceAlt}" StrokeThickness="0" StrokeShape="RoundRectangle 22">
+                        <Grid x:Name="BabiesTileBody" ColumnDefinitions="Auto,*" RowDefinitions="Auto,Auto,Auto" RowSpacing="8">
+                            <Border x:Name="BabiesIcon" Grid.ColumnSpan="2" BackgroundColor="{DynamicResource BabyBuddyWarm}" StrokeThickness="0" Padding="8,6" HorizontalOptions="Center" StrokeShape="RoundRectangle 12">
+                                <Label Text="🧸" FontSize="22" HorizontalOptions="Center" AutomationProperties.IsInAccessibleTree="False" />
                             </Border>
-                            <Label Text="Profiles" Style="{StaticResource SectionTitle}" HorizontalTextAlignment="Center" />
-                            <Label Text="{Binding ProfileCountText}" Style="{StaticResource BodyText}" HorizontalTextAlignment="Center" />
-                        </VerticalStackLayout>
+                            <Label x:Name="BabiesTitle" Grid.Row="1" Grid.ColumnSpan="2" Text="Babies" Style="{StaticResource SectionTitle}" SemanticProperties.HeadingLevel="None" HorizontalTextAlignment="Center" />
+                            <Label x:Name="BabiesValue" Grid.Row="2" Grid.ColumnSpan="2" Text="{Binding ProfileCountText}" Style="{StaticResource BodyText}" HorizontalTextAlignment="Center" />
+                        </Grid>
                     </Border>
                 </Grid>
 
@@ -61,13 +71,16 @@
 
                 <Border BackgroundColor="{DynamicResource BabyBuddySurface}" StrokeThickness="0" Padding="18">
                     <VerticalStackLayout Spacing="16">
-                        <Grid ColumnDefinitions="*,Auto" ColumnSpacing="12">
-                            <VerticalStackLayout Spacing="4">
-                                <Label Text="Baby profiles" Style="{StaticResource SectionTitle}" />
-                                <Label Text="Keep each little routine close and easy to update." Style="{StaticResource BodyText}" />
+                        <!--Title and subtitle on the left, Add profile on the right. When the text column beside the button is too narrow (large text), the
+                            button drops under the subtitle instead (LayOutProfilesHeader). The grid is always two columns by two rows; only where the cells sit changes-->
+                        <Grid x:Name="ProfilesHeader" ColumnDefinitions="*,Auto" RowDefinitions="Auto,Auto" ColumnSpacing="12" SizeChanged="OnProfilesHeaderSizeChanged">
+                            <VerticalStackLayout x:Name="ProfilesHeaderText" Spacing="4">
+                                <Label x:Name="ProfilesTitle" Text="Baby profiles" Style="{StaticResource SectionTitle}" />
+                                <Label x:Name="ProfilesSubtitle" Text="Keep each little routine close and easy to update." Style="{StaticResource BodyText}" />
                             </VerticalStackLayout>
 
-                            <Button Grid.Column="1"
+                            <Button x:Name="AddProfileButton"
+                                    Grid.Column="1"
                                     Text="Add profile"
                                     Style="{StaticResource PrimaryAction}"
                                     Padding="14,10"
@@ -83,7 +96,8 @@
                                    Style="{StaticResource BodyText}" />
                         </Border>
 
-                        <CollectionView ItemsSource="{Binding BabyProfiles}"
+                        <CollectionView x:Name="BabyList"
+                                        ItemsSource="{Binding BabyProfiles}"
                                         IsVisible="{Binding HasBabyProfiles}"
                                         SelectionMode="None">
                             <CollectionView.ItemTemplate>
@@ -100,7 +114,7 @@
                                         <VerticalStackLayout Spacing="12">
                                             <Grid ColumnDefinitions="*,Auto" ColumnSpacing="12">
                                                 <VerticalStackLayout Spacing="4">
-                                                    <Label Text="{Binding Name}" Style="{StaticResource SectionTitle}" />
+                                                    <Label Text="{Binding Name}" Style="{StaticResource SectionTitle}" SemanticProperties.HeadingLevel="None" />
                                                     <Label Text="{Binding AgeText}" Style="{StaticResource BodyText}" />
 
                                                     <!--Vaccines due today or within the next two weeks (#81). Hidden when nothing is due; overdue stays on the profile.

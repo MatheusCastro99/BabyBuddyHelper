@@ -211,6 +211,10 @@ Should answer:
 
 The dashboard should feel supportive and informative, not overloaded.
 
+On Android the greeting card carries the boy / girl palette switch at its top right, beside the greeting line; on Windows the switch stays on the tab row. The dashboard refreshes when the app comes back from the background, so the countdown, the week count, the ages and the vaccine tags are never a day stale.
+
+The countdown headline wraps instead of truncating, so it is never cut off on a phone. The three stat tiles read Week, Tasks and Babies over one short line: "Nothing planned" or "{n} planned", "None yet" or "{n} done", "None yet", "1 baby" or "{n} babies". The tiles sit side by side; when a title would not fit its column (a narrow phone or large text) they become three full-width rows, emoji on the left. Android phones are locked to portrait: a landscape phone leaves too little height for the lists and forms (#176).
+
 Each baby card can carry one gentle vaccine tag under the age: "Due today: {vaccine}" or "Due soon: {vaccine}". Due today wins over due soon. For several vaccines the tag reads "{label}: N vaccines · check baby profile". Overdue never shows on the dashboard (it stays a gentle reminder on the profile). The tag is spelled out in words, never color alone, and uses the soft blue DueTag style with no alarm styling.
 
 ---
@@ -227,7 +231,11 @@ Should answer:
 
 Checklist items should be easy to scan, easy to complete, and visually calm.
 
-Edit and delete are 44x44 icon buttons with screen-reader labels. Deleting a task or appointment asks first.
+Edit and delete are 48x48 icon buttons with screen-reader labels. Deleting a task or appointment asks first. On a narrow card (a phone: less than 280 dp left for the title with all three beside it) the done box stays beside the title and edit and delete move onto the priority chip row, right-aligned with an 8 dp gap; on a wide card (a Windows window) all three sit beside the title. With large text, whatever sits beside the title drops under it when a word would not fit.
+
+The filter row (two switches and the baby button) wraps instead of using fixed columns, so no switch draws over the next label at any width. On Windows a handler (`WinUITapTargets`) sizes every native switch and checkbox to a 49x49 DIP hit area, one over the 48 minimum so pixel snapping at fractional display scales can not take it under, and centres the checkbox glyph.
+
+The title block and the filter card are the list's header: they scroll away with it, so a short phone gives the cards the whole height, and Add task stays pinned under the list. A task that is not an appointment shows no date row; an appointment without a location shows no separator after the time. The invisible switches keep a near-zero opacity on Android (0.01, not 0) so TalkBack can still reach them.
 
 ---
 
@@ -242,6 +250,8 @@ Should answer:
 - What is available or free?
 
 Calendar views should prioritize readability and schedule awareness without becoming visually heavy.
+
+The baby filter sits on the title row, to the right of the left-aligned title, so the time grid keeps its height on a short phone. On Android one tap on an appointment opens its editor; double tap works everywhere and, on an empty slot, adds a care moment.
 
 ---
 
@@ -259,7 +269,7 @@ The profile is read-only. Editing routes to AddBabyPage (ADR-004), vaccine recor
 
 Under each Growth value that has a date, a CaptionText line reads "Updated {date}" (the year shows only when it isn't this year). A value with no date shows nothing. The wording is neutral, with no staleness styling.
 
-Vaccine status is always spelled out, never shown by color alone. Overdue is a gentle reminder with no alarm styling. A due soon vaccine shows a "Due soon" pill after the "Next dose" date; due today shows "Due today" with no pill. Complete uses Success with PrimaryDarkText because caption text is too faint on green.
+Vaccine status is always spelled out, never shown by color alone. Overdue is a gentle reminder with no alarm styling. A due soon vaccine shows a "Due soon" pill after the "Next dose" date; due today shows "Due today" with no pill. Complete uses Success with PrimaryDarkText because caption text is too faint on green. A due soon row's date and pill wrap onto the next line, and a vaccine row whose name would break mid-word moves its status pill under the name.
 
 Seasonal vaccines (flu, COVID-19) sit in their own sub-section inside the Vaccines card, below the routine list, with the same row layout. They are never complete, so their pill reads "Not started", a green "Current" (same Success styling as Complete), or "Last: {date}". "Current" is a date rule (a shot in the last 12 months, next dose not due yet), so a caption above "Last reviewed" says it doesn't mean the baby is up to date and points to the pediatrician.
 
@@ -277,7 +287,7 @@ Should answer:
 
 With no key saved, the page shows a gentle setup state, never an error. The chat looks like the rest of the app (cards, Cub, warm copy), not an AI console.
 
-Cub's card reads "Cub – is talking about: [picker]" over its tagline, "Here for everyday tips and a kind word." The picker offers "General advice" (the default) or one baby by name, and its screen-reader text is "Which baby Cub can know about". When that first line doesn't fit (a phone), the picker moves onto its own line under it. Without a key there is nothing to pick, so the first line is just "Cub". The parent's messages are on the right (BabyBuddySecondary, RoundRectangle 18,18,18,6) and Cub's replies on the left (BabyBuddySurface, RoundRectangle 18,18,6,18), both in PrimaryDarkText, with 16 of space between messages; screen readers hear "You said: …" and "Cub said: …". While a reply is on its way, "Cub is thinking…" shows on the left and Send waits.
+Cub's card reads "Cub – is talking about: [picker]" over its tagline, "Here for everyday tips and a kind word." The picker offers "General advice" (the default) or one baby by name, and its screen-reader text is "Which baby Cub can know about". When that first line doesn't fit (a phone), the picker moves onto its own line under it, and a name longer than the line is cut short inside the picker instead of running past the card. With large text, when the picker alone is wider than the space beside Cub and the gear, the whole line moves under them across the card. The page scrolls when the card, the message box and the disclaimer together are taller than the screen. Without a key there is nothing to pick, so the first line is just "Cub". The parent's messages are on the right (BabyBuddySecondary, RoundRectangle 18,18,18,6) and Cub's replies on the left (BabyBuddySurface, RoundRectangle 18,18,6,18), both in PrimaryDarkText, with 16 of space between messages; screen readers hear "You said: …" and "Cub said: …". While a reply is on its way, "Cub is thinking…" shows on the left and Send waits.
 
 When Cub can't answer, one neutral line takes the thinking line's place: "Cub couldn't answer just now. Check your connection and key, then try again." It is not an alert and not in Cub's voice (ADR-013), and the rest of the app keeps working. When every reply Cub wrote failed the checks (ADR-020), the same kind of line says "Cub couldn't find a good answer to that. Try asking another way."
 
@@ -297,6 +307,8 @@ Should answer:
 - What is the fastest path to saving this task or appointment?
 
 The add/edit flow should be direct, streamlined, and supportive.
+
+Add task pins Cancel and Save under the scrolling form, so they are in view when it opens and above the keyboard (the page resizes for the keyboard on Android). A date field fills its whole border, so a tap on the field (outside its thin padding) opens the date dialog. Name and task text start with a capital letter on the keyboard.
 
 Favor:
 
@@ -450,6 +462,14 @@ Avoid:
 - low contrast text
 - overuse of decoration that reduces readability
 - inaccessible pattern repetition
+
+What the app does today:
+
+- Text scales to 200% at 360 dp without clipping, truncating or breaking a word mid-word. Rows wrap, and a layout moves a part aside when a word would not fit: Home tiles become rows, the Add profile button and the Cub card buttons take their own row, a vaccine pill drops under its name, a task card moves what sits beside the title (the done box on a phone) to a row under the text, and two-cell form rows stack. The chat page scrolls when the card, the message box and the disclaimer together are taller than the screen.
+- Every control has a spoken name. Buttons, switches and check boxes use Description; Entry, Editor and pickers use Placeholder or Hint, never Description, which stops TalkBack actions on Android. A visible label that repeats its control's name is hidden from the screen reader so it is not read twice.
+- Page titles are headings (Level1) and section titles Level2; a label that only borrows the look sets HeadingLevel to None.
+- Cub, the tile emoji and the palette symbols are decorative and out of the accessibility tree.
+- Every toast is announced to the screen reader through ToastService.
 
 ---
 

@@ -18,40 +18,49 @@
                 <VerticalStackLayout Spacing="18">
                     <Label Text="Profile details" Style="{StaticResource SectionTitle}" />
 
-                    <Entry x:Name="NameEntry" Placeholder="Name" TextColor="Gray" />
+                    <Entry x:Name="NameEntry" Placeholder="Name" TextColor="{DynamicResource BabyBuddyText}">
+                        <Entry.Keyboard>
+                            <Keyboard x:FactoryMethod="Create">
+                                <x:Arguments>
+                                    <KeyboardFlags>CapitalizeWord,CapitalizeSentence,Spellcheck,Suggestions</KeyboardFlags>
+                                </x:Arguments>
+                            </Keyboard>
+                        </Entry.Keyboard>
+                    </Entry>
 
-                    <Grid ColumnDefinitions="*,*" ColumnSpacing="12">
-                        <Entry x:Name="WeightEntry" Grid.Column="0" Placeholder="Weight in lbs" Keyboard="Numeric" TextColor="Gray"/>
-                        <Entry x:Name="HeightEntry" Grid.Column="1" Placeholder="Height in ft" Keyboard="Numeric" TextColor="Gray"/>
+                    <!--Two-cell rows stack when a cell is too wide for its half (large text): OnPairSizeChanged-->
+                    <Grid ColumnDefinitions="*,*" ColumnSpacing="12" SizeChanged="OnPairSizeChanged">
+                        <Entry x:Name="WeightEntry" Grid.Column="0" Placeholder="Weight in lbs" Keyboard="Numeric" TextColor="{DynamicResource BabyBuddyText}"/>
+                        <Entry x:Name="HeightEntry" Grid.Column="1" Placeholder="Height in ft" Keyboard="Numeric" TextColor="{DynamicResource BabyBuddyText}"/>
                     </Grid>
 
                     <VerticalStackLayout Spacing="10">
-                        <Label Text="Date of birth" Style="{StaticResource SectionTitle}" />
+                        <Label Text="Date of birth" Style="{StaticResource SectionTitle}" SemanticProperties.HeadingLevel="None" />
                         <Border BackgroundColor="{DynamicResource BabyBuddySurfaceAlt}" Stroke="{DynamicResource BabyBuddyBorder}" StrokeShape="RoundRectangle 12" Padding="10,8">
-                            <DatePicker x:Name="DateOfBirthPicker" HeightRequest="44" HorizontalOptions="Center" TextColor="{DynamicResource BabyBuddyText}"/>
+                            <DatePicker x:Name="DateOfBirthPicker" SemanticProperties.Hint="Date of birth" MinimumHeightRequest="48" TextColor="{DynamicResource BabyBuddyText}"/>
                         </Border>
                     </VerticalStackLayout>
 
                     <VerticalStackLayout Spacing="10">
-                        <Label Text="Last feed" Style="{StaticResource SectionTitle}" />
-                        <Grid ColumnDefinitions="*,*" ColumnSpacing="12">
+                        <Label Text="Last feed" Style="{StaticResource SectionTitle}" SemanticProperties.HeadingLevel="None" />
+                        <Grid ColumnDefinitions="*,*" ColumnSpacing="12" SizeChanged="OnPairSizeChanged">
                             <Border Grid.Column="0" BackgroundColor="{DynamicResource BabyBuddySurfaceAlt}" Stroke="{DynamicResource BabyBuddyBorder}" StrokeShape="RoundRectangle 12" Padding="10,8">
-                                <DatePicker x:Name="LastFeedDatePicker" HeightRequest="44" HorizontalOptions="Center" TextColor="{DynamicResource BabyBuddyText}"/>
+                                <DatePicker x:Name="LastFeedDatePicker" SemanticProperties.Hint="Last feed date" MinimumHeightRequest="48" TextColor="{DynamicResource BabyBuddyText}"/>
                             </Border>
                             <Border Grid.Column="1" BackgroundColor="{DynamicResource BabyBuddySurfaceAlt}" Stroke="{DynamicResource BabyBuddyBorder}" StrokeShape="RoundRectangle 12" Padding="10,8">
-                                <TimePicker x:Name="LastFeedTimePicker" HeightRequest="44" HorizontalOptions="Center" TextColor="{DynamicResource BabyBuddyText}"/>
+                                <TimePicker x:Name="LastFeedTimePicker" SemanticProperties.Hint="Last feed time" MinimumHeightRequest="48" HorizontalOptions="Center" TextColor="{DynamicResource BabyBuddyText}"/>
                             </Border>
                         </Grid>
                     </VerticalStackLayout>
 
                     <VerticalStackLayout Spacing="10">
-                        <Label Text="Last sleep" Style="{StaticResource SectionTitle}" />
-                        <Grid ColumnDefinitions="*,*" ColumnSpacing="12">
+                        <Label Text="Last sleep" Style="{StaticResource SectionTitle}" SemanticProperties.HeadingLevel="None" />
+                        <Grid ColumnDefinitions="*,*" ColumnSpacing="12" SizeChanged="OnPairSizeChanged">
                             <Border Grid.Column="0" BackgroundColor="{DynamicResource BabyBuddySurfaceAlt}" Stroke="{DynamicResource BabyBuddyBorder}" StrokeShape="RoundRectangle 12" Padding="10,8">
-                                <DatePicker x:Name="LastSleepDatePicker" HeightRequest="44" HorizontalOptions="Center" TextColor="{DynamicResource BabyBuddyText}"/>
+                                <DatePicker x:Name="LastSleepDatePicker" SemanticProperties.Hint="Last sleep date" MinimumHeightRequest="48" TextColor="{DynamicResource BabyBuddyText}"/>
                             </Border>
                             <Border Grid.Column="1" BackgroundColor="{DynamicResource BabyBuddySurfaceAlt}" Stroke="{DynamicResource BabyBuddyBorder}" StrokeShape="RoundRectangle 12" Padding="10,8">
-                                <TimePicker x:Name="LastSleepTimePicker" HeightRequest="44" HorizontalOptions="Center" TextColor="{DynamicResource BabyBuddyText}"/>
+                                <TimePicker x:Name="LastSleepTimePicker" SemanticProperties.Hint="Last sleep time" MinimumHeightRequest="48" HorizontalOptions="Center" TextColor="{DynamicResource BabyBuddyText}"/>
                             </Border>
                         </Grid>
                     </VerticalStackLayout>

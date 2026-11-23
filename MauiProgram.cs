@@ -52,6 +52,7 @@ namespace BabyBuddyHelper
 
 #if WINDOWS
             WinUI.ShellTabBarFooter.Register();
+            WinUI.WinUITapTargets.Register();
 #endif
 
 #if DEBUG

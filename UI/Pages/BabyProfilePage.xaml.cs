@@ -139,6 +139,61 @@ public partial class BabyProfilePage : ContentPage
         }
     }
 
+    //A vaccine row reads: name, pencil, divider, status pill. When the name's longest word wouldn't fit beside the rest (a narrow phone,
+    //or large text) the word would break mid-word, so the pill moves under the name and the divider goes. Names that fit keep the row as is
+    private void OnVaccineRowSizeChanged(object? sender, EventArgs e)
+    {
+        if (sender is not Grid row || row.Width <= 0)
+        {
+            return;
+        }
+
+        Label name = row.Children.OfType<Label>().First();
+        Border pill = row.Children.OfType<Border>().First();
+        ImageButton pencil = row.Children.OfType<ImageButton>().First();
+        BoxView divider = row.Children.OfType<BoxView>().First();
+        VerticalStackLayout status = row.Children.OfType<VerticalStackLayout>().First();
+
+        double wordWidth = WordFit.WidestWord(name, row);
+        double pillWidth = pill.Measure(double.PositiveInfinity, double.PositiveInfinity).Width;
+        double room = row.Width - pencil.WidthRequest - divider.WidthRequest - pillWidth - 3 * row.ColumnSpacing - name.Margin.HorizontalThickness;
+        bool stacked = wordWidth > room;
+
+        row.ColumnDefinitions = stacked ? Columns("*", "Auto") : Columns("*", "Auto", "Auto", "Auto");
+        row.RowDefinitions = stacked ? Rows("Auto", "Auto", "Auto") : Rows("Auto", "Auto");
+
+        Grid.SetColumn(pill, stacked ? 0 : 3);
+        Grid.SetRow(pill, stacked ? 1 : 0);
+        pill.HorizontalOptions = stacked ? LayoutOptions.Start : LayoutOptions.Fill;
+        divider.IsVisible = !stacked;
+        Grid.SetRow(status, stacked ? 2 : 1);
+        Grid.SetColumnSpan(status, stacked ? 2 : 4);
+    }
+
+    private static ColumnDefinitionCollection Columns(params string[] lengths)
+    {
+        var columns = new ColumnDefinitionCollection();
+
+        foreach (string length in lengths)
+        {
+            columns.Add(new ColumnDefinition(length == "*" ? GridLength.Star : GridLength.Auto));
+        }
+
+        return columns;
+    }
+
+    private static RowDefinitionCollection Rows(params string[] lengths)
+    {
+        var rows = new RowDefinitionCollection();
+
+        foreach (string length in lengths)
+        {
+            rows.Add(new RowDefinition(length == "*" ? GridLength.Star : GridLength.Auto));
+        }
+
+        return rows;
+    }
+
     private async void OnVaccineTapped(object? sender, TappedEventArgs e) => await OpenVaccineRecordAsync(sender);
 
     private async void OnOpenRecordClicked(object? sender, EventArgs e) => await OpenVaccineRecordAsync(sender);

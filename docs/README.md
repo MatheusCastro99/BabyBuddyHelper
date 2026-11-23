@@ -46,7 +46,7 @@ The current experience already includes an animated companion character (Cub wav
 - Integrated Syncfusion Scheduler
 - Week calendar view
 - Visual appointment scheduling
-- Double-click appointment editing
+- Double-click appointment editing (a single tap on Android)
 - Create appointments directly from empty calendar cells
 - Real-time calendar refresh when tasks change
 
@@ -81,7 +81,7 @@ The current experience already includes an animated companion character (Cub wav
 ### Dual UI Mode
 
 - Boy and girl color palettes in place of a light / dark mode
-- Palette switch on the tab row (Windows; mobile placement is planned in Phase 7 (Issue #175))
+- Palette switch: on the tab row on Windows, at the top right of the Home card on Android
 - The choice is saved on the device and applied at startup
 
 ### Data & Reliability
@@ -276,7 +276,9 @@ BabyBuddyHelper/
 │   ├── Services/
 │   │   ├── ToastService.cs
 │   │   ├── AlertService.cs
-│   │   └── PaletteService.cs
+│   │   ├── PaletteService.cs
+│   │   ├── WordFit.cs
+│   │   └── CrowdedGrid.cs
 │   │
 │   └── Converters/
 │       ├── AssociatedBabyNameConverter.cs
@@ -285,7 +287,8 @@ BabyBuddyHelper/
 │
 ├── Platforms/
 │   └── Windows/
-│       └── ShellTabBarFooter.cs
+│       ├── ShellTabBarFooter.cs
+│       └── WinUITapTargets.cs
 ├── Resources/
 │   ├── Raw/
 │   │   └── cub.json
@@ -351,7 +354,7 @@ dotnet build BabyBuddyHelper.csproj -f net10.0-windows10.0.19041.0
 
 Name the project: at the root, MSBuild otherwise builds the solution (`BabyBuddyHelper.slnx`), whose test and design-time projects have no Windows target, so `-f` would fail for them. Swap the target framework to build another platform (for example `net10.0-android`).
 
-The build compiles the Syncfusion license from `SYNCFUSION_LICENSE` in `.env` (or the environment variable in CI). A key is valid for one Syncfusion major version only, so a major package upgrade needs a new key.
+The build compiles the Syncfusion license from `SYNCFUSION_LICENSE` in `.env` (CI builds without it; shipped builds will get it from the environment). A key is valid for one Syncfusion major version only, so a major package upgrade needs a new key.
 
 ### Test
 

@@ -28,13 +28,13 @@ You can't see the running app. Base findings on the XAML and say what the owner 
 
 **Design system.**
 - Use existing styles (`StaticResource`) and palette colors (`DynamicResource`). A hardcoded color (hex or named), a palette color read with `StaticResource`, or a hardcoded font size in **new or changed** XAML is a finding. So is a property that gets a `DynamicResource` from both its base value and a trigger setter: it stops following palette swaps. Check every change in both palettes.
-- Known existing debt; don't report it as a regression: `TextColor="Gray"` on the Entry fields in `AddBabyPage.xaml` and `AddTaskPage.xaml`, which is also a contrast risk; `FontSize="18"` in `ChecklistPage.xaml`; and `FontSize="22"` on the emoji labels in `MainPage.xaml`.
+- Known existing debt; don't report it as a regression: `FontSize="18"` in `ChecklistPage.xaml`; and `FontSize="22"` on the emoji labels in `MainPage.xaml`.
 - A new palette color goes into both palette files under the same key; a new neutral into `Colors.xaml`; a new style into `Styles.xaml`. Dark mode is not planned. If a change raises it, note it as an open question for the owner.
 - Prefer reusing card and rounded-container patterns over one-off layouts.
 
 **Accessibility.** This is never traded for looks.
 - Text contrast is at least 4.5:1 (3:1 for large text).
-- Touch targets are at least 44×44 (iOS) and 48×48 dp (Android).
+- Touch targets are at least 48×48 on every platform (the project uses Android's 48 dp everywhere; iOS asks for 44×44).
 - Interactive elements carry `SemanticProperties.Description` or `Hint` where the visual isn't self-explanatory.
 - State is never shown by color alone, e.g. completion and priority.
 

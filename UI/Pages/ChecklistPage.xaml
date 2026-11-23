@@ -4,6 +4,7 @@
              xmlns:local="clr-namespace:BabyBuddyHelper.UI.Pages"
              xmlns:converters="clr-namespace:BabyBuddyHelper.UI.Converters"
              xmlns:controls="clr-namespace:BabyBuddyHelper.UI.Controls"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              x:Class="BabyBuddyHelper.UI.Pages.ChecklistPage"
              x:Name="ChecklistRoot"
              Title="Checklist"
@@ -12,157 +13,168 @@
     <ContentPage.Resources>
         <ResourceDictionary>
             <converters:IsAppointmentModelConverter x:Key="IsAppointmentModelConverter"/>
+            <toolkit:IsStringNotNullOrEmptyConverter x:Key="HasTextConverter"/>
             <converters:AssociatedBabyNameConverter x:Key="AssociatedBabyNameConverter"/>
         </ResourceDictionary>
     </ContentPage.Resources>
 
-    <Grid RowDefinitions="Auto, Auto, *, Auto" Padding="20" RowSpacing="16">
-        <VerticalStackLayout Grid.Row="0" Spacing="6" Margin="0,8,0,0">
-            <Label Text="Today's rhythm" Style="{StaticResource PageTitle}" HorizontalTextAlignment="Center" />
-            <Label Text="Small steps, steady care." Style="{StaticResource BodyText}" HorizontalTextAlignment="Center" />
-        </VerticalStackLayout>
+    <Grid RowDefinitions="*, Auto" Padding="20" RowSpacing="16">
+        <CollectionView Grid.Row="0" ItemsSource="{Binding TaskList}" SelectionMode="Single" MaximumWidthRequest="750" Margin="0,0,0,0">
+            <!--The title block and the filters scroll with the list, so on a short screen the list can use the full height (#176). Add task stays pinned under it-->
+            <CollectionView.Header>
+                <VerticalStackLayout Spacing="16" Padding="0,0,0,11">
+                    <VerticalStackLayout Spacing="6" Margin="0,8,0,0">
+                        <Label Text="Today's rhythm" Style="{StaticResource PageTitle}" HorizontalTextAlignment="Center" />
+                        <Label Text="Small steps, steady care." Style="{StaticResource BodyText}" HorizontalTextAlignment="Center" />
+                    </VerticalStackLayout>
 
-        <Border Grid.Row="1" Padding="14,10" StrokeThickness="0" BackgroundColor="{DynamicResource BabyBuddySurface}" MaximumWidthRequest="650">
-            <Grid ColumnDefinitions="*,Auto,*">
-                <HorizontalStackLayout Grid.Column="0" HorizontalOptions="Start" Spacing="8" VerticalOptions="Center">
-                    <Label Text="Pending first" VerticalOptions="Center" Style="{StaticResource BodyText}" />
-                    <Grid WidthRequest="44" HeightRequest="28">
-                        <Switch x:Name="PendingFirstSwitch"
-                                IsToggled="{Binding isPendingFirst}"
-                                Toggled="IsPendingFirstHandler"
-                                Opacity="0"
-                                HorizontalOptions="Fill"
-                                VerticalOptions="Fill" />
+                    <Border Padding="14,10" StrokeThickness="0" BackgroundColor="{DynamicResource BabyBuddySurface}" MaximumWidthRequest="650">
+                        <!--A wrapping row, not three columns: at 448 dp the star columns were narrower than the first switch, which then drew over the next label. Each item keeps its natural width and the row wraps below that-->
+                        <FlexLayout Wrap="Wrap" JustifyContent="SpaceBetween" AlignItems="Center">
+                            <HorizontalStackLayout Margin="0,0,12,0" Spacing="8" VerticalOptions="Center">
+                                <Label Text="Pending first" AutomationProperties.IsInAccessibleTree="False" VerticalOptions="Center" Style="{StaticResource BodyText}" />
+                                <Grid WidthRequest="{OnPlatform Default=48, WinUI=49}" HeightRequest="{OnPlatform Default=48, WinUI=49}">
+                                    <Switch x:Name="PendingFirstSwitch"
+                                            SemanticProperties.Description="Pending first"
+                                            IsToggled="{Binding isPendingFirst}"
+                                            Toggled="IsPendingFirstHandler"
+                                            Opacity="{OnPlatform Android=0.01, Default=0}"
+                                            HorizontalOptions="Fill"
+                                            VerticalOptions="Fill" />
 
-                        <!--The off and on tracks are two borders, not one border with a trigger: a trigger that sets a
-                            DynamicResource drops the base one when it turns off, and the track then misses palette swaps (#93)-->
-                        <Border InputTransparent="True"
-                                WidthRequest="36"
-                                HeightRequest="20"
-                                StrokeThickness="0"
-                                StrokeShape="RoundRectangle 10"
-                                BackgroundColor="{DynamicResource BabyBuddyBorder}"
-                                HorizontalOptions="Center"
-                                VerticalOptions="Center" />
+                                    <!--The off and on tracks are two borders, not one border with a trigger: a trigger that sets a
+                                        DynamicResource drops the base one when it turns off, and the track then misses palette swaps (#93)-->
+                                    <Border InputTransparent="True"
+                                            WidthRequest="36"
+                                            HeightRequest="20"
+                                            StrokeThickness="0"
+                                            StrokeShape="RoundRectangle 10"
+                                            BackgroundColor="{DynamicResource BabyBuddyBorder}"
+                                            HorizontalOptions="Center"
+                                            VerticalOptions="Center" />
 
-                        <Border InputTransparent="True"
-                                WidthRequest="36"
-                                HeightRequest="20"
-                                StrokeThickness="0"
-                                StrokeShape="RoundRectangle 10"
-                                BackgroundColor="{DynamicResource BabyBuddyPrimary}"
-                                IsVisible="{Binding Source={x:Reference PendingFirstSwitch}, Path=IsToggled}"
-                                HorizontalOptions="Center"
-                                VerticalOptions="Center" />
+                                    <Border InputTransparent="True"
+                                            WidthRequest="36"
+                                            HeightRequest="20"
+                                            StrokeThickness="0"
+                                            StrokeShape="RoundRectangle 10"
+                                            BackgroundColor="{DynamicResource BabyBuddyPrimary}"
+                                            IsVisible="{Binding Source={x:Reference PendingFirstSwitch}, Path=IsToggled}"
+                                            HorizontalOptions="Center"
+                                            VerticalOptions="Center" />
 
-                        <!--Appears on keyboard focus (KeyboardFocusRing)-->
-                        <Border x:Name="PendingFirstFocusRing"
-                                InputTransparent="True"
-                                IsVisible="False"
-                                WidthRequest="44"
-                                HeightRequest="28"
-                                StrokeThickness="2"
-                                Stroke="{DynamicResource BabyBuddyText}"
-                                StrokeShape="RoundRectangle 14"
-                                BackgroundColor="Transparent"
-                                HorizontalOptions="Center"
-                                VerticalOptions="Center" />
+                                    <!--Appears on keyboard focus (KeyboardFocusRing)-->
+                                    <Border x:Name="PendingFirstFocusRing"
+                                            InputTransparent="True"
+                                            IsVisible="False"
+                                            WidthRequest="48"
+                                            HeightRequest="28"
+                                            StrokeThickness="2"
+                                            Stroke="{DynamicResource BabyBuddyText}"
+                                            StrokeShape="RoundRectangle 14"
+                                            BackgroundColor="Transparent"
+                                            HorizontalOptions="Center"
+                                            VerticalOptions="Center" />
 
-                        <Ellipse InputTransparent="True"
-                                 WidthRequest="14"
-                                 HeightRequest="14"
-                                 Fill="{DynamicResource BabyBuddyText}"
-                                 HorizontalOptions="Center"
-                                 VerticalOptions="Center"
-                                 TranslationX="-8">
-                            <Ellipse.Triggers>
-                                <DataTrigger TargetType="Ellipse" Binding="{Binding Source={x:Reference PendingFirstSwitch}, Path=IsToggled}" Value="True">
-                                    <Setter Property="Fill" Value="{StaticResource White}" />
-                                    <Setter Property="TranslationX" Value="8" />
-                                </DataTrigger>
-                            </Ellipse.Triggers>
-                        </Ellipse>
-                    </Grid>
-                </HorizontalStackLayout>
+                                    <Ellipse InputTransparent="True"
+                                             WidthRequest="14"
+                                             HeightRequest="14"
+                                             Fill="{DynamicResource BabyBuddyText}"
+                                             HorizontalOptions="Center"
+                                             VerticalOptions="Center"
+                                             TranslationX="-8">
+                                        <Ellipse.Triggers>
+                                            <DataTrigger TargetType="Ellipse" Binding="{Binding Source={x:Reference PendingFirstSwitch}, Path=IsToggled}" Value="True">
+                                                <Setter Property="Fill" Value="{StaticResource White}" />
+                                                <Setter Property="TranslationX" Value="8" />
+                                            </DataTrigger>
+                                        </Ellipse.Triggers>
+                                    </Ellipse>
+                                </Grid>
+                            </HorizontalStackLayout>
 
-                <HorizontalStackLayout Grid.Column="1" HorizontalOptions="Start" Spacing="8" VerticalOptions="Center">
-                    <Label Text="Upcoming first" VerticalOptions="Center" Style="{StaticResource BodyText}" />
-                    <Grid WidthRequest="44" HeightRequest="28">
-                        <Switch x:Name="DateOrderSwitch"
-                                Toggled="IsDateOrderHandler"
-                                Opacity="0"
-                                HorizontalOptions="Fill"
-                                VerticalOptions="Fill" />
+                            <HorizontalStackLayout Margin="0,0,12,0" Spacing="8" VerticalOptions="Center">
+                                <Label Text="Upcoming first" AutomationProperties.IsInAccessibleTree="False" VerticalOptions="Center" Style="{StaticResource BodyText}" />
+                                <Grid WidthRequest="{OnPlatform Default=48, WinUI=49}" HeightRequest="{OnPlatform Default=48, WinUI=49}">
+                                    <Switch x:Name="DateOrderSwitch"
+                                            SemanticProperties.Description="Upcoming first"
+                                            Toggled="IsDateOrderHandler"
+                                            Opacity="{OnPlatform Android=0.01, Default=0}"
+                                            HorizontalOptions="Fill"
+                                            VerticalOptions="Fill" />
 
-                        <!--The off and on tracks are two borders, not one border with a trigger: a trigger that sets a
-                            DynamicResource drops the base one when it turns off, and the track then misses palette swaps (#93)-->
-                        <Border InputTransparent="True"
-                                WidthRequest="36"
-                                HeightRequest="20"
-                                StrokeThickness="0"
-                                StrokeShape="RoundRectangle 10"
-                                BackgroundColor="{DynamicResource BabyBuddyBorder}"
-                                HorizontalOptions="Center"
-                                VerticalOptions="Center" />
+                                    <!--The off and on tracks are two borders, not one border with a trigger: a trigger that sets a
+                                        DynamicResource drops the base one when it turns off, and the track then misses palette swaps (#93)-->
+                                    <Border InputTransparent="True"
+                                            WidthRequest="36"
+                                            HeightRequest="20"
+                                            StrokeThickness="0"
+                                            StrokeShape="RoundRectangle 10"
+                                            BackgroundColor="{DynamicResource BabyBuddyBorder}"
+                                            HorizontalOptions="Center"
+                                            VerticalOptions="Center" />
 
-                        <Border InputTransparent="True"
-                                WidthRequest="36"
-                                HeightRequest="20"
-                                StrokeThickness="0"
-                                StrokeShape="RoundRectangle 10"
-                                BackgroundColor="{DynamicResource BabyBuddyPrimary}"
-                                IsVisible="{Binding Source={x:Reference DateOrderSwitch}, Path=IsToggled}"
-                                HorizontalOptions="Center"
-                                VerticalOptions="Center" />
+                                    <Border InputTransparent="True"
+                                            WidthRequest="36"
+                                            HeightRequest="20"
+                                            StrokeThickness="0"
+                                            StrokeShape="RoundRectangle 10"
+                                            BackgroundColor="{DynamicResource BabyBuddyPrimary}"
+                                            IsVisible="{Binding Source={x:Reference DateOrderSwitch}, Path=IsToggled}"
+                                            HorizontalOptions="Center"
+                                            VerticalOptions="Center" />
 
-                        <!--Appears on keyboard focus (KeyboardFocusRing)-->
-                        <Border x:Name="DateOrderFocusRing"
-                                InputTransparent="True"
-                                IsVisible="False"
-                                WidthRequest="44"
-                                HeightRequest="28"
-                                StrokeThickness="2"
-                                Stroke="{DynamicResource BabyBuddyText}"
-                                StrokeShape="RoundRectangle 14"
-                                BackgroundColor="Transparent"
-                                HorizontalOptions="Center"
-                                VerticalOptions="Center" />
+                                    <!--Appears on keyboard focus (KeyboardFocusRing)-->
+                                    <Border x:Name="DateOrderFocusRing"
+                                            InputTransparent="True"
+                                            IsVisible="False"
+                                            WidthRequest="48"
+                                            HeightRequest="28"
+                                            StrokeThickness="2"
+                                            Stroke="{DynamicResource BabyBuddyText}"
+                                            StrokeShape="RoundRectangle 14"
+                                            BackgroundColor="Transparent"
+                                            HorizontalOptions="Center"
+                                            VerticalOptions="Center" />
 
-                        <Ellipse InputTransparent="True"
-                                 WidthRequest="14"
-                                 HeightRequest="14"
-                                 Fill="{DynamicResource BabyBuddyText}"
-                                 HorizontalOptions="Center"
-                                 VerticalOptions="Center"
-                                 TranslationX="-8">
-                            <Ellipse.Triggers>
-                                <DataTrigger TargetType="Ellipse" Binding="{Binding Source={x:Reference DateOrderSwitch}, Path=IsToggled}" Value="True">
-                                    <Setter Property="Fill" Value="{StaticResource White}" />
-                                    <Setter Property="TranslationX" Value="8" />
-                                </DataTrigger>
-                            </Ellipse.Triggers>
-                        </Ellipse>
-                    </Grid>
-                </HorizontalStackLayout>
+                                    <Ellipse InputTransparent="True"
+                                             WidthRequest="14"
+                                             HeightRequest="14"
+                                             Fill="{DynamicResource BabyBuddyText}"
+                                             HorizontalOptions="Center"
+                                             VerticalOptions="Center"
+                                             TranslationX="-8">
+                                        <Ellipse.Triggers>
+                                            <DataTrigger TargetType="Ellipse" Binding="{Binding Source={x:Reference DateOrderSwitch}, Path=IsToggled}" Value="True">
+                                                <Setter Property="Fill" Value="{StaticResource White}" />
+                                                <Setter Property="TranslationX" Value="8" />
+                                            </DataTrigger>
+                                        </Ellipse.Triggers>
+                                    </Ellipse>
+                                </Grid>
+                            </HorizontalStackLayout>
 
-                <Button x:Name="ChecklistBabyFilterButton"
-                        Grid.Column="2"
-                        Text="All babies"
-                        Style="{StaticResource SecondaryAction}"
-                        HorizontalOptions="End"
-                        Clicked="OnChecklistBabyFilterClicked"/>
-            </Grid>
-        </Border>
-
-        <CollectionView Grid.Row="2" ItemsSource="{Binding TaskList}" SelectionMode="Single" MaximumWidthRequest="750" Margin="0,0,0,0">
+                            <Button x:Name="ChecklistBabyFilterButton"
+                                    Text="All babies"
+                                    SemanticProperties.Hint="Choose which baby's tasks to show"
+                                    Style="{StaticResource SecondaryAction}"
+                                    Clicked="OnChecklistBabyFilterClicked"/>
+                        </FlexLayout>
+                    </Border>
+                </VerticalStackLayout>
+            </CollectionView.Header>
             <CollectionView.ItemTemplate>
                 <DataTemplate>
                     <Grid>
                         <Border Padding="16" Margin="0,5" BackgroundColor="{DynamicResource BabyBuddySurface}" StrokeThickness="0" StrokeShape="RoundRectangle 22">
                             <StackLayout Spacing="10">
-                                <Grid ColumnDefinitions="*, Auto" ColumnSpacing="12" VerticalOptions="Center">
-                                    <VerticalStackLayout Grid.Column="0" Spacing="2">
-                                        <HorizontalStackLayout Spacing="0">
+                                <!--One grid of three columns by three rows, always: the text, the done box, the edit and delete buttons and the priority chip each sit in their own cell, and LayOutTaskRow only moves them.
+                                    Wide card: text | done box | edit and delete, with the chip on row 2. Narrow card (a phone): text | done box on row 0, the chip on the left of row 2 with edit and delete on its right, so the text keeps room.
+                                    When a word of the text wouldn't fit beside what is left next to it (large text), that moves to row 1, under the text. Margins, not row spacing, so an empty row stays flat-->
+                                <Grid ColumnDefinitions="*, Auto, Auto" RowDefinitions="Auto, Auto, Auto" ColumnSpacing="0" RowSpacing="0" VerticalOptions="Center" SizeChanged="OnTaskRowSizeChanged" BindingContextChanged="OnTaskRowBindingContextChanged">
+                                    <VerticalStackLayout Grid.Row="0" Grid.Column="0" Spacing="2" Margin="0,0,12,0">
+                                        <!--A wrapping row, so a long task name or baby name wraps instead of running past the card-->
+                                        <FlexLayout Wrap="Wrap" Direction="Row" AlignItems="End">
                                             <Label Text="{Binding TaskName}" FontSize="18" FontAttributes="Bold" />
                                             <Label Style="{StaticResource BodyText}" VerticalTextAlignment="End">
                                                 <Label.Text>
@@ -172,20 +184,20 @@
                                                     </MultiBinding>
                                                 </Label.Text>
                                             </Label>
-                                        </HorizontalStackLayout>
+                                        </FlexLayout>
                                         <Label Text="{Binding TaskDescription}" Style="{StaticResource BodyText}" Margin="0,0,0,0" />
                                     </VerticalStackLayout>
 
-                                    <!--No column spacing: each icon button's 13px padding already spaces the icons apart-->
-                                    <Grid Grid.Column="1" ColumnDefinitions="Auto, Auto, Auto" ColumnSpacing="0" VerticalOptions="Center">
-                                        <CheckBox IsChecked="{Binding IsCompleted, Mode=OneWay}" CheckedChanged="OnTaskCompletedChanged" HorizontalOptions="End" VerticalOptions="Center" Grid.Column="0" />
+                                    <CheckBox Grid.Row="0" Grid.Column="1" IsChecked="{Binding IsCompleted, Mode=OneWay}" SemanticProperties.Description="{Binding TaskName, StringFormat='Done: {0}'}" CheckedChanged="OnTaskCompletedChanged" HorizontalOptions="End" VerticalOptions="Center" />
 
+                                    <!--Edit and delete: a grid of their own so they can sit on the chip row. 8dp apart on a narrow card, where they sit on the chip row; on a wide card each icon button's 13px padding already spaces them (LayOutTaskRow sets the spacing)-->
+                                    <Grid Grid.Row="0" Grid.Column="2" ColumnDefinitions="Auto, Auto" ColumnSpacing="0" VerticalOptions="Center">
                                         <!--Same icon buttons as the vaccine rows on BabyProfilePage: keyboard and screen-reader reachable, drawn in a mid-tone of the current palette so they keep 3:1 against the card.
-                                            44x44 touch area around an ~18px icon-->
-                                        <ImageButton Grid.Column="1"
+                                            48x48 touch area around an ~18px icon-->
+                                        <ImageButton Grid.Column="0"
                                                      Source="{DynamicResource EditIcon}"
-                                                     WidthRequest="44"
-                                                     HeightRequest="44"
+                                                     WidthRequest="48"
+                                                     HeightRequest="48"
                                                      Padding="13"
                                                      Aspect="AspectFit"
                                                      BackgroundColor="Transparent"
@@ -194,10 +206,10 @@
                                                      Command="{Binding Source={x:Reference ChecklistRoot}, Path=EditTaskCommand}"
                                                      CommandParameter="{Binding .}" />
 
-                                        <ImageButton Grid.Column="2"
+                                        <ImageButton Grid.Column="1"
                                                      Source="{DynamicResource TrashIcon}"
-                                                     WidthRequest="44"
-                                                     HeightRequest="44"
+                                                     WidthRequest="48"
+                                                     HeightRequest="48"
                                                      Padding="13"
                                                      Aspect="AspectFit"
                                                      BackgroundColor="Transparent"
@@ -206,19 +218,20 @@
                                                      Command="{Binding Source={x:Reference ChecklistRoot}, Path=DeleteTaskCommand}"
                                                      CommandParameter="{Binding .}" />
                                     </Grid>
+
+                                    <Border Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" Margin="0,10,0,0" VerticalOptions="Center" Padding="8,6" StrokeThickness="0" BackgroundColor="{DynamicResource BabyBuddySecondary}" HorizontalOptions="Start">
+                                        <Label Text="{Binding TaskPriority, StringFormat='Priority {0}'}" Style="{StaticResource CaptionText}" />
+                                    </Border>
                                 </Grid>
 
-                                <Border Padding="8,6" StrokeThickness="0" BackgroundColor="{DynamicResource BabyBuddySecondary}" HorizontalOptions="Start">
-                                    <Label Text="{Binding TaskPriority, StringFormat='Priority {0}'}" Style="{StaticResource CaptionText}" />
-                                </Border>
-
-                                <HorizontalStackLayout Spacing="8" Margin="0,2,0,0">
-                                    <Label Text="{Binding AppointmentDate, StringFormat='{0:d}'}" Style="{StaticResource CaptionText}" />
-                                    <BoxView WidthRequest="1" HeightRequest="12" BackgroundColor="{DynamicResource BabyBuddyBorder}" />
-                                    <Label Text="{Binding AppointmentStartTime, StringFormat='{0:hh\:mm}'}" Style="{StaticResource CaptionText}" />
-                                    <BoxView WidthRequest="1" HeightRequest="12" BackgroundColor="{DynamicResource BabyBuddyBorder}" />
-                                    <Label Text="{Binding AppointmentLocation}" Style="{StaticResource CaptionText}" LineBreakMode="TailTruncation" />
-                                </HorizontalStackLayout>
+                                <!--Date, time and location; wraps onto the next line when the location is long or the text is large-->
+                                <FlexLayout Wrap="Wrap" Direction="Row" AlignItems="Center" Margin="0,2,0,0" IsVisible="{Binding ., Converter={StaticResource IsAppointmentModelConverter}}">
+                                    <Label Text="{Binding AppointmentDate, StringFormat='{0:d}'}" Style="{StaticResource CaptionText}" Margin="0,0,8,0" />
+                                    <BoxView IsVisible="{Binding ., Converter={StaticResource IsAppointmentModelConverter}}" WidthRequest="1" HeightRequest="12" BackgroundColor="{DynamicResource BabyBuddyBorder}" Margin="0,0,8,0" />
+                                    <Label Text="{Binding AppointmentStartTime, StringFormat='{0:hh\:mm}'}" Style="{StaticResource CaptionText}" Margin="0,0,8,0" />
+                                    <BoxView IsVisible="{Binding AppointmentLocation, Converter={StaticResource HasTextConverter}, FallbackValue=False}" WidthRequest="1" HeightRequest="12" BackgroundColor="{DynamicResource BabyBuddyBorder}" Margin="0,0,8,0" />
+                                    <Label Text="{Binding AppointmentLocation}" Style="{StaticResource CaptionText}" />
+                                </FlexLayout>
                             </StackLayout>
                         </Border>
                     </Grid>
@@ -226,7 +239,7 @@
             </CollectionView.ItemTemplate>
         </CollectionView>
 
-        <FlexLayout Grid.Row="3" JustifyContent="Center" Padding="0,10,0,0" MaximumWidthRequest="450">
+        <FlexLayout Grid.Row="1" JustifyContent="Center" Padding="0,10,0,0" MaximumWidthRequest="450">
             <Button
                 x:Name="AddTaskBtn"
                 Text="Add task"
@@ -236,6 +249,6 @@
                 HorizontalOptions="Center" />
         </FlexLayout>
 
-        <controls:ToastView Grid.RowSpan="4" />
+        <controls:ToastView Grid.RowSpan="2" />
     </Grid>
 </ContentPage>

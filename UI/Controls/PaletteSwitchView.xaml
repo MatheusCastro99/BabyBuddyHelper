@@ -2,22 +2,23 @@
 <ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="BabyBuddyHelper.UI.Controls.PaletteSwitchView"
-             HeightRequest="44"
+             HeightRequest="48"
              Padding="0,0,16,0"
              VerticalOptions="Center">
 
     <!--Boy symbol, switch, girl symbol. The symbols keep a firmer blue and pink in both palettes (4.5:1 or better on the
         tab row), and the track stays neutral in both positions so neither palette looks like the "off" state-->
     <HorizontalStackLayout Spacing="8" VerticalOptions="Center">
-        <Image Source="boy_symbol.png" WidthRequest="20" HeightRequest="20" VerticalOptions="Center" />
+        <Image Source="boy_symbol.png" WidthRequest="20" HeightRequest="20" VerticalOptions="Center" AutomationProperties.IsInAccessibleTree="False" />
 
         <!--Same drawn switch as the checklist filters: the real Switch is invisible and takes the input, focus and
-            screen-reader label, with a 44x44 touch area-->
-        <Grid WidthRequest="44" HeightRequest="44">
+            screen-reader label, with a 48x48 touch area-->
+        <Grid WidthRequest="{OnPlatform Default=48, WinUI=49}" HeightRequest="{OnPlatform Default=48, WinUI=49}">
             <Switch x:Name="PaletteToggle"
-                    Opacity="0"
+                    Opacity="{OnPlatform Android=0.01, Default=0}"
                     HorizontalOptions="Fill"
                     VerticalOptions="Fill"
+                    SemanticProperties.Description="Color palette"
                     SemanticProperties.Hint="Switches the app's colors between the boy and girl palettes" />
 
             <Border InputTransparent="True"
@@ -33,7 +34,7 @@
             <Border x:Name="FocusRing"
                     InputTransparent="True"
                     IsVisible="False"
-                    WidthRequest="44"
+                    WidthRequest="48"
                     HeightRequest="28"
                     StrokeThickness="2"
                     Stroke="{DynamicResource BabyBuddyText}"
@@ -57,6 +58,6 @@
             </Ellipse>
         </Grid>
 
-        <Image Source="girl_symbol.png" WidthRequest="20" HeightRequest="20" VerticalOptions="Center" />
+        <Image Source="girl_symbol.png" WidthRequest="20" HeightRequest="20" VerticalOptions="Center" AutomationProperties.IsInAccessibleTree="False" />
     </HorizontalStackLayout>
 </ContentView>

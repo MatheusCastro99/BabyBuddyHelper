@@ -145,7 +145,9 @@ BabyBuddyHelper/
 │   ├── Services/
 │   │   ├── ToastService.cs - Toast feedback for successful actions
 │   │   ├── AlertService.cs - Alerts for failures the user must acknowledge
-│   │   └── PaletteService.cs - Applies the boy or girl palette and remembers the choice
+│   │   ├── PaletteService.cs - Applies the boy or girl palette and remembers the choice
+│   │   ├── WordFit.cs - Measures the widest word of a label or button, so a row can move things aside before a word breaks mid-word
+│   │   └── CrowdedGrid.cs - Stacks a two-cell form row when a cell is too wide for its half (large text)
 │   └── Converters/
 │       ├── AssociatedBabyNameConverter.cs - Shows a task's baby name from its stored baby Id
 │       ├── IsAppointmentModelConverter.cs - Tells the checklist whether an item is an appointment

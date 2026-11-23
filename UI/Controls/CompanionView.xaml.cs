@@ -1,3 +1,5 @@
+using BabyBuddyHelper.UI.Services;
+
 namespace BabyBuddyHelper.UI.Controls
 {
     /// <summary>
@@ -141,6 +143,28 @@ namespace BabyBuddyHelper.UI.Controls
 
             previousCts?.Cancel();
             previousCts?.Dispose();
+        }
+
+        //The buttons sit beside Cub, under the tip. When a word of either label wouldn't fit in that column (large text on a narrow phone) it
+        //would break mid-word, so the buttons take their own row across the full card width instead. The choice comes from the card's
+        //width and the words' natural width, never from the current layout, so it can't flip back and forth
+        void OnCardSizeChanged(object? sender, EventArgs e) => Dispatcher.Dispatch(LayOutCard); //Not inside the size change itself: see ChatPage.OnCubCardSizeChanged
+
+        void LayOutCard()
+        {
+            if (CardGrid.Width <= 0)
+            {
+                return;
+            }
+
+            const double ButtonBorder = 2;
+            double columnWidth = CardGrid.Width - CubFrame.WidthRequest - CardGrid.ColumnSpacing;
+            bool wordsFit = new[] { TellMeSomethingButton, TalkToCubButton }.All(button =>
+                WordFit.WidestWord(button, CardGrid, column: 1) + button.Padding.HorizontalThickness + button.Margin.HorizontalThickness + ButtonBorder <= columnWidth);
+
+            Grid.SetRowSpan(CubFrame, wordsFit ? 2 : 1);
+            Grid.SetColumn(ActionsRow, wordsFit ? 1 : 0);
+            Grid.SetColumnSpan(ActionsRow, wordsFit ? 1 : 2);
         }
 
         //A new tip comes with a little dance, so asking Cub for one feels playful

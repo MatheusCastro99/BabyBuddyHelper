@@ -21,6 +21,7 @@ namespace BabyBuddyHelper.UI.Pages;
 //the page never references Remote/ or the provider SDK (ADR-017).
 public partial class ChatPage : ContentPage
 {
+    private const double MinimumConversationHeight = 160; //The least room the list keeps before the page scrolls instead
     private const string GeneralAdvice = "General advice";
     private const string ThinkingText = "Cub is thinking…";
     private const string FailureText = "Cub couldn't answer just now. Check your connection and key, then try again.";
@@ -96,32 +97,121 @@ public partial class ChatPage : ContentPage
     {
         bool hasKey = await _apiKeyStore.HasKeyAsync();
 
+        //Before the list shows, the page grid gets the screen's height, so the list never measures against an unbounded one
+        if (hasKey && PageScroll.Height > 0 && PageGrid.HeightRequest < 0)
+        {
+            PageGrid.HeightRequest = PageScroll.Height;
+        }
+
         SetupState.IsVisible = !hasKey;
         ChatState.IsVisible = hasKey;
         TalkingAboutLabel.IsVisible = hasKey;
         BabyPicker.IsVisible = hasKey;
         LayOutCubHeading();
+        Dispatcher.Dispatch(SizeConversation);
     }
 
-    private void OnCubHeadingSizeChanged(object? sender, EventArgs e) => LayOutCubHeading();
+    //The layout switches run from a dispatch, not inside the size change that asked for them: a change made while the page is being laid out
+    //doesn't always reach the rows above it, which then keep their old height. Both read widths only, so running again changes nothing
+    private void OnCubCardSizeChanged(object? sender, EventArgs e) => Dispatcher.Dispatch(LayOutCubHeading);
 
     private void OnBabyPickerSelectedIndexChanged(object? sender, EventArgs e) => LayOutCubHeading(); //A longer name may no longer fit
 
-    //"Cub – is talking about: [picker]" stays on one line while it fits. On a narrow card (a phone) the picker moves onto its
-    //own line under it, instead of being squeezed out of sight, and the tagline moves down one row. The label then also
-    //spans the free column, so on the narrowest phones (or with larger text) it wraps instead of running under the gear
-    private void LayOutCubHeading()
+    private void OnPageSizeChanged(object? sender, EventArgs e) => Dispatcher.Dispatch(SizeConversation);
+
+    //The page grid is given a definite height, and the conversation (a star row of it) takes what the card, the message box and the
+    //disclaimer leave. That height is the screen's, so at normal sizes the message box sits at the bottom and nothing scrolls, and it
+    //follows a window resize both ways. When the rest of the page plus a least-height conversation is taller than the screen (large
+    //text), the grid takes that height instead and the page scrolls, so nothing overlaps or runs off the screen.
+    //What the rest of the page needs is the grid's height without the list. Both are read from the same finished layout, and nothing
+    //is changed while the grid's height is not yet the one asked for, so a layout that is still catching up can't make it flip
+    private void SizeConversation()
     {
-        if (!BabyPicker.IsVisible || CubHeading.Width <= 0)
+        if (!ChatState.IsVisible)
+        {
+            if (PageGrid.HeightRequest >= 0)
+            {
+                PageGrid.HeightRequest = -1; //The setup state has nothing to fill
+            }
+
+            return;
+        }
+
+        double viewport = PageScroll.Height;
+
+        if (viewport <= 0)
         {
             return;
         }
 
-        double lineWidth = CubName.Measure(double.PositiveInfinity, double.PositiveInfinity).Width
-            + TalkingAboutLabel.Measure(double.PositiveInfinity, double.PositiveInfinity).Width
-            + BabyPicker.Measure(double.PositiveInfinity, double.PositiveInfinity).Width
-            + 2 * CubHeading.ColumnSpacing;
-        bool fits = lineWidth <= CubHeading.Width;
+        double height = viewport;
+
+        if (PageGrid.HeightRequest >= 0)
+        {
+            if (Math.Abs(PageGrid.Height - PageGrid.HeightRequest) >= 1 || ConversationView.Height < 0)
+            {
+                return;
+            }
+
+            double restOfPage = PageGrid.Height - ConversationView.Height;
+            height = Math.Max(viewport, Math.Ceiling(restOfPage + MinimumConversationHeight));
+        }
+
+        if (Math.Abs(height - PageGrid.HeightRequest) >= 1)
+        {
+            PageGrid.HeightRequest = height;
+        }
+    }
+
+    //"Cub – is talking about: [picker]" stays on one line while it fits. On a narrow card (a phone) the picker moves onto its
+    //own line under it, instead of being squeezed out of sight, and the tagline moves down one row. The label then also
+    //spans the free column, so on the narrowest phones (or with larger text) it wraps instead of running under the gear.
+    //With larger text the picker alone can be wider than the column beside Cub and the gear: the whole heading then moves under them,
+    //across the card, where the picker has the card's full width. The choices come from the card's width and the natural widths,
+    //never from the current layout, so they can't flip back and forth
+    private void LayOutCubHeading()
+    {
+        //Without a key there is only "Cub" and the tagline, so everything goes back to its one-row place (a key removed in the settings
+        //popup can leave the heading under Cub and the gear from an earlier layout)
+        if (!BabyPicker.IsVisible)
+        {
+            PlaceCubHeading(headingBelow: false, fits: true);
+            return;
+        }
+
+        if (CubCardGrid.Width <= 0)
+        {
+            return;
+        }
+
+        //The picker is measured at its natural width, so a cap from an earlier layout can't make a longer name look like it fits
+        BabyPicker.MaximumWidthRequest = double.PositiveInfinity;
+
+        double columnWidth = CubCardGrid.Width - CubIconFrame.WidthRequest - SettingsButton.WidthRequest - 2 * CubCardGrid.ColumnSpacing;
+        double nameWidth = CubName.Measure(double.PositiveInfinity, double.PositiveInfinity).Width;
+        double labelWidth = TalkingAboutLabel.Measure(double.PositiveInfinity, double.PositiveInfinity).Width;
+        double pickerWidth = BabyPicker.Measure(double.PositiveInfinity, double.PositiveInfinity).Width;
+        bool headingBelow = pickerWidth > columnWidth;
+        double headingWidth = headingBelow ? CubCardGrid.Width : columnWidth;
+        double lineWidth = nameWidth + labelWidth + pickerWidth + 2 * CubHeading.ColumnSpacing;
+        bool fits = lineWidth <= headingWidth;
+
+        //The picker never gets more than the room it has: the whole heading width on its own line, what is left beside the label
+        //inline. Only a name longer than the whole card is cut short inside the picker, instead of running past the card
+        BabyPicker.MaximumWidthRequest = fits
+            ? Math.Max(0, headingWidth - nameWidth - labelWidth - 2 * CubHeading.ColumnSpacing)
+            : headingWidth;
+
+        PlaceCubHeading(headingBelow, fits);
+    }
+
+    //headingBelow: the whole heading sits in a second row across the card. fits: the picker is on the heading's first line
+    private void PlaceCubHeading(bool headingBelow, bool fits)
+    {
+        Grid.SetRow(CubHeading, headingBelow ? 1 : 0);
+        Grid.SetColumn(CubHeading, headingBelow ? 0 : 1);
+        Grid.SetColumnSpan(CubHeading, headingBelow ? 3 : 1);
+        CubCardGrid.RowSpacing = headingBelow ? 10 : 0;
 
         Grid.SetRow(BabyPicker, fits ? 0 : 1);
         Grid.SetColumn(BabyPicker, fits ? 2 : 0);
